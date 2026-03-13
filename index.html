@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FloWWed — Entry</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+
+body{
+margin:0;
+min-height:100vh;
+padding:24px 20px 40px;
+font-family:"Inter",sans-serif;
+text-align:center;
+background:linear-gradient(to bottom,#ffeef3,#ffd9e5,#f8b6ca,#e94a7633);
+color:#7a3a4a;
+display:flex;
+flex-direction:column;
+align-items:center;
+
+opacity:0;
+}
+
+#coupleHeader{
+font-size:38px;
+font-weight:800;
+margin-top:8px;
+margin-bottom:6px;
+color:#a02449;
+}
+
+.welcome{
+font-size:18px;
+font-weight:700;
+color:#b03b5c;
+margin-bottom:40px;
+}
+
+.button-row{
+width:100%;
+max-width:900px;
+display:flex;
+flex-direction:column;
+gap:26px;
+}
+
+.big-btn{
+width:100%;
+height:110px;
+border-radius:26px;
+
+background:
+linear-gradient(to bottom,rgba(255,255,255,.22),rgba(255,255,255,.05)),
+#9c1818;
+
+border:1px solid rgba(255,255,255,.40);
+backdrop-filter:blur(22px) saturate(180%);
+
+color:white;
+font-size:22px;
+font-weight:800;
+
+display:flex;
+align-items:center;
+gap:18px;
+padding-left:28px;
+
+cursor:pointer;
+
+box-shadow:
+0 18px 40px rgba(0,0,0,.45),
+0 6px 14px rgba(0,0,0,.35),
+inset 0 4px 8px rgba(255,255,255,.25),
+inset 0 -10px 20px rgba(80,0,20,.45);
+}
+
+.big-btn i{
+font-size:38px;
+color:#ffe6ec;
+}
+
+.big-btn:hover{
+transform:translateY(-4px) scale(1.015);
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="coupleHeader">Loading...</div>
+<div class="welcome">FloWWed Studio</div>
+
+<div class="button-row">
+
+<button class="big-btn" id="web">
+<i class="fa-solid fa-globe"></i>
+Web Manager
+</button>
+
+<button class="big-btn" id="guest">
+<i class="fa-solid fa-users"></i>
+Guests Manager
+</button>
+
+<button class="big-btn" id="site">
+<i class="fa-solid fa-heart"></i>
+Your Wedding Website
+</button>
+
+</div>
+
+
+<div id="trialExpiredOverlay" style="
+position:fixed;
+inset:0;
+background:rgba(255,235,245,.85);
+backdrop-filter:blur(12px);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:10000;
+">
+
+<div style="
+background:white;
+padding:40px 32px;
+width:380px;
+border-radius:26px;
+text-align:center;
+box-shadow:0 22px 65px rgba(0,0,0,.15);
+">
+
+<h2 style="color:#c30c1e">Trial Expired</h2>
+
+<p>Your trial period has ended.</p>
+
+<a href="https://flowweds.netlify.app"
+style="
+display:block;
+background:#c30c1e;
+color:white;
+padding:14px;
+border-radius:14px;
+font-size:18px;
+font-weight:800;
+text-decoration:none;
+">
+Buy FloWWed
+</a>
+
+</div>
+</div>
+
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+const token =
+params.get("t") ||
+params.get("token");
+
+if(!token){
+
+window.location.replace("https://flowweds.netlify.app");
+throw new Error("No token");
+
+}
+
+// basic token format check (защита от перебора)
+if(token.length < 8){
+window.location.replace("https://flowweds.netlify.app");
+throw new Error("Invalid token");
+}
+
+const hName = document.getElementById("coupleHeader");
+
+async function checkAccess(){
+
+try{
+
+const res = await fetch(
+"https://octwwpatppbenqwkcqaw.supabase.co/functions/v1/check-access",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+},
+body:JSON.stringify({token})
+});
+
+return await res.json();
+
+}catch(e){
+
+console.error(e);
+return {allowed:false};
+
+}
+
+}
+
+async function init(){
+
+const access = await checkAccess();
+
+console.log(access);
+
+if(access.reason==="trial-expired"){
+
+document.getElementById("trialExpiredOverlay").style.display="flex";
+
+// блокируем всю страницу
+document.body.style.pointerEvents="none";
+document.getElementById("trialExpiredOverlay").style.pointerEvents="auto";
+
+throw new Error("Trial expired");
+
+}
+
+if(access.bride || access.groom){
+
+const bride = access.bride || "";
+const groom = access.groom || "";
+
+hName.textContent = bride && groom
+? bride+" ∞ "+groom
+: bride+groom;
+
+}else{
+
+hName.textContent="Your Names Here";
+
+}
+
+/* показать страницу только после проверки */
+document.body.style.opacity="1";
+
+}
+
+init();
+
+function go(page){
+
+if(document.getElementById("trialExpiredOverlay").style.display==="flex"){
+return;
+}
+
+window.open(page+"?t="+token,"_blank");
+
+}
+
+
+document.getElementById("web").onclick=()=>go("yourweb.html");
+document.getElementById("guest").onclick=()=>go("dashboard.html");
+
+document.getElementById("site").onclick=()=>{
+
+window.open(
+"https://flowwed.netlify.app/index.html?t="+token,
+"_blank"
+);
+
+};
+
+</script>
+
+</body>
+</html>

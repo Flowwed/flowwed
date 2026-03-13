@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seating Chart</title>
+
+<style>
+/* ======================================= */
+/* GLOBAL                                  */
+/* ======================================= */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom, #fff0f4, #fff);
+  margin: 0;
+  padding: 40px 26px;
+  color: #5a1a1a;
+}
+
+.top-title {
+  flex: 1;
+  text-align: center;
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* ======================================= */
+/* LAYOUT                                   */
+/* ======================================= */
+.layout {
+  display: flex;
+  gap: 30px;
+  max-width: 1500px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.left-column { width: 380px; }
+.right-column { flex-grow: 1; }
+
+.left-scroll {
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* LEFT scrollbars */
+.left-scroll::-webkit-scrollbar { width: 12px; }
+.left-scroll::-webkit-scrollbar-track {
+  background: #ffe6eb;
+  border-radius: 10px;
+}
+.left-scroll::-webkit-scrollbar-thumb {
+  background: #b41111;
+  border-radius: 10px;
+  border: 3px solid #ffe6eb;
+}
+
+/* ======================================= */
+/* BUTTONS                                 */
+/* ======================================= */
+.ruby-btn {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.05)),
+    #b41111;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(255,255,255,0.22),
+    inset 0 -4px 8px rgba(70,0,20,0.28);
+}
+
+.ruby-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.35),
+    inset 0 3px 6px rgba(255,255,255,0.25),
+    inset 0 -6px 12px rgba(70,0,20,0.32);
+}
+
+.table-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 20px;
+}
+
+/* ======================================= */
+/* FILTER BAR                              */
+/* ======================================= */
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.filter-group {
+  display: inline-flex;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid #b41111;
+}
+
+.filter-btn {
+  padding: 10px 24px;
+  background: #fff;
+  color: #b41111;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+}
+.filter-btn.active {
+  background: #b41111;
+  color: white;
+}
+
+/* ======================================= */
+/* ACTION BAR                              */
+/* ======================================= */
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-group { display: flex; gap: 10px; }
+
+.action-btn {
+  padding: 10px 24px;
+  background: #fff;
+  color: #b41111;
+  border: 2px solid #b41111;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+.action-btn:hover { background: #ffe2e2; }
+
+/* ======================================= */
+/* TABLE CARDS (LEFT)                      */
+/* ======================================= */
+.table-pair { margin-bottom: 20px; }
+
+.simple-table-block {
+  background: #b41111;
+  color: white;
+  padding: 22px 24px;
+  border-radius: 22px;
+  width: 300px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  position: relative;
+  cursor: pointer;
+  transition: .35s ease;
+  box-shadow:
+    0 18px 45px rgba(0,0,0,0.28),
+    0 8px 22px rgba(0,0,0,0.18),
+    inset 0 3px 8px rgba(255,255,255,0.22),
+    inset 0 -8px 16px rgba(70,0,20,0.32);
+}
+.simple-table-block:hover {
+  transform: translateY(-3px) scale(1.005);
+}
+
+.table-number {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 18px;
+}
+
+.left-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.seat-btn {
+  background: white;
+  color: #b41111;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+.seat-btn:hover { background: #ffe2e2; }
+
+.guest-list {
+  margin: 0;
+  list-style: disc;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ======================================= */
+/* MAIN TABLE AREA                         */
+/* ======================================= */
+.ruby-frame-outer {
+  border: 4px solid #b41111;
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow:
+    0 0 18px rgba(180,17,17,0.35),
+    inset 0 0 10px rgba(255,255,255,0.5);
+}
+
+.ruby-frame-inner {
+  border: 3px solid #ffcccc;
+  border-radius: 18px;
+  padding: 10px;
+}
+
+/* === ONE SCROLL CONTAINER === */
+.custom-scroll-container {
+  position: relative;
+  height: 350px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+
+#mainScroll {
+  scroll-snap-type: none !important;
+  scroll-snap-align: none !important;
+  overscroll-behavior: contain;  /* 🔥 добавь это */
+}
+
+/* IMPORTANT — FIXED TABLE HEIGHT → SCROLL RETURNS */
+.custom-scroll-container table {
+  width: 100%;
+  border-collapse: collapse;
+  display: table;
+  height: auto;
+}
+
+.custom-scroll-container tbody {
+  display: block;
+  height: 600px;       /* ← именно это даёт скролл */
+  overflow-y: auto;    /* ← скролл теперь тут */
+}
+
+.custom-scroll-container thead, 
+.custom-scroll-container tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+th, td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #ebcccc;
+  text-align: center;
+}
+
+.icon-yes { color: green; font-size: 22px; }
+.icon-maybe { color: orange; font-size: 22px; }
+
+.mini-assign-btn {
+  background: #b41111;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  position: relative;
+  z-index: 20;
+}
+.mini-assign-btn.active { background: #1a8f3b; }
+
+.unassign-btn {
+  background: #b41111;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  z-index: 20;
+  font-size: 18px;
+}
+
+/* ======================================= */
+/* FLOATING SCROLL INDICATOR               */
+/* ======================================= */
+#scrollbar-indicator {
+  position: absolute;
+  right: 4px;
+  width: 6px;
+  height: 40px;
+  background: linear-gradient(to bottom, #ff6666, #b41111);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+/* ======================================= */
+/* EMAIL COMPOSER                          */
+/* ======================================= */
+#emailComposer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 360px;
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+  z-index: 9999;
+  display: none;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.composer-header {
+  font-size: 18px;
+  font-weight: 700;
+  color: #b41111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.composer-label {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.composer-input, .composer-textarea {
+  width: 95%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(180,0,40,0.25);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.composer-textarea {
+  height: 110px;
+  resize: vertical;
+}
+
+.composer-send {
+  margin-top: 14px;
+  background: #b41111;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.composer-send:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======================================= */
+/* GREEN TOAST                             */
+/* ======================================= */
+
+/* sticky header for scroll tables */
+.custom-scroll-container thead th {
+  position: sticky;
+  top: 0;
+  background: #fff5f7;
+  z-index: 10;
+  border-bottom: 2px solid #b41111;
+}
+
+#greenToast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: 0.4s ease;
+  z-index: 99999;
+}
+#greenToast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Menu View*/
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 0 !important;
+  margin-bottom: 34px !important;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  padding: 14px 0 10px !important; 
+  font-size: 16px;
+  font-weight: 500;
+  color: #7a6772;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #7a6772;
+  transition: 0.2s;
+}
+
+
+.top-nav a.active {
+  color: #7a6772 !important;  /* ruby */
+  font-weight: 550 !important;
+  text-shadow: 0 0 4px rgba(180,17,17,0.25);
+}
+
+
+.top-nav a:hover {
+  color: #d6003d;
+}
+
+/* Back Button */
+.back-btn {
+  position: absolute;
+  left: 75px;            /* ↓↓↓ больше пространства справа */
+  top: 12px;
+
+  padding: 3px 10px;     /* уменьшили кнопку */
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(196, 0, 55, 0.25);
+
+  color: #b1162a;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
+
+  transition: 0.25s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.45);
+  border-color: rgba(196,0,55,0.45);
+  box-shadow: 0 4px 12px rgba(196,0,55,0.15);
+  transform: translateY(-1px);
+}
+
+.ios-banner-inline {
+  padding: 10px 18px;
+  background: rgba(255,255,255,0.75);
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7e2a2a;
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 3px rgba(255,255,255,0.6);
+}
+
+.guide-link {
+  color: #1e63ff;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+
+/* Align <h2> nicely */
+.guestlist-header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 19px;
+  color: #9c1818;
+}
+
+/* Inline bubble */
+.info-bubble-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #fff7f7;
+  border: 2px solid #ffcccc;
+  padding: 10px 14px;
+  border-radius: 12px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  max-width: 100%;
+}
+
+/* Ruby “i” icon */
+.info-icon-inline {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  background: #b41111;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 2px 3px rgba(255,255,255,0.25);
+}
+
+.top-logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  max-width: 1500px;
+  margin: 0 auto 10px auto;
+  padding: 0 6px;
+}
+
+#topMainTitle {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+    #coupleSmallName {
+  font-size: 21px;
+  font-weight: 648;
+  color: #9c1818;
+  margin: 0;
+  text-align: right;
+}
+
+.top-divider-line {
+  max-width: 1500px;
+  margin: 10px auto 14px auto;
+  height: 1px;
+  background: linear-gradient(to right,
+    transparent,
+    rgba(180,17,17,0.35),
+    transparent
+  );
+}
+
+
+/* Main text */
+.info-text-inline {
+  font-size: 14px;
+  color: #7e2a2a;
+  font-weight: 600;
+  max-width: 260px;
+  line-height: 1.28;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Icons inline block */
+.info-icons-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 13px;
+  color: #7e2a2a;
+  font-weight: 600;
+}
+
+
+.info-bubble-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;  /* ← ВОТ ЭТО центрирует иконку + текст */
+  gap: 14px;
+}
+
+/* и обязательно убрать растягивание текста */
+.info-text-inline {
+  flex: none;
+  text-align: center;
+  margin: 0;
+}
+
+
+.info-icon-inline {
+  position: absolute;
+  left: 17%;
+  transform: translateX(-50%);
+}
+.info-bubble-inline {
+  position: relative;
+}
+
+#btnPrint {
+  display: none;
+}
+
+
+</style>
+</head>
+
+<body>
+
+
+<!-- ======= TOP NAV + BACK BUTTON ======= -->
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="#6d6d6d" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Back
+  </button>
+
+  <div class="top-nav">
+    <a href="#">Guest Manager</a>
+    <a href="#">Save The Date</a>
+    <a href="#">RSVP</a>
+    <a href="#">Seating Chart</a>
+    <a href="#">Registry</a>
+    <a href="#">Budget</a>
+    <a href="#">Web Manager</a>
+    <a href="#">Wed Reports</a>
+  </div>
+</div>
+
+<div class="top-logo-title" style="gap:16px;">
+  <h1 id="topMainTitle">Seating Chart</h1>
+
+  <div class="ios-banner-inline">
+    View the Quick User Guide for this page
+    <span id="openGuide" class="guide-link">here</span>.
+  </div>
+
+  <div id="coupleSmallName"></div>
+</div>
+
+<div class="top-divider-line"></div>
+
+<div class="info-bubble-inline" style="margin: 0 18px 20px 18px;">
+  <div class="info-icon-inline">i</div>
+
+  <div class="info-text-inline" style="flex:1;max-width:none;">
+    Organize your guests by table and instantly see who is seated where.
+    Assign guests, adjust seat counts, and export your layout for printing or sharing.
+  </div>
+</div>
+
+
+<!-- EMAIL COMPOSER POPUP -->
+<div id="emailComposer">
+  <div class="composer-header">
+    <span>New Message</span>
+    <span class="close-btn" onclick="closeEmailComposer()">×</span>
+  </div>
+
+  <label class="composer-label">To:</label>
+  <input type="text" id="composerTo" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="composerSubject" class="composer-input" value="Wedding Seating Chart">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="composerBody" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+  <div id="fakeAttachmentBox"
+       style="
+         margin-top:12px; padding:10px 14px;
+         background:#fafafa; border:1px solid #ddd;
+         border-radius:10px; font-size:13px; font-weight:600;
+         color:#444; cursor:pointer; display:none;"
+       onclick="toggleFakeAttachment()">
+
+    📎 seating_chart.csv (attachment)
+
+    <div id="fakeAttachmentDetails"
+         style="margin-top:8px; display:none; font-size:12px; color:#666;">
+      This file will be attached automatically when the email is sent.
+    </div>
+  </div>
+
+  <button class="composer-send" onclick="sendEmail()">Send</button>
+</div>
+
+
+
+<!-- MAIN PAGE LAYOUT -->
+<div class="layout">
+
+  <!-- LEFT COLUMN — TABLES -->
+  <div class="left-column">
+
+    <div class="table-buttons">
+      <button class="ruby-btn" id="btnAddTable">Add Table</button>
+      <button class="ruby-btn" id="btnDeleteTable">Delete Table</button>
+    </div>
+
+    <div class="left-scroll">
+      <div id="simpleTableList"></div>
+    </div>
+
+  </div>
+
+
+  <!-- RIGHT COLUMN — FILTERS + MAIN TABLE -->
+<div class="right-column">
+
+  <div class="top-controls">
+
+    <div class="filter-group">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="yes">✔ Confirmed</button>
+      <button class="filter-btn" data-filter="maybe">❔ Maybe</button>
+    </div>
+
+
+    <div class="action-bar">
+      <div class="action-group">
+        <button class="action-btn" id="btnEmail">📧 Email</button>
+        <button class="action-btn" id="btnPrint">🖨 Print</button>
+
+        <button class="action-btn" id="btnExportCSV">📁 Download & Print</button>
+      </div>
+    </div>
+
+  </div> <!-- closes top-controls -->
+
+  <!-- MAIN TABLE AREA -->
+  <div id="rsvpTableContainer">
+
+    <div class="ruby-frame-outer">
+      <div class="ruby-frame-inner">
+
+        <div class="custom-scroll-container" id="mainScroll">
+          <table id="mainRSVPTable"></table>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="scrollbar-indicator"></div>
+
+  </div>
+
+</div> <!-- closes right-column -->
+
+
+<!-- GREEN TOAST -->
+<div id="greenToast">Saved!</div>
+<script type="module">
+/***************************************************
+ *  PART 1 — SUPABASE INIT
+ ***************************************************/
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+window.supabase = supabase;
+const params = new URLSearchParams(window.location.search);
+const token =
+  params.get("t") ||
+  params.get("token") ||
+  params.get("TOKEN") ||
+  params.get("T");
+
+console.log("TOKEN:", token);   // ← ВОТ ЭТО ОБЯЗАТЕЛЬНО
+
+/***************************************************
+ *  GLOBAL STATE
+ ***************************************************/
+let RSVP_YES = [];
+let RSVP_MAYBE = [];
+
+let currentFilter = "all";
+
+let tables = [];
+let guestsAtTable = {};    
+let guestPosition = {};    
+let seatMap = {};
+
+
+/***************************************************
+ *  LOAD TABLE COUNT FROM SUPABASE
+ ***************************************************/
+async function loadTableCount() {
+  console.log("📥 loadTableCount started, token =", token);
+
+  const { data, error } = await supabase
+    .from("seating_config")
+    .select("table_count, seat_map")
+    .eq("token", token)
+    .single();
+
+  if (error && error.code !== "PGRST116") {
+    console.error("❌ loadTableCount error:", error);
+    return;
+  }
+
+  const count = data?.table_count ?? 4;
+  seatMap = data?.seat_map || {};
+
+  console.log("📥 loadTableCount result:", count, seatMap);
+
+  for (let i = 0; i < count; i++) addSimpleTable();
+}
+
+/***************************************************
+ *  SAVE TABLE COUNT TO SUPABASE
+ ***************************************************/
+async function saveTableCount() {
+  console.log("💾 saveTableCount →", tables.length, "token =", token);
+
+  const { error } = await supabase
+    .from("seating_config")
+    .upsert({
+      token: token,
+      table_count: tables.length
+    });
+
+  if (error) {
+    console.error("❌ saveTableCount ERROR:", error);
+  } else {
+    console.log("✅ saveTableCount OK");
+  }
+}
+
+/***************************************************
+ *  GREEN TOAST
+ ***************************************************/
+function showGreenToast(msg = "Saved!") {
+  const t = document.getElementById("greenToast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1200);
+}
+
+/***************************************************
+ *  ADD EMPTY TABLE
+ ***************************************************/
+function addSimpleTable() {
+  const lastId = tables.length ? tables[tables.length - 1].id : 0;
+  const id = lastId + 1;
+
+  const seats = seatMap[id] ?? 6;
+tables.push({ id, seats });
+
+  guestsAtTable[id] = [];
+
+  const list = document.getElementById("simpleTableList");
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "table-pair";
+  wrapper.dataset.id = id;
+
+  wrapper.innerHTML = `
+    <div class="simple-table-block">
+      <div class="table-number">T${id}</div>
+
+      <div class="left-col">
+<div class="seat-title">Seats: <span class="seat-count">${seats}</span></div>
+        <button class="seat-btn" data-delta="+1" data-id="${id}">+</button>
+        <button class="seat-btn" data-delta="-1" data-id="${id}">-</button>
+      </div>
+
+      <ul class="guest-list"></ul>
+    </div>
+  `;
+
+  list.appendChild(wrapper);
+
+  updateAllGuestLists();
+  renderRSVPTable();
+}
+
+/***************************************************
+ *  TABLE BUTTONS — ADD
+ ***************************************************/
+document.getElementById("btnAddTable").onclick = async () => {
+  addSimpleTable();
+  updateAllGuestLists();
+  renderRSVPTable();
+  await saveTableCount();
+};
+
+/***************************************************
+ *  TABLE BUTTONS — DELETE
+ ***************************************************/
+document.getElementById("btnDeleteTable").onclick = async () => {
+  if (tables.length === 0) return;
+
+  const last = tables[tables.length - 1];
+
+  if (guestsAtTable[last.id]) {
+    guestsAtTable[last.id].forEach(gid => {
+      delete guestPosition[gid];
+    });
+  }
+
+  delete guestsAtTable[last.id];
+
+  const card = document.querySelector(`.table-pair[data-id="${last.id}"]`);
+  if (card) card.remove();
+
+  tables.pop();
+
+  updateAllGuestLists();
+  renderRSVPTable();
+
+  await saveTableCount();
+};
+
+/***************************************************
+ *  LOAD GUESTS FROM SUPABASE
+ ***************************************************/
+async function loadRSVP() {
+  const { data, error } = await supabase
+    .from("guests")
+    .select("id, first_name, last_name, rsvp_status, table_id")
+    .eq("token", token);
+
+  if (error) {
+    console.error("RSVP load error:", error);
+    return;
+  }
+
+  RSVP_YES = data
+    .filter(g => g.rsvp_status?.toLowerCase() === "yes")
+    .map(g => ({ ...g, id: String(g.id) }));
+
+  RSVP_MAYBE = data
+    .filter(g => g.rsvp_status?.toLowerCase() === "maybe")
+    .map(g => ({ ...g, id: String(g.id) }));
+
+  guestPosition = {};
+  guestsAtTable = {};
+
+  data.forEach(g => {
+    if (!g.table_id) return;
+
+    const gid = String(g.id);
+    const tid = g.table_id;
+
+    guestPosition[gid] = tid;
+
+    if (!guestsAtTable[tid]) guestsAtTable[tid] = [];
+    guestsAtTable[tid].push(gid);
+  });
+
+  updateAllGuestLists();
+  renderRSVPTable();
+}
+
+/***************************************************
+ *  INITIAL LOAD ORDER
+ ***************************************************/
+(async () => {
+  await loadTableCount();   // ← ПЕРВЫМ создаём столы
+  await loadRSVP();         // ← ПОТОМ грузим гостей
+})();
+/***************************************************
+ *  FILTER BUTTONS
+ ***************************************************/
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    currentFilter = btn.dataset.filter;
+    renderRSVPTable();
+  });
+});
+
+/***************************************************
+ *  UPDATE LEFT SIDEBAR GUEST LISTS
+ ***************************************************/
+function updateAllGuestLists() {
+  tables.forEach(t => {
+    const card = document.querySelector(`.table-pair[data-id="${t.id}"]`);
+    if (!card) return;
+
+    const ul = card.querySelector(".guest-list");
+    ul.innerHTML = "";
+
+    (guestsAtTable[t.id] || []).forEach(gid => {
+      const guest = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
+      if (!guest) return;
+
+      ul.innerHTML += `<li>${guest.first_name} ${guest.last_name}</li>`;
+    });
+  });
+}
+
+/***************************************************
+ *  SEAT COUNT BUTTONS
+ ***************************************************/
+document.addEventListener("click", async e => {
+  const btn = e.target.closest(".seat-btn");
+  if (!btn) return;
+
+  const id = Number(btn.dataset.id);
+  const delta = Number(btn.dataset.delta);
+
+  const table = tables.find(t => t.id === id);
+  table.seats = Math.max(1, table.seats + delta);
+
+  const card = document.querySelector(`.table-pair[data-id="${id}"]`);
+  if (card) card.querySelector(".seat-count").textContent = table.seats;
+
+  // 🔥 сохраняем в Supabase
+  seatMap[id] = table.seats;
+
+  await supabase
+    .from("seating_config")
+    .update({ seat_map: seatMap })
+    .eq("token", token);
+
+  showGreenToast("Seats saved!");
+});
+/***************************************************
+ *  ASSIGN GUEST
+ ***************************************************/
+async function assignGuest(guestId, tableId) {
+  guestId = String(guestId);
+  tableId = Number(tableId);
+
+  /* remove from old table */
+  if (guestPosition[guestId]) {
+    const old = guestPosition[guestId];
+    guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
+  }
+
+  /* add to new table */
+  guestPosition[guestId] = tableId;
+
+  if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
+  guestsAtTable[tableId].push(guestId);
+
+  /* save to supabase */
+  await supabase
+    .from("guests")
+    .update({ table_id: tableId })
+    .eq("id", guestId);
+
+  updateAllGuestLists();
+  renderRSVPTable();
+
+  showGreenToast("Guest assigned & saved!");
+}
+
+/***************************************************
+ *  UNASSIGN GUEST
+ ***************************************************/
+async function unassignGuest(guestId) {
+  guestId = String(guestId);
+
+  const tableId = guestPosition[guestId];
+  if (!tableId) return;
+
+  guestsAtTable[tableId] = guestsAtTable[tableId].filter(x => x !== guestId);
+  delete guestPosition[guestId];
+
+  await supabase
+    .from("guests")
+    .update({ table_id: null })
+    .eq("id", guestId);
+
+  updateAllGuestLists();
+  renderRSVPTable();
+
+  showGreenToast("Guest unassigned!");
+}
+
+/***************************************************
+ *  MAIN CLICK HANDLER
+ ***************************************************/
+document.addEventListener("click", e => {
+
+  /* assign */
+  const assignBtn = e.target.closest(".mini-assign-btn");
+  if (assignBtn) {
+    assignGuest(assignBtn.dataset.guest, assignBtn.dataset.table);
+    scrollToTable(Number(assignBtn.dataset.table));
+    return;
+  }
+
+  /* unassign */
+  const unBtn = e.target.closest(".unassign-btn");
+  if (unBtn) {
+    unassignGuest(unBtn.dataset.id);
+    return;
+  }
+});
+
+/***************************************************
+ *  RENDER MAIN RSVP TABLE
+ ***************************************************/
+function renderRSVPTable() {
+  const container = document.getElementById("mainScroll");
+
+  let combined = [
+    ...RSVP_YES.map(g => ({ ...g, icon: "✔", iconClass: "icon-yes" })),
+    ...RSVP_MAYBE.map(g => ({ ...g, icon: "❔", iconClass: "icon-maybe" }))
+  ];
+
+  if (currentFilter === "yes")
+    combined = combined.filter(g => g.icon === "✔");
+
+  if (currentFilter === "maybe")
+    combined = combined.filter(g => g.icon === "❔");
+
+  document.getElementById("mainRSVPTable").outerHTML = `
+<table id="mainRSVPTable">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Name</th>
+      <th>Table</th>
+      <th>Assign</th>
+      <th>Unassign</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${combined.map(g => {
+      const assigned = guestPosition[g.id] || null;
+      return `
+        <tr>
+          <td><span class="${g.iconClass}">${g.icon}</span></td>
+          <td>${g.first_name} ${g.last_name}</td>
+          <td>${assigned ? "Table " + assigned : "—"}</td>
+
+          <td>
+            ${tables.map(t => `
+              <button class="mini-assign-btn ${assigned === t.id ? "active" : ""}"
+                      data-guest="${g.id}" data-table="${t.id}">
+                ${t.id}
+              </button>`).join("")}
+          </td>
+
+          <td>
+            <button class="unassign-btn" data-id="${g.id}">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M6 6L18 18M6 18L18 6"
+                      stroke="white" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </td>
+        </tr>`;
+    }).join("")}
+  </tbody>
+</table>
+`;
+
+  initFloatingScrollbar();
+}
+
+/***************************************************
+ *  FLOATING SCROLLBAR INDICATOR
+ ***************************************************/
+function initFloatingScrollbar() {
+  const block = document.getElementById("mainScroll");
+  const bar = document.getElementById("scrollbar-indicator");
+
+  block.addEventListener("scroll", () => {
+    const visible = block.clientHeight;
+    const total = block.scrollHeight;
+    const scrolled = block.scrollTop;
+
+    if (total <= visible) {
+      bar.style.opacity = 0;
+      return;
+    }
+
+    const h = Math.max(40, (visible / total) * visible);
+    bar.style.height = h + "px";
+
+    const maxTop = visible - h;
+    bar.style.top = (scrolled / (total - visible)) * maxTop + "px";
+
+    bar.style.opacity = 1;
+
+    clearTimeout(block._fadeTimer);
+    block._fadeTimer = setTimeout(() => {
+      bar.style.opacity = 0;
+    }, 900);
+  });
+}
+
+/***************************************************
+ *  SCROLL TO TABLE (LEFT COLUMN — FIXED)
+ ***************************************************/
+function scrollToTable(tableId) {
+  const container = document.querySelector(".left-scroll");
+  const card = document.querySelector(`.table-pair[data-id="${tableId}"]`);
+  if (!container || !card) return;
+
+  const cardHeight = card.offsetHeight || 120;
+  const offset = cardHeight * 1.15;   /* 🔥 идеальный отступ */
+
+  container.scrollTo({
+    top: card.offsetTop - offset,
+    behavior: "smooth"
+  });
+}
+/***************************************************
+ *  EMAIL POPUP OPEN / CLOSE
+ ***************************************************/
+window.openEmailComposer = () => {
+  document.getElementById("emailComposer").style.display = "block";
+  document.getElementById("fakeAttachmentBox").style.display = "block";
+};
+
+window.closeEmailComposer = () => {
+  document.getElementById("emailComposer").style.display = "none";
+};
+
+/***************************************************
+ *  SEND EMAIL WITH CSV ATTACHMENT
+ ***************************************************/
+window.sendEmail = async () => {
+
+  const email = document.getElementById("composerTo").value.trim();
+  const subject = document.getElementById("composerSubject").value.trim();
+  const html = document.getElementById("composerBody").value.trim();
+
+  if (!email) {
+    showGreenToast("Enter recipient email!");
+    return;
+  }
+
+  /***********************************************
+   *  BUILD CSV FROM TABLE
+   ***********************************************/
+  function generateCSV() {
+    const rows = document.querySelectorAll("#mainScroll table tr");
+    let csv = [];
+
+    rows.forEach((row, rowIndex) => {
+      const cells = [...row.querySelectorAll("th,td")];
+
+      const cols = cells.slice(0, 3).map((td, index) => {
+        let text = td.innerText.trim();
+
+        if (rowIndex === 0)
+          return ["Status","Name","Table"][index];
+
+        if (index === 0) {
+          if (text.includes("✔")) text = "YES";
+          else if (text.includes("❔")) text = "MAYBE";
+          else text = "NONE";
+        }
+
+        text = text.replace(/[^\x00-\x7F]/g, "");
+        text = text.replace(/,/g, " ");
+        return text;
+      });
+
+      csv.push(cols.join(","));
+    });
+
+    return csv.join("\n");
+  }
+
+  const csvText = generateCSV();
+  const csvBase64 = btoa(unescape(encodeURIComponent(csvText)));
+
+  /***********************************************
+   *  NETLIFY EMAIL PAYLOAD
+   ***********************************************/
+const payload = {
+  subject: subject,
+  html: html.replace(/\n/g, "<br>"),
+  guests: [
+    { name: "Guest", email: email }
+  ],
+  attachment: {
+    filename: "seating_chart.csv",
+    content: csvBase64,
+    type: "text/csv"
+  }
+};
+
+  /***********************************************
+   *  SEND TO NETLIFY FUNCTION
+   ***********************************************/
+  try {
+    const resp = await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) {
+      showGreenToast("Error sending email!");
+      return;
+    }
+
+    showGreenToast("Email with CSV sent!");
+    closeEmailComposer();
+
+  } catch (e) {
+    console.error(e);
+    showGreenToast("Error sending email!");
+  }
+};
+
+/***************************************************
+ *  EXPORT CSV BUTTON
+ ***************************************************/
+document.getElementById("btnExportCSV").onclick = () => {
+  let csv = ["Status,Name,Table"];
+
+  const combined = [
+    ...RSVP_YES.map(g => ({ ...g, status: "YES" })),
+    ...RSVP_MAYBE.map(g => ({ ...g, status: "MAYBE" }))
+  ];
+
+  combined.forEach(g => {
+    const table = guestPosition[g.id] ? `Table ${guestPosition[g.id]}` : "—";
+    const name = `${g.first_name} ${g.last_name}`;
+    csv.push(`${g.status},${name},${table}`);
+  });
+
+  const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "seating_chart.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+};
+
+/***************************************************
+ *  PRINT BUTTON
+ ***************************************************/
+document.getElementById("btnPrint").onclick = () => window.print();
+
+/***************************************************
+ *  TOGGLE ATTACHMENT DETAILS
+ ***************************************************/
+window.toggleFakeAttachment = () => {
+  const box = document.getElementById("fakeAttachmentDetails");
+  box.style.display = (box.style.display === "none") ? "block" : "none";
+};
+
+/***************************************************
+ *  EMAIL BUTTON
+ ***************************************************/
+document.getElementById("btnEmail").onclick = openEmailComposer;
+
+/***************************************************
+ *  COMPLETE
+ ***************************************************/
+console.log("%cSeating Chart loaded successfully!", "color:#b41111;font-size:16px;font-weight:700");
+
+
+
+</script>
+
+<script>
+document.getElementById("backBtn").onclick = () => {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || localStorage.getItem("verified_token") || "";
+  window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
+};
+
+async function loadCoupleName() {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t");
+  if (!token) return;
+
+  const { data } = await window.supabase
+    .from("sites")
+    .select("slug")
+    .eq("edit_token", token)
+    .single();
+
+  if (!data?.slug) return;
+
+  const parts = data.slug.split("-");
+  const bride = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+  const groom = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+
+  document.getElementById("coupleSmallName").textContent =
+    `${bride} & ${groom}`;
+}
+
+// ждём, пока module-скрипт создаст window.supabase
+function waitForSupabaseAndLoad() {
+  if (window.supabase) {
+    loadCoupleName();
+  } else {
+    setTimeout(waitForSupabaseAndLoad, 50);
+  }
+}
+
+waitForSupabaseAndLoad();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const pageTitle = document.getElementById("topMainTitle")
+    ?.textContent.trim().toLowerCase();
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    if (link.textContent.trim().toLowerCase() === pageTitle)
+      link.classList.add("active");
+  });
+});
+</script>
+
+<!-- GUIDE MODAL -->
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <!-- ТУТ нужная тебе страница -->
+    <iframe src="tttseatchart.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+<script>
+document.getElementById("openGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+</script>
+
+
+</body>
+</html>

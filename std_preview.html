@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Save the Date</title>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: #f7f2f4;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+
+}
+
+.card {
+  width: 360px;
+  padding: 28px 32px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  animation: fadeIn 1s ease both;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(10px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 1.55rem;
+  text-align: center;
+  background: linear-gradient(90deg, #8E0F28, #C5163D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+p.sub {
+  margin: 0;
+  font-size: 0.92rem;
+  color: #6c6c6c;
+  text-align: center;
+}
+
+label {
+  display: block;
+  font-size: 0.9rem;
+  margin-top: 18px;
+  color: #333;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-top: 6px;
+  font-size: 0.9rem;
+  background: #fafafa;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #C5163D;
+  box-shadow: 0 0 0 3px rgba(197,22,61,0.15);
+}
+
+button {
+  width: 100%;
+  margin-top: 22px;
+  padding: 12px;
+  background: linear-gradient(90deg, #8E0F28, #C5163D);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover { transform: scale(1.03); }
+button:active { transform: scale(0.97); }
+</style>
+</head>
+
+<body>
+<div class="card">
+  <h1>Save the Date</h1>
+  <p class="sub">Misha & Eldar — Singapore</p>
+
+  <label>Your Name *</label>
+  <input type="text" placeholder="Full name">
+
+  <label>Email *</label>
+  <input type="email" placeholder="your@email.com">
+
+  <label>Will you likely attend?</label>
+  <select>
+    <option value="">Select...</option>
+    <option>Yes, count me in 🎉</option>
+    <option>Not sure yet 🤔</option>
+    <option>Probably not 😔</option>
+  </select>
+
+  <button>Save the Date ✔</button>
+</div>
+</body>
+</html>

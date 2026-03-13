@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>RSVP Preview (Demo)</title>
+
+<style>
+/* --- SAME LUXURY STYLES --- */
+body {
+  font-family: 'Inter', sans-serif;
+  background: #eef1f0;
+  margin: 0;
+  padding: 30px;
+}
+
+.container {
+  max-width: 680px;
+  margin: auto;
+  background: #fff;
+  padding: 40px;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+}
+
+h1 {
+  text-align: center;
+  margin: 0 0 6px;
+  font-weight: 700;
+  font-size: 1.9em;
+  background: linear-gradient(90deg, #8E0F28, #C5163D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 {
+  text-align: center;
+  color: #7c8a7c;
+  font-weight: 500;
+  margin: 0 0 24px;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: #33433a;
+}
+
+input, select, textarea, button {
+  font: inherit;
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid #d3d6d5;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  margin-top: 25px;
+  background: linear-gradient(90deg, #8E0F28, #C5163D);
+  color: white;
+  border: none;
+  cursor: not-allowed;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 14px;
+  opacity: 0.6;
+}
+.demo-text {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  font-style: italic;
+}
+</style>
+
+<body>
+<div class="container">
+  <h1>We’d love to have you!</h1>
+  <h2>RSVP Form Demo Preview</h2>
+
+  <!-- Demo-Only Form -->
+  <form>
+    <label>Email *</label>
+    <input type="email" placeholder="your@email.com" disabled>
+
+    <label>Phone *</label>
+    <input type="text" placeholder="+123456789" disabled>
+
+    <label>Full Name *</label>
+    <input type="text" placeholder="Your name" disabled>
+
+    <label>Will you attend? *</label>
+    <select disabled>
+      <option>Select...</option>
+      <option>Yes</option>
+      <option>No</option>
+      <option>Maybe</option>
+    </select>
+
+    <label>Number of Guests (incl. you) *</label>
+    <input type="number" value="0" disabled>
+
+    <label>Dietary Notes (optional)</label>
+    <textarea placeholder="Any allergies, preferences, etc." disabled></textarea>
+
+    <label>Song Requests (optional)</label>
+    <textarea placeholder="What should we play on the dance floor?" disabled></textarea>
+
+    <button disabled>Send RSVP</button>
+
+    <div class="demo-text">This is a non-functional preview.</div>
+  </form>
+</div>
+</body>
+</html>

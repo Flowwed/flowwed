@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FloWWed Orchestra — Ruby Wedding Dashboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script type="module" src="https://esm.sh/@supabase/supabase-js"></script>
+
+<style>
+
+/* ================================================= */
+/*        SUPER SOFT RUBY → WHITE GRADIENT           */
+/* ================================================= */
+
+body {
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+
+  background: linear-gradient(
+    to bottom,
+    #ffeef3 0%,      /* слегка темнее, чем #fff7fa */
+    #ffd9e5 40%,     /* rose pastel */
+    #f8b6ca 70%,     /* warm ruby haze */
+    #e94a7633 100%   /* мягкий рубиновый дым */
+);
+
+
+  background-attachment: fixed;
+  color: #7a3a4a;
+
+  border: 14px solid rgba(255,200,215,0.35);
+
+  box-shadow:
+    inset 0 0 60px rgba(255,180,200,0.25),
+    inset 0 0 120px rgba(255,180,200,0.15);
+
+  backdrop-filter: blur(15px);
+  position: relative;
+}
+
+/* ================================================= */
+/*      STATIC RUBY BACKGROUND — NO SPOTLIGHT        */
+/* ================================================= */
+
+body {
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+
+  background: linear-gradient(
+    to bottom,
+    #ffeef3 0%,
+    #ffd9e5 40%,
+    #f8b6ca 70%,
+    #e94a7633 100%
+  );
+
+  background-attachment: fixed;
+  color: #7a3a4a;
+
+  border: 14px solid rgba(255,200,215,0.35);
+
+  box-shadow:
+    inset 0 0 60px rgba(255,180,200,0.25),
+    inset 0 0 120px rgba(255,180,200,0.15);
+
+  backdrop-filter: blur(15px);
+  position: relative;
+}
+
+/* spotlight removed
+body::after { ... } 
+@keyframes sweep { ... }
+*/
+
+/* ================================================= */
+/*                   COUPLE NAMES                    */
+/* ================================================= */
+
+#coupleHeader {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  color: #a02449;
+  opacity: 0.85;
+}
+.ring-anim {
+  display: inline-block;
+  animation: ringSwing 3.2s ease-in-out infinite;
+}
+
+/* ----------------------------------------------- */
+/*   OLD ANIMATIONS (DISABLED / COMMENTED OUT)     */
+/* ----------------------------------------------- */
+
+/*
+@keyframes ringSwing {
+  0%   { transform: rotate(0deg); }
+  30%  { transform: rotate(-6deg); }
+  60%  { transform: rotate(6deg); }
+  100% { transform: rotate(0deg); }
+}
+*/
+
+/*
+.heart-anim {
+  display: inline-block;
+  font-size: 36px;
+  transform-origin: center;
+  animation: heartPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+  0%   { transform: scale(1);      filter: drop-shadow(0 0 0 rgba(255,50,80,0)); }
+  50%  { transform: scale(1.14);   filter: drop-shadow(0 0 12px rgba(255,50,80,0.45)); }
+  100% { transform: scale(1);      filter: drop-shadow(0 0 0 rgba(255,50,80,0)); }
+}
+*/
+
+
+/* ================================================= */
+/*                     SUB HEADER                    */
+/* ================================================= */
+
+.welcome {
+  font-size: 18px;
+  font-weight: 700;
+  color: #b03b5c;
+  margin-bottom: 40px;
+
+  text-shadow:
+    0 0 10px rgba(255,220,230,0.7),
+    0 0 18px rgba(255,190,210,0.35);
+}
+
+/* ================================================= */
+/*                   BUTTON GRID                     */
+/* ================================================= */
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* =============================================== */
+/*          RUBY GLASS BUTTONS — smooth version     */
+/* =============================================== */
+
+.big-btn {
+  width: 200px;
+  height: 200px;
+  border-radius: 32px;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
+
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  backdrop-filter: blur(22px) saturate(180%);
+
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+
+  /* SUPER SMOOTH */
+  transition:
+    transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* depth */
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 6px 14px rgba(0,0,0,0.35),
+    inset 0 4px 8px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45);
+}
+
+/* glossy top reflection */
+.big-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 40%;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.55),
+    rgba(255,255,255,0)
+  );
+  pointer-events: none;
+}
+
+/* icon */
+.big-btn i {
+  font-size: 46px;
+  color: #ffe6ec;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* =============================================== */
+/*      SOFT BREATHING ANIMATION FOR BUTTONS       */
+/* =============================================== */
+
+@keyframes softBreath {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.015); } /* VERY subtle */
+  100% { transform: scale(1); }
+}
+
+
+
+/* smooth hover — NO jump */
+.big-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 22px 42px rgba(0,0,0,0.55),
+    0 8px 18px rgba(0,0,0,0.40),
+    inset 0 6px 16px rgba(255,255,255,0.28),
+    inset 0 -12px 22px rgba(60,0,20,0.45);
+}
+
+/* ===================================================== */
+/*        LUXURY DEEP BREATHING + RUBY GLOW EFFECT       */
+/* ===================================================== */
+
+@keyframes luxuryBreathDeep {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.18),
+      inset 0 -10px 20px rgba(80,0,20,0.40),
+      0 0 0 rgba(255,60,100,0); /* no outer glow yet */
+  }
+
+  50% {
+    transform: scale(1.014); /* deeper, premium breathing */
+    box-shadow:
+      0 26px 48px rgba(0,0,0,0.55),
+      inset 0 8px 16px rgba(255,255,255,0.28),
+      inset 0 -14px 28px rgba(90,0,30,0.55),
+
+      /* ✨ soft ruby aura glow */
+      0 0 22px rgba(255,70,120,0.28),
+      0 0 42px rgba(255,70,120,0.20);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.18),
+      inset 0 -10px 20px rgba(80,0,20,0.40),
+      0 0 0 rgba(255,60,100,0);
+  }
+}
+
+
+/* hover breathing */
+.big-btn:hover {
+  animation: softBreath 2.6s ease-in-out infinite;
+}
+
+/* press-in */
+.big-btn:active {
+  animation: none;
+  transform: translateY(0) scale(0.96);
+  box-shadow:
+    inset 0 10px 22px rgba(0,0,0,0.45),
+    inset 0 -4px 8px rgba(255,255,255,0.25);
+}
+
+@keyframes bounceBack {
+  0% {
+    transform: scale(0.97);
+  }
+  60% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* press-in */
+.manager-btn:active {
+  transform: scale(0.97);
+}
+
+/* bounce back when released */
+.manager-btn:not(:active) {
+  animation: bounceBack 0.35s cubic-bezier(.25,.8,.25,1);
+}
+
+
+/* ================================================= */
+/*           Smooth Bubble Tooltip                   */
+/* ================================================= */
+
+.big-btn {
+  position: relative;
+}
+
+.big-btn .bubble {
+  position: absolute;
+  bottom: 220px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.98);
+
+  display: block;
+  box-sizing: border-box;
+
+  background: #e5e5ea;
+  color: #1a1a1a;
+
+  padding: 14px 18px;
+  border-radius: 20px;
+
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: left;
+
+  width: 420px;
+  max-width: 420px;
+  white-space: normal;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.15),
+    0 2px 4px rgba(0,0,0,0.08);
+
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  z-index: 20;
+}
+
+.big-btn .bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #e5e5ea;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+}
+
+.big-btn:hover .bubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px) scale(1);
+}
+
+.access-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 35px auto 0;
+  gap: 0;
+  width: 100%;
+  max-width: 820px; /* длина плашки — можешь подогнать */
+}
+
+
+/* КРУГ С ФОТО + СТЕКЛЯННОЕ КОЛЬЦО */
+.access-knob {
+ display: none;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05)
+  ),
+  #9c1818;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(22px) saturate(180%);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    inset 0 4px 8px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45);
+
+  position: relative;
+  z-index: 2;
+  overflow: hidden; /* на всякий случай */
+
+animation: emilyBreath 4.5s ease-in-out infinite;
+  transform-origin: center center;
+
+cursor: pointer;
+
+
+}
+
+/* стеклянное внутреннее кольцо */
+.access-knob::before {
+  content: "";
+  position: absolute;
+  inset: 8px;               /* размер кольца */
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.75);
+  box-shadow:
+    0 0 8px rgba(255,255,255,0.4),
+    0 0 18px rgba(255,180,200,0.35);
+  pointer-events: none;
+}
+
+.access-knob img {
+  position: absolute;
+  inset: 14px;              
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 3;
+}
+
+@keyframes emilyBreath {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.25),
+      inset 0 -10px 20px rgba(80,0,20,0.45),
+      0 0 0 rgba(255,70,120,0); /* без света */
+  }
+
+  50% {
+    transform: scale(1.06);
+    box-shadow:
+      0 28px 50px rgba(0,0,0,0.55),
+      inset 0 8px 16px rgba(255,255,255,0.35),
+      inset 0 -16px 28px rgba(90,0,30,0.55),
+
+      /* 🌸 ruby glow */
+      0 0 16px rgba(255,70,120,0.30),
+      0 0 34px rgba(255,70,120,0.22),
+      0 0 64px rgba(255,70,120,0.12);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.25),
+      inset 0 -10px 20px rgba(80,0,20,0.45),
+      0 0 0 rgba(255,70,120,0);
+  }
+}
+
+
+
+/* ПЛАШКА */
+.access-banner {
+  flex: 1;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+  margin-left: 16px; /* чтобы плашка «заходила» под круг */
+
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05)
+  ),
+  #9c1818;
+
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  backdrop-filter: blur(22px) saturate(180%);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    inset 0 4px 8px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45);
+
+  position: relative;
+  z-index: 1;
+  
+  cursor: pointer; 
+
+}
+
+.access-banner {
+  max-width: 700px;
+  margin-left: -32px;
+}
+
+
+.header-row {
+  max-width: 900px;
+  margin: 0 auto 6px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-btn,
+.visit-btn {
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.22), rgba(255,255,255,0.05)),
+    #9c1818;
+
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 18px;
+  padding: 10px 22px;
+
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -6px 12px rgba(80,0,20,0.45),
+    0 8px 18px rgba(0,0,0,0.25);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-btn:hover,
+.visit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.35),
+    inset 0 -8px 16px rgba(80,0,20,0.55),
+    0 12px 26px rgba(0,0,0,0.35);
+}
+
+.back-btn:active,
+.visit-btn:active {
+  transform: scale(0.96);
+  box-shadow:
+    inset 0 6px 14px rgba(0,0,0,0.45);
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 740;
+  margin-bottom: 6px;
+  color: #a02449;
+}
+
+.page-title {
+  transform: translateX(14px);
+}
+
+
+.ios-banner {
+  margin: 34px auto 26px auto;
+  padding: 14px 20px;
+  max-width: 780px;
+  background: rgba(250,250,250,0.65);
+  border-radius: 18px;
+}
+
+
+.ios-banner.with-emily {
+  position: relative;
+  padding-left: 84px; /* место под кружок */
+}
+
+.access-wrap.in-banner {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  width: auto;
+}
+
+.access-knob {
+  margin-left: -15px;
+}
+
+.button-row {
+  margin-top: 60px;
+}
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="page-title" style="display:none;">Dashboard</div>
+
+<div class="header-row">
+  <button class="back-btn" onclick="goBack()">← Back</button>
+
+  <!-- меняем класс -->
+  <div class="page-title">Guests Manager</div>
+
+
+  <button class="visit-btn" onclick="visitSite()">
+    <i class="fa-solid fa-globe"></i> My Web →
+  </button>
+</div>
+
+<div id="coupleHeader">Welcome</div>
+
+<div class="ios-banner with-emily">
+  <div class="access-wrap in-banner">
+    <div class="access-knob">
+      <img src="images/emily.jpeg" alt="Emily — your AI companion">
+    </div>
+  </div>
+
+  Your wedding planning, in one place. Explore the Quick User Guide for this page
+<span id="openGuide" class="guide-link">here</span>.
+
+</div>
+
+<div id="warning" class="warning"></div>
+
+<div class="button-row">
+
+  <button class="big-btn" id="guestbook">
+    <i class="fa-solid fa-users"></i>Guest Hub
+    <div class="bubble">
+    Manage, your guests <b></b>.<br>
+    <b>Add them - track them!</b><br>
+</div>
+   </button>
+
+<!--
+<button class="big-btn" id="yourweb">
+  <i class="fa-solid fa-globe"></i>Web Manager
+  <div class="bubble">
+    View, manage, and share your website <b></b>.<br>
+    Want to change the photos or update your story on the webpage?
+    <b>It's easy!</b><br>
+  </div>
+</button>
+-->
+
+
+  <button class="big-btn" id="std">
+    <i class="fa-solid fa-file-lines"></i>Save The Date
+    <div class="bubble">
+    Pick a template & send your <b>Save-the-Date!</b><br>
+</div>
+</button>
+
+  <button class="big-btn" id="rsvp">
+    <i class="fa-solid fa-envelope-open"></i>RSVP
+    <div class="bubble">
+Pick a template & send your <b>RSVP!</b><br>
+</div>
+</button>
+
+ <button class="big-btn" id="seating">
+    <i class="fa-solid fa-chair"></i>Seating Chart
+    <div class="bubble">
+Match your guests — make the perfect <b>table vibe!</b><br>
+</div>
+</button>
+
+  <button class="big-btn" id="registry">
+    <i class="fa-solid fa-gift"></i>Gift Registry
+    <div class="bubble">
+Add your wishes — your <b>friends</b> love shopping anyway!<br>
+</div>
+</button>
+
+  <!-- <button class="big-btn" id="map">
+    <i class="fa-solid fa-map-location-dot"></i>Map
+    <div class="bubble">Карта и навигация по локациям</div>
+  </button> -->
+
+   <!-- <button class="big-btn" id="upload">
+    <i class="fa-solid fa-cloud-arrow-up"></i>Upload Photos
+    <div class="bubble">Фотографии от гостей</div>
+  </button> -->
+
+  <button class="big-btn" id="budget">
+    <i class="fa-solid fa-sack-dollar"></i>Budget
+    <div class="bubble">
+Stay on top of your wedding <b>budget!</b><br>
+</div>
+</button>
+
+<!--
+<button class="big-btn" id="reports">
+    <i class="fa-solid fa-chart-line"></i>Wed Reports
+    <div class="bubble">
+      Your reports are here — planning made <b>easy!</b><br>
+    </div>
+</button>
+-->
+
+<button class="big-btn" id="reports2">
+  <i class="fa-solid fa-chart-line"></i>Wed Reports
+  <div class="bubble">
+    📊 Access web reports directly.
+  </div>
+</button>
+
+<button class="big-btn" id="postwed">
+  <i class="fa-solid fa-heart"></i>Post-Wedding
+  <div class="bubble">
+    Wrap things up after the big day — messages, memories, and next steps.
+  </div>
+</button>
+
+<script>
+const EMILY_ENABLED = false;
+</script>
+
+<script type="module">
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+// ----------------------------
+// CORRECT TOKEN DETECTION
+// ----------------------------
+const params = new URLSearchParams(window.location.search);
+const token =
+  params.get("t") ||
+  params.get("token") ||
+  params.get("TOKEN") ||
+  params.get("T");
+
+const hName = document.getElementById("coupleHeader");
+
+function cap(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+}
+
+// ----------------------------
+// LOAD COUPLE NAME
+// ----------------------------
+
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+
+async function loadCouple() {
+
+  const res = await fetch(
+    "https://octwwpatppbenqwkcqaw.supabase.co/functions/v1/check-access",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({ token })
+    }
+  );
+
+  const access = await res.json();
+
+  if (access.couple_name) {
+
+    hName.innerHTML = access.couple_name;
+
+  } else {
+
+    hName.innerHTML = "Your Names Here";
+
+  }
+
+}
+
+loadCouple();
+
+// ===============================
+// LOGIN OVERLAY LOGIC
+// ===============================
+/*
+const overlay = document.getElementById("loginOverlay");
+const emailInput = document.getElementById("emailInput");
+const verifyBtn = document.getElementById("verifyEmailBtn");
+const loginError = document.getElementById("loginError");
+
+// 🎯 Позволяем нажимать Enter вместо клика по кнопке
+emailInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    verifyBtn.click(); // вызывает ту же логику, что и нажатие на кнопку
+  }
+});
+
+// disable dashboard until login ok
+// If user is already verified for this token → skip overlay
+if (
+  sessionStorage.getItem("verified") === "yes" &&
+  sessionStorage.getItem("verified_token") === token
+) {
+
+    document.getElementById("loginOverlay").style.display = "none";
+    document.body.style.overflow = "auto";   // разрешаем прокрутку
+
+} else {
+
+    // показываем overlay до верификации
+    document.body.style.overflow = "hidden";
+}
+
+verifyBtn.onclick = async () => {
+  const email = emailInput.value.trim().toLowerCase();
+  loginError.textContent = "";
+
+  if (!email) {
+    loginError.textContent = "Please enter email.";
+    return;
+  }
+
+  if (!token) {
+    loginError.textContent = "Token missing in URL.";
+    return;
+  }
+
+  // Query Supabase → check if email belongs to token
+  const { data, error } = await supabase
+    .from("sites")
+    .select("email")
+    .eq("edit_token", token);
+
+  if (!data || data.length === 0) {
+    loginError.textContent = "Invalid token.";
+    return;
+  }
+
+  // all emails for this token
+  const emails = data.map(row => row.email.toLowerCase());
+
+  // check user email
+  if (!emails.includes(email)) {
+    loginError.textContent = "Email not authorized for this dashboard.";
+    return;
+  }
+
+  // SUCCESS — hide overlay
+  overlay.style.display = "none";
+  document.body.style.overflow = "auto";
+
+  // SAVE VERIFIED STATUS
+  sessionStorage.setItem("verified", "yes");
+  sessionStorage.setItem("verified_token", token);
+};
+*/
+
+// ----------------------------
+// UNIVERSAL OPEN FUNCTION
+// ----------------------------
+function openSection(page) {
+  window.open(`${page}.html?t=${token}`, "_blank");
+}
+
+// ----------------------------
+// TEMPLATE GALLERY (STD / RSVP)
+// ----------------------------
+document.getElementById("std").onclick = () => {
+  window.open(`template-gallery.html?t=${token}&type=save&method=email`, "_blank");
+};
+
+document.getElementById("rsvp").onclick = () => {
+  window.open(`template-gallery.html?t=${token}&type=rsvp&method=email`, "_blank");
+};
+
+// ----------------------------
+// OTHER BUTTONS
+// ----------------------------
+document.getElementById("registry").onclick = () => openSection("gift_registry");
+document.getElementById("guestbook").onclick = () => openSection("Guests");
+
+// document.getElementById("map").onclick = () => openSection("Map");
+// document.getElementById("upload").onclick = () => openSection("upload");
+
+// document.getElementById("yourweb").onclick = () => openSection("YourWeb");
+
+document.getElementById("seating").onclick = () => openSection("SeatingChart");
+document.getElementById("budget").onclick = () => openSection("Budget");
+document.getElementById("reports2").onclick = () => openSection("wed_reports");
+document.getElementById("postwed").onclick = () => openSection("postwed");
+
+
+</script>
+
+<!-- ============================ -->
+<!--      LOGIN OVERLAY          -->
+<!-- ============================ -->
+<!--
+<div id="loginOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 235, 245, 0.75);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+">
+
+  <div style="
+    background: white;
+    padding: 40px 32px;
+    width: 360px;
+    border-radius: 26px;
+    box-shadow:
+      0 22px 65px rgba(0,0,0,0.15),
+      0 6px 14px rgba(0,0,0,0.10);
+    text-align: center;
+    transform: scale(0.85);
+    animation: popIn 0.5s ease forwards;
+  ">
+    
+    <h2 style="
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #c30c1e;
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 6px rgba(255,200,215,0.5);
+    ">
+      Email Verification
+    </h2>
+
+  <p style="
+  margin-top: -4px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: #844258;
+  line-height: 1.45;
+">
+  Please enter the email used for your purchase.
+  </p>
+ 
+    <input id="emailInput" type="email" placeholder="Enter your email" style="
+      width: 90%;
+      padding: 14px 16px;
+      font-size: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(170, 50, 80, 0.25);
+      background: #fff9fb;
+      outline: none;
+      transition: 0.25s;
+    " 
+    onfocus="this.style.borderColor='#c83d66'">
+
+    <button id="verifyEmailBtn" style="
+      margin-top: 20px;
+      width: 100%;
+      background: #c30c1e;
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(160,30,70,0.35);
+      transition: 0.25s;
+    "
+    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 28px rgba(160,30,70,0.45)'"
+    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 18px rgba(160,30,70,0.35)'">
+      Verify
+    </button>
+
+    <div id="loginError" style="
+      margin-top: 14px;
+      color: #b00020;
+      font-weight: 700;
+      min-height: 20px;
+    "></div>
+
+  </div>
+</div>
+-->
+
+<style>
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+</style>
+
+
+<!-- MODAL FOR EMILY -->
+<div class="modal-backdrop" id="emilyModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  justify-content: flex-end;   /* прижимаем вправо */
+  align-items: center;        /* центр по вертикали */
+  padding: 24px;              /* отступ от краёв экрана */
+  z-index: 999999;
+">
+
+<div class="modal-window" style="
+  background: white;
+  width: 38vw;
+  height: 55vh;               /* стало выше */
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: 12px;          /* воздух сверху */
+">
+
+    <div id="closeEmilyModal" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999999;
+    ">×</div>
+
+ <iframe id="emilyIframe" style="
+  width:100%;
+  height:100%;
+  border:none;
+  position:relative;
+  z-index:1;
+  margin-top: 6px;            /* отступ от верхнего края */
+">
+</iframe>
+
+
+  </div>
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+if (!EMILY_ENABLED) return;
+
+
+  // элементы модалки
+  const modal = document.getElementById("emilyModal");
+  const iframe = document.getElementById("emilyIframe");
+  const closeBtn = document.getElementById("closeEmilyModal");
+
+  // clickable элементы
+  const knob = document.querySelector(".access-knob");
+  const banner = document.querySelector(".access-banner");
+
+  // получаем token из URL, как в остальном коде
+  const params = new URLSearchParams(window.location.search);
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T");
+
+
+function openEmilyModal() {
+  if (!token) {
+    alert("Missing token in URL");
+    return;
+  }
+
+  const page =
+    document.querySelector(".page-title")?.textContent ||
+    document.title ||
+    "Dashboard";
+
+  iframe.src = `https://coruscating-pika-435f9a.netlify.app/emillyai?t=${encodeURIComponent(token)}&page=${encodeURIComponent(page)}`;
+  modal.style.display = "flex";
+}
+
+  // назначаем клики
+if (knob) {
+  knob.addEventListener("click", openEmilyModal);
+}
+
+if (banner) {
+  banner.addEventListener("click", openEmilyModal);
+}
+
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+});
+</script>
+
+<script>
+
+function goBack() {
+  document.referrer ? location.href = document.referrer : history.back();
+}
+
+function visitSite() {
+  const params = new URLSearchParams(window.location.search);
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T");
+
+  window.open(`https://www.flowwed.com/everaftercinema?token=${token}`, "_blank");
+}
+
+</script>
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttdashboard.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+
+<script>
+document.getElementById("openGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+</script>
+
+
+</body>
+</html>

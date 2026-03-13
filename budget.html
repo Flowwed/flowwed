@@ -1,0 +1,3539 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Wedding Budget</title>
+
+
+<style>
+
+:root {
+  --ruby-main: #9b1c31;      /* основной ruby */
+  --ruby-dark: #7a1024;      /* для заголовков */
+  --ruby-soft: #b84a5a;      /* вторичный текст */
+  --ruby-muted: #9b6b6b;     /* подписи / labels */
+}
+
+
+.mini-label,
+.money-prefix,
+.extra-label,
+.edit-hint {
+  color: var(--ruby-muted);
+}
+
+
+body {
+  font-family: "Inter", sans-serif;
+  background: #fff5f6;
+  margin: 0;
+  padding: 40px 110px 110px;
+  color: var(--ruby-main);
+}
+
+h1 {
+  margin-top: -10px;
+  margin-bottom: 24px;
+}
+
+#coupleSmallName {
+  font-size: 20px;
+  font-weight: 600;
+  color: #9b3a3a;
+  opacity: 0.85;
+
+  margin-top: -14px;   /* 🔥 ключевой момент */
+  margin-bottom: 26px;
+}
+
+.container {
+  padding-top: 32px;
+}
+
+/* Overview */
+.overview {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 🔑 5 карт в ряд */
+  gap: 18px;
+  margin-bottom: 52px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #9b6b6b;
+}
+
+.card .value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* Categories */
+.category {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+  cursor: pointer;
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline; /* ✅ ВАЖНО */
+  gap: 24px;
+}
+
+.category-header * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
+.category-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.category-title,
+.budget-field,
+.spent-field {
+  line-height: 1;
+}
+
+.category-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+
+.progress {
+  background: #f1dede;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 10px;
+  margin-top: 10px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #c73a3a;
+}
+
+/* Details */
+.details {
+  display: none;
+  margin-top: 16px;
+  border-top: 1px solid #f2dcdc;
+  padding-top: 12px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 14px;
+}
+
+.paid { color: #3a8f5b; }
+.due { color: #c77d3a; }
+
+.chart-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #c73a3a 0% 55%,
+    #f2c6c6 55% 100%
+  );
+  margin: auto;
+}
+
+.categories-section {
+  max-width: none;
+  padding: 0;
+  margin: 0 0 60px 0;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* ===== Over budget state ===== */
+.category.over-budget {
+  background: #fdeaea;
+  border: 1px solid #f2c6c6;
+}
+
+.category.over-budget .progress-bar {
+  background: linear-gradient(
+    90deg,
+    #c73a3a,
+    #9f1f1f
+  );
+}
+
+/* ===== Soft pulse for over budget ===== */
+@keyframes softPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(199, 58, 58, 0.25);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(199, 58, 58, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(199, 58, 58, 0);
+  }
+}
+
+.category.over-budget {
+  animation: softPulse 2.8s ease-in-out infinite;
+}
+
+.actual {
+  cursor: text;
+  border-bottom: 1px dashed #c73a3a;
+  padding: 0 4px;
+}
+
+.actual:focus {
+  outline: none;
+  background: #fff;
+}
+
+.edit-hint {
+  font-size: 13px;
+  margin-left: 6px;
+  opacity: 0.45;
+  cursor: pointer;
+}
+
+.category:hover .edit-hint {
+  opacity: 0.9;
+}
+
+.actual:focus::after {
+  content: "press Enter to save";
+  font-size: 11px;
+  color: #9b6b6b;
+  margin-left: 8px;
+}
+
+.extra-cost-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed #e8cfcf;
+  font-size: 14px;
+}
+
+.extra-label {
+  color: #9b6b6b;
+  cursor: pointer;
+}
+
+.extra-input {
+  width: 80px;
+  border: none;
+  border-bottom: 1px solid #c73a3a;
+  background: transparent;
+  text-align: right;
+  font-size: 14px;
+}
+
+.extra-input:focus {
+  outline: none;
+  background: #fff;
+}
+
+/* Remove number input arrows */
+
+/* Chrome, Safari, Edge */
+.extra-input::-webkit-outer-spin-button,
+.extra-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.extra-input {
+  -moz-appearance: textfield;
+}
+
+
+.extra-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0 2px;
+}
+
+.extra-actions button:hover {
+  opacity: 0.7;
+}
+
+.extra-cost-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: #9b6b6b; /* спокойный */
+}
+
+.extra-value {
+  color: #6f5a5a;     /* НЕ красный */
+  font-weight: 400;   /* обычный */
+}
+
+/* ===== Labels ===== */
+
+.mini-label{
+  font-size:12px;
+  color:#9b6b6b;
+  line-height:1;
+}
+
+/* ===== Budget / Spent wrappers ===== */
+
+.budget-field,
+.spent-field{
+  display:flex;
+  flex-direction:column;   /* label сверху */
+  gap:4px;
+}
+
+/* ===== Money pill (ОБЩИЙ СТАНДАРТ) ===== */
+
+.money-input{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+
+  background:#fff;
+  border:1px solid #f2dcdc;
+  border-radius:8px;
+
+  padding:6px 10px;
+  box-sizing:border-box;
+}
+
+/* ===== Currency sign ===== */
+
+.money-prefix{
+  font-size:14px;
+  color:#9b6b6b;
+  line-height:1;
+}
+
+/* ===== Budget input ===== */
+
+.budget-input{
+  width:64px;
+  min-width:0;
+
+  border:none;
+  outline:none;
+  background:transparent;
+
+  font-size:14px;
+  color:#4a2b2b;
+
+  padding:0;
+  line-height:1;
+}
+
+/* убрать стрелки */
+.budget-input::-webkit-outer-spin-button,
+.budget-input::-webkit-inner-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
+.budget-input{
+  -moz-appearance:textfield;
+}
+
+/* ===== Spent (read-only) ===== */
+
+.money-input.spent{
+  min-width:64px;
+}
+
+.spent-value{
+  font-size:14px;
+  color:#4a2b2b;
+  line-height:1;
+}
+
+/* === REMOVE ALL UNDERLINES === */
+.budget-input,
+.extra-input {
+  border: none !important;
+  background: transparent;
+}
+
+.spent-value,
+.extra-value {
+  border: none !important;
+  text-decoration: none !important;
+}
+
+
+.extra-value {
+  display: none;
+}
+
+.budget-spent-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.budget-field,
+.spent-field {
+  display: flex;
+  min-width:87px; 
+}
+
+.expense-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 0;
+}
+
+.expense-name{
+  flex:1;
+  border:none;
+  background:transparent;
+  font-size:14px;
+  outline:none;
+}
+
+.money-input.small{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px 8px;
+  border:1px solid #f2dcdc;
+  border-radius:8px;
+  background:#fff;
+}
+
+.text-input{
+  flex:1;                 /* занимает всё доступное место */
+  background:#fff;
+  border:1px solid #f2dcdc;
+  border-radius:8px;
+  padding:5px 10px;
+}
+
+.text-input input{
+  width:100%;
+  border:none;
+  outline:none;
+  background:transparent;
+  font-size:14px;
+  color:#4a2b2b;
+}
+
+
+.expense-amount{
+  width:56px;
+  border:none;
+  background:transparent;
+  outline:none;
+}
+
+.expense-action{
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.add-expense-link{
+  margin-top:8px;
+  font-size:13px;
+  color:#3a6ee8;
+  text-decoration:underline;
+  cursor:pointer;
+  user-select:none;
+}
+
+.add-expense-link:hover{
+  opacity:0.8;
+}
+
+/* ================= HEADER (same as Reports) ================= */
+
+h1 {
+  text-align: center;
+  font-size: 44px;
+  font-weight: 800;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 36px;
+  letter-spacing: -1px;
+}
+
+/* couple names under title */
+.couple-subtitle {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: -20px;
+  margin-bottom: 25px;
+  color: #b41111;
+  opacity: 0.85;
+}
+
+/* info bubble */
+.ios-banner {
+  margin: 0 auto 36px auto;
+  padding: 16px 24px;
+  max-width: 880px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 15.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10); 
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.modal.hidden{
+  display:none;
+}
+
+.modal-box{
+  background:#fff;
+  padding:20px 24px;
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  text-align:center;
+  min-width:220px;
+}
+
+.modal-box p{
+  margin:0 0 16px;
+  font-size:14px;
+  color:#4a2b2b;
+}
+
+.modal-actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+
+.modal-actions button{
+  padding:6px 14px;
+  border-radius:8px;
+  border:none;
+  cursor:pointer;
+  font-size:13px;
+}
+
+#confirmYes{
+  background:#c73a3a;
+  color:#fff;
+}
+
+#confirmNo{
+  background:#f2dcdc;
+}
+
+.category-header{
+}
+
+.category{
+  position: relative;
+}
+
+
+.card-actions{
+  position:absolute;
+  top:8px;
+  right:8px;
+  display:flex;
+  gap:6px;
+}
+
+.card-btn{
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:none;
+  background:#f2dcdc;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:10px;
+  line-height:1;
+  padding:0;
+
+  cursor:pointer;
+}
+
+.card-btn{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.card-btn:hover{
+  opacity:0.8;
+}
+
+/* ===============================
+   REAL GLASS — RUBY (NOT PINK)
+================================ */
+
+.overview .card {
+  position: relative;
+
+ background: linear-gradient(
+  180deg,
+  rgba(240, 232, 234, 0.92),
+  rgba(246, 238, 240, 0.96)
+) !important;
+
+  backdrop-filter: blur(14px) saturate(120%);
+-webkit-backdrop-filter: blur(14px) saturate(120%);
+
+
+  /* объём без "клубники" */
+ box-shadow:
+  0 8px 20px rgba(110, 15, 30, 0.16),
+  inset 0 1px 0 rgba(255,255,255,0.6);
+
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 22px;
+}
+
+/* ===============================
+   TOTAL BUDGET INPUT — BIGGER
+================================ */
+
+#totalBudgetInput {
+  width: 150%;          /* +50% по длине */
+  padding: 10px 14px;   /* +50% по высоте */
+  font-size: 26px;      /* чуть крупнее цифры */
+}
+
+/* ===============================
+   TOTAL BUDGET INPUT — BOLD
+================================ */
+
+#totalBudgetInput {
+  font-weight: 700;   /* bold */
+}
+
+
+/* ================= TOP NAV ================= */
+
+.top-nav-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center; /* центрируем navbar */
+  align-items: center;     /* вертикальный ритм */
+  height: 52px;            /* ⬅️ фикс высоты — КЛЮЧ */
+  margin-bottom: 36px; /* 🔑 расстояние до заголовка */
+}
+
+.top-nav {
+  display: flex;
+  gap: 36px;
+
+  font-size: 16px;
+  font-weight: 500;
+  color: #7a6772;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #7a6772;
+  transition: 0.2s;
+}
+
+.top-nav a:hover {
+  color: #d6003d;
+}
+
+.top-nav a.active {
+  font-weight: 550;
+  text-shadow: 0 0 4px rgba(180,17,17,0.25);
+}
+/* ================= BACK BUTTON ================= */
+
+.back-btn {
+  position: absolute;
+  left: 135px;               /* как у тебя */
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+
+  border-radius: 8px;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(196,0,55,0.25);
+  color: #b1162a;
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  cursor: pointer;
+  transition: background .2s ease, box-shadow .2s ease;
+}
+
+.back-btn svg {
+  display: block;     /* ❗ УБИРАЕТ baseline-сдвиг */
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.45);
+  border-color: rgba(196,0,55,0.45);
+  box-shadow: 0 4px 12px rgba(196,0,55,0.15);
+}
+
+/* === ERROR HIGHLIGHT === */
+.input-error {
+  border-color: #c73a3a !important;
+  box-shadow: 0 0 0 2px rgba(199, 58, 58, 0.15);
+}
+
+/* ===== AIR CARD EFFECT (ALL CARDS) ===== */
+
+.card,
+.category {
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.55);
+
+  border: 1px solid rgba(255,255,255,0.65);
+}
+
+/* ===== HOVER GLOW ===== */
+
+.card:hover,
+.category:hover {
+  box-shadow:
+    0 14px 36px rgba(199,58,58,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.65);
+
+  transform: translateY(-2px);
+  transition: all 0.25s ease;
+}
+
+.card,
+.category {
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease,
+    background 0.25s ease;
+}
+
+.category::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+  pointer-events:none;
+  box-shadow: 0 0 0 1px rgba(255,200,200,0.35);
+}
+
+/* ===============================
+   GLASS iOS – BASE
+================================ */
+
+.card,
+.category {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.75);
+
+  transition:
+    box-shadow 0.28s ease,
+    transform 0.28s ease,
+    background 0.28s ease;
+}
+
+/* ===============================
+   GLASS iOS – HOVER
+================================ */
+
+.card:hover,
+.category:hover {
+  background: rgba(255,255,255,0.78);
+
+  box-shadow:
+    0 20px 44px rgba(199,58,58,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+
+  transform: translateY(-3px);
+}
+
+/* inner glow */
+
+.card::before,
+.category::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  pointer-events: none;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.45);
+}
+
+.categories-grid {
+  align-items: start;
+}
+
+/* Remaining should be more compact */
+.money-input.remaining {
+  padding: 4px 8px;
+  min-width: auto;
+}
+
+.money-input.remaining .remaining-value {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+
+.money-input.remaining.negative {
+  border-color: #e07a7a;
+  background: #fff3f3;
+}
+
+.money-input.remaining.negative .money-prefix,
+.money-input.remaining.negative .remaining-value {
+  color: #c73a3a;
+  font-weight: 600;
+}
+
+.remaining-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* === Budget / Spent / Remaining in one row === */
+.budget-spent-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.remaining-field {
+  min-width: 0;
+}
+
+/* === Fix Remaining width === */
+.remaining-field .money-input.remaining {
+  width: auto;
+  justify-self: start;
+}
+
+.budget-field .money-input,
+.spent-field .money-input,
+.remaining-field .money-input {
+  width: 100%;
+}
+
+/* ===============================
+   iOS Segmented Control — COMPACT FIX
+================================ */
+
+/* container positioning */
+.category-header {
+  align-items: center; /* выравнивание с заголовком */
+  gap: 16px;
+}
+
+.budget-segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  min-width: 260px;
+  max-width: 340px;
+
+  margin-left: auto;          /* аккуратно вправо */
+  margin-top: 0;
+
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,200,200,0.4);
+
+  overflow: hidden;
+}
+
+/* segments — COMPACT */
+.budget-segmented .segment {
+  padding: 6px 8px 7px;   /* ⬅️ УМЕНЬШИЛИ ВЫСОТУ */
+  gap: 4px;
+}
+
+/* separators */
+.budget-segmented .segment:not(:last-child)::after {
+  top: 6px;
+  bottom: 6px;
+  background: rgba(220,180,180,0.35);
+}
+
+/* labels */
+.budget-segmented .mini-label {
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* money pill */
+.budget-segmented .money-input {
+  padding: 4px 8px;
+  border-radius: 9px;
+}
+
+/* text sizing */
+.budget-segmented input,
+.budget-segmented .spent-value,
+.budget-segmented .remaining-value {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ===============================
+   Budget segmented — UNDER TITLE
+================================ */
+
+/* header becomes vertical */
+.category-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* segmented goes under title, left aligned */
+.budget-segmented {
+  width: 100%;
+  max-width: 360px;
+
+  margin: 0;               /* ❌ никакого auto */
+}
+
+/* compact height (ещё чуть ниже) */
+.budget-segmented .segment {
+  padding: 6px 8px;
+}
+
+/* tighter labels */
+.budget-segmented .mini-label {
+  font-size: 10px;
+}
+
+/* pills compact */
+.budget-segmented .money-input {
+  padding: 4px 8px;
+}
+
+/* ===============================
+   Equal height for all segments
+================================ */
+
+/* единая высота для всех money pills */
+.budget-segmented .money-input {
+  min-height: 30px;              /* ← КЛЮЧЕВОЕ */
+  display: flex;
+  align-items: center;           /* вертикальное выравнивание текста */
+}
+
+/* input и span ведут себя одинаково */
+.budget-segmented input,
+.budget-segmented .spent-value,
+.budget-segmented .remaining-value {
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* чтобы input не растягивал высоту */
+.budget-segmented input {
+  height: 100%;
+}
+
+/* ===============================
+   FIX Enter key for inputs
+================================ */
+
+/* input не должен растягиваться по высоте */
+.budget-segmented input {
+  height: auto;          /* 🔑 ключ */
+  align-self: center;
+}
+
+/* гарантируем, что input реально фокусируемый */
+.budget-segmented .money-input {
+  pointer-events: auto;
+}
+
+/* ===============================
+   FORCE Remaining to be bold
+================================ */
+
+.money-input.remaining {
+  font-weight: 700;              /* родитель */
+}
+
+.money-input.remaining .remaining-value {
+  font-weight: 700;              /* дублируем для надёжности */
+}
+
+.budget-input,
+.spent-value,
+.remaining-value,
+.expense-amount,
+.card .value {
+  color: var(--ruby-main);
+}
+
+/* ===== Estimated Final states ===== */
+
+.estimated-card .value {
+  font-weight: 700;
+}
+
+.estimated-card.good .value {
+  color: #2e7d32; /* green */
+}
+
+.estimated-card.warn .value {
+  color: #c77700; /* amber */
+}
+
+.estimated-card.bad .value {
+  color: #c73a3a; /* red */
+}
+
+/* ===============================
+   ESTIMATED FINAL — DELTA TEXT
+================================ */
+
+.estimated-card .delta {
+  margin-top: 6px;
+  font-size: 15px;     /* ← оптимально */
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.estimated-card.good .delta {
+  color: #2e7d32;
+}
+
+.estimated-card.warn .delta {
+  color: #c77700;
+}
+
+.estimated-card.bad .delta {
+  color: #c73a3a;
+}
+
+.overview .card h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 17px;
+}
+
+/* ===============================
+   FORCE $ TO LOOK BOLD (REAL FIX)
+================================ */
+
+.overview .money-input .money-prefix {
+  font-weight: 600 !important;
+  opacity: 1 !important;          /* ← КЛЮЧ */
+  color: #7a1d2b !important;      /* тот же ruby, что цифры */
+  font-size: 22px;
+}
+
+/* ==================================================
+   OVERVIEW CARDS — CLEAN ISOLATED STYLES
+   (does NOT affect categories)
+================================================== */
+
+/* базовый reset для overview card */
+.overview .card {
+  position: relative;
+
+  /* перекрываем общий .card glass */
+  background: linear-gradient(
+    180deg,
+    rgba(242, 242, 242, 0.92),
+    rgba(248, 248, 248, 0.96)
+  );
+
+  backdrop-filter: blur(26px) saturate(145%);
+  -webkit-backdrop-filter: blur(26px) saturate(145%);
+
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.55);
+
+  /* реальный объём, без розового */
+  box-shadow:
+    0 18px 42px rgba(110, 15, 30, 0.28),
+    0 6px 14px rgba(110, 15, 30, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 0 rgba(110,15,30,0.10);
+
+  transform: none;           /* ❌ убираем hover lift */
+  transition: none;          /* ❌ убираем hover анимации */
+}
+
+/* ❌ убираем hover-эффекты ТОЛЬКО у overview */
+.overview .card:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(242, 242, 242, 0.92),
+    rgba(248, 248, 248, 0.96)
+  );
+  transform: none;
+  box-shadow:
+    0 18px 42px rgba(110, 15, 30, 0.28),
+    0 6px 14px rgba(110, 15, 30, 0.14),
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 0 rgba(110,15,30,0.10);
+}
+
+/* ❌ убираем inner-glow псевдоэлемент ТОЛЬКО у overview */
+.overview .card::before {
+  display: none;
+}
+
+/* ===============================
+   OVERVIEW TEXT STYLING
+================================ */
+
+.overview .card h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 17px;
+  margin-bottom: 8px;
+}
+
+/* value numbers */
+.overview .card .value {
+  font-weight: 700;
+  font-size: 26px;
+}
+
+/* ===============================
+   TOTAL BUDGET INPUT (PRIMARY)
+================================ */
+
+.overview #totalBudgetInput {
+  font-weight: 700;
+  font-size: 26px;
+}
+
+/* $ sign — finally controlled */
+.overview .money-input .money-prefix {
+  font-size: 24px;
+  font-weight: 700;
+  opacity: 1;
+  color: #7a1d2b;
+}
+
+/* ===============================
+   ALIGN OVERVIEW VALUES WITH INPUT
+================================ */
+
+.overview .card .value {
+  margin-top: 24px;   /* ← ОПУСКАЕТ ЦИФРЫ */
+}
+
+
+/* ===============================
+   SOFT PULSE GLOW — TOTAL BUDGET
+================================ */
+@keyframes softGlowGreen {
+  0% {
+    box-shadow:
+      0 0 5px 2px rgba(46, 125, 50, 0.12),
+      inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+  50% {
+    box-shadow:
+      0 0 10px 4px rgba(46, 125, 50, 0.22),
+      inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+  100% {
+    box-shadow:
+      0 0 5px 2px rgba(46, 125, 50, 0.12),
+      inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+}
+
+/* базовое спокойное состояние */
+.overview .money-input {
+  box-shadow:
+    0 0 5px 2px rgba(46, 125, 50, 0.12),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+/* пульсация ТОЛЬКО пока поле пустое */
+.overview .money-input:has(input:placeholder-shown) {
+  animation: softGlowGreen 8s ease-in-out infinite;
+}
+
+/* ===============================
+   ESTIMATED FINAL — AIR BAR
+================================ */
+
+.air-bar {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.6),
+    0 6px 18px rgba(0,0,0,0.12);
+
+  overflow: hidden;
+  margin-top: 18px;
+}
+
+.air-bar-fill {
+  height: 100%;
+  width: 50%; /* временно, потом будет JS */
+
+  border-radius: inherit;
+
+  background: linear-gradient(
+    90deg,
+    #2e7d32,
+    #66bb6a
+  );
+
+  box-shadow:
+    0 0 14px rgba(46,125,50,0.45);
+
+  transition:
+    width 0.45s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* states */
+.estimated-card.warn .air-bar-fill {
+  background: linear-gradient(90deg, #f9a825, #ffd54f);
+  box-shadow: 0 0 14px rgba(249,168,37,0.45);
+}
+
+.estimated-card.bad .air-bar-fill {
+  background: linear-gradient(90deg, #c73a3a, #ef5350);
+  box-shadow: 0 0 14px rgba(199,58,58,0.45);
+}
+
+/* ===============================
+   Category labels — stronger
+================================ */
+
+.budget-segmented .mini-label {
+  font-size: 12.5px;        /* было 10–12 → чуть больше */
+  font-weight: 600;         /* semi-bold */
+  color: #7a1d2b;           /* тёмный ruby */
+  letter-spacing: 0.02em;   /* аккуратная читаемость */
+}
+
+
+.air-bar {
+  position: relative;
+  height: 14px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.air-fill {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: width 0.45s ease, left 0.45s ease;
+}
+
+/* 🔴 RED — растёт слева → направо */
+.air-red {
+  left: 0;
+  background: linear-gradient(90deg, #c73a3a, #ef5350);
+}
+
+/* 🟡 YELLOW — съедается справа → налево */
+.air-yellow {
+  left: 0;
+  right: auto;
+  background: linear-gradient(90deg, #f9a825, #ffd54f);
+}
+
+/* 🟢 GREEN — съедается справа → налево */
+.air-green {
+  left: 0;
+  right: auto;
+  background: linear-gradient(90deg, #2e7d32, #66bb6a);
+}
+
+/* ================= EXPORT BUTTON ================= */
+
+.export-row {
+  max-width: 1400px;
+  margin: 0 auto 22px;        /* ниже bubble, выше карточек */
+  padding: 0 8px;
+
+  display: flex;
+  justify-content: flex-start; /* ← слева */
+}
+
+.export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+
+  border-radius: 10px;
+  border: 1px solid rgba(180,17,17,0.25);
+  background: rgba(255,255,255,0.65);
+  color: #b1162a;
+
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 4px 14px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.export-btn:hover {
+  background: rgba(255,255,255,0.85);
+  box-shadow:
+    0 8px 22px rgba(180,17,17,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.75);
+}
+
+/* ================= BANNER ROW ================= */
+
+.banner-row {
+  max-width: 1400px;
+  margin: 0 auto 1px;
+  padding: 0 16px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* 🔑 */
+  align-items: center;
+}
+
+/* пустой баланс слева */
+.banner-spacer {
+  /* ничего не нужно */
+}
+
+/* bubble — строго центр экрана */
+.ios-banner {
+  justify-self: center;
+  text-align: center;
+}
+
+/* кнопка — справа */
+.export-row {
+  justify-self: end;
+}
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+</style>
+</head>
+<body data-page="budget">
+
+
+  <!-- PAGE HEADER (как Reports) -->
+
+<!-- ======= TOP NAV + BACK BUTTON ======= -->
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24"
+         stroke-width="2" stroke="#6d6d6d"
+         fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Back
+  </button>
+
+  <div class="top-nav">
+    <a href="/guest-manager.html">Guest Manager</a>
+    <a href="/save-the-date.html">Save The Date</a>
+    <a href="/rsvp.html">RSVP</a>
+    <a href="/seating.html">Seating Chart</a>
+    <a href="/registry.html">Registry</a>
+    <a href="/budget.html">Budget</a>
+    <a href="/web-manager.html">Web Manager</a>
+    <a href="/reports.html">Wed Reports</a>
+  </div>
+
+</div>
+
+<h1>Wedding Budget</h1>
+
+<div id="coupleSmallName" class="couple-subtitle"></div>
+
+<div class="banner-row">
+
+  <div class="banner-spacer"></div>
+
+<div class="ios-banner">
+  Control your wedding budget in one place. View the Quick User Guide for this page
+  <span id="openGuide" class="guide-link">here</span>.
+</div>
+
+  <div class="export-row">
+    <button id="exportCsvBtn" class="export-btn">
+      ⬇️ Download & Print (CSV)
+    </button>
+  </div>
+
+</div>
+  <!-- MAIN CONTENT -->
+  <div class="container">
+
+ <!-- Overview -->
+<div class="overview">
+
+  <!-- Total Budget (USER INPUT) -->
+  <div class="card">
+    <h3>Total Budget</h3>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        id="totalBudgetInput"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Assigned Budget -->
+  <div class="card">
+    <h3>Assigned Budget</h3>
+    <div class="value" id="assignedBudgetValue">$0</div>
+  </div>
+
+  <!-- Total Spent -->
+  <div class="card">
+    <h3>Total Spent</h3>
+    <div class="value" id="totalSpentValue">$0</div>
+  </div>
+
+  <!-- Total Remaining -->
+  <div class="card">
+    <h3>Total Remaining</h3>
+    <div class="value" id="totalRemainingValue">$0</div>
+  </div>
+
+  <!-- Estimated Final -->
+  <div class="card estimated-card">
+  <h3>Budget Health</h3>
+
+  <!-- AIR BAR -->
+  <div class="air-bar">
+  <div class="air-fill air-green"></div>
+  <div class="air-fill air-yellow"></div>
+  <div class="air-fill air-red"></div>
+</div>
+
+<div class="delta" id="estimatedDelta"></div>
+
+</div>
+
+
+</div>
+
+    <!-- ===== CATEGORIES SECTION ===== -->
+    <section class="categories-section">
+      <div class="categories-grid">
+    
+<!-- VENUE -->
+<div class="category">
+
+  <div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+    <div class="card-actions">
+      <button class="card-btn expand">⤢</button>
+      <button class="card-btn close">✕</button>
+    </div>
+
+    <div class="category-title">🏛️ Venue</div>
+
+    <!-- iOS-style segmented container -->
+    <div class="budget-segmented">
+
+      <!-- Budget -->
+      <div class="segment budget-field">
+        <span class="mini-label">Budget</span>
+        <div class="money-input">
+          <span class="money-prefix">$</span>
+          <input
+            type="text"
+            class="budget-input"
+            placeholder="0"
+          />
+        </div>
+      </div>
+
+      <!-- Spent -->
+      <div class="segment spent-field">
+        <span class="mini-label">Spent</span>
+        <div class="money-input spent">
+          <span class="money-prefix">$</span>
+          <span class="spent-value">0</span>
+        </div>
+      </div>
+
+      <!-- Remaining -->
+      <div class="segment remaining-field">
+        <span class="mini-label">Remaining</span>
+        <div class="money-input remaining">
+          <span class="money-prefix">$</span>
+          <span class="remaining-value">0</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+
+  <div class="details">
+
+    <div class="expense-row base-expense" style="display:none">
+      <div class="text-input">
+        <input
+          type="text"
+          class="expense-name"
+          placeholder="Expense description"
+        />
+      </div>
+
+      <div class="money-input small">
+        <span class="money-prefix">$</span>
+        <input
+          type="text"
+          class="expense-amount"
+          placeholder="0"
+        />
+      </div>
+
+      <button class="expense-action save">➕</button>
+      <button class="expense-action remove">❌</button>
+    </div>
+
+    <div class="add-expense-link">Add expense</div>
+
+  </div>
+</div>
+
+
+
+<!-- CATERING -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+  <div class="category-title">🍽️ Catering</div>
+
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+
+<!-- BAR -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+ <div class="category-title">🍸 Bar</div>
+
+ <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- PHOTOGRAPHY -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+<div class="category-title">📸 Photography</div>
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- ENTERTAINMENT -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+ <div class="category-title">🎶 Entertainment</div>
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- FLOWERS -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+ <div class="category-title">🌸 Flowers</div>
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- DECOR -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+<div class="category-title">🎀 Decor</div>
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- STATIONERY -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+    <div class="category-title">✉️ Stationery</div>
+ <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- ATTIRE -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+    <div class="category-title">👗 Attire</div>
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- HAIR & MAKEUP -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+    <div class="category-title">💄 Hair & Makeup</div>
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- RINGS -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+    <div class="category-title">💍 Rings</div>
+  <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
+<!-- MISC -->
+<div class="category">
+<div class="category-header" onclick="toggleDetails(this.closest('.category'))">
+
+<div class="card-actions">
+  <button class="card-btn expand">⤢</button>
+  <button class="card-btn close">✕</button>
+</div>
+
+
+    <div class="category-title">📦 Miscellaneous</div>
+ <!-- iOS-style segmented container -->
+<div class="budget-segmented">
+
+  <!-- Budget -->
+  <div class="segment budget-field">
+    <span class="mini-label">Budget</span>
+    <div class="money-input">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="budget-input"
+        placeholder="0"
+      />
+    </div>
+  </div>
+
+  <!-- Spent -->
+  <div class="segment spent-field">
+    <span class="mini-label">Spent</span>
+    <div class="money-input spent">
+      <span class="money-prefix">$</span>
+      <span class="spent-value">0</span>
+    </div>
+  </div>
+
+  <!-- Remaining -->
+  <div class="segment remaining-field">
+    <span class="mini-label">Remaining</span>
+    <div class="money-input remaining">
+      <span class="money-prefix">$</span>
+      <span class="remaining-value">0</span>
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+
+  <div class="progress">
+    <div class="progress-bar"></div>
+
+  </div>
+ <div class="details">
+
+  <div class="expense-row base-expense" style="display:none">
+
+
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
+    </div>
+
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
+  </div>
+
+  <div class="add-expense-link">Add expense</div>
+
+ </div>
+
+  </div>
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+<script>
+function toggleDetails(el) {
+  const details = el.querySelector(".details");
+  details.style.display = details.style.display === "block" ? "none" : "block";
+}
+</script>
+
+<script>
+/* ===============================
+   CATEGORY CORE LOGIC
+================================ */
+
+document.querySelectorAll('.category').forEach(category => {
+  const budgetInput = category.querySelector('.budget-input');
+  
+// ✅ ENTER = зафиксировать бюджет и убрать курсор
+  
+budgetInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    e.stopPropagation();
+
+    budgetInput.blur();
+    category.__updateUI();
+
+    const details = category.querySelector('.details');
+    if (details) {
+      details.style.display = 'block';
+      ensureFirstExpenseRow(category); // 👈 ВОТ ЭТО
+    }
+  }
+});
+
+  const spentEl = category.querySelector('.spent-value');
+  const progressBar = category.querySelector('.progress-bar');
+  const details = category.querySelector('.details');
+
+  if (!budgetInput || !spentEl || !progressBar) return;
+
+budgetInput.addEventListener('focus', e => {
+  e.stopPropagation();
+  if (details) {
+    details.style.display = 'block';
+    ensureFirstExpenseRow(category); // 👈 ВОТ ЭТО
+  }
+});
+
+// 🔴 ONE SOURCE OF TRUTH
+category.__spent = Number(spentEl.innerText.replace(/[^\d]/g, '')) || 0;
+
+category.__updateUI = function () {
+  const planned = Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
+
+
+  // ✅ НЕТ БЮДЖЕТА — НЕТ ПРОГРЕССА
+  if (!planned || planned <= 0) {
+    progressBar.style.width = '0%';
+    category.classList.remove('over-budget');
+
+    // ⬇️ Remaining = 0 если бюджета нет
+    const remainingEl = category.querySelector('.remaining-value');
+    if (remainingEl) {
+      remainingEl.innerText = '0';
+
+      // ✅ ВАЖНО: убрать красную подсветку
+      const remainingBox = remainingEl.closest('.money-input');
+      if (remainingBox) {
+        remainingBox.classList.remove('negative');
+      }
+    }
+
+    return;
+  }
+
+  const percent = Math.round((category.__spent / planned) * 100);
+
+  spentEl.innerText = category.__spent.toLocaleString();
+  progressBar.style.width = percent + '%';
+
+  category.classList.toggle('over-budget', percent > 100);
+
+  // ✅ Remaining = Budget - Spent
+  const remainingEl = category.querySelector('.remaining-value');
+  if (remainingEl) {
+    const remaining = planned - category.__spent;
+    remainingEl.innerText = remaining.toLocaleString();
+
+    const remainingBox = remainingEl.closest('.money-input');
+    if (remainingBox) {
+      remainingBox.classList.toggle('negative', remaining < 0);
+    }
+  }
+updateOverviewTotals();
+
+};
+
+
+// budget change
+budgetInput.addEventListener('input', () => {
+  category.__updateUI();
+});
+
+category.__updateUI();
+});
+
+
+
+/* ===============================
+   EXTRA COST (+ / UNDO)
+================================ */
+
+document.querySelectorAll('.extra-cost-row').forEach(row => {
+  const input = row.querySelector('.extra-input');
+  const item = row.querySelector('.extra-cost-item');
+  const undoBtn = row.querySelector('.delete-extra');
+
+  let lastExtra = null;
+
+  function applyDelta(delta) {
+    const category = row.closest('.category');
+    category.__spent += delta;
+    category.__updateUI();
+  }
+
+  function applyExtra() {
+    const extra = Number(input.value);
+    if (!extra || lastExtra !== null) return;
+
+    lastExtra = extra;
+    applyDelta(extra);
+
+    item.hidden = false;
+    input.value = '';
+    input.blur();
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      applyExtra();
+    }
+  });
+
+  input.addEventListener('blur', applyExtra);
+
+  undoBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    if (lastExtra === null) return;
+
+    applyDelta(-lastExtra);
+    lastExtra = null;
+    item.hidden = true;
+  });
+});
+
+
+/* ===============================
+   EXPENSE ROWS
+================================ */
+
+document.querySelectorAll('.category').forEach(category => {
+  const details = category.querySelector('.details');
+  const addLink = details?.querySelector('.add-expense-link');
+
+  if (!details || !addLink) return;
+
+  function initExpenseRow(row) {
+  row.__value = 0;
+    const amountInput = row.querySelector('.expense-amount');
+    const saveBtn = row.querySelector('.expense-action.save');
+    const removeBtn = row.querySelector('.expense-action.remove');
+    const editBtn = row.querySelector('.expense-action.edit');
+    const budgetInput = category.querySelector('.budget-input');
+
+const toast = document.getElementById("toast");
+let toastTimeout = null;
+let toastLock = false;
+
+function showToastOnce() {
+  if (!toast || toastLock) return;
+
+  toastLock = true;
+
+  toast.style.opacity = "1";
+  toast.style.transform = "translateX(-50%) translateY(0)";
+
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(-50%) translateY(10px)";
+    toastLock = false;
+  }, 1600);
+}
+
+function highlightBudgetError() {
+  amountInput.classList.add("input-error");
+  budgetInput.closest(".money-input")?.classList.add("input-error");
+  showToast();
+}
+
+function clearBudgetError() {
+  amountInput.classList.remove("input-error");
+  budgetInput.closest(".money-input")?.classList.remove("input-error");
+}
+
+let toastShown = false;
+
+["mouseenter", "focus"].forEach(evt => {
+  amountInput.addEventListener(evt, () => {
+    const budget = Number(budgetInput.value);
+    if ((!budget || budget <= 0) && !toastShown) {
+      highlightBudgetError();
+      toastShown = true; // 🔒 блокируем повтор
+    }
+  });
+});
+
+["mouseleave", "blur"].forEach(evt => {
+  amountInput.addEventListener(evt, () => {
+    clearBudgetError();
+    toastShown = false; // 🔓 разрешаем снова
+  });
+});
+
+  function syncExpenseAvailability() {
+  const budget = Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
+
+  if (!budget || budget <= 0) {
+    amountInput.disabled = true;
+    amountInput.title = "Please set Budget first";
+  } else {
+    amountInput.disabled = false;
+    amountInput.placeholder = amountInput.placeholder || "0";
+    amountInput.title = "";
+  }
+}
+
+// initial state
+syncExpenseAvailability();
+
+// react on budget change
+budgetInput.addEventListener('input', syncExpenseAvailability);
+
+
+function applyExpense() {
+  const newValue = Number(amountInput.value) || 0;
+  if (!newValue) return;
+
+  category.__spent -= row.__value;
+  row.__value = newValue;
+  category.__spent += newValue;
+
+  category.__updateUI();
+  updateTotalBalanceBar();
+  showSuccessToast();
+
+  /* ===============================
+     🔑 AUTO-ADD NEXT ROW
+  ================================ */
+
+  const addLink = category
+    .querySelector(".details .add-expense-link");
+
+  if (addLink) {
+    addLink.click();
+
+    // дать DOM обновиться
+    setTimeout(() => {
+      const rows = category
+        .querySelectorAll(".expense-row:not(.base-expense)");
+
+      const lastRow = rows[rows.length - 1];
+      const nameInput = lastRow?.querySelector(".expense-name");
+
+      if (nameInput) {
+        nameInput.focus();
+      }
+    }, 0);
+  }
+}
+
+    saveBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      applyExpense();
+    });
+
+  amountInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    e.stopPropagation();
+    applyExpense(); // ← Enter = Save
+  }
+});
+
+
+removeBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  if (row.classList.contains('base-expense')) return;
+
+ openConfirm(() => {
+  category.__spent -= row.__value;
+  category.__updateUI();
+  updateOverviewTotals();     // ✅ ВОТ ЭТОГО НЕ ХВАТАЛО
+  updateTotalBalanceBar();   // (рекомендую, для консистентности)
+  row.remove();
+});
+
+});
+
+
+    row.querySelectorAll('input, button').forEach(el => {
+      el.addEventListener('click', e => e.stopPropagation());
+    });
+  }
+
+  details.querySelectorAll('.expense-row').forEach(initExpenseRow);
+
+addLink.addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const template = details.querySelector('.expense-row.base-expense');
+  if (!template) return;
+
+  const newRow = template.cloneNode(true);
+  newRow.classList.remove('base-expense');
+  newRow.style.display = 'flex';
+
+  newRow.querySelector('.expense-name').value = '';
+  newRow.querySelector('.expense-amount').value = '';
+
+  details.insertBefore(newRow, addLink);
+  initExpenseRow(newRow);
+});
+});
+
+</script>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+
+);
+
+const token = new URLSearchParams(location.search).get("t");
+
+function cap(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+}
+
+async function loadCoupleName() {
+  const { data } = await supabase
+    .from("sites")
+    .select("slug")
+    .eq("edit_token", token)
+    .single();
+
+  if (!data?.slug) return;
+
+  const [bride, groom] = data.slug.split("-");
+  document.getElementById("coupleSmallName").textContent = 
+    `${cap(bride)} & ${cap(groom)}`;
+
+}
+
+loadCoupleName();
+</script>
+
+
+<div id="confirmModal" class="modal hidden">
+  <div class="modal-box">
+    <p>Delete this expense?</p>
+    <div class="modal-actions">
+      <button id="confirmYes">Yes</button>
+      <button id="confirmNo">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const modal = document.getElementById('confirmModal');
+const yesBtn = document.getElementById('confirmYes');
+const noBtn = document.getElementById('confirmNo');
+
+let pendingDelete = null;
+
+function openConfirm(onYes){
+  pendingDelete = onYes;
+  modal.classList.remove('hidden');
+}
+
+function closeConfirm(){
+  modal.classList.add('hidden');
+  pendingDelete = null;
+}
+
+yesBtn.onclick = () => {
+  if (pendingDelete) pendingDelete();
+  closeConfirm();
+};
+
+noBtn.onclick = closeConfirm;
+</script>
+
+<script>
+document.querySelectorAll('.category').forEach(category => {
+  const details = category.querySelector('.details');
+  const expandBtn = category.querySelector('.card-btn.expand');
+  const closeBtn = category.querySelector('.card-btn.close');
+
+  if (expandBtn) {
+    expandBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  if (!details) return;
+
+  const willOpen = details.style.display !== 'block';
+  details.style.display = willOpen ? 'block' : 'none';
+
+  if (willOpen) {
+    ensureFirstExpenseRow(category); // 👈 ВОТ ЭТО
+  }
+});
+
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      if (!details) return;
+      details.style.display = 'none';
+    });
+  }
+});
+</script>
+
+<script>
+const tokenNav = new URLSearchParams(location.search).get("t") || "";
+
+/* прокинуть token во все ссылки меню */
+document.querySelectorAll(".top-nav a").forEach(a => {
+  if (tokenNav) {
+    a.href = a.href + "?t=" + tokenNav;
+  }
+});
+
+/* back button */
+document.getElementById("backBtn")?.addEventListener("click", () => {
+  window.location.href = "/dashboard.html?t=" + tokenNav;
+});
+
+/* active nav link */
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page;
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    if (link.getAttribute("href").includes(page)) {
+      link.classList.add("active");
+    }
+  });
+});
+</script>
+
+<div id="toast" style="
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(40,40,40,0.92);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 99999;
+">
+  Set Budget First.
+</div>
+
+<!-- 🟢 SUCCESS TOAST -->
+<div id="toast-success" style="
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(46,125,50,0.92);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  z-index: 100000;
+">
+  Amount added and saved
+</div>
+
+<script>
+/* ===============================
+   Budget input formatting
+================================ */
+
+document.querySelectorAll('.budget-input').forEach(input => {
+
+  function getRawValue() {
+    return Number(input.value.replace(/[^\d]/g, '')) || 0;
+  }
+
+  function format() {
+    const raw = getRawValue();
+    input.value = raw ? raw.toLocaleString() : '';
+  }
+
+function unformat() {
+  input.value = getRawValue() || '';
+}
+
+/* форматируем при выходе */
+input.addEventListener('blur', format);
+
+/* Enter = сохранить + форматировать */
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    format();
+    input.blur();
+  }
+});
+
+/* при фокусе — убираем запятые */
+input.addEventListener('focus', unformat);
+});
+</script>
+
+<script>
+function updateTotalBalanceBar() {
+  const totalBudgetInput = document.getElementById('totalBudgetInput');
+  const label = document.getElementById('estimatedDelta');
+
+  const green = document.querySelector('.air-green');
+  const yellow = document.querySelector('.air-yellow');
+  const red = document.querySelector('.air-red');
+
+  if (!green || !yellow || !red) return;
+
+  /* читаем ТОЛЬКО большой Total Budget */
+  const totalBudget = Number(
+    (totalBudgetInput?.value || '').replace(/[^\d]/g, '')
+  ) || 0;
+
+  /* считаем total spent */
+  let spent = 0;
+  document.querySelectorAll('.category').forEach(c => {
+    spent += Number(c.__spent || 0);
+  });
+
+  /* ===============================
+     RESET (always)
+  ================================ */
+  green.style.width = '0%';
+  yellow.style.width = '0%';
+  red.style.width = '0%';
+
+  /* ===============================
+     EMPTY — нет Total Budget
+  ================================ */
+  if (!totalBudget) {
+    if (label) label.textContent = 'Set total budget';
+    return;
+  }
+
+  const spentRatio = spent / totalBudget;
+  const remaining = totalBudget - spent;
+
+  /* ===============================
+     🟢 GREEN — < 50%
+     съедается СПРАВА → НАЛЕВО
+  ================================ */
+  if (spentRatio < 0.5) {
+    green.style.width =
+      Math.max(0, (remaining / totalBudget) * 100) + '%';
+
+    if (label) {
+      label.textContent =
+        `$${remaining.toLocaleString()} available`;
+    }
+    return;
+  }
+
+  /* ===============================
+     🟡 YELLOW — 50% → 85%
+     сначала полный, потом съедается
+  ================================ */
+  if (spentRatio < 0.85) {
+    const yellowRemaining =
+      1 - (spentRatio - 0.5) / 0.35; // 1 → 0
+
+    yellow.style.width =
+      Math.max(0, yellowRemaining * 100) + '%';
+
+    if (label) {
+      label.textContent =
+        `$${remaining.toLocaleString()} left`;
+    }
+    return;
+  }
+
+  /* ===============================
+     🔴 RED — > 85%
+     растёт СЛЕВА → НАПРАВО
+     максимум 30%
+  ================================ */
+  const redProgress =
+    (spentRatio - 0.85) / 0.15; // 0 → 1
+
+  red.style.width =
+    Math.min(100, Math.max(0, redProgress * 100)) + '%';
+
+if (label) {
+  label.textContent =
+    remaining < 0
+      ? `$${Math.abs(remaining).toLocaleString()} over budget`
+      : `$${remaining.toLocaleString()} remaining`;
+}
+
+}
+
+
+
+</script>
+
+<script>
+/* ===============================
+   OVERVIEW TOTALS — SINGLE SOURCE
+================================ */
+
+function parseMoney(val) {
+  return Number(String(val || '').replace(/[^\d]/g, '')) || 0;
+}
+
+function updateOverviewTotals() {
+  /* Total Budget (USER INPUT) */
+  const totalBudgetInput = document.getElementById('totalBudgetInput');
+  const totalBudget = totalBudgetInput
+    ? parseMoney(totalBudgetInput.value)
+    : 0;
+
+  /* Assigned Budget */
+  let assigned = 0;
+  document.querySelectorAll('.category .budget-input').forEach(input => {
+    assigned += parseMoney(input.value);
+  });
+
+  /* Total Spent */
+  let spent = 0;
+  document.querySelectorAll('.category').forEach(category => {
+    spent += Number(category.__spent || 0);
+  });
+
+  /* Render — Assigned */
+  const assignedEl = document.getElementById('assignedBudgetValue');
+  if (assignedEl) {
+    assignedEl.textContent = `$${assigned.toLocaleString()}`;
+  }
+
+  /* Render — Spent */
+  const spentEl = document.getElementById('totalSpentValue');
+  if (spentEl) {
+    spentEl.textContent = `$${spent.toLocaleString()}`;
+  }
+
+  /* Render — Remaining
+     ❗ КЛЮЧЕВОЕ ИЗМЕНЕНИЕ ЗДЕСЬ */
+  const remainingEl = document.getElementById('totalRemainingValue');
+
+  if (!totalBudget) {
+    // 👉 если глобальный бюджет не задан — не считаем
+    if (remainingEl) remainingEl.textContent = '—';
+  } else {
+    const remaining = totalBudget - spent;
+    if (remainingEl) {
+      remainingEl.textContent = `$${remaining.toLocaleString()}`;
+    }
+  }
+}
+
+/* Total Budget input */
+const totalBudgetInput = document.getElementById('totalBudgetInput');
+if (totalBudgetInput) {
+  const handler = () => {
+    updateOverviewTotals();
+    updateTotalBalanceBar(); // ✅ ВОТ ГЛАВНОЕ
+  };
+
+  totalBudgetInput.addEventListener('input', handler);
+  totalBudgetInput.addEventListener('blur', handler);
+}
+
+/* Category budgets */
+document.querySelectorAll('.category .budget-input').forEach(input => {
+  input.addEventListener('input', updateOverviewTotals);
+  input.addEventListener('blur', updateOverviewTotals);
+  // ❌ НЕ вызываем updateTotalBalanceBar
+});
+
+/* Init */
+updateOverviewTotals();
+</script>
+<script>
+function showSuccessToast() {
+  const toast = document.getElementById("toast-success");
+  if (!toast) return;
+
+  toast.style.opacity = "1";
+  toast.style.transform = "translateX(-50%) translateY(0)";
+
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateX(-50%) translateY(10px)";
+  }, 1200);
+}
+</script>
+
+<script>
+document.getElementById("exportCsvBtn")?.addEventListener("click", () => {
+  const rows = [];
+
+  /* ================= SUMMARY ================= */
+
+  rows.push(["WEDDING BUDGET SUMMARY"]);
+  rows.push(["----------------------------"]);
+
+  const totalBudget =
+    parseMoney(document.getElementById("totalBudgetInput")?.value);
+
+  const assigned =
+    parseMoney(document.getElementById("assignedBudgetValue")?.innerText);
+
+  const spent =
+    parseMoney(document.getElementById("totalSpentValue")?.innerText);
+
+  const remaining =
+    parseMoney(document.getElementById("totalRemainingValue")?.innerText);
+
+  const healthText =
+    document.getElementById("estimatedDelta")?.innerText || "";
+
+  rows.push(["Total Budget", formatMoney(totalBudget)]);
+  rows.push(["Assigned Budget", formatMoney(assigned)]);
+  rows.push(["Total Spent", formatMoney(spent)]);
+  rows.push(["Total Remaining", formatMoney(remaining)]);
+  rows.push(["Budget Health", healthText]);
+
+  rows.push([]); // пустая строка
+
+  /* ================= TABLE HEADER ================= */
+
+rows.push([
+  "CATEGORY",
+  "EXPENSE DESCRIPTION",
+  "COST",
+  "CATEGORY TOTAL"
+]);
+
+rows.push([
+  "-----------",
+  "-------------------------",
+  "-----------",
+  "-------------------"
+]);
+
+
+  /* ================= DATA ================= */
+
+  document.querySelectorAll(".category").forEach(category => {
+    const rawCategory =
+      category.querySelector(".category-title")?.innerText || "";
+
+    const categoryName = cleanCategory(rawCategory);
+    const categoryTotal = category.__spent || 0;
+
+    let hasRows = false;
+
+    category.querySelectorAll(".expense-row:not(.base-expense)").forEach(row => {
+      const desc =
+        row.querySelector(".expense-name")?.value || "";
+
+      const cost = Number(row.__value || 0);
+
+      rows.push([
+        categoryName,
+        desc,
+        formatMoney(cost),
+        formatMoney(categoryTotal)
+      ]);
+
+      hasRows = true;
+    });
+
+    if (hasRows) {
+      rows.push([
+        `Total ${categoryName}`,
+        "",
+        "",
+        formatMoney(categoryTotal)
+      ]);
+
+      rows.push([]); // ✅ ПУСТАЯ СТРОКА ПОСЛЕ КАТЕГОРИИ
+    }
+  });
+
+  /* ================= EXPORT ================= */
+
+  const csv = rows
+    .map(r =>
+      r.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")
+    )
+    .join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "wedding-budget-report.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+/* ================= HELPERS ================= */
+
+function cleanCategory(str) {
+  return str
+    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
+    .replace(/\uFE0F/g, '')   // 🔑 убираем variation selector
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function parseMoney(val) {
+  return Number(String(val || "").replace(/[^\d]/g, "")) || 0;
+}
+
+function formatMoney(num) {
+  return `$${Number(num).toLocaleString()}`;
+}
+
+
+function ensureFirstExpenseRow(category) {
+  const details = category.querySelector('.details');
+  if (!details) return;
+
+  const existing =
+    details.querySelectorAll('.expense-row:not(.base-expense)');
+
+  if (existing.length > 0) return;
+
+  const addLink = details.querySelector('.add-expense-link');
+  if (addLink) {
+    addLink.click();
+
+    setTimeout(() => {
+      const firstRow =
+        details.querySelector('.expense-row:not(.base-expense)');
+      firstRow?.querySelector('.expense-name')?.focus();
+    }, 0);
+  }
+}
+
+</script>
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttbudget.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+<script>
+document.getElementById("openGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+</script>
+
+
+</body>
+</html>

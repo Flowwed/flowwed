@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Access Your Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css?family=Inter:400,600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  body {
+    font-family: Inter, sans-serif;
+    background: #f6e6eb;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .card {
+    background: white;
+    width: 420px;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+
+  h2 {
+    margin-bottom: 24px;
+    color: #a02449;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 14px;
+    background: #c40039;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .error {
+    margin-top: 14px;
+    color: #d00000;
+    font-size: 14px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>Enter Your Email</h2>
+  <p style="color:#555; font-size:15px; margin-bottom:20px;">
+    Please enter the email you used when buying the product.
+  </p>
+
+  <input id="emailInput" type="email" placeholder="Email Address" required />
+  <button id="submitBtn">Continue</button>
+
+  <div class="error" id="errorBox"></div>
+</div>
+
+<script>
+  // -------------------------------
+  // Supabase init
+  // -------------------------------
+  const supabase = supabase.createClient(
+    "https://octwwpatppbenqwkcqaw.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+  );
+
+  // -------------------------------
+  // Read ?t=TOKEN
+  // -------------------------------
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t");
+
+  if (!token) {
+    document.getElementById("errorBox").innerText = "Invalid access link.";
+  }
+
+  // -------------------------------
+  // CHECK EMAIL
+  // -------------------------------
+  document.getElementById("submitBtn").onclick = async () => {
+    const email = document.getElementById("emailInput").value.trim().toLowerCase();
+    const errorBox = document.getElementById("errorBox");
+
+    if (!email) {
+      errorBox.innerText = "Please enter your email.";
+      return;
+    }
+
+    // Load record from Supabase
+    const { data, error } = await supabase
+      .from("sites")
+      .select("email")
+      .eq("edit_token", token)
+      .single();
+
+    if (!data) {
+      errorBox.innerText = "Invalid or expired link.";
+      return;
+    }
+
+    // COMPARE email from form with Supabase email
+    if (data.email && data.email.toLowerCase() === email) {
+      // successful login → redirect to dashboard
+      window.location.href = `/index.html?t=${token}`;
+    } else {
+      errorBox.innerText = "This email doesn't match the one used for purchase.";
+    }
+  };
+</script>
+
+</body>
+</html>

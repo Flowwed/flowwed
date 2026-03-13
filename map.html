@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Venue & Directions</title>
+
+  <style>
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont,
+             "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+          background: linear-gradient(
+  180deg,
+  #f8d9dc 0%,
+  #f6e2e5 30%,
+  #f9edef 80%,
+  #fff5f6 100%
+);
+
+      margin: 0;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      background: white;
+      border-radius: 12px;
+      padding: 25px 30px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      position: relative;
+    }
+    h2 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    p {
+      color: #666;
+      font-size: 14px;
+      margin-top: 0;
+      margin-bottom: 25px;
+    }
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    input[type="text"], input[type="date"], input[type="time"] {
+      flex: 1;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    button {
+      background: #2d74f5;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { background: #1f5fe0; }
+
+    .map-link {
+      display: block;
+      margin-bottom: 10px;
+      color: #5a3cf5;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .map-frame {
+      width: 100%;
+      height: 400px;
+      border-radius: 10px;
+      border: none;
+      background: #e9ebf0;
+    }
+    .token {
+      color: #444;
+      font-size: 13px;
+      margin-top: 15px;
+      opacity: 0.7;
+    }
+
+    .top-save-btn {
+      position: absolute;
+      right: 30px;
+      top: 28px;
+      background: #10b981;
+    }
+    .top-save-btn:hover {
+      background: #0d996c;
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: #fff;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.12);
+  color: #333;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: 0.25s ease;
+}
+
+.close-btn:hover {
+  background: rgba(0,0,0,0.22);
+  transform: scale(1.07);
+}
+
+.close-btn:active {
+  transform: scale(0.92);
+  background: rgba(0,0,0,0.32);
+}
+
+/* ================= TOP NAV ================= */
+
+.top-nav-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center; /* центрируем navbar */
+  align-items: center;
+  height: 52px;            /* фикс высоты */
+  margin-bottom: 32px;     /* отступ от заголовка */
+}
+
+.top-nav {
+  display: flex;
+  gap: 36px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #7a6772;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #7a6772;
+  transition: 0.2s;
+}
+
+.top-nav a:hover {
+  color: #b40012;
+}
+
+.top-nav a.active {
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(180,17,17,0.25);
+}
+
+/* ================= BACK BUTTON ================= */
+
+.back-btn {
+  position: absolute;
+  left: 40px;              /* ← под твой layout */
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+
+  border-radius: 8px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(180,17,17,0.25);
+  color: #b40012;
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+
+  cursor: pointer;
+  transition: background .2s ease, box-shadow .2s ease;
+}
+
+.back-btn svg {
+  display: block;     /* убираем baseline-сдвиг */
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.6);
+  box-shadow: 0 4px 12px rgba(180,17,17,0.18);
+}
+
+
+
+  </style>
+</head>
+
+<body data-page="venue-&-map">
+
+
+<!-- ======= TOP NAV + BACK BUTTON ======= -->
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24"
+         stroke-width="2" stroke="#6d6d6d"
+         fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Back
+  </button>
+
+  <div class="top-nav">
+  <a href="/photo-gallery.html">Photo Gallery</a>
+  <a href="/gift-registry.html">Gift Registry</a>
+  <a href="/our-story.html">Our Story</a>
+  <a href="/wedding-party.html">Wedding Party</a>
+  <a href="/wedding-info.html">Wedding Info</a>
+  <a href="/venue-map.html">Venue & Map</a>
+  <a href="/travel-info.html">Travel Info</a>
+  <a href="/updates.html">Updates</a>
+  <a href="/faq.html">FAQ</a>
+</div>
+
+
+</div>
+
+  <!-- ADDRESS BLOCK -->
+  <div class="container">
+
+<!-- CLOSE BUTTON here 👇 -->
+  <button class="close-btn" onclick="closeWindow()">×</button>
+
+    <h2>Venue & Directions</h2>
+    <p>Enter the address below and click “Generate link”.</p>
+
+    <div class="input-row">
+      <input type="text" id="addressInput" placeholder="123 Main St, City, Country" />
+      <button id="generateBtn">Generate link</button>
+    </div>
+
+    <a id="openMap" class="map-link" href="#" target="_blank">Open Map</a>
+    <iframe id="mapFrame" class="map-frame"></iframe>
+
+    <div class="token" id="tokenDisplay"></div>
+  </div>
+
+  <!-- DATE & TIME BLOCK -->
+  <div class="container" id="datetimeContainer" style="margin-top:30px; opacity:0.4; pointer-events:none;">
+
+    <h2>Select Date & Time</h2>
+
+    <!-- SAVE BUTTON in top-right -->
+    <button id="saveDateTimeBtn" class="top-save-btn">Save Date & Time</button>
+
+    <p>Please choose the event date and time (available after map link is generated).</p>
+
+    <div class="input-row">
+      <input type="date" id="eventDate" />
+      <input type="time" id="eventTime" />
+    </div>
+
+    <!-- INFO TEXT -->
+    <div id="timeInfo" style="margin-top:10px; font-size:14px; color:#444; opacity:0.85;"></div>
+
+    <!-- FORMAT TOGGLE -->
+    <div style="margin-top:10px; font-size:14px;">
+      <label style="cursor:pointer;">
+        <input type="checkbox" id="timeFormatToggle" />
+        Use AM/PM format
+      </label>
+    </div>
+
+  </div>
+
+  <div id="toast" class="toast">Saved</div>
+
+  <!-- ========== FIXED: no modules inside iframe ========== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
+
+  <script>
+
+  // Create supabase client (UMD)
+  const supabaseClient = supabase.createClient(
+    "https://octwwpatppbenqwkcqaw.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+  );
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  // UI refs
+  const tokenDisplay = document.getElementById("tokenDisplay");
+  const addressInput = document.getElementById("addressInput");
+  const mapFrame = document.getElementById("mapFrame");
+  const openMap = document.getElementById("openMap");
+  const generateBtn = document.getElementById("generateBtn");
+  const toast = document.getElementById("toast");
+
+  const datetimeContainer = document.getElementById("datetimeContainer");
+  const eventDate = document.getElementById("eventDate");
+  const eventTime = document.getElementById("eventTime");
+
+  const timeInfo = document.getElementById("timeInfo");
+  const timeFormatToggle = document.getElementById("timeFormatToggle");
+  const saveDateTimeBtn = document.getElementById("saveDateTimeBtn");
+
+
+  function showToast(msg, color = "#28a745") {
+    toast.textContent = msg;
+    toast.style.background = color;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 3000);
+  }
+
+  function updateMap(address) {
+    const url = `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+    mapFrame.src = url;
+    openMap.href = `https://www.google.com/maps?q=${encodeURIComponent(address)}`;
+    return url;
+  }
+
+  function activateDatetimeBlock() {
+    datetimeContainer.style.opacity = "1";
+    datetimeContainer.style.pointerEvents = "auto";
+  }
+
+  async function detectLocationInfo(address) {
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+      const r = await fetch(url);
+      const json = await r.json();
+
+      if (!json || json.length === 0) {
+        timeInfo.innerHTML = "The time entered will be in the local time.";
+        return;
+      }
+
+      timeInfo.innerHTML =
+        "The time entered is the local time for the place of event.";
+    } catch {
+      timeInfo.innerHTML = "The time entered will be in the local time.";
+    }
+  }
+
+  function onAddressGenerated(address) {
+    activateDatetimeBlock();
+    detectLocationInfo(address);
+  }
+
+  // SWITCHER
+  timeFormatToggle.addEventListener("change", () => {
+    if (timeFormatToggle.checked) {
+      eventTime.type = "text";
+      eventTime.placeholder = "hh:mm AM/PM";
+    } else {
+      eventTime.type = "time";
+    }
+  });
+
+  // LOAD SAVED DATA
+  async function loadData() {
+    if (!token) return;
+
+    tokenDisplay.textContent = "Token: " + token;
+
+    const { data, error } = await supabaseClient
+      .from("sites")
+      .select("map_address, event_date, event_time")
+      .eq("edit_token", token)
+      .single();
+
+    if (!data) return;
+
+    if (data.map_address) {
+      addressInput.value = data.map_address;
+      updateMap(data.map_address);
+      onAddressGenerated(data.map_address);
+    }
+
+    if (data.event_date) eventDate.value = data.event_date;
+    if (data.event_time) eventTime.value = data.event_time;
+  }
+
+  // SAVE ADDRESS
+  generateBtn.addEventListener("click", async () => {
+    const addr = addressInput.value.trim();
+    if (!addr) return showToast("Enter address first", "#d93025");
+
+    const url = updateMap(addr);
+
+    const { error } = await supabaseClient
+      .from("sites")
+      .update({
+        map_address: addr,
+        map_url: url,
+        map_updated_at: new Date().toISOString()
+      })
+      .eq("edit_token", token);
+
+    if (!error) {
+      showToast("Address saved");
+      onAddressGenerated(addr);
+    }
+  });
+
+  // SAVE DATE & TIME
+  saveDateTimeBtn.addEventListener("click", async () => {
+    const d = eventDate.value;
+    const t = eventTime.value;
+
+    if (!d || !t) return showToast("Enter date and time", "#d93025");
+
+    const { error } = await supabaseClient
+      .from("sites")
+      .update({
+        event_date: d,
+        event_time: t
+      })
+      .eq("edit_token", token);
+
+    if (!error) showToast("Date & Time saved");
+  });
+
+  loadData();
+
+  </script>
+
+  <script>
+
+function closeWindow() {
+  window.close();
+}
+
+  </script>
+
+
+<script>
+/* ===============================
+   TOP NAV — TOKEN + BACK
+================================ */
+
+const tokenNav = new URLSearchParams(location.search).get("t") || "";
+
+/* прокинуть token во все ссылки меню */
+document.querySelectorAll(".top-nav a").forEach(a => {
+  if (tokenNav) {
+    a.href = a.href + "?t=" + tokenNav;
+  }
+});
+
+/* back button */
+document.getElementById("backBtn")?.addEventListener("click", () => {
+  window.location.href = "/dashboard.html?t=" + tokenNav;
+});
+
+/* active nav link */
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page || "photo-gallery";
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    if (link.getAttribute("href").includes(page)) {
+      link.classList.add("active");
+    }
+  });
+});
+</script>
+
+
+
+</body>
+</html>

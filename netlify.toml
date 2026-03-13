@@ -1,0 +1,36 @@
+#############################
+# BUILD CONFIG
+#############################
+[build]
+  publish = "."
+  command = ""
+  node_version = "20"
+
+#############################
+# SERVERLESS FUNCTIONS CONFIG
+#############################
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"
+
+[functions."create-email-queue"]
+
+[functions."process-queue"]
+  schedule = "* * * * *"
+
+#############################
+# PROXY TO EMILY (Render)
+#############################
+[[redirects]]
+  from = "/chat"
+  to = "https://wedding-assistant.onrender.com/chat"
+  status = 200
+  force = true
+
+#############################
+# SPA FALLBACK (MUST BE LAST)
+#############################
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

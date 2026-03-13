@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gift Registry</title>
+
+<style>
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont,
+             "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+       background: linear-gradient(
+  180deg,
+  #f8d9dc 0%,
+  #f6e2e5 30%,
+  #f9edef 80%,
+  #fff5f6 100%
+);
+
+  margin: 0;
+  padding: 30px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 34px;
+  font-weight: 800;
+  color: #a52126;
+  margin: 0;
+}
+
+h2 {
+  color: #a52126;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+}
+
+/* FORM */
+.form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  margin-bottom: 30px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+button {
+  margin-top: 14px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #b33639;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #922c31;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* TABLE */
+.table-wrap {
+  max-height: 300px;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 14px;
+  /* ✨ ruby border */
+  border: 3px solid #a52126;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  background: #f8dede;
+  z-index: 1;
+}
+
+tr:nth-child(even) {
+  background: #fff5f5;
+}
+
+.action {
+  cursor: pointer;
+  font-weight: bold;
+  color: #b33639;
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.modal-box button {
+  margin: 8px;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: #2ecc71;
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-weight: 600;
+}
+
+.toast.hidden {
+  display: none;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 34px;
+}
+
+.page-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #a52126;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-header .subtitle {
+  margin-top: 16px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #8b2d2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  letter-spacing: 0.3px;
+}
+
+.page-header .gift-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.info-banner {
+  margin: 18px auto 0;
+  max-width: 720px;
+  padding: 12px 18px;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(12px);
+
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #7a3a4a;
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.12),
+    inset 0 1px 2px rgba(255,255,255,0.6);
+
+  text-align: center;
+}
+
+.info-banner .guide-link {
+  color: #2a6bff;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+/* TABLE ALIGNMENT FIX */
+
+/* цифры по центру */
+
+/* ОБЩЕЕ ВЫРАВНИВАНИЕ */
+th, td {
+  vertical-align: middle;
+}
+
+/* # */
+th:nth-child(1),
+td:nth-child(1) {
+  text-align: center;
+  width: 50px;
+}
+
+/* Price */
+th:nth-child(3),
+td:nth-child(3) {
+  text-align: right;
+}
+
+/* Qty */
+th:nth-child(4),
+td:nth-child(4) {
+  text-align: center;
+}
+
+/* Actions */
+th:nth-child(6),
+td:nth-child(6) {
+  text-align: center;
+  white-space: nowrap;
+}
+
+
+/* иконки аккуратнее */
+.action {
+  font-size: 18px;
+  margin: 0 6px;
+}
+
+/* ссылки в стиле дизайна */
+td a {
+  color: #0645ad;
+  text-decoration: underline;
+}
+
+td a:hover {
+  color: #0b0080;
+}
+
+td a:hover {
+  text-decoration: underline;
+}
+
+/* строки ровнее */
+td, th {
+  vertical-align: middle;
+}
+
+/* header visual alignment only */
+thead th:nth-child(3),
+thead th:nth-child(4) {
+  padding-left: 25px;
+  padding-right: 4px;
+}
+
+select {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+
+/* ================= TOP NAV ================= */
+
+.top-nav-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center; /* центрируем navbar */
+  align-items: center;
+  height: 52px;            /* фикс высоты */
+  margin-bottom: 32px;     /* отступ от заголовка */
+}
+
+.top-nav {
+  display: flex;
+  gap: 36px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #7a6772;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #7a6772;
+  transition: 0.2s;
+}
+
+.top-nav a:hover {
+  color: #b40012;
+}
+
+.top-nav a.active {
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(180,17,17,0.25);
+}
+
+/* ================= BACK BUTTON ================= */
+
+.back-btn {
+  position: absolute;
+  left: 40px;              /* ← под твой layout */
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+
+  border-radius: 8px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(180,17,17,0.25);
+  color: #b40012;
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+
+  cursor: pointer;
+  transition: background .2s ease, box-shadow .2s ease;
+}
+
+.back-btn svg {
+  display: block;     /* убираем baseline-сдвиг */
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.6);
+  box-shadow: 0 4px 12px rgba(180,17,17,0.18);
+}
+
+
+
+</style>
+</head>
+
+<body data-page="gift-registry">
+
+
+<!-- ======= TOP NAV + BACK BUTTON ======= -->
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24"
+         stroke-width="2" stroke="#6d6d6d"
+         fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Back
+  </button>
+
+  <div class="top-nav">
+  <a href="/photo-gallery.html">Photo Gallery</a>
+  <a href="/gift-registry.html">Gift Registry</a>
+  <a href="/our-story.html">Our Story</a>
+  <a href="/wedding-party.html">Wedding Party</a>
+  <a href="/wedding-info.html">Wedding Info</a>
+  <a href="/venue-map.html">Venue & Map</a>
+  <a href="/travel-info.html">Travel Info</a>
+  <a href="/updates.html">Updates</a>
+  <a href="/faq.html">FAQ</a>
+</div>
+
+
+</div>
+
+<header class="page-header">
+  <h1 id="coupleName">Loading...</h1>
+  <div class="subtitle">
+    <span class="gift-icon">🎁</span>
+    Gift Registry
+  </div>
+
+  <div class="info-banner">
+    Control your gift registry in one place.
+    View the Quick User Guide for this page
+    <span id="openGuide" class="guide-link">here</span>.
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- FORM -->
+  <div class="form">
+    <h2>Add / Edit Gift</h2>
+
+
+    <div class="form-grid">
+
+  <!-- CATEGORY -->
+  <select id="category">
+    <option value="">Choose category</option>
+  </select>
+
+  <input id="title" placeholder="Gift name" disabled />
+  <input id="price" placeholder="Price" disabled />
+  <input id="qty" type="number" placeholder="Quantity" disabled />
+  <input id="link" placeholder="Store link" disabled />
+</div>
+
+
+    <button id="saveBtn">Save gift</button>
+  </div>
+
+  <!-- TABLE -->
+  <h2>Gift List</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Gift</th>
+          <th>Price</th>
+          <th>Qty</th>
+          <th>Link</th>
+         <th>Update / Delete</th>
+        </tr>
+      </thead>
+      <tbody id="giftTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- DELETE MODAL -->
+<div id="confirmModal" class="modal hidden">
+  <div class="modal-box">
+    <p>Delete this gift?</p>
+    <button onclick="confirmDelete()">Yes</button>
+    <button onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden">Gift saved!</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+/* CONFIG */
+const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* TOKEN */
+const params = new URLSearchParams(window.location.search);
+const token =
+  params.get("t") ||
+  params.get("token") ||
+  sessionStorage.getItem("rsvpToken") ||
+  "";
+
+if (token) sessionStorage.setItem("rsvpToken", token);
+
+/* STATE */
+let editingId = null;
+let deleteId = null;
+
+/* LOAD COUPLE NAME */
+function cap(s){ return s ? s[0].toUpperCase() + s.slice(1) : ""; }
+
+async function loadCoupleName(){
+  if (!token) return;
+  const { data } = await supabase
+    .from("sites")
+    .select("slug")
+    .eq("edit_token", token)
+    .single();
+
+  if (!data) return;
+  const [a,b] = (data.slug || "").split("-");
+  document.getElementById("coupleName").textContent =
+    `${cap(a)} & ${cap(b)}`;
+}
+
+/* LOAD GIFTS */
+async function loadGifts() {
+  const { data } = await supabase
+    .from("gift_registry_items")
+    .select("*")
+    .eq("edit_token", token)
+    .order("created_at");
+
+  renderTable(data || []);
+}
+
+
+const categories = [
+  ["cash","Honeymoon Fund"],
+  ["home","Home"],
+  ["kitchen","Kitchen"],
+  ["personalized","Personalized"],
+  ["experiences","Experiences"],
+  ["travel","Travel"],
+  ["tech","Tech"],
+  ["other","Surprises"]
+
+];
+
+const categorySelect = document.getElementById("category");
+const formInputs = [
+  title, price, qty, link
+];
+
+// fill dropdown
+categories.forEach(c => {
+  const opt = document.createElement("option");
+  opt.value = c[0];
+  opt.textContent = c[1];
+  categorySelect.appendChild(opt);
+});
+
+// enable inputs after category chosen
+categorySelect.addEventListener("change", () => {
+  const enabled = !!categorySelect.value;
+  formInputs.forEach(i => i.disabled = !enabled);
+});
+
+function showErrorToast() {
+  const t = document.getElementById("toastError");
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2000);
+}
+
+
+/* RENDER */
+function renderTable(gifts) {
+  const tbody = document.getElementById("giftTable");
+  tbody.innerHTML = "";
+
+  gifts.forEach((g, index) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${index + 1}</td> <!-- # -->
+        <td>${g.title}</td>
+        <td>${g.price || ""}</td>
+        <td>${g.quantity}</td>
+        <td>
+          ${
+            g.link
+              ? `<a href="${g.link}" target="_blank">${displayLink(g.link)}</a>`
+              : ""
+          }
+        </td>
+        <td>
+          <span class="action" onclick="editGift('${g.id}')">✏️</span>
+          &nbsp;
+          <span class="action" onclick="askDelete('${g.id}')">✕</span>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+/* SAVE */
+document.getElementById("saveBtn").onclick = async () => {
+  if (!categorySelect.value) {
+    showErrorToast();
+    return;
+  }
+
+  const btn = document.getElementById("saveBtn");
+  if (btn.disabled) return;
+
+  btn.disabled = true;
+  btn.textContent = "Saving…";
+
+  try {
+    const payload = {
+      edit_token: token,
+      category: categorySelect.value,   // ← ВАЖНО
+      title: title.value.trim(),
+      price: price.value.trim(),
+      quantity: Number(qty.value) || 1,
+      link: normalizeLink(link.value.trim())
+    };
+
+    if (!payload.title) throw "No title";
+
+    if (editingId) {
+      await supabase
+        .from("gift_registry_items")
+        .update(payload)
+        .eq("id", editingId);
+      editingId = null;
+    } else {
+      await supabase
+        .from("gift_registry_items")
+        .insert(payload);
+    }
+
+    // reset form
+    title.value = "";
+    price.value = "";
+    qty.value = "";
+    link.value = "";
+    categorySelect.value = "";
+    formInputs.forEach(i => i.disabled = true);
+
+    showToast("Gift saved!");
+    loadGifts();
+
+  } catch {
+    alert("Save failed");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Save gift";
+  }
+};
+
+/* EDIT */
+window.editGift = async (id) => {
+  const { data } = await supabase
+    .from("gift_registry_items")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  title.value = data.title;
+  price.value = data.price || "";
+  qty.value = data.quantity;
+  link.value = data.link || "";
+  editingId = id;
+
+  // ✅ CATEGORY RESTORE
+  categorySelect.value = data.category || "";
+  formInputs.forEach(i => i.disabled = !categorySelect.value);
+};
+
+/* DELETE */
+window.askDelete = (id) => {
+  deleteId = id;
+  document.getElementById("confirmModal").classList.remove("hidden");
+};
+
+window.closeModal = () => {
+  deleteId = null;
+  document.getElementById("confirmModal").classList.add("hidden");
+};
+
+window.confirmDelete = async () => {
+  if (!deleteId) return;
+  await supabase.from("gift_registry_items").delete().eq("id", deleteId);
+  closeModal();
+  loadGifts();
+};
+
+/* TOAST */
+function showToast(text){
+  const t = document.getElementById("toast");
+  t.textContent = text;
+  t.classList.remove("hidden");
+  setTimeout(() => t.classList.add("hidden"), 2000);
+}
+
+/* BOOT */
+loadCoupleName();
+loadGifts();
+
+function normalizeLink(url) {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url)) return url;
+  return "https://" + url;
+}
+
+function displayLink(url) {
+  try {
+    const u = new URL(url);
+    return u.hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+}
+
+
+
+</script>
+
+
+<div id="toastError"
+     style="
+       position: fixed;
+       bottom: 80px;
+       right: 30px;
+       background: #cc0000;
+       color: white;
+       padding: 14px 20px;
+       border-radius: 14px;
+       font-weight: 600;
+       display: none;
+       z-index: 9999;
+">
+  Choose your category first!
+</div>
+
+
+<script>
+/* ===============================
+   TOP NAV — TOKEN + BACK
+================================ */
+
+const tokenNav = new URLSearchParams(location.search).get("t") || "";
+
+/* прокинуть token во все ссылки меню */
+document.querySelectorAll(".top-nav a").forEach(a => {
+  if (tokenNav) {
+    a.href = a.href + "?t=" + tokenNav;
+  }
+});
+
+/* back button */
+document.getElementById("backBtn")?.addEventListener("click", () => {
+  window.location.href = "/dashboard.html?t=" + tokenNav;
+});
+
+/* active nav link */
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page || "photo-gallery";
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    if (link.getAttribute("href").includes(page)) {
+      link.classList.add("active");
+    }
+  });
+});
+</script>
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttgiftregistry.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+
+<script>
+document.getElementById("openGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+</script>
+
+
+
+</body>
+</html>

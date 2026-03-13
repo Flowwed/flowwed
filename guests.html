@@ -1,0 +1,2537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Guest Manager — Ruby Edition</title>
+
+  <style>
+
+    /* ======================== */
+    /* GLOBAL PAGE BACKGROUND  */
+    /* ======================== */
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(180deg, #fff1f4, #ffffff);
+      color: #6a2a2a;
+      margin: 40px auto;
+      max-width: 1020px;
+    }
+
+    /* ============================= */
+    /*  RUBY 3D TITLE                */
+    /* ============================= */
+
+    h1 {
+      text-align: center;
+      font-size: 38px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #9c1818;
+
+      background: linear-gradient(
+        to bottom,
+        #c02828 0%,
+        #9c1818 45%,
+        #6a0f0f 100%
+      );
+      -webkit-background-clip: text;
+      color: transparent;
+
+      text-shadow: none;
+    }
+
+    /* Small couple name */
+    #coupleSmallName {
+  font-size: 21px;
+  font-weight: 648;
+  color: #9c1818;
+  margin: 0;
+  text-align: right;
+}
+
+#topMainTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #9c1818;
+  margin: 0;
+}
+
+.top-divider-line {
+  height: 2px;
+  background: linear-gradient(to right, #b41111, #e89999, #b41111);
+  margin: 6px 18px 12px 18px;
+  border-radius: 2px;
+}
+
+    /* ============================= */
+    /* RUBY GLASS BUTTON STYLE       */
+    /* ============================= */
+
+    button,
+    .footer-btn {
+      padding: 14px 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.35);
+
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+
+      cursor: pointer;
+      transition: 0.28s ease;
+
+      background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.18),
+          rgba(255,255,255,0.05)
+        ),
+        #9c1818;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.38),
+        0 3px 8px rgba(0,0,0,0.25),
+        inset 0 3px 6px rgba(255,255,255,0.22),
+        inset 0 -6px 14px rgba(70,0,20,0.35);
+
+      backdrop-filter: blur(14px) saturate(160%);
+    }
+
+    button:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,0.48),
+        0 6px 14px rgba(0,0,0,0.32),
+        inset 0 4px 10px rgba(255,255,255,0.28),
+        inset 0 -10px 18px rgba(60,0,20,0.38);
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+    /* ============================= */
+    /* FORM + TABLE SECTIONS         */
+    /* ============================= */
+
+    .section,
+    .table-section {
+      background: rgba(255,255,255,0.75);
+      padding: 18px 18px 28px 18px;
+      border-radius: 18px;
+      margin-bottom: 26px;
+
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.18),
+        0 8px 20px rgba(0,0,0,0.12),
+        inset 0 2px 6px rgba(255,255,255,0.25);
+
+      backdrop-filter: blur(18px) saturate(180%);
+    }
+
+    /* RUBY FRAME AROUND TABLE */
+    .ruby-frame-outer {
+      border: 3px solid #b41111;
+      border-radius: 16px;
+      padding: 10px;
+      margin-top: 14px;
+      box-shadow:
+        0 0 12px rgba(180,17,17,0.18),
+        inset 0 0 6px rgba(255,255,255,0.45);
+    }
+
+    .ruby-frame-inner {
+      border: 2px solid #ffcccc;
+      border-radius: 14px;
+      padding: 6px;
+    }
+
+     .addGuestHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+#addGuestTopBtn {
+  padding: 10px 20px !important;
+  font-size: 15px !important;
+  border-radius: 14px;
+  transform: scale(0.97);
+}
+
+    /* ============================= */
+    /* TWO-COLUMN RESPONSIVE FORM   */
+    /* ============================= */
+
+.guest-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.4fr 1.2fr;
+  column-gap: 18px;
+  row-gap: 16px;
+}    
+
+.field label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 700;
+      color: #7e2a2a;
+      font-size: 14px;
+    }
+
+    .field input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(160,0,40,0.25);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .full-width {
+      grid-column: 1 / 3;
+      margin-top: 4px;
+    }
+
+/* SCROLL CONTAINER */
+.scroll-container {
+  position: relative;
+  height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 2px;
+
+  /* Чтобы полоса не прыгала */
+  scrollbar-gutter: stable;
+}
+
+/* Добавляем "хак", чтобы скролл всегда был доступен */
+.scroll-container::after {
+  content: "";
+  display: block;
+  height: 140px;
+}
+
+/* SCROLL CONTAINER */
+.scroll-container {
+  position: relative;
+  height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+
+/* Хак чтобы скролл был всегда */
+.scroll-container::after {
+  content: "";
+  display: block;
+  height: 140px;
+}
+
+/* ===== Чистый RUBY Scrollbar ===== */
+
+.scroll-container::-webkit-scrollbar {
+  width: 9px; /* тонко и аккуратно */
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #ffe6eb;     /* мягкий пастельный фон */
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #b41111;     /* ← НАСТОЯЩИЙ чистый рубиновый */
+  border-radius: 10px;
+  border: 2px solid #ffe6eb;  /* маленькая рамка — красиво */
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #9c1818;     /* чуть темнее при hover */
+}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+    }
+
+    /* MAKE TABLE HEADER STICKY */
+    #guestTable thead th {
+    position: sticky;
+    top: 0;
+    background: #faf4f6;
+    z-index: 20;
+  }
+
+    th, td {
+      padding: 10px 6px;
+      border-bottom: 1px solid #e9d4d4;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    th {
+      color: #9c1818;
+      font-weight: 800;
+    }
+
+ .footer-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;     /* было 20px — уменьшили */
+  flex-wrap: wrap;
+}
+
+.footer-buttons .footer-btn {
+  padding: 10px 18px;   /* уменьшено */
+  font-size: 14px;      /* уменьшено */
+  border-radius: 12px;  /* плавнее и компактнее */
+  transform: scale(0.96);
+}
+
+.row-error {
+  background: #ffe6ec !important;
+  box-shadow: inset 0 0 0 3px #ff0033 !important;
+}
+
+    /* ============================= */
+    /* EMAIL COMPOSER (popup)       */
+    /* ============================= */
+
+    .email-composer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 360px;
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+      z-index: 9999;
+      display: none;
+    }
+
+    .composer-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #b41111;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-btn {
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .composer-label {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .composer-input,
+    .composer-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(180,0,40,0.25);
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .composer-textarea {
+      height: 110px;
+      resize: vertical;
+    }
+
+    .composer-footer {
+  margin-top: 10px;
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+  background: #fff7f9;
+  border: 1px solid #ffd6e2;
+  border-radius: 10px;
+  pointer-events: none; /* нельзя редактировать */
+  user-select: none;    /* нельзя выделять */
+}
+
+
+    .composer-send {
+      margin-top: 14px;
+      background: #b41111;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+     
+     .email-composer {
+  overflow-y: auto;
+ }
+
+    .expand-btn {
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(180,0,40,0.15);
+  transition: 0.2s ease;
+}
+
+.expand-btn:hover {
+  background: rgba(180,0,40,0.28);
+  transform: scale(1.15);
+}
+
+   .email-composer.expanded {
+  width: 900px !important;
+  height: 540px !important;
+  right: 20px;
+  bottom: 20px;
+}
+
+.email-composer.expanded .composer-textarea {
+  height: 250px !important;
+}
+
+    /* TOAST */
+    #greenToast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: 0.3s ease;
+      z-index: 10000;
+    }
+    #greenToast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+/* ====== FILTER BUTTONS (small ruby controls) ====== */
+.filter-btn {
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.15),
+      rgba(255,255,255,0.04)
+    ),
+    #b41111;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.22s ease;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    inset 0 -4px 10px rgba(60,0,20,0.3);
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 12px rgba(0,0,0,0.28),
+    inset 0 2px 6px rgba(255,255,255,0.22),
+    inset 0 -5px 12px rgba(60,0,20,0.32);
+}
+
+.filter-btn.active {
+  outline: 2px solid #fff;
+}
+
+.table-action-btn {
+  background: #b41111;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.22),
+    inset 0 2px 3px rgba(255,255,255,0.15);
+}
+
+.table-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 16px rgba(0,0,0,0.32),
+    inset 0 3px 4px rgba(255,255,255,0.2);
+}
+
+/* Верхний хедер: заголовок слева, пара справа */
+.top-logo-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 18px 6px 18px;
+  margin: 0;
+}
+
+.top-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header layout: Guest List + inline bubble */
+.guestlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.guestlist-header {
+  justify-content: flex-start; /* ← КЛЮЧ */
+}
+
+.guestlist-header h2 {
+  white-space: nowrap;
+}
+
+.info-bubble-inline {
+  flex: 1;          /* ← вот ЭТО и есть «растянуть влево» */
+  margin-left: 16px;
+}
+
+
+/* Align <h2> nicely */
+.guestlist-header h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 19px;
+  color: #9c1818;
+}
+
+/* Inline bubble */
+.info-bubble-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #fff7f7;
+  border: 2px solid #ffcccc;
+  padding: 10px 14px;
+  border-radius: 12px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  max-width: 100%;
+}
+
+/* Ruby “i” icon */
+.info-icon-inline {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  background: #b41111;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 2px 3px rgba(255,255,255,0.25);
+}
+
+/* Main text */
+.info-text-inline {
+  font-size: 13px;
+  color: #7e2a2a;
+  font-weight: 600;
+  max-width: 260px;
+  line-height: 1.28;
+}
+
+/* Icons inline block */
+.info-icons-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 13px;
+  color: #7e2a2a;
+  font-weight: 600;
+}
+
+
+.info-bubble-inline {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ТЕКСТ */
+.info-text-inline {
+  white-space: nowrap;
+}
+
+/* WARNING ICONS — В КРАЙ ВПРАВО */
+.info-icons-inline {
+  margin-left: auto;   /* ← ВОТ КЛЮЧ */
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+
+
+/* Colors for icons */
+.icon-yes   { color: green; font-size: 18px; }
+.icon-no    { color: red; font-size: 18px; }
+.icon-maybe { color: #d4a300; font-size: 18px; }
+.icon-none  { color: #ff9800; font-size: 18px; }
+
+/* On smaller screens — bubble goes below */
+@media(max-width: 900px) {
+  .guestlist-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .info-bubble-inline {
+    max-width: 100%;
+  }
+
+.addGuestHeader h2 {
+  font-size: 15px;   /* любой размер */
+  font-weight: 700;  /* по желанию */
+ }
+
+.field input, 
+.field select {
+  border: 1px solid rgba(160,0,40,0.25);
+  transition: 0.25s ease;
+}
+
+.scroll-container table thead th {
+  position: sticky;
+  top: 0;
+  background: #fff6f8; /* или твой ruby-белый фон */
+  z-index: 5;
+}
+
+}
+
+ </style>
+
+ <style>
+
+@keyframes pulseNotice {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+#sendingNote.pulse {
+  animation: pulseNotice 2s ease-in-out infinite;
+}
+
+ </style>
+
+<style id="compact-header-style">
+/* --- SUPER COMPACT FORM HEADER --- */
+.addGuestHeader {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+
+  padding: 4px 2px 6px 2px !important;
+  margin-bottom: 10px !important;
+  border-bottom: 1px solid rgba(180, 17, 17, 0.25) !important;
+}
+
+.addGuestHeader h2 {
+  font-size: 17px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-weight: 700 !important;
+  color: #8b1a1a !important;
+}
+
+#addGuestTopBtn {
+  padding: 6px 15px !important;
+  font-size: 13px !important;
+  border-radius: 8px !important;
+  transform: none !important;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.25),
+    rgba(255,255,255,0.08)
+  ) !important,
+  #b41111 !important;
+
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.22) !important,
+    inset 0 2px 4px rgba(255,255,255,0.18) !important;
+}
+
+#addGuestTopBtn:hover {
+  transform: translateY(-2px) !important;
+}
+
+#addGuestTopBtn:active {
+  transform: scale(0.96) !important;
+}
+</style>
+
+<style>
+/* --- ALIGN GUEST LIST WITH ADD GUEST --- */
+
+.guestlist-header {
+  padding-left: 18px !important;
+}
+
+#filterBar {
+  padding-left: 18px !important;
+}
+
+/* Таблица – выравниваем, но НЕ сужаем */
+.ruby-frame-outer {
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.input-error {
+  border: 2px solid #ff0033 !important;
+  box-shadow: 0 0 6px rgba(255, 0, 50, 0.4);
+}
+
+/* Menu View*/
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 0 !important;
+  margin-bottom: 30px !important;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  padding: 14px 0 10px !important; 
+  font-size: 16px;
+  font-weight: 500;
+  color: #7a6772;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #7a6772;
+  transition: 0.2s;
+}
+
+
+.top-nav a.active {
+  color: #7a6772 !important;  /* ruby */
+  font-weight: 550 !important;
+  text-shadow: 0 0 4px rgba(180,17,17,0.25);
+}
+
+
+.top-nav a:hover {
+  color: #d6003d;
+}
+
+/* Back Button */
+.back-btn {
+  position: absolute;
+  left: -90px;            /* ↓↓↓ больше пространства справа */
+  top: 12px;
+
+  padding: 3px 10px;     /* уменьшили кнопку */
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(196, 0, 55, 0.25);
+
+  color: #b1162a;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
+
+  transition: 0.25s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.45);
+  border-color: rgba(196,0,55,0.45);
+  box-shadow: 0 4px 12px rgba(196,0,55,0.15);
+  transform: translateY(-1px);
+}
+
+#sendTestEmailFooter {
+  margin-left: auto !important;
+}
+
+/* === Narrow Add Guest form === */
+
+.add-guest-section {
+  flex: 1;
+  max-width: 100%;
+}
+.add-guest-ai-layout {
+  display: flex;
+  align-items: stretch; /* 🔥 КЛЮЧЕВОЕ */
+}
+
+.ai-assistant-card {
+  background: rgba(255,255,255,0.75);
+
+  flex: 1;              /* занимает всё оставшееся место */
+  max-width: none;      /* снимаем жёсткий потолок */
+
+  margin-left: 24px;
+  margin-bottom: 26px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.12),
+    inset 0 2px 6px rgba(255,255,255,0.25);
+}
+
+/* ============================= */
+/* AI ASSISTANT — UI ONLY        */
+/* ============================= */
+
+/* этот блок теперь не нужен — всё уже есть выше
+.ai-assistant-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  margin-left: 24px;
+  padding: 16px;
+
+  border-radius: 18px;
+}
+*/
+/* =========================
+   AI CHAT — MESSAGES
+========================= */
+
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ffd6e2;
+}
+
+/* LEFT PART grouped properly */
+.ai-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;   /* ← контролируем расстояние между кругом и текстом */
+}
+
+.ai-header-text strong,
+.ai-header-text span {
+  line-height: 1.14;   /* уменьшает вертикальный воздух */
+}
+
+/* RIGHT PART stays the same */
+.ai-voice-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ai-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-image: url("/images/emily.jpeg"); /* ← ВОТ */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ai-messages {
+  height: 180px;
+  overflow-y: auto;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ai-msg {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+/* Bot (Emily) */
+.ai-msg-bot {
+  background: #fff3f6;
+  border: 1px solid #ffd6e2;
+  align-self: flex-start;
+}
+
+/* User (later) */
+.ai-msg-user {
+  background: #b41111;
+  color: white;
+  align-self: flex-end;
+}
+
+
+.ai-header-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+
+  background-image: url("images/emily.jpeg"); /* ← ВАЖНО */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  box-shadow:
+    0 4px 12px rgba(180, 17, 17, 0.35),
+    inset 0 0 0 2px rgba(255,255,255,0.85);
+}
+
+.ai-header-avatar {
+  animation: emilyBreath 4.6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes emilyBreath {
+  0%   { transform: scale(1);     box-shadow: 0 0 10px rgba(180,0,40,0.25); }
+  50%  { transform: scale(1.06);  box-shadow: 0 0 20px rgba(180,0,40,0.45); }
+  100% { transform: scale(1);     box-shadow: 0 0 10px rgba(180,0,40,0.25); }
+}
+
+
+/* =========================
+   INPUT ROW
+========================= */
+
+.ai-input-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ai-input-row input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(160,0,40,0.25);
+  font-size: 14px;
+}
+
+.ai-input-row button {
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+/* =============================
+   AI VOICE EQUALIZER
+============================= */
+
+.ai-equalizer {
+  width: 26px;
+
+  margin-left: 14px;
+  margin-bottom: 26px; /* ← чтобы совпал низ */
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  padding: 10px 6px;
+
+  background: rgba(255,255,255,0.6);
+  border-radius: 16px;
+
+  box-shadow:
+    0 14px 32px rgba(0,0,0,0.18),
+    inset 0 0 8px rgba(255,255,255,0.55);
+
+  backdrop-filter: blur(14px) saturate(160%);
+}
+
+/* bars */
+.ai-equalizer span {
+  display: block;
+  width: 3px;
+  height: 20%;
+  border-radius: 3px;
+
+  background: linear-gradient(
+    to top,
+    #6a0f0f,
+    #b41111,
+    #ffb3b3
+  );
+
+  box-shadow:
+    0 0 6px rgba(180,17,17,0.6),
+    inset 0 0 4px rgba(255,255,255,0.35);
+
+  transform-origin: bottom;
+  animation: eqIdle 8.2s ease-in-out infinite;
+}
+
+/* offsets */
+.ai-equalizer span:nth-child(2) { animation-delay: .2s }
+.ai-equalizer span:nth-child(3) { animation-delay: .4s }
+.ai-equalizer span:nth-child(4) { animation-delay: .1s }
+.ai-equalizer span:nth-child(5) { animation-delay: .3s }
+.ai-equalizer span:nth-child(6) { animation-delay: .5s }
+
+/* bars — visual style only */
+.ai-equalizer span {
+  display: block;
+  width: 3px;
+  height: 20%;
+  border-radius: 3px;
+
+  background: linear-gradient(
+    to top,
+    #6a0f0f,
+    #b41111,
+    #ffb3b3
+  );
+
+  box-shadow:
+    0 0 6px rgba(180,17,17,0.6),
+    inset 0 0 4px rgba(255,255,255,0.35);
+}
+
+/* =============================
+   AI EQUALIZER — SMOOTH & RANDOM
+============================= */
+
+:root {
+  --eq-speed: 3;
+}
+
+.ai-equalizer span {
+  transform-origin: bottom;
+  animation-name: eqFloat;
+  animation-timing-function: cubic-bezier(.4,0,.2,1);
+  animation-iteration-count: infinite;
+}
+
+/* individual timing (asynchronous) */
+.ai-equalizer span:nth-child(1) {
+  animation-duration: calc(3.6s * var(--eq-speed));
+  animation-delay: -0.8s;
+}
+
+.ai-equalizer span:nth-child(2) {
+  animation-duration: calc(4.2s * var(--eq-speed));
+  animation-delay: -1.4s;
+}
+
+.ai-equalizer span:nth-child(3) {
+  animation-duration: calc(3.1s * var(--eq-speed));
+  animation-delay: -2.2s;
+}
+
+.ai-equalizer span:nth-child(4) {
+  animation-duration: calc(4.8s * var(--eq-speed));
+  animation-delay: -0.6s;
+}
+
+.ai-equalizer span:nth-child(5) {
+  animation-duration: calc(3.9s * var(--eq-speed));
+  animation-delay: -1.9s;
+}
+
+.ai-equalizer span:nth-child(6) {
+  animation-duration: calc(4.5s * var(--eq-speed));
+  animation-delay: -2.7s;
+}
+/* idle — slow breathing */
+@keyframes eqFloat {
+  0%   { transform: scaleY(0.25); opacity: 0.6; }
+  20%  { transform: scaleY(0.55); opacity: 0.8; }
+  40%  { transform: scaleY(0.35); opacity: 0.7; }
+  60%  { transform: scaleY(0.75); opacity: 0.9; }
+  80%  { transform: scaleY(0.45); opacity: 0.75; }
+  100% { transform: scaleY(0.3);  opacity: 0.6; }
+}
+
+/* speaking — stronger but calm */
+.ai-equalizer.active span {
+  animation-name: eqSpeakSoft;
+  opacity: 1;
+}
+
+@keyframes eqSpeakSoft {
+  0%   { transform: scaleY(0.4); }
+  30%  { transform: scaleY(1.1); }
+  55%  { transform: scaleY(0.6); }
+  75%  { transform: scaleY(0.95); }
+  100% { transform: scaleY(0.45); }
+}
+/* === FINAL AI AVATAR FIX === */
+
+.ai-voice-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+
+  background: transparent;
+  border: 1.5px solid rgba(180, 17, 17, 0.35); /* контур */
+
+  color: #8b1a1a;
+  font-size: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 6px rgba(180, 17, 17, 0.15);
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ai-voice-btn:hover {
+  background: rgba(180, 17, 17, 0.06);
+  box-shadow:
+    0 4px 10px rgba(180, 17, 17, 0.25);
+}
+
+.ai-voice-btn:active {
+  transform: scale(0.95);
+}
+
+.ai-voice-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================
+   MIC BUTTON STATES
+========================= */
+
+/* БАЗА */
+.ai-voice-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== MIC ON — green glow ===== */
+.ai-voice-btn.mic-on {
+  animation: micGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes micGlow {
+  0%   { box-shadow: 0 0 0 2px rgba(90,170,130,0.25), 0 0 10px rgba(90,170,130,0.35); }
+  50%  { box-shadow: 0 0 0 2px rgba(90,170,130,0.45), 0 0 18px rgba(90,170,130,0.45); }
+  100% { box-shadow: 0 0 0 2px rgba(90,170,130,0.25), 0 0 10px rgba(90,170,130,0.35); }
+}
+/* ===== MIC OFF — crossed circle ===== */
+.ai-voice-btn.mic-off {
+  opacity: 0.45;
+  border-color: rgba(140, 0, 0, 0.45);
+}
+
+.ai-voice-btn.mic-off::before,
+.ai-voice-btn.mic-off::after {
+  display: none;
+}
+
+
+/* текст слева */
+.listening-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b1a1a;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: 0.25s ease;
+  white-space: nowrap;
+}
+
+/* когда слушает */
+.listening-text.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+.top-logo-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.top-info-bubble {
+  flex: 1;
+  max-width: 520px;
+  margin: 0 24px;
+
+  padding: 8px 16px;
+  text-align: center;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(14px);
+  border-radius: 14px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #7a3a4a;
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.12),
+    inset 0 1px 2px rgba(255,255,255,0.6);
+}
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<!-- ======= TOP NAV + BACK BUTTON (COPY FROM PREVIEW PAGE) ======= -->
+
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="#6d6d6d" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Back
+  </button>
+
+  <div class="top-nav">
+    <a href="#">Guest Hub</a>
+    <a href="#">Save The Date</a>
+    <a href="#">RSVP</a>
+    <a href="#">Seating Chart</a>
+    <a href="#">Registry</a>
+    <a href="#">Budget</a>
+    <a href="#">Web Manager</a>
+    <a href="#">Wed Reports</a>
+  </div>
+
+
+</div>
+
+<div class="top-logo-title">
+  <h1 id="topMainTitle">Guest Hub</h1>
+
+<div class="top-info-bubble">
+  Manage your guests from here.
+  Explore the Guest Hub Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>.
+</div>
+  <div id="coupleSmallName"></div>
+</div>
+
+<div class="top-divider-line"></div>
+
+
+  <div class="add-guest-ai-layout">
+
+  <!-- ADD GUEST FORM -->
+  <div class="section add-guest-section">
+
+
+  <div class="addGuestHeader">
+    <h2>Add Guest</h2>
+    <button id="addGuestTopBtn" class="primary">Add Guest</button>
+  </div>
+
+  <form id="guestForm" class="guest-grid">
+
+      <div class="field">
+  <label>Name *</label>
+  <input id="fullName" required>
+</div>
+
+      <div class="field">
+        <label>Email *</label>
+        <input id="email" type="email" required>
+      </div>
+
+      <div class="field">
+  <label>Phone *</label>
+
+  <div style="display:flex; gap:8px;">
+    <select id="countryCode" style="
+      padding:10px;
+      border-radius:10px;
+      border:1px solid rgba(160,0,40,0.25);
+      background:white;
+      width:85px;
+    " required>
+      <option value="" disabled selected>🌍</option>
+      <option value="+1">🇺🇸 +1</option> 
+      <option value="+33">🇫🇷 +33</option>
+      <option value="+34">🇪🇸 +34</option>
+      <option value="+39">🇮🇹 +39</option>
+      <option value="+44">🇬🇧 +44</option>
+      <option value="+49">🇩🇪 +49</option>
+      <option value="+61">🇦🇺 +61</option>
+      <option value="+81">🇯🇵 +81</option>
+      <option value="+90">🇹🇷 +90</option>
+      <option value="+972">🇮🇱 +972</option>
+      <option value="+994">🇦🇿 +994</option>
+
+    </select>
+
+
+    <input id="phone" required style="flex:1;">
+  </div>
+
+</div>
+
+    </form>
+  </div>
+
+<!-- RIGHT: AI ASSISTANT -->
+
+<div class="section ai-assistant-card" style="display:none;">
+  <iframe
+    id="emilyFrame"
+    style="
+      width:100%;
+      height:100%;
+      border:none;
+      border-radius:18px;
+    "
+  ></iframe>
+</div>
+
+
+</div> <!-- END add-guest-ai-layout -->
+  
+
+<!-- GUEST LIST TABLE -->
+<div class="guestlist-header">
+  <h2>Guest List</h2>
+
+  <div class="info-bubble-inline">
+    <div class="info-icon-inline">i</div>
+
+    <div class="info-text-inline">
+      You can track and connect with your guests here.
+      Use the filters to organize your list.
+    </div>
+
+    <div class="info-icons-inline">
+      <span class="icon-yes">✔</span> Yes
+      <span class="icon-no">✘</span> No
+      <span class="icon-maybe">❔</span> Maybe
+      <span class="icon-none">⚠️</span> No Response
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div id="filterBar" style="
+  display:flex;
+  gap:10px;
+  margin-bottom:12px;
+">
+  <button class="filter-btn" data-filter="all">All</button>
+
+<!--
+<button class="filter-btn" data-filter="std-yes">SD ✔</button>
+<button class="filter-btn" data-filter="std-maybe">SD ❔</button>
+<button class="filter-btn" data-filter="std-no">SD ✘</button>
+<button class="filter-btn" data-filter="std-none">SD ⚠️</button>
+-->
+
+  <button class="filter-btn" data-filter="rsvp-yes">RSVP ✔</button>
+  <button class="filter-btn" data-filter="rsvp-no">RSVP ✘</button>
+  <button class="filter-btn" data-filter="rsvp-maybe">RSVP ❔</button>
+  <button class="filter-btn" data-filter="rsvp-none">RSVP ⚠️</button>
+
+  <button class="filter-btn" data-filter="clear" style="margin-left:auto;">
+    Clear Filters
+  </button>
+</div>
+
+
+    <div class="ruby-frame-outer">
+      <div class="ruby-frame-inner">
+        <div class="scroll-container">
+
+          <table id="guestTable">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>#</th>
+                <th>First</th>
+                <th>Last</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>RSVP</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-buttons">
+      <button id="deleteSelected" class="footer-btn">Delete Selected</button>
+      <button id="sendEmailBtn" class="footer-btn">Send Email &amp; SMS</button>
+      <button id="exportCsv" class="footer-btn">Download & Print</button>
+      <button id="sendTestEmailFooter"class="footer-btn">Send Test Email</button>
+    </div>
+  </div>
+
+  <!-- UNIVERSAL EMAIL COMPOSER -->
+  <div class="email-composer" id="emailComposer">
+
+    <div class="composer-header">
+  <span>Send Email & SMS</span>
+
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span id="composerExpand" class="expand-btn">⤢</span>
+    <span id="composerClose" class="close-btn">&times;</span>
+  </div>
+</div>
+    <label class="composer-label">To Email(s):</label>
+    <input type="text" id="composerEmails" class="composer-input">
+
+    <label class="composer-label">To Phone(s):</label>
+    <input type="text" id="composerPhones" class="composer-input">
+
+    <label class="composer-label">Subject:</label>
+    <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
+
+    <label class="composer-label">Message:</label>
+    <textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
+
+   <div id="composerFooter" class="composer-footer">
+   This message is sent from a notification-only address.<br>
+   If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
+  </div>
+
+    <button id="composerSend" class="composer-send">Send Email & SMS</button>
+  </div>
+
+  <!-- TOAST -->
+  <div id="greenToast">Message Sent!</div>
+
+<script>
+const EMILY_ENABLED = false;
+</script>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+let guests = [];
+let coupleFullName = "";
+const tbody = document.querySelector("#guestTable tbody");
+
+// ======================================================
+// LOAD COUPLE NAME (dashboard style)
+// ======================================================
+async function loadCoupleName() {
+  const token = new URLSearchParams(location.search).get("t");
+
+  const { data } = await supabase
+    .from("sites")
+    .select("slug")
+    .eq("edit_token", token)
+    .single();
+
+  if (!data || !data.slug) return;
+
+  const parts = data.slug.split("-");
+  const bride = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+  const groom = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+
+  coupleFullName = `${bride} & ${groom}`;
+  document.getElementById("coupleSmallName").textContent = coupleFullName;
+
+ }
+ loadCoupleName();
+
+// ======================================================
+// GET ICON
+// ======================================================
+function getIcon(status) {
+  const s = (status || "").toLowerCase();
+  if (s === "yes") return `<span style="color:green;font-size:20px;">✔</span>`;
+  if (s === "no") return `<span style="color:red;font-size:20px;">✘</span>`;
+  if (s === "maybe") return `<span style="color:#ffd400;font-size:20px;">❔</span>`;
+  return `<span style="color:#ff9800;font-size:20px;">⚠️</span>`;
+}
+
+// ======================================================
+// LOAD GUESTS
+// ======================================================
+async function loadGuests() {
+  const token = new URLSearchParams(location.search).get("t");
+  if (!token) return;
+
+  const { data } = await supabase
+    .from("guests")
+    .select("*")
+    .eq("token", token)
+    .order("created_at");
+
+  guests = data.map(g => ({
+    id: g.id,
+    first: g.first_name || "",
+    last: g.last_name || "",
+    email: g.email || "",
+    phone: g.phone || "",
+    rsvp: g.rsvp_status || ""
+  }));
+
+  render();
+}
+loadGuests();
+
+// ======================================================
+// RENDER TABLE
+// ======================================================
+
+
+function render() {
+
+  let html = "";
+
+  guests.forEach((g, i) => {
+
+    html += `
+      <tr data-id="${g.id}">
+        <td>
+          <input type="checkbox"
+                 class="rowCheck"
+                 data-id="${g.id}"
+                 data-email="${g.email}"
+                 data-phone="${g.phone}">
+        </td>
+
+        <td>${i + 1}</td>
+
+        <!-- Editable Fields -->
+        <td contenteditable="true" data-field="first">${g.first}</td>
+        <td contenteditable="true" data-field="last">${g.last}</td>
+        <td contenteditable="true" data-field="email">${g.email}</td>
+        <td contenteditable="true" data-field="phone">${g.phone}</td>
+
+        <!-- Keep icons for now -->
+        <td data-field="rsvp">${getIcon(g.rsvp)}</td>
+      </tr>
+    `;
+
+  });
+
+  tbody.innerHTML = html;
+
+}
+
+
+
+// 🔽 Реагируем на выбор одиночных чекбоксов
+document.addEventListener("change", (e) => {
+  if (e.target.classList.contains("rowCheck")) {
+    refreshComposerFields();
+  }
+
+  // 🔽 Реагируем на master checkbox (#selectAll)
+  if (e.target.id === "selectAll") {
+    // ждём, пока таблица отметит все чекбоксы
+    setTimeout(() => refreshComposerFields(), 10);
+  }
+});
+
+// ======================================================
+// REMOVE ERROR ON INLINE EDIT
+// ======================================================
+tbody.addEventListener("input", (e) => {
+  if (!e.target.matches("[contenteditable]")) return;
+
+  const row = e.target.closest("tr");
+
+  row.classList.remove("row-error");
+  e.target.classList.remove("input-error");
+});
+
+
+// ======================================================
+// INLINE EDIT HANDLER — SAVE ON BLUR
+// ======================================================
+tbody.addEventListener("blur", async (e) => {
+  if (!e.target.matches("[contenteditable]")) return;
+
+  const row = e.target.closest("tr");
+  const id = row.dataset.id;
+  const field = e.target.dataset.field;
+  const newValue = e.target.innerText.trim();
+
+  const guest = guests.find(g => g.id == id);
+
+  const map = {
+    first: "first_name",
+    last: "last_name",
+    email: "email",
+    phone: "phone"
+  };
+
+  const sbColumn = map[field];
+
+  const { error } = await supabase
+    .from("guests")
+    .update({ [sbColumn]: newValue })
+    .eq("id", id);
+
+  if (error) {
+    // Ошибка (например duplicate email)
+    e.target.style.background = "#ffcccc";
+    showToastBox(error.message || "Update failed", "error");
+
+    // возвращаем старое значение
+    e.target.innerText = guest[field];
+
+  } else {
+    // Только после успеха меняем локальный массив
+    guest[field] = newValue;
+
+    e.target.style.background = "#d9ffe2";
+    setTimeout(() => (e.target.style.background = ""), 400);
+  }
+
+}, true);
+// ======================================================
+// SAVE ON ENTER
+// ======================================================
+tbody.addEventListener("keydown", (e) => {
+  if (!e.target.matches("[contenteditable]")) return;
+
+  if (e.key === "Enter") {
+    e.preventDefault();
+    e.target.blur(); // trigger save
+  }
+});
+
+
+/* ============================
+   ADVANCED TOAST (success/error)
+============================ */
+window.showToastBox = function (msg, type = "success") {
+  const box = document.getElementById("toastBox");
+  const toast = document.createElement("div");
+
+  toast.style.padding = "12px 18px";
+  toast.style.borderRadius = "10px";
+  toast.style.fontWeight = "600";
+  toast.style.fontSize = "14px";
+  toast.style.color = "white";
+  toast.style.boxShadow = "0 6px 14px rgba(0,0,0,0.25)";
+  toast.style.opacity = "0";
+  toast.style.transform = "translateY(-10px)";
+  toast.style.transition = "0.3s ease";
+
+  toast.style.background = type === "error" ? "#d20000" : "#28a745";
+  toast.textContent = msg;
+
+  box.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "1";
+    toast.style.transform = "translateY(0)";
+  }, 50);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(-10px)";
+    setTimeout(() => toast.remove(), 300);
+  }, 2600);
+}
+
+/* ============================
+   DELIVERY NOTICE POPUP
+============================ */
+function showDeliveryNotice() {
+  document.getElementById("deliveryNoticeOverlay").style.display = "flex";
+}
+
+function markRowError(email) {
+  const row = document.querySelector(`.rowCheck[data-email="${email}"]`)?.closest("tr");
+  if (row) {
+    row.classList.add("row-error");
+  }
+}
+
+
+// ======================================================
+// ADD GUEST
+// ======================================================
+
+document.getElementById("addGuestTopBtn").onclick = () => {
+  document.getElementById("guestForm").requestSubmit();
+};
+
+document.getElementById("guestForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+const fullNameInput = document.getElementById("fullName");
+const emailInput = document.getElementById("email");
+const phoneInput = document.getElementById("phone");
+const countryCodeInput = document.getElementById("countryCode");
+
+const name = fullNameInput.value.trim().replace(/\s+/g, " ");
+
+const parts = name.split(" ");
+const first = parts[0];
+const last = parts.slice(1).join(" ");
+
+const emailValue = emailInput.value.trim();
+const phoneValue = countryCodeInput.value + phoneInput.value.trim();
+
+  const token = new URLSearchParams(location.search).get("t");
+
+  if (!name || !emailValue || !phoneInput.value.trim() || !countryCodeInput.value)
+
+
+    return alert("Fill all fields and select country code!");
+
+  // === CHECK EMAIL DUPLICATE ===
+const emailExists = guests.some(g => g.email.toLowerCase() === emailValue.toLowerCase());
+if (emailExists) {
+    showToastBox("This email already exists!", "error");
+
+emailInput.classList.add("input-error");
+
+setTimeout(() => emailInput.classList.remove("input-error"), 2000);
+
+    return;
+}
+
+const { data, error } = await supabase
+  .from("guests")
+  .insert([{ first_name:first, last_name:last, email:emailValue, phone:phoneValue, token }])
+  .select();
+
+if (error) {
+  console.error(error);
+  showToastBox(error.message, "error");
+  return;
+}
+
+if (!data || !data.length) {
+  showToastBox("Guest was not saved.", "error");
+  return;
+}
+  guests.push({
+    id: data[0].id,
+    first,
+    last,
+    email: emailValue,
+    phone: phoneValue,
+    std: "",
+    rsvp: ""
+  });
+
+render();
+e.target.reset();
+countryCodeInput.value = "";
+
+// вернуть фокус в поле Name
+document.getElementById("fullName").focus();
+// ================================
+// GREEN TOAST — Guest Added
+// ================================
+const toast = document.getElementById("greenToast");
+toast.textContent = "Guest added & saved!";
+toast.classList.add("show");
+
+setTimeout(() => {
+  toast.classList.remove("show");
+}, 1500);
+
+});
+
+
+// ======================================================
+// SELECT ALL
+// ======================================================
+document.getElementById("selectAll").onclick = e => {
+  const all = document.querySelectorAll(".rowCheck");
+  all.forEach(ch => (ch.checked = e.target.checked));
+};
+
+// ================================
+// DELETE SELECTED — WITH CONFIRM
+// ================================
+
+const deleteOverlay = document.getElementById("deleteConfirmOverlay");
+let idsToDelete = [];
+
+document.getElementById("deleteSelected").onclick = () => {
+  const checked = [...document.querySelectorAll(".rowCheck:checked")];
+
+  if (!checked.length) return alert("Nothing selected");
+
+  idsToDelete = checked.map(ch => ch.dataset.id);
+
+  deleteOverlay.style.display = "flex"; // show popup
+};
+
+// Cancel button
+document.getElementById("deleteCancelBtn").onclick = () => {
+  deleteOverlay.style.display = "none";
+};
+
+// Yes button — delete from DB
+document.getElementById("deleteYesBtn").onclick = async () => {
+  await supabase.from("guests").delete().in("id", idsToDelete);
+
+  guests = guests.filter(g => !idsToDelete.includes(g.id));
+  render();
+
+  deleteOverlay.style.display = "none";
+
+  // Clean checkboxes after delete
+  document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
+  document.getElementById("selectAll").checked = false;
+};
+
+// ======================================================
+// EXPORT CSV
+// ======================================================
+document.getElementById("exportCsv").onclick = () => {
+  const rows = document.querySelectorAll("#guestTable tbody tr");
+
+  // Собираем только видимые строки (отфильтрованные)
+  const filtered = [...rows]
+    .filter(row => row.style.display !== "none")
+    .map(row => {
+      const cells = row.querySelectorAll("td");
+      return {
+        first: cells[2].innerText,
+        last: cells[3].innerText,
+        email: cells[4].innerText,
+        phone: cells[5].innerText,
+        rsvp: cells[6].innerText
+      };
+    });
+
+  if (!filtered.length) return alert("No guests to export!");
+
+  const csv = [
+    ["First","Last","Email","Phone","RSVP"],
+    ...filtered.map(g => [g.first,g.last,g.email,g.phone,g.std,g.rsvp])
+  ].map(r => r.map(x => `"${x}"`).join(",")).join("\n");
+
+  const BOM = "\uFEFF"; // UTF-8 BOM
+const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8" });
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "wedding_guests.csv";
+a.click();
+
+};
+
+// ======================================================
+// EMAIL COMPOSER UI
+// ======================================================
+const emailComposer = document.getElementById("emailComposer");
+document.getElementById("composerClose").onclick = () => {
+  emailComposer.style.display = "none";
+};
+
+// ---------- LOAD FOOTER EMAIL ----------
+async function loadSenderEmail() {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || window.token || "";
+
+  if (!token) return;
+
+  const { data, error } = await supabase
+    .from("sites")
+    .select("email")
+    .eq("edit_token", token)
+    .single();
+
+  if (!error && data?.email) {
+    document.getElementById("footerEmail").textContent = data.email;
+    window.senderEmail = data.email;
+  }
+}
+
+document.getElementById("sendEmailBtn").onclick = () => {
+  openComposer();
+};
+
+// загрузка email отправителя
+loadSenderEmail();
+
+/* ----------------------------------------
+   ШАГ 1 — функция пересборки email/phones
+-----------------------------------------*/
+function refreshComposerFields() {
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  const emails = [];
+  const phones = [];
+
+  selected.forEach(ch => {
+    if (ch.dataset.email) emails.push(ch.dataset.email);
+    if (ch.dataset.phone) phones.push(ch.dataset.phone);
+  });
+
+  document.getElementById("composerEmails").value = [...new Set(emails)].join(", ");
+  document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
+}
+
+/* ----------------------------------------
+   OPEN COMPOSER
+-----------------------------------------*/
+function openComposer() {
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+  if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
+
+
+  refreshComposerFields(); // ← ВАЖНО! вызываем при открытии
+
+  // Auto Subject
+  document.getElementById("composerSubject").value =
+    `Wedding Update: ${coupleFullName}`;
+
+  emailComposer.style.display = "block";
+}
+
+// ===== EXPAND / SHRINK EMAIL COMPOSER =====
+document.getElementById("composerExpand").onclick = () => {
+  emailComposer.classList.toggle("expanded");
+};
+// ======================================================
+// SEND EMAIL → SEND TO BATCH WORKER
+// ======================================================
+
+document.getElementById("composerSend").onclick = async () => {
+
+// ----------------------------------------------------
+// NEW: формируем письмо (message + footer)
+// ----------------------------------------------------
+const body = document.getElementById("composerBody").value.trim();
+const footer = document.getElementById("composerFooter").innerHTML;
+const htmlBody = body + "<br><br>" + footer;
+
+// Проверка выбранных гостей
+const selected = [...document.querySelectorAll(".rowCheck:checked")];
+if (!selected.length)
+  return showToastBox("Select at least one guest!", "error");
+
+const subject = document.getElementById("composerSubject").value.trim();
+
+// Prepare guest objects
+const batchGuests = selected.map(ch => ({
+  email: ch.dataset.email,
+  name: "Guest"
+}));
+
+const overlay = document.getElementById("sendProgressOverlay");
+const bar = document.getElementById("progressBar");
+const text = document.getElementById("progressText");
+
+overlay.style.display = "flex";
+bar.style.width = "0%";
+text.textContent = `Sending 0 / ${batchGuests.length}`;
+document.getElementById("sendingNote").classList.add("pulse");
+
+let failures = 0;
+
+for (let i = 0; i < batchGuests.length; i++) {
+  const g = batchGuests[i];
+  let ok = true;
+
+  try {
+    const res = await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subject,
+        html: htmlBody,   // ← ИСПОЛЬЗУЕМ УЖЕ ГОТОВОЕ
+        guests: [g]
+      })
+    });
+
+    const json = await res.json();
+    ok = json?.ok === true;
+
+  } catch (e) {
+    ok = false;
+  }
+
+  if (!ok) {
+    failures++;
+    markRowError(g.email);
+  }
+
+  const done = i + 1;
+  const percent = Math.round((done / batchGuests.length) * 100);
+
+  bar.style.width = percent + "%";
+  text.textContent = `Sending ${done} / ${batchGuests.length}`;
+
+  await new Promise(r => setTimeout(r, 900));
+}
+
+
+// Hide overlay smoothly
+setTimeout(() => {
+  document.getElementById("sendingNote").classList.remove("pulse");
+  overlay.style.display = "none";
+}, 500);
+
+// Close composer
+emailComposer.style.display = "none";
+
+// Uncheck boxes
+document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
+document.getElementById("selectAll").checked = false;
+
+// Final messaging
+if (failures > 0) {
+  showDeliveryNotice();
+  showToastBox(`${failures} email(s) failed to deliver`, "error");
+} else {
+  showToastBox("All emails sent successfully!", "success");
+}
+
+};
+/* ============================
+   FILTER FUNCTION
+============================ */
+let currentFilter = "all";
+
+function applyGuestFilters() {
+  const rows = document.querySelectorAll("#guestTable tbody tr");
+
+  rows.forEach(row => {
+const rsvp = row.children[6].innerText.trim();
+
+    let show = true;
+
+    switch (currentFilter) {
+
+      case "rsvp-yes":   show = rsvp === "✔"; break;
+      case "rsvp-no":    show = rsvp === "✘"; break;
+      case "rsvp-maybe": show = rsvp === "❔"; break;
+      case "rsvp-none":  show = rsvp === "⚠️"; break;
+
+      case "all": break;
+
+      default: break;
+    }
+
+    row.style.display = show ? "" : "none";
+  });
+}
+
+/* ============================
+   FILTER BUTTON HANDLERS
+============================ */
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const filter = btn.dataset.filter;
+
+    if (filter === "clear") {
+      currentFilter = "all";
+
+      document.querySelectorAll(".filter-btn")
+        .forEach(b => b.classList.remove("active"));
+
+      document.querySelector('[data-filter="all"]').classList.add("active");
+
+      applyGuestFilters();
+      return;
+    }
+
+    currentFilter = filter;
+
+    document.querySelectorAll(".filter-btn")
+      .forEach(b => b.classList.remove("active"));
+
+    btn.classList.add("active");
+
+    applyGuestFilters();
+  });
+});
+
+</script>
+
+<!-- PROGRESS OVERLAY START -->
+<div id="sendProgressOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 22px 26px;
+    border-radius:14px;
+    width: 320px;
+    text-align:center;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  ">
+    <div id="progressText">Sending…</div>
+
+    <div style="margin-top:16px; height:8px; background:#eee; border-radius:6px; overflow:hidden;">
+      <div id="progressBar" style="
+        width:0%;
+        height:100%;
+        background:#b41111;
+        transition: width 0.3s ease;
+      "></div>
+    </div>
+
+    <div id="sendingNote" style="margin-top:10px; font-size:13px; color:#777;">
+      Please do not close this window or turn off your device until the sending process is complete.
+    </div>
+  </div>
+</div>
+<!-- PROGRESS OVERLAY END -->
+
+<!-- DELETE CONFIRM POPUP -->
+<div id="deleteConfirmOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 22px 26px;
+    border-radius:14px;
+    width: 340px;
+    text-align:center;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  ">
+    <div style="font-size:18px; margin-bottom:12px; color:#b41111;">
+      Are you sure you want to delete the selected guest(s)?
+    </div>
+
+    <div style="font-size:13px; color:#7e2a2a; margin-bottom:20px;">
+      This action cannot be undone.
+    </div>
+
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button id="deleteYesBtn" style="
+        background:#b41111;
+        color:#fff;
+        padding:10px 20px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">Yes</button>
+
+      <button id="deleteCancelBtn" style="
+        background:#ccc;
+        color:#333;
+        padding:10px 20px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST BOX -->
+<div id="toastBox" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 999999999;
+"></div>
+
+<!-- DELIVERY NOTICE POPUP -->
+<div id="deliveryNoticeOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 26px 32px;
+    border-radius: 16px;
+    width: 360px;
+    text-align:center;
+    box-shadow:0 12px 28px rgba(0,0,0,0.35);
+  ">
+    <div style="font-size:20px; font-weight:700; color:#b41111; margin-bottom:10px;">
+      Delivery Notice
+    </div>
+
+    <div style="font-size:14px; color:#7e2a2a; margin-bottom:20px; line-height:1.4;">
+      Some messages were not delivered successfully.<br>
+      Please review the highlighted guests in the list.
+    </div>
+
+    <button onclick="document.getElementById('deliveryNoticeOverlay').style.display='none'"
+      style="
+        background:#b41111;
+        color:#fff;
+        padding:10px 22px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">
+      OK
+    </button>
+  </div>
+</div>
+
+<script>
+
+document.getElementById("backBtn").onclick = () => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("t") || localStorage.getItem("verified_token") || "";
+
+    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
+};
+
+</script>
+
+<!-- TEST EMAIL MODAL -->
+<div id="testEmailOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background: #fff;
+    padding: 22px;
+    border-radius: 14px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  ">
+    <div style="font-size:18px; font-weight:600; margin-bottom:12px;">
+      Send Test Email
+    </div>
+
+    <input id="testEmailInput" type="email"
+           placeholder="Your Email"
+           style="width:95%; padding:10px; font-size:15px;
+                  border:1px solid #ccc; border-radius:8px;">
+
+    <button id="sendTestEmailBtn" style="
+      margin-top:16px;
+      padding:10px 16px;
+      background:#d6003d;
+      color:white;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      width:100%;
+    ">Send</button>
+
+    <button id="closeTestEmail" style="
+      margin-top:10px;
+      background:none;
+      border:none;
+      font-size:14px;
+      text-decoration:underline;
+      color:#666;
+      cursor:pointer;
+    ">Cancel</button>
+  </div>
+</div>
+
+<script>
+// OPEN modal
+document.getElementById("sendTestEmailFooter").onclick = () => {
+    document.getElementById("testEmailOverlay").style.display = "flex";
+};
+
+// CLOSE modal
+document.getElementById("closeTestEmail").onclick = () => {
+    document.getElementById("testEmailOverlay").style.display = "none";
+};
+
+// SEND test email
+document.getElementById("sendTestEmailBtn").onclick = async (e) => {
+  const btn = e.target;
+  const email = document.getElementById("testEmailInput").value.trim();
+
+  if (!email) return showToastBox("Please enter your email.", "error");
+
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+
+  const overlay = document.getElementById("testEmailOverlay");
+  const emailInput = document.getElementById("testEmailInput");
+
+  const payload = {
+    type: "STD",
+    html: `
+      <div style="font-family:Arial;padding:20px;">
+        <h2 style="color:#b41111;">Test Email</h2>
+        <p>This is a test message sent from your Guest Hub.</p>
+      </div>
+    `,
+    subject: "Test Email",
+    token: new URLSearchParams(location.search).get("t"),
+    guests: [
+      {
+        name: "Test Recipient",
+        email: email,
+        guest_id: "TEST_" + Date.now()
+      }
+    ]
+  };
+
+  try {
+    const resp = await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    let data = null;
+    try { data = await resp.json(); } catch {}
+
+    console.log("TEST EMAIL RESULT:", data);
+
+    if (resp.ok) {
+
+      // показать тост
+      showToastBox("Test email sent!", "success");
+
+      // подготовка к fade-out
+      overlay.style.transition = "opacity 0.5s ease";
+      overlay.style.opacity = "1";
+
+      setTimeout(() => {
+        overlay.style.opacity = "0";
+
+        setTimeout(() => {
+          // скрыть окно
+          overlay.style.display = "none";
+          overlay.style.opacity = "1"; 
+
+          // 🔥 АВТО-ОЧИСТКА EMAIL ПОЛЯ
+          emailInput.value = "";
+
+        }, 500);
+
+      }, 900);
+
+    } else {
+      showToastBox("Error sending test email.", "error");
+    }
+
+  } catch (err) {
+    console.error(err);
+    showToastBox("Network error.", "error");
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Send";
+};
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const pageTitle = document.getElementById("topMainTitle")
+    ?.textContent.trim().toLowerCase();
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    const txt = link.textContent.trim().toLowerCase();
+    if (txt === pageTitle) link.classList.add("active");
+  });
+
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Если страница открыта внутри iframe
+  if (window.self !== window.top) {
+
+    // 1. Прокрутка к таблице гостей
+    const table = document.getElementById("guestTable");
+    if (table) {
+      table.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // 2. С небольшой задержкой открыть Email Composer
+    setTimeout(() => {
+      if (typeof openComposer === "function") {
+        openComposer();
+      }
+    }, 600);
+  }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+if (!window.EMILY_ENABLED) return;
+
+  const token = new URLSearchParams(location.search).get("t") || "";
+  const page = "Guest Hub";
+
+  const frame = document.getElementById("emilyFrame");
+  if (!frame) return;
+
+  frame.src = `/emillyai?t=${encodeURIComponent(token)}&page=${encodeURIComponent(page)}`;
+});
+</script>
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttguesthub.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+<script>
+document.getElementById("openGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+</script>
+
+
+</body>
+</html>
+
+

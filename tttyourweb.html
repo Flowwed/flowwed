@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Manager — Quick User Guide</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+body {
+  margin: 0;
+  padding: 50px 20px;
+  font-family: "Inter", system-ui, sans-serif;
+  background: linear-gradient(to bottom, #ffeef3, #ffd9e5, #f8b6ca, #e94a7633);
+  color: #7a3a4a;
+}
+
+.wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+  padding: 46px 52px;
+  box-shadow:
+    0 30px 70px rgba(0,0,0,0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.45);
+}
+
+h1 {
+  margin: 0 0 18px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #a02449;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+h2 {
+  margin: 34px 0 12px;
+  font-size: 20px;
+  font-weight: 650;
+  color: #a02449;
+}
+
+.grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 26px 22px;
+}
+
+.item {
+  text-align: center;
+}
+
+.btn {
+  margin: 0 auto 10px;
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
+    #9c1818;
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45),
+    0 14px 30px rgba(0,0,0,0.3);
+}
+
+.btn i {
+  font-size: 26px;
+  color: #fff;
+}
+
+.label {
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <p>
+    Welcome to your <strong>Web Manager</strong>. This page is the control center for your wedding website.
+    From here, you can edit every section of your site, update text, upload photos, and instantly preview
+    how everything looks.
+  </p>
+
+  <h2>Main Sections</h2>
+
+  <p>Each large button opens an editor for a specific part of your site:</p>
+
+  <div class="grid">
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-heart"></i></div>
+      <div class="label"><strong>Our Story</strong> – Write and update your love story.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-people-group"></i></div>
+      <div class="label"><strong>Wedding Party</strong> – Add or edit bridesmaids, groomsmen, and roles.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-circle-info"></i></div>
+      <div class="label"><strong>Wedding Info</strong> – Edit ceremony details, schedule, and important notes.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-map-location-dot"></i></div>
+      <div class="label"><strong>Venue &amp; Map</strong> – Set your venue and show guests where to go.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-plane"></i></div>
+      <div class="label"><strong>Travel Info</strong> – Share hotel, transport, and travel tips.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-gift"></i></div>
+      <div class="label"><strong>Gift Registry</strong> – Add links or instructions for gifts.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-images"></i></div>
+      <div class="label"><strong>Photo Gallery</strong> – Upload and manage photos.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-ring"></i></div>
+      <div class="label"><strong>Just Married</strong> – Post content for after the wedding.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-bullhorn"></i></div>
+      <div class="label"><strong>Updates</strong> – Send announcements or changes to your guests.</div>
+    </div>
+  </div>
+
+  <p style="margin-top:32px;">
+    Click any button to open that section in a new tab.
+  </p>
+</div>
+
+</body>
+</html>

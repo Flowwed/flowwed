@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Manager — Quick User Guide</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+body {
+  margin: 0;
+  padding: 50px 20px;
+  font-family: "Inter", system-ui, sans-serif;
+  background: linear-gradient(to bottom, #ffeef3, #ffd9e5, #f8b6ca, #e94a7633);
+  color: #7a3a4a;
+}
+
+.wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+  padding: 46px 52px;
+  box-shadow:
+    0 30px 70px rgba(0,0,0,0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.45);
+}
+
+h1 {
+  margin: 0 0 18px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #a02449;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+h2 {
+  margin: 34px 0 12px;
+  font-size: 20px;
+  font-weight: 650;
+  color: #a02449;
+}
+
+.grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 26px 22px;
+}
+
+.item {
+  text-align: center;
+}
+
+.btn {
+  margin: 0 auto 10px;
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
+    #9c1818;
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45),
+    0 14px 30px rgba(0,0,0,0.3);
+}
+
+.btn i {
+  font-size: 26px;
+  color: #fff;
+}
+
+.label {
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <p>
+    Welcome to your <strong>Wedding Manager</strong>.
+    This is your private control center for everything related to your wedding — guests, invitations, planning tools, and post-wedding memories.
+    From here, you can manage every major part of your celebration in one place.
+  </p>
+
+  <h2>How to Use This Page</h2>
+
+  <p>
+    Each large ruby button opens a dedicated tool in a new tab. Hover over any button to see a short hint about what it does.
+  </p>
+
+  <div class="grid">
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-users"></i></div>
+      <div class="label"><strong>Guest Hub</strong><br>Add, edit, and organize your guests. Track who is invited, attending, or still undecided.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-calendar-day"></i></div>
+      <div class="label"><strong>Save The Date</strong><br>Choose a template and send your Save-the-Date messages by email &amp; SMS instantly. Collect responses automatically.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-envelope-open-text"></i></div>
+      <div class="label"><strong>RSVP</strong><br>Choose a template and send RSVP or invitation messages by email &amp; SMS. Collect responses automatically.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-chair"></i></div>
+      <div class="label"><strong>Seating Chart</strong><br>Arrange your guests into tables and design the perfect seating plan.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-gift"></i></div>
+      <div class="label"><strong>Gift Registry</strong><br>Add your gift wishes and share them with your guests.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-sack-dollar"></i></div>
+      <div class="label"><strong>Budget</strong><br>Track expenses and keep your wedding finances under control.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-chart-line"></i></div>
+      <div class="label"><strong>Wed Reports</strong><br>View helpful reports about your wedding activity and engagement.</div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-heart"></i></div>
+      <div class="label"><strong>Post-Wedding</strong><br>Manage everything after the big day — messages, memories, and next steps.</div>
+    </div>
+
+  </div>
+
+  <p style="margin-top:32px;">
+    All your changes are saved automatically.
+  </p>
+
+  <p>
+    This dashboard is designed to keep your entire wedding organized, calm, and beautiful — so you can focus on what really matters.
+  </p>
+
+</div>
+
+</body>
+</html>

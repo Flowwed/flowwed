@@ -1,0 +1,2874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invitation Preview</title>
+
+<!-- GLOBAL FONT & PAGE BACKGROUND -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #fde9ef;         /* мягкий светло-розовый фон как на скрине */
+    color: #333;
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  body.ready { opacity: 1; }
+
+  /* MAIN WRAPPER */
+  .container {
+    max-width: 1180px;           /* шире, как на твоём дизайне */
+    margin: 0 auto;
+    padding: 40px 20px 70px;
+  }
+
+  /* TOP NAV (как на скриншоте — тонкая, аккуратная, ровная) */
+
+  .top-nav {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    padding: 14px 0 28px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #7a6772;
+  }
+  .top-nav a {
+    text-decoration: none;
+    color: #7a6772;
+    transition: 0.2s;
+  }
+  .top-nav a:hover {
+    color: #d6003d;
+  }
+
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 10px;
+}
+
+.guidelines-row {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.guidelines-box {
+  flex: 1;
+}
+
+.empty-box {
+  min-height: 180px;
+  background: rgba(255,255,255,0.65);
+  border-radius: 22px;
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.12),
+    0 8px 20px rgba(150,0,0,0.08),
+    0 0 40px rgba(150,0,0,0.05);
+}
+
+.button-column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 10px 0;
+}
+
+
+/* PERFECT TRANSPARENT BACK BUTTON */
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 18px;  /* ↓ опускает кнопку немного вниз чтобы она совпала с меню */
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.0); /* полностью прозрачная */
+  border: 2px solid rgba(196, 0, 55, 0.35); /* тонкая розовая рамка */
+  border-radius: 12px;
+  color: #9c1818;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.25s ease;
+  backdrop-filter: blur(4px); /* лёгкое стекло */
+}
+
+.back-btn:hover {
+  border-color: #c40037;
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(196, 0, 55, 0.18);
+}
+
+.meta-row:nth-of-type(1),
+  .meta-row:nth-of-type(2) {
+    display: none !important;
+  }
+
+  /* GUIDELINES BLOCK — EXACT STYLE FROM SCREENSHOT */
+  .guidelines-box {
+    background: #ffffff;
+    padding: 28px 30px;
+    border-radius: 22px;
+    width: 50%;
+    margin-bottom: 35px;
+
+    /* Тень как на твоём Add Guest блоке */
+    box-shadow:
+        0 12px 28px rgba(0,0,0,0.12),         /* глубокая тень */
+        0 8px 20px rgba(150, 0, 0, 0.08),     /* лёгкий красноватый glow */
+        0 0 40px rgba(150, 0, 0, 0.05);       /* широкая воздушная тень */
+
+    transition: transform .25s ease, box-shadow .25s ease;
+    transform: translateY(0);
+}
+
+
+
+.guidelines-box h2 {
+    margin: 0 0 14px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #c00111;
+}
+
+.guideline-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.info-icon-small {
+    width: 22px;
+    height: 22px;
+    background: #4da3ff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+
+
+  /* BUTTONS ROW (left+right), centered margin top */
+  .preview-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px;
+  }
+
+  /* Standard rounded buttons from screenshot */
+  .std-btn,
+  .test-btn {
+    padding: 12px 22px;
+    background: #c00111;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .std-btn:hover,
+  .test-btn:hover {
+    opacity: 0.88;
+  }
+
+  /* Subtitle centered */
+  .page-subtitle {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+    color: #6a6a6a;
+    margin-bottom: 25px;
+    margin-top: -38px;  
+  }
+
+.row-error {
+  background: #ffe6ec !important;
+  box-shadow: inset 0 0 0 3px #ff0033 !important;
+}
+
+#printGuests {
+  display: none !important;
+}
+
+
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<!-- TOP NAV WITH BACK BUTTON -->
+<div class="top-nav-wrapper">
+
+ <button id="backBtn" class="back-btn">
+  <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="#6d6d6d" fill="none" stroke-linecap="round" stroke-linejoin="round">
+       stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="15 18 9 12 15 6"></polyline>
+  </svg>
+  Back
+</button>
+
+
+  <div class="top-nav">
+    <a href="#">Guest Manager</a>
+    <a href="#">My Web</a>
+    <a href="#">Web Manager</a>
+    <a href="#">Save The Date</a>
+    <a href="#">RSVP</a>
+    <a href="#">Seating Chart</a>
+    <a href="#">Registry</a>
+    <a href="#">Budget</a>
+  </div>
+
+</div>
+
+<div class="guidelines-row">
+
+  <!-- Левый блок (инструкции) -->
+  <div class="guidelines-box">
+    <h2 id="guidelinesTitle"></h2>
+
+    <div class="guideline-line">
+      <span class="info-icon-small">i</span>
+      <p id="guidelinesText"></p>
+    </div>
+  </div>
+
+  <!-- Правый блок (кнопки) -->
+  <div class="guidelines-box empty-box" style="display: flex; justify-content: center; align-items: center;">
+      <div class="button-column" style="display:flex; flex-direction:column; gap:18px;">
+          <button id="seeRsvpForm" class="std-btn">See Form</button>
+          <button id="sendTestEmail" class="test-btn">Send Test Email</button>
+      </div>
+  </div>
+
+</div>
+
+<!-- Subtitle aligned to center -->
+<!-- EVENT DATE BOX -->
+<div id="stdDateBox" style="
+  margin: 0 auto 30px;
+  padding: 14px 22px;
+  max-width: 100%;
+  background: #ffffff;
+  border: 2px solid #ffb5c8;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #c30c1e;
+  display: none;
+"></div>
+
+<!-- RSVP INFO BOX -->
+<div id="rsvpInfoBox" style="
+  margin: 0 auto 30px;
+  padding: 14px 22px;
+  max-width: 100%;
+  background: #ffffff;
+  border: 2px solid #ffb5c8;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #c30c1e;
+  display: none;
+"></div>
+
+<!-- PREVIEW CARD -->
+<style>
+  .preview-card {
+    background: #ffffff;
+    padding: 28px 32px;
+    border-radius: 16px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+    margin-bottom: 40px;
+  }
+
+  .meta-row {
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+  .meta-label {
+    font-weight: 600;
+    color: #444;
+  }
+  #emailBodyOuter {
+    border-radius: 14px;
+    border: 1px solid #f0d7e1;
+    background: #ffffff;
+    padding: 5px !important;
+    margin-top: 20px;
+  }
+  #emailBodyInner {
+    font-family: "Poppins", serif;
+    font-size: 17px;
+    line-height: 1.6;
+    color: #444;
+  }
+  #smsBody {
+    white-space: pre-line;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 20px;
+  }
+
+/* Двигаем розовый блок ВПЛОТНУЮ под картинку */
+#emailBodyInner > div.std-date-block {
+  margin-top: 10px !important;
+}
+
+</style>
+
+<div class="preview-card">
+
+  <div class="preview-card-inner">
+
+    <div class="meta-row">
+      <span class="meta-label">Channel:</span>
+      <span id="channelLabel"></span>
+    </div>
+
+    <div class="meta-row">
+      <span class="meta-label">Template:</span>
+      <span id="tplName"></span>
+    </div>
+
+    <!-- SUBJECT + CHIP В ОДНОЙ ЛИНИИ -->
+    <div id="subjectRow" class="meta-row subject-flex">
+      <div class="subject-left">
+        <span class="meta-label">Subject:</span>
+        <span id="subjectText"></span>
+      </div>
+
+      <div id="previewInfo" class="preview-info-label"></div>
+    </div>
+
+    <div id="emailPreview">
+      <div id="emailBodyOuter" class="preview-email">
+        <div id="emailBodyInner"></div>
+      </div>
+    </div>
+
+    <div id="smsPreview" style="display:none;">
+      <div id="smsBody"></div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- GUEST LIST — NEW CLEAN STYLE -->
+<style>
+
+ .guest-section {
+    background: rgba(255, 255, 255, 0.75);
+    padding: 30px 32px 35px;
+    border-radius: 18px;
+
+    /* эффект объёмного блока как в твоём примере */
+    box-shadow:
+        0 18px 40px rgba(0,0,0,0.18),        /* внешняя тень */
+        inset 0 2px 6px rgba(255,255,255,0.25); /* внутренняя подсветка */
+
+    backdrop-filter: blur(4px); /* лёгкий стеклянный эффект */
+}
+
+  .guest-section h2 {
+    margin: 0 0 6px;
+    font-size: 21px;
+    font-weight: 600;
+    color: #c00111;
+  }
+
+/* =============================== */
+/*  RUBY SCROLL WRAPPER FOR TABLE  */
+/* =============================== */
+
+.ruby-frame-outer {
+  border: 3px solid #b41111;
+  border-radius: 16px;
+  padding: 10px;
+  margin-top: 14px;
+  box-shadow:
+    0 0 12px rgba(180,17,17,0.18),
+    inset 0 0 6px rgba(255,255,255,0.45);
+}
+
+.ruby-frame-inner {
+  border: 2px solid #ffcccc;
+  border-radius: 14px;
+  padding: 6px;
+}
+
+/* === SCROLL CONTAINER === */
+.scroll-container {
+  position: relative;
+  height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+
+/* Чтобы скролл отображался даже при малом количестве строк */
+.scroll-container::after {
+  content: "";
+  display: block;
+  height: 140px;
+}
+
+/* === RUBY SCROLLBAR === */
+.scroll-container::-webkit-scrollbar {
+  width: 9px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #ffe6eb;
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #b41111;
+  border-radius: 10px;
+  border: 2px solid #ffe6eb;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #9c1818;
+}
+
+/* === Sticky table header === */
+.scroll-container table thead th {
+  position: sticky;
+  top: 0;
+  background: #fff6f8;
+  z-index: 5;
+}
+
+  .guest-sub {
+    margin: 0 0 18px;
+    color: #666;
+    font-size: 14px;
+  }
+
+
+  .guest-table-wrap {
+    overflow-x: auto;
+    margin-top: 12px;
+    border-radius: 10px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background: #fff;
+  }
+
+    th, td {
+    border-bottom: 1px solid #f2e3eb;
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  th {
+    background: #faf4f6;
+    color: #7a7a7a;
+    font-weight: 600;
+  }
+
+  #guestEmpty {
+    color: #888;
+    font-size: 14px;
+    padding: 18px 8px;
+    text-align: center;
+  }
+
+  .guest-footer-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .guest-footer-buttons button {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 2px solid #c40037;
+    background: #fff;
+    color: #c40037;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+  .guest-footer-buttons button:hover {
+    background: #ececec;
+  }
+
+  #deleteSelected {
+    background: #c30c1e;
+    color: #f4f4f4;
+    border-color: #c40037;
+}
+#deleteSelected:hover {
+    background: #fe413f;
+    color: #fff;
+}
+
+.guest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Заголовок + кнопки в одной линии */
+.guest-title-row {
+  display: flex;
+  align-items: center;
+  gap: 60px; /* ← УВЕЛИЧЕНО */
+}
+
+/* Компактные кнопки-фильтры */
+.guest-filters {
+  display: flex;
+  gap: 8px;
+  margin-left: 350px; /* ← ЭТО ДВИГАЕТ КНОПКИ ВПРАВО */
+}
+
+.gfilter-btn {
+  background: #b41111;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.18),
+    inset 0 1px 2px rgba(255,255,255,0.15);
+}
+
+.gfilter-btn:hover {
+  transform: translateY(-2px);
+}
+
+.gfilter-btn.active {
+  outline: 2px solid white;
+}
+
+.send-btn {
+    background: #ff2d6a;
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.send-btn:hover {
+    opacity: .88;
+}
+
+#sendAll {
+    background: #c00111;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    transition: 0.2s;
+}
+
+#sendAll:hover {
+    opacity: 0.88;
+}
+
+/* Clean Subject + Chip layout */
+.subject-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Subject text block */
+.subject-main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto; 
+  min-width: 0;
+}
+
+/* White info chip on the right */
+.preview-info-label {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+
+</style>
+
+<div class="guest-section">
+
+<div class="guest-header">
+
+  <div class="guest-title-row">
+    <h2>Guest List</h2>
+
+    <div class="guest-filters">
+      <button class="gfilter-btn active" data-filter="all">All</button>
+      <button class="gfilter-btn" data-filter="yes">RSVP ✓</button>
+      <button class="gfilter-btn" data-filter="maybe">RSVP ?</button>
+      <button class="gfilter-btn" data-filter="clear">Clear Filters</button>
+    </div>
+  </div>
+
+  <button id="sendAll">Send Email & SMS</button>
+
+</div>
+
+
+  <p class="guest-sub">
+    These guests are linked to this site and will receive this message.
+  </p>
+
+<div class="ruby-frame-outer">
+  <div class="ruby-frame-inner">
+    <div class="scroll-container">
+
+      <table id="guestTable">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAll"></th>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+    </div> <!-- scroll-container -->
+  </div> <!-- ruby-frame-inner -->
+</div> <!-- ruby-frame-outer -->
+
+
+    <p id="guestEmpty">No guests yet for this site. Add guests on the main Guests page.</p>
+  </div>
+
+ <div class="guest-footer-buttons">
+    <button id="exportCsv">Download & Print</button>
+
+    <!--
+    <button id="deleteSelected">
+      Delete your guests if you don’t like them anymore 🗑️
+    </button>
+    -->
+
+    <button id="printGuests">Print</button>
+</div>
+
+
+</div>
+<!-- MAP MODAL -->
+<style>
+#mapModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+#mapModal {
+  width: 90%;
+  height: 90%;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  position: relative;
+  overflow: hidden;
+}
+#mapModal iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+#mapModalClose {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #444;
+}
+</style>
+
+<div id="mapModalOverlay">
+  <div id="mapModal">
+    <div id="mapModalClose">&times;</div>
+    <iframe id="mapFrame"></iframe>
+  </div>
+</div>
+
+
+
+<!-- TEST EMAIL MODAL -->
+<div id="testEmailOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background: #fff;
+    padding: 22px;
+    border-radius: 14px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  ">
+    <div style="font-size:18px; font-weight:600; margin-bottom:12px;">
+      Send Test Email
+    </div>
+
+    <input id="testEmailInput" type="email"
+           placeholder="Your Email"
+           style="width:95%; padding:10px; font-size:15px;
+                  border:1px solid #ccc; border-radius:8px;">
+
+    <button id="sendTestEmailBtn" style="
+      margin-top:16px;
+      padding:10px 16px;
+      background:#d6003d;
+      color:white;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      width:100%;
+    ">Send</button>
+
+    <button id="closeTestEmail" style="
+      margin-top:10px;
+      background:none;
+      border:none;
+      font-size:14px;
+      text-decoration:underline;
+      color:#666;
+      cursor:pointer;
+    ">Cancel</button>
+  </div>
+</div>
+
+<script>
+document.getElementById("sendTestEmail").onclick = () => {
+  document.getElementById("testEmailOverlay").style.display = "flex";
+};
+
+document.getElementById("closeTestEmail").onclick = () => {
+  document.getElementById("testEmailOverlay").style.display = "none";
+};
+
+document.getElementById("sendTestEmailBtn").onclick = async (e) => {
+  const btn = e.target;
+  const email = document.getElementById("testEmailInput").value.trim();
+
+  if (!email) return showToast("Please enter your email.", "error");
+
+  // Disable button + show sending animation
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+
+  const payload = {
+    type: window.type === "save" ? "STD" : "RSVP",
+    html: document.getElementById("emailBodyInner").innerHTML,
+    subject: document.getElementById("subjectText").textContent,
+    token: window.token,
+    guests: [
+      {
+        name: "Test Recipient",
+        email: email,
+        guest_id: "TEST_" + Date.now()
+      }
+    ]
+  };
+
+  let resp, data;
+
+  try {
+    resp = await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    try { data = await resp.json(); } catch {}
+
+    console.log("TEST EMAIL RESULT:", data);
+
+    if (resp.ok) {
+      showToast("Test email sent!", "success");
+      document.getElementById("testEmailOverlay").style.display = "none";
+    } else {
+      showToast("Error sending test email.", "error");
+    }
+
+  } catch (err) {
+    console.error(err);
+    showToast("Network error.", "error");
+  }
+
+  // Reset button
+  btn.disabled = false;
+  btn.textContent = "Send";
+};
+</script>
+
+
+
+<!-- STD DATE MODAL -->
+<div id="dateModalOverlay" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  justify-content:center;
+  align-items:center;
+  z-index:2100;
+">
+  <div id="dateModal" style="
+    background:#fff;
+    padding:20px;
+    border-radius:14px;
+    min-width:260px;
+    text-align:center;
+    position:relative; /* важно для крестика */
+  ">
+
+    <!-- ❌ КРЕСТИК -->
+    <div id="dateModalClose" style="
+      position:absolute;
+      top:10px;
+      right:12px;
+      font-size:22px;
+      cursor:pointer;
+      color:#666;
+      font-weight:500;
+    ">
+      &times;
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:16px; align-items:center;">
+      <h3 style="margin:0; font-size:18px;">Select your event date</h3>
+
+      <input id="eventDateInput" type="date"
+        style="padding:10px; font-size:16px; border:1px solid #ccc; border-radius:8px;">
+
+      <button id="confirmDateBtn"
+        style="padding:10px 20px; background:#d6003d; color:white;
+               border:none; border-radius:8px; cursor:pointer;">
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div id="toastBox"></div>
+
+<script>
+function showToast(msg, type="success") {
+  const box = document.getElementById("toastBox");
+  const div = document.createElement("div");
+  div.className = "toast " + (type === "error" ? "toast-error" : "toast-success");
+  div.textContent = msg;
+  box.appendChild(div);
+
+  setTimeout(() => {
+    div.style.opacity = "0";
+    div.style.transform = "translateY(20px)";
+    setTimeout(() => div.remove(), 300);
+  }, 3000);
+}
+</script>
+<script type="module">
+
+/* ICONS FOR STD / RSVP */
+function icon(status) {
+  const s = (status || "").toLowerCase();
+  if (s === "yes")   return `<span style="color:green;font-size:18px;">✔</span>`;
+  if (s === "no")    return `<span style="color:red;font-size:18px;">✘</span>`;
+  if (s === "maybe") return `<span style="color:orange;font-size:18px;">❔</span>`;
+  return `<span style="color:#bbb;font-size:18px;">—</span>`;
+}
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+const params = new URLSearchParams(location.search);
+
+const token  = params.get("t") || "";
+window.token = token;               // ← ОБЯЗАТЕЛЬНО ДОБАВИТЬ!
+
+window.type  = params.get("type")  || "save";
+const method = params.get("method")|| "email";
+const tplId  = params.get("tpl")   || "save1";
+
+const capitalize = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+
+
+/* -------------------------------
+      LOAD COUPLE
+--------------------------------*/
+async function loadCouple() {
+  if (!token) return null;
+
+  const { data, error } = await supabase
+    .from("sites")
+    .select("slug")
+    .eq("edit_token", token)
+    .single();
+
+  if (error || !data) return null;
+
+  const slug = data.slug || "";
+  const parts = slug.split("-");
+
+  return {
+    bride: capitalize(parts[0] || "Bride"),
+    groom: capitalize(parts[1] || "Groom"),
+    location: capitalize(parts[2] || "Your city")
+  };
+}
+
+
+
+/* -------------------------------
+        TEMPLATES (EMAIL/SMS)
+--------------------------------*/
+const EMAIL_TPL = {
+  save: {
+    save1: ({ couple, location, token }) => ({
+  subject: `Save the Date · ${couple}`,
+  html: `
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Dear friend,
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      We are delighted to share that <strong>${couple}</strong> are getting married!
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      The celebration will take place in <strong>${location}</strong>. Formal invitation with all details will follow soon.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Please keep this date open — it would mean the world to have you with us.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      With love,<br>${couple}
+    </p>
+
+    <div style="text-align:left; margin-top:10px;">
+      <a href="https://www.flowwed.com/stdform?token=${encodeURIComponent(token)}"
+   data-preview-disabled="true"
+   style="
+     display:inline-block;
+     padding:12px 26px;
+     background:#c30c1e;
+     color:#fff;
+     text-decoration:none;
+     border-radius:10px;
+     font-size:15px;
+     font-weight:600;
+     font-family:Poppins, sans-serif;
+     box-shadow:0 4px 14px rgba(195,12,30,0.28);
+     transition:0.25s ease;
+   "
+   onmouseover="this.style.opacity='0.88'"
+   onmouseout="this.style.opacity='1'">
+  Save The Date
+</a>
+
+
+    </div>
+  `
+}),
+
+
+    save2: ({ couple, location, token }) => ({
+  subject: `${couple}'s Wedding · Save the Date`,
+  html: `
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Hello,
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      This is a little note to ask you to reserve a special day for <strong>${couple}</strong>.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      The wedding will be in <strong>${location}</strong>. More details are coming soon.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Warmly,<br>${couple}
+    </p>
+
+    <div style="text-align:left; margin-top:10px;">
+      <a href="https://www.flowwed.com/stdform?token=${encodeURIComponent(token)}"
+    data-preview-disabled="true"
+   style="
+     display:inline-block;
+     padding:12px 26px;
+     background:#c30c1e;
+     color:#fff;
+     text-decoration:none;
+     border-radius:10px;
+     font-size:15px;
+     font-weight:600;
+     font-family:Poppins, sans-serif;
+     box-shadow:0 4px 14px rgba(195,12,30,0.28);
+     transition:0.25s ease;
+   "
+   onmouseover="this.style.opacity='0.88'"
+   onmouseout="this.style.opacity='1'">
+  Save The Date
+</a>
+
+
+    </div>
+  `
+}),
+
+
+save3: ({ couple, location, token }) => ({
+  subject: `Mark your calendar for ${couple}`,
+  html: `<p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Hi there,
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      <strong>${couple}</strong> are tying the knot!
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      The celebration is planned in <strong>${location}</strong>.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Thank you,<br>${couple}
+    </p>
+
+    <div style="text-align:left; margin-top:10px;">
+      <a href="https://www.flowwed.com/stdform?token=${encodeURIComponent(token)}"
+   data-preview-disabled="true"
+   style="
+     display:inline-block;
+     padding:12px 26px;
+     background:#c30c1e;
+     color:#fff;
+     text-decoration:none;
+     border-radius:10px;
+     font-size:15px;
+     font-weight:600;
+     font-family:Poppins, sans-serif;
+     box-shadow:0 4px 14px rgba(195,12,30,0.28);
+     transition:0.25s ease;
+   "
+   onmouseover="this.style.opacity='0.88'"
+   onmouseout="this.style.opacity='1'">
+  Save The Date
+</a>
+    </div>`
+}),
+
+
+/* --------------------------------------- */
+/*                 SAVE 4                  */
+/* --------------------------------------- */
+
+save4: ({ couple, location, token }) => ({
+  subject: `Save the Date · ${couple}`,
+  html: `
+    <div contenteditable="true"
+         style="
+            min-height:220px;
+            border:1px dashed #bbb;
+            padding:18px;
+            border-radius:10px;
+            font-size:17px;
+            line-height:1.6;
+            color:#444;
+         ">
+      You can write your email here...
+    </div>
+
+    <div style="margin-top:18px; text-align:left;">
+      <a href="https://www.flowwed.com/stdform?token=${encodeURIComponent(token)}"
+         data-preview-disabled="true"
+         style="
+           display:inline-block;
+           padding:12px 26px;
+           background:#c30c1e;
+           color:#fff;
+           text-decoration:none;
+           border-radius:10px;
+           font-size:15px;
+           font-weight:600;
+           box-shadow:0 4px 14px rgba(195,12,30,0.28);
+         ">
+        Save The Date
+      </a>
+    </div>
+  `
+})
+
+},   // ← ЭТО закрывает блок save: { ... }
+
+  rsvp: {
+    rsvp1: ({ couple, location, token }) => ({
+  subject: `RSVP · ${couple}'s Wedding in ${location}`,
+  html: `
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Dear guest,
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      We invite you to the wedding of <strong>${couple}</strong> in <strong>${location}</strong>.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Please confirm if you can attend.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Warm regards,<br>${couple}
+    </p>
+
+     <div style="text-align:left; margin-top:10px;">
+      <a href="https://www.flowwed.com/rsvpform?token=${encodeURIComponent(token)}"
+   data-preview-disabled="true"
+   style="
+     display:inline-block;
+     padding:12px 26px;
+     background:#c30c1e;
+     color:#fff;
+     text-decoration:none;
+     border-radius:10px;
+     font-size:15px;
+     font-weight:600;
+     font-family:Poppins, sans-serif;
+     box-shadow:0 4px 14px rgba(195,12,30,0.28);
+     transition:0.25s ease;
+   "
+   onmouseover="this.style.opacity='0.88'"
+   onmouseout="this.style.opacity='1'">
+  RSVP Now
+</a>
+
+    </div>
+  `
+}),
+
+    rsvp2: ({ couple, location, token }) => ({
+  subject: `Kindly respond · ${couple}'s Wedding`,
+  html: `
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Dear friend,
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      You are warmly invited to celebrate <strong>${couple}</strong> in <strong>${location}</strong>.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Please confirm your attendance.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Sincerely,<br>${couple}
+    </p>
+
+     <div style="text-align:left; margin-top:10px;">
+      <a href="https://www.flowwed.com/rsvpform?token=${encodeURIComponent(token)}"
+   data-preview-disabled="true"
+   style="
+     display:inline-block;
+     padding:12px 26px;
+     background:#c30c1e;
+     color:#fff;
+     text-decoration:none;
+     border-radius:10px;
+     font-size:15px;
+     font-weight:600;
+     font-family:Poppins, sans-serif;
+     box-shadow:0 4px 14px rgba(195,12,30,0.28);
+     transition:0.25s ease;
+   "
+   onmouseover="this.style.opacity='0.88'"
+   onmouseout="this.style.opacity='1'">
+  RSVP Now
+</a>
+
+    </div>
+  `
+}),
+
+
+    rsvp3: ({ couple, location, token }) => ({
+  subject: `Can you join us? · ${couple}`,
+  html: `
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Hello!
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      <strong>${couple}</strong> are preparing a joyful celebration in <strong>${location}</strong>.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Please let us know if you will attend.
+    </p>
+
+    <p style="font-family:Poppins, sans-serif; font-size:17px; line-height:1.6; color:#444;">
+      Thanks,<br>${couple}
+    </p>
+
+     <div style="text-align:left; margin-top:10px;">
+      <a href="https://www.flowwed.com/rsvpform?token=${encodeURIComponent(token)}"
+   data-preview-disabled="true"
+   style="
+     display:inline-block;
+     padding:12px 26px;
+     background:#c30c1e;
+     color:#fff;
+     text-decoration:none;
+     border-radius:10px;
+     font-size:15px;
+     font-weight:600;
+     font-family:Poppins, sans-serif;
+     box-shadow:0 4px 14px rgba(195,12,30,0.28);
+     transition:0.25s ease;
+   "
+   onmouseover="this.style.opacity='0.88'"
+   onmouseout="this.style.opacity='1'">
+  RSVP Now
+</a>
+
+    </div>
+  `
+}),
+
+
+/* --------------------------------------- */
+/*                RSVP 4                   */
+/* --------------------------------------- */
+
+rsvp4: ({ couple, location, token }) => ({
+  subject: `RSVP · ${couple}'s Wedding in ${location}`,
+  html: `
+    <div contenteditable="true"
+         style="
+            min-height:220px;
+            border:1px dashed #bbb;
+            padding:18px;
+            border-radius:10px;
+            font-size:17px;
+            line-height:1.6;
+            color:#444;
+         ">
+      You can write your RSVP email here...
+    </div>
+
+    <div style="margin-top:18px; text-align:left;">
+      <a href="https://www.flowwed.com/rsvpform?token=${encodeURIComponent(token)}"
+         data-preview-disabled="true"
+         style="
+           display:inline-block;
+           padding:12px 26px;
+           background:#c30c1e;
+           color:#fff;
+           text-decoration:none;
+           border-radius:10px;
+           font-size:15px;
+           font-weight:600;
+           box-shadow:0 4px 14px rgba(195,12,30,0.28);
+         ">
+        RSVP Now
+      </a>
+    </div>
+  `
+})
+  }
+};
+
+const EMAIL_IMAGES = {
+  save1: "https://coruscating-pika-435f9a.netlify.app/images/PH1.jpg",
+  save2: "https://coruscating-pika-435f9a.netlify.app/images/PH2.jpg",
+  save3: "https://coruscating-pika-435f9a.netlify.app/images/PH4.jpg",
+  save4: "https://coruscating-pika-435f9a.netlify.app/images/SH9.jpg",
+
+
+  rsvp1: "https://coruscating-pika-435f9a.netlify.app/images/PH1.jpg",
+  rsvp2: "https://coruscating-pika-435f9a.netlify.app/images/PH2.jpg",
+  rsvp3: "https://coruscating-pika-435f9a.netlify.app/images/PH4.jpg",
+  rsvp4: "https://coruscating-pika-435f9a.netlify.app/images/SH9.jpg"
+
+};
+
+/* SMS */
+const SMS_TPL = {
+  save: {
+    save1: ({ couple, location }) => ({ text: `${couple} are getting married in ${location}! Save the date 💍` }),
+    save2: ({ couple, location }) => ({ text: `Save the date for ${couple}'s wedding in ${location}!` }),
+    save3: ({ couple, location }) => ({ text: `${couple} invite you to their wedding in ${location}. More info soon.` })
+  },
+  rsvp: {
+    rsvp1: ({ couple, location }) => ({ text: `${couple}'s wedding in ${location} 💌 Please RSVP.` }),
+    rsvp2: ({ couple, location }) => ({ text: `Invitation: ${couple}, ${location}. Please confirm attendance.` }),
+    rsvp3: ({ couple, location }) => ({ text: `${couple} would love to celebrate with you in ${location}. RSVP please.` })
+  }
+};
+
+
+
+/* -------------------------------
+        DOM ELEMENTS
+--------------------------------*/
+const coupleInfo    = document.getElementById("coupleInfo");
+const channelLabel  = document.getElementById("channelLabel");
+const tplName       = document.getElementById("tplName");
+const subjectText   = document.getElementById("subjectText");
+const subjectRow    = document.getElementById("subjectRow");
+const emailPreview  = document.getElementById("emailPreview");
+const emailBody     = document.getElementById("emailBodyInner");
+const smsPreview    = document.getElementById("smsPreview");
+const smsBody       = document.getElementById("smsBody");
+const printGuests   = document.getElementById("printGuests");
+
+const guestTbody = document.querySelector("#guestTable tbody");
+const guestEmpty = document.getElementById("guestEmpty");
+const exportCsvBtn = document.getElementById("exportCsv");
+
+let guests = [];
+
+
+/* -------------------------------
+        LOAD GUESTS + RENDER
+--------------------------------*/
+async function loadGuests() {
+  if (!token) return;
+
+  const { data, error } = await supabase
+    .from("guests")
+    .select("*")
+    .eq("token", token)
+    .order("created_at", { ascending: true });
+
+  if (error) return console.error(error);
+
+  guests = data.map(g => ({
+    id: g.id,
+    first: g.first_name || "",
+    last:  g.last_name  || "",
+    email: g.email      || "",
+    phone: g.phone      || "",
+    std_status:  g.std_status  || "",
+    rsvp_status: g.rsvp_status || ""
+  }));
+
+  renderGuests();
+}
+
+async function refreshRsvpBlocks() {
+  // Если мы не в RSVP-режиме — просто выходим
+  if (window.type !== "rsvp") return;
+
+  const { data: siteRow, error } = await supabase
+    .from("sites")
+    .select("map_address, event_date_text, event_time")
+    .eq("edit_token", token)
+    .single();
+
+  if (error || !siteRow) return;
+
+  const venue = (siteRow.map_address || "").trim();
+  const date  = siteRow.event_date_text || "";
+  const time  = siteRow.event_time || "";
+
+  // 🔸 1. Обновляем ВЕРХНИЙ блок (над email-preview)
+  const rsvpBox = document.getElementById("rsvpInfoBox");
+  if (venue && date && time) {
+    rsvpBox.style.display = "block";
+    rsvpBox.innerHTML = `
+      <div style="display:flex; justify-content:center; gap:25px; flex-wrap:wrap;">
+        <span><strong>Venue:</strong> <span class="email-venue-top">${venue}</span></span>
+        <span><strong>Date:</strong> <span class="email-date-top">${date}</span></span>
+        <span><strong>Time:</strong> <span class="email-time-top">${time}</span></span>
+      </div>
+    `;
+  }
+
+  // 🔸 2. Обновляем НИЖНИЙ блок в email-body (если он есть)
+  document.querySelectorAll(".email-venue-value").forEach(el => el.textContent = venue);
+  document.querySelectorAll(".email-date-value").forEach(el  => el.textContent = date);
+  document.querySelectorAll(".email-time-value").forEach(el  => el.textContent = time);
+}
+
+
+function renderGuests() {
+  const header = document.querySelector("#guestTable thead tr");
+  header.innerHTML = `
+    <th><input type="checkbox" id="selectAll"></th>
+    <th>#</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>${window.type === "save" ? "STD" : "RSVP"}</th>
+  `;
+
+  const selectAllBox = header.querySelector("#selectAll");
+
+  guestTbody.innerHTML = "";
+
+  if (!guests.length) {
+    guestEmpty.style.display = "block";
+    return;
+  }
+  guestEmpty.style.display = "none";
+
+  guests.forEach((g, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input type="checkbox" class="rowCheck" data-id="${g.id}"></td>
+      <td>${i + 1}</td>
+      <td>${g.first}</td>
+      <td>${g.last}</td>
+      <td>${g.email}</td>
+      <td>${g.phone}</td>
+      <td>${window.type === "save" ? icon(g.std_status) : icon(g.rsvp_status)}</td>
+    `;
+    guestTbody.appendChild(tr);
+  });
+
+  selectAllBox.addEventListener("change", () => {
+    document.querySelectorAll(".rowCheck")
+      .forEach(ch => ch.checked = selectAllBox.checked);
+  });
+
+  // 🔥 Apply filters immediately after rendering rows
+  applyGuestFilters();
+}
+
+
+
+/* ===================================================================
+      🔥🔥🔥  GUEST FILTER SCRIPT — ДОБАВЛЕНО ВЕРНО 🔥🔥🔥
+   =================================================================== */
+
+let guestFilter = "all";
+
+function applyGuestFilters() {
+  const rows = document.querySelectorAll("#guestTable tbody tr");
+
+  rows.forEach(row => {
+    const statusCell = row.querySelector("td:last-child");
+    if (!statusCell) return;
+
+    const html = statusCell.innerHTML;
+    let show = true;
+
+    if (guestFilter === "yes") {
+      show = html.includes("✔");
+    } else if (guestFilter === "maybe") {
+      show = html.includes("❔");
+    } else if (guestFilter === "all") {
+      show = true;
+    }
+
+    row.style.display = show ? "" : "none";
+  });
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Attach handlers to filter buttons
+  document.querySelectorAll(".gfilter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const filter = btn.dataset.filter;
+
+      // activate clicked button
+      document.querySelectorAll(".gfilter-btn")
+        .forEach(b => b.classList.remove("active"));
+
+      btn.classList.add("active");
+
+      if (filter === "clear") {
+        guestFilter = "all";
+        document.querySelector('[data-filter="all"]').classList.add("active");
+      } else {
+        guestFilter = filter;
+      }
+
+      applyGuestFilters();
+    });
+  });
+});
+
+
+/* EXPORT CSV */
+exportCsvBtn.addEventListener("click", () => {
+  if (!guests.length) return alert("No guests to export!");
+
+  const header = ["First Name","Last Name","Email","Phone"];
+  const rows = guests.map(g => [g.first, g.last, g.email, g.phone]);
+
+  const csv = [header, ...rows]
+    .map(r => r.map(x => `"${String(x).replace(/"/g,'""')}"`).join(","))
+    .join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url  = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "wedding_guests.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+printGuests.addEventListener("click", () => window.print());
+
+
+
+/* -------------------------------
+    STD/RSVP SEND ALL HANDLER (ONE BY ONE WITH PROGRESS)
+--------------------------------*/
+document.getElementById("sendAll").addEventListener("click", sendAllHandler);
+
+let sendAllLocked = false;
+
+async function sendAllHandler() {
+
+  if (sendAllLocked) return;
+  sendAllLocked = true;
+
+  const btn = document.getElementById("sendAll");
+  const originalText = btn.textContent;
+
+  btn.classList.add("loading-btn");
+  btn.textContent = "Sending...";
+
+  try {
+    const checked = [...document.querySelectorAll(".rowCheck:checked")];
+
+    /* -------------------------------
+         VALIDATIONS
+    --------------------------------*/
+    if (type.toLowerCase() === "save") {
+      const { data: siteData } = await supabase
+        .from("sites")
+        .select("std_date_text")
+        .eq("edit_token", token)
+        .single();
+
+      if (!siteData?.std_date_text?.trim()) {
+        showToast("Please select your event date first.", "error");
+        resetBtn();
+        return;
+      }
+    }
+
+    if (!checked.length) {
+      showToast("No guests selected!", "error");
+      resetBtn();
+      return;
+    }
+
+    if (type.toLowerCase() === "rsvp") {
+      const { data } = await supabase
+        .from("sites")
+        .select("map_address, event_date_text, event_time")
+        .eq("edit_token", token)
+        .single();
+
+      let missing = [];
+      if (!data?.map_address?.trim()) missing.push("venue address");
+      if (!data?.event_date_text?.trim()) missing.push("event date");
+      if (!data?.event_time?.trim()) missing.push("event time");
+
+      if (missing.length) {
+        showToast("Please enter: " + missing.join(", "), "error");
+        resetBtn();
+        return;
+      }
+    }
+
+    /* -------------------------------
+        SHOW PROGRESS MODAL
+    --------------------------------*/
+    showSendProgress(checked.length);
+    updateSendProgress(5, "Preparing guests...");
+
+    /* -------------------------------
+         PREPARE GUESTS
+    --------------------------------*/
+    const emailBodyElement = document.getElementById("emailBodyInner");
+    const subjectTextElement = document.getElementById("subjectText");
+
+    const batchGuests = [];
+    let prepIndex = 0;
+
+    for (const ch of checked) {
+      prepIndex++;
+      updateSendProgress(
+        Math.floor((prepIndex / checked.length) * 20) + 5,
+        `Preparing guest ${prepIndex}...`
+      );
+
+      const id = ch.dataset.id;
+      const guestRow = guests.find(g => String(g.id) === String(id));
+      if (!guestRow || !guestRow.email) continue;
+
+      batchGuests.push({
+    id: guestRow.id,   // ← ДОБАВИЛИ!
+    name: `${guestRow.first} ${guestRow.last}`.trim(),
+    email: guestRow.email,
+    rsvpUrl: `https://flowwed.com/rsvp.html?t=${encodeURIComponent(token)}&guest=${guestRow.id}`
+  });
+
+    }
+
+    updateSendProgress(30, "Preparing message...");
+
+    const payload = {
+      type: type.toLowerCase() === "save" ? "STD" : "RSVP",
+      html: emailBodyElement.innerHTML,
+      subject: subjectTextElement.textContent
+    };
+
+/* -------------------------------
+     SEND ONE BY ONE
+--------------------------------*/
+let sentCount = 0;
+let failedEmails = 0;   // ← добавили счётчик ошибок
+const total = batchGuests.length;
+
+for (const g of batchGuests) {
+  sentCount++;
+
+  const response = await fetch("/.netlify/functions/send-invites", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: payload.type,
+      html: payload.html,
+      subject: payload.subject,
+
+      guests: [{
+        ...g,
+        guest_id: g.id
+      }],
+
+      token: token
+    })
+  });
+
+  const result = await response.json();
+  const r = result.results?.[0];
+
+  /* ========= ПОДСВЕТКА ОШИБОК ========= */
+  if (!r?.ok) {
+    failedEmails++; // ← считаем ошибки
+
+    const row = document
+      .querySelector(`.rowCheck[data-id="${g.id}"]`)
+      ?.closest("tr");
+
+    if (row) row.classList.add("row-error");
+  }
+
+  /* -------------------------------
+         ПРОГРЕСС
+  --------------------------------*/
+  const percent = Math.round((sentCount / total) * 100);
+  updateSendProgress(percent, "Sending...", sentCount);
+  progressTitle.textContent = `Sending ${sentCount} / ${total}`;
+}
+
+/* -------------------------------
+       FINISH
+--------------------------------*/
+updateSendProgress(100, "Done!");
+finishSendProgress();
+
+/* Если были ошибки → показать окно после закрытия прогресса */
+window.failedEmails = failedEmails;
+
+
+  } catch (e) {
+    console.error(e);
+    showToast("Error sending messages.", "error");
+  } finally {
+  resetBtn();
+
+// Снять ВСЕ чекбоксы после отправки
+  document.querySelectorAll(".rowCheck").forEach(ch => ch.checked = false);
+  const selectAll = document.getElementById("selectAll");
+  if (selectAll) selectAll.checked = false;
+
+}
+
+  function resetBtn() {
+    btn.classList.remove("loading-btn");
+    btn.textContent = originalText;
+    setTimeout(() => (sendAllLocked = false), 250);
+  }
+}
+
+/* -------------------------------
+           INIT()
+--------------------------------*/
+async function init() {
+
+  const couple = await loadCouple();
+
+  const coupleName = couple ? `${couple.bride} & ${couple.groom}` : "The couple";
+  const location   = couple ? couple.location : "Your city";
+
+  document.getElementById("tplName").textContent = tplId.toUpperCase();
+  channelLabel.textContent = method === "email" ? "Email" : "SMS";
+
+  /* Update guidelines link depending on type */
+  const guidelinesBox = document.querySelector(".guidelines-box");
+
+ const titleEl = document.getElementById("guidelinesTitle");
+const textEl = document.getElementById("guidelinesText");
+
+if (type === "save") {
+  titleEl.textContent = "Save-the-Date Instructions";
+  textEl.innerHTML = `
+   1. Select the date of your event 
+<a id="stdHere">here</a>; <br>
+
+2. Select the guests you would like to send the message to;<br>
+
+3. Tap “Send Email & SMS”;
+
+  `;
+
+  setTimeout(() => {
+    const link = document.getElementById("stdHere");
+    if (!link) return;
+
+  link.innerHTML = `here<span style="margin-left:3px;">📅</span>`;
+  link.style.textDecoration = "none";
+  link.style.cursor = "pointer";
+  link.style.fontWeight = "600";
+  link.style.color = "#0e5bd8";
+
+  link.classList.add("pulse-here");  // ← вот это добавляет пульсацию
+}, 80)
+    
+} else {
+  titleEl.textContent = "RSVP Instructions";
+  textEl.innerHTML = `
+    1. Enter the venue address, date, and time 
+<a id="bubbleHere">here</a>; <br>
+
+2. Select the guests you would like to send your RSVP;<br>
+
+3. Tap “Send Email & SMS”;
+
+  `;
+
+  setTimeout(() => {
+    const link = document.getElementById("bubbleHere");
+    if (!link) return;
+
+  link.innerHTML = `here<span style="margin-left:3px;">📅</span>`;
+  link.style.textDecoration = "none";
+  link.style.cursor = "pointer";
+  link.style.fontWeight = "600";
+  link.style.color = "#0e5bd8";
+
+  link.classList.add("pulse-here");  // ← вот это добавляет пульсацию
+}, 80)
+    
+
+}
+
+/* Guidelines link handlers */
+
+if (document.getElementById("bubbleHere")) {
+  document.getElementById("bubbleHere").onclick = () => {
+    document.getElementById("mapFrame").src = "map.html?t=" + encodeURIComponent(token);
+    document.getElementById("mapModalOverlay").style.display = "flex";
+  };
+}
+
+if (document.getElementById("stdHere")) {
+  document.getElementById("stdHere").onclick = () => {
+    document.getElementById("dateModalOverlay").style.display = "flex";
+  };
+}
+
+  /* STD DATE CONFIRM */
+const confirmDateBtn = document.getElementById("confirmDateBtn");
+if (confirmDateBtn) {
+  confirmDateBtn.onclick = async () => {
+    const dateValue = document.getElementById("eventDateInput").value;
+
+    if (!dateValue) {
+      alert("Please select a date");
+      return;
+    }
+
+    // Save formatted
+    const formatted = new Date(dateValue).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+
+    const { error } = await supabase
+      .from("sites")
+      .update({
+        std_date: dateValue,
+        std_date_text: formatted
+      })
+      .eq("edit_token", token);
+
+    if (error) {
+      alert("Error saving date");
+      return;
+    }
+
+    showToast("Save-the-Date updated!", "success");
+
+    const box = document.getElementById("stdDateBox");
+    box.innerHTML = `
+      <strong>Event Date:</strong>
+      <span class="email-date-top">${formatted}</span>
+    `;
+    box.style.display = "block";
+
+    // обновляем нижний STD блок (email-body)
+    document.querySelectorAll(".email-date-value").forEach(el => {
+      el.textContent = formatted;
+    });
+
+    // закрываем модал по OK
+    document.getElementById("dateModalOverlay").style.display = "none";
+  };
+}
+
+/* STD DATE CLOSE (X BUTTON) */
+const dateModalClose = document.getElementById("dateModalClose");
+if (dateModalClose) {
+  dateModalClose.onclick = () => {
+    document.getElementById("dateModalOverlay").style.display = "none";
+  };
+}
+
+
+  /* PAGE SUBTITLE */
+  document.getElementById("previewInfo").textContent =
+  method === "email"
+    ? `This is how your ${type === "save" ? "Save-the-Date" : "RSVP"} email will appear to your guests.`
+    : "This is how your SMS will look to your guests.";
+
+
+ /* ------------------------
+      EMAIL PREVIEW RENDER
+------------------------*/
+if (method === "email") {
+  const fn = EMAIL_TPL[type]?.[tplId];
+  if (!fn) {
+    console.error("Template not found:", type, tplId);
+    return;
+  }
+
+  const { subject, html } = fn({ couple: coupleName, location, token});
+
+  // SUBJECT (email preview)
+  subjectText.textContent = subject;
+
+  // ---------- NEW TITLE LOGIC ----------
+  // For STD = "Save-the-Date: Couple"
+  // For RSVP = "RSVP: Couple"
+  const prettyTitle =
+    type === "save"
+      ? `Save-the-Date: ${coupleName}`
+      : `RSVP: ${coupleName}`;
+
+  // Replace the guidelines header text
+  document.getElementById("guidelinesTitle").textContent = prettyTitle;
+  // -------------------------------------
+
+  const imgSrc = EMAIL_IMAGES[tplId] || "";
+const htmlWithImg = imgSrc
+  ? `
+      <div style="
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 14px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+">
+
+  <!-- Белый внутренний блок -->
+  <div style="
+    background: #ffffff;
+    padding: 12px 20px;
+    border-radius: 18px;
+    max-width: 700px;
+  ">
+      <img src="${imgSrc}"
+           style="
+              width: 100%;
+              max-width: 600px;
+              border-radius: 14px;
+              display: block;
+              margin: 0 auto;
+           ">
+  </div>
+
+</div>
+
+
+      ${html}
+    `
+  : html;
+
+ /* Insert main HTML (template + image) */
+emailBody.innerHTML = htmlWithImg;
+
+/* Fetch STD / RSVP extra details */
+const { data: siteRow } = await supabase
+  .from("sites")
+  .select("map_address, event_date_text, event_time, std_date_text")
+  .eq("edit_token", token)
+  .single();
+
+let venueAddress = siteRow?.map_address?.trim() || "";
+let eventDate    = siteRow?.event_date_text || "";
+let eventTime    = siteRow?.event_time || "";
+let stdDate      = siteRow?.std_date_text || "";
+
+/* SHOW RSVP BOX ABOVE EMAIL */
+const rsvpBox = document.getElementById("rsvpInfoBox");
+if (type === "rsvp" && venueAddress && eventDate && eventTime) {
+  rsvpBox.style.display = "block";
+  rsvpBox.innerHTML = `
+    <div style="display:flex; justify-content:center; gap:25px; flex-wrap:wrap;">
+      <span><strong>Venue:</strong> ${venueAddress}</span>
+      <span><strong>Date:</strong> ${eventDate}</span>
+      <span><strong>Time:</strong> ${eventTime}</span>
+    </div>
+  `;
+}
+
+/* SHOW STD EVENT DATE BOX ABOVE EMAIL */
+const stdBox = document.getElementById("stdDateBox");
+if (type === "save" && stdDate) {
+  stdBox.style.display = "block";
+  stdBox.textContent = "Event Date: " + stdDate;
+} else {
+  stdBox.style.display = "none";
+}
+
+/* Insert STD event date INSIDE EMAIL PREVIEW */
+if (type === "save" && stdDate) {
+  emailBody.innerHTML += `
+    <div class="std-date-block" style="
+      margin-top:28px;
+      padding:16px 20px;
+      border-radius:14px;
+      background:#fff2f6;
+      border:1px solid #ffb3ca;
+      font-size:16px;
+      line-height:1.6;
+      text-align:center;
+      font-weight:600;">
+      <div style="font-size:18px; margin-bottom:6px;">📅 Save the Date</div>
+      <div class="email-date-value">${stdDate}</div>
+    </div>
+  `;
+}
+
+/* Insert RSVP details INSIDE EMAIL PREVIEW */
+if (type === "rsvp") {
+  emailBody.innerHTML += `
+    <div class="std-date-block" style="
+      margin-top:28px;
+      padding:18px 22px;
+      border-radius:14px;
+      background:#f2f7ff;
+      border:1px solid #b5d8ff;
+      font-size:16px;
+      line-height:1.6;">
+
+      <div style="font-size:17px; font-weight:620; margin-bottom:10px;">
+        Event Details:
+      </div>
+
+      <div style="margin-bottom:6px;">
+        <strong>📍 Venue:</strong>
+        <span class="email-venue-value">${venueAddress}</span>
+      </div>
+
+      <div style="margin-bottom:6px;">
+        <strong>📅 Date:</strong>
+        <span class="email-date-value">${eventDate || "TBA"}</span>
+      </div>
+
+      <div>
+        <strong>⏰ Time:</strong>
+        <span class="email-time-value">${eventTime || "TBA"}</span>
+      </div>
+
+    </div>
+  `;
+}
+
+/* ===============================
+      FOOTER INSERTION
+   =============================== */
+
+const { data: footerRow } = await supabase
+    .from("sites")
+    .select("email")
+    .eq("edit_token", token)
+    .single();
+
+const senderEmail = footerRow?.email || "";
+
+const FOOTER_HTML = `
+  <p style="font-family:Poppins, sans-serif;
+            font-size:14px;
+            line-height:1.5;
+            color:#666;
+            margin-top:35px;">
+    If you would like to reply to this message, please do not reply to this automated email.<br>
+    You can reach us at:
+    <strong>
+      <a href="mailto:${senderEmail}"
+         style="color:#0e5bd8; text-decoration:none; font-weight:600;">
+         ${senderEmail}
+      </a>
+    </strong>
+  </p>
+`;
+
+emailBody.innerHTML += FOOTER_HTML;
+/* =============================== */
+
+subjectRow.style.display = "block";
+emailPreview.style.display = "block";
+smsPreview.style.display = "none";
+
+  }
+
+  /* SMS PREVIEW */
+  else {
+    const fn = SMS_TPL[type]?.[tplId];
+    const { text } = fn({ couple: coupleName, location });
+    smsBody.textContent = text;
+
+    subjectRow.style.display = "none";
+    emailPreview.style.display = "none";
+    smsPreview.style.display = "block";
+  }
+
+  loadGuests();
+
+  /* FIX FILTER BUTTON LABELS */
+  const filterYes  = document.querySelector('.gfilter-btn[data-filter="yes"]');
+  const filterMaybe = document.querySelector('.gfilter-btn[data-filter="maybe"]');
+
+  if (filterYes && filterMaybe) {
+      if (window.type === "save") {
+          filterYes.textContent = "STD ✓";
+          filterMaybe.textContent = "STD ?";
+      } else {
+          filterYes.textContent = "RSVP ✓";
+          filterMaybe.textContent = "RSVP ?";
+      }
+  }
+}
+
+init().then(() => {
+  document.body.classList.add("ready");
+  setupFormModal();
+});
+
+// =============================
+// MAP MODAL — CLOSE HANDLER
+// =============================
+const mapOverlay = document.getElementById("mapModalOverlay");
+const mapFrame   = document.getElementById("mapFrame");
+const mapClose   = document.getElementById("mapModalClose");
+
+if (mapClose) {
+  mapClose.onclick = async () => {
+    mapOverlay.style.display = "none";
+    mapFrame.src = "";
+    await refreshRsvpBlocks();   // ← вот эта строка важна
+  };
+}
+
+mapOverlay.addEventListener("click", async (e) => {
+  if (e.target.id === "mapModalOverlay") {
+    mapOverlay.style.display = "none";
+    mapFrame.src = "";
+    await refreshRsvpBlocks();   // ← и тут тоже
+  }
+});
+
+
+</script>
+
+<!-- FORM MODAL (RSVP / STD FORM PREVIEW) -->
+<style>
+#formModalOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+#formModal{
+  width:90%;
+  max-width:1300px;
+  height:92%;
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+#formModalOverlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+
+
+#formModal iframe {
+  width:100%;
+  height:100%;
+  border:none;
+  position:relative;
+  z-index:1;   /* iframe ниже крестика */
+}
+
+#closeFormModal {
+  position:absolute;
+  top:10px;
+  right:14px;
+  font-size:28px;
+  color:#333;
+  cursor:pointer;
+  z-index:9999; /* крестик НАД iframe */
+}
+
+.info-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--ruby-border);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+
+</style>
+
+<div id="formModalOverlay">
+  <div id="formModal">
+    <div id="closeFormModal">×</div>
+    <iframe id="formModalFrame"></iframe>
+  </div>
+</div>
+
+<div id="deleteModalOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background: #fff;
+    padding: 20px;
+    width: 90%;
+    max-width: 900px;
+    height: 90%;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+  ">
+    <div id="closeDeleteModal" style="
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 10;
+    ">×</div>
+
+    <iframe id="deleteFrame" style="
+      width: 100%;
+      height: 100%;
+      border: none;
+    "></iframe>
+  </div>
+</div>
+
+<script>
+function setupFormModal() {
+    const seeFormBtn   = document.getElementById("seeRsvpForm");
+    const modalOverlay = document.getElementById("formModalOverlay");
+    const modalIframe  = document.getElementById("formModalFrame");
+    const closeBtn     = document.getElementById("closeFormModal");
+
+    if (!seeFormBtn || !closeBtn) return;
+
+    const params = new URLSearchParams(location.search);
+    const rawType = (window.type || params.get("type") || "save").toLowerCase();
+    const token = params.get("t") ? encodeURIComponent(params.get("t")) : "";
+
+    if (rawType === "save") {
+  seeFormBtn.textContent = "See Guest Form";
+  modalIframe.src = "https://flowwed.com/stdform?t=" + token;
+} else {
+  seeFormBtn.textContent = "See Guest Form";
+  modalIframe.src = "https://flowwed.com/rsvpform?t=" + token;
+}
+
+
+    seeFormBtn.addEventListener("click", () => {
+      modalOverlay.style.display = "flex";
+    });
+
+    closeBtn.addEventListener("click", () => {
+      modalOverlay.style.display = "none";
+    });
+
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target.id === "formModalOverlay") {
+        modalOverlay.style.display = "none";
+      }
+    });
+}
+</script>   <!-- ← ОБЯЗАТЕЛЬНО ДОБАВИТЬ -->
+
+<!-- SEND PROGRESS MODAL -->
+<div id="sendProgressOverlay"
+     style="
+       position: fixed;
+       inset: 0;
+       background: rgba(0,0,0,0.55);
+       display: none;
+       justify-content: center;
+       align-items: center;
+       z-index: 9999;
+     ">
+
+  <div style="
+        background: #fff;
+        padding: 25px 30px;
+        width: 360px;
+        border-radius: 14px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        position: relative;
+     ">
+     
+    <!-- CLOSE BUTTON -->
+    <div id="progressClose" 
+         style="
+           position:absolute;
+           right:12px;
+           top:10px;
+           font-size:20px;
+           cursor:pointer;
+           color:#444;
+         ">✕</div>
+
+    <!-- TITLE -->
+    <h3 id="progressTitle" style="
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: #444;
+      text-align: center;
+    ">
+      Preparing…
+    </h3>
+
+    <!-- BAR -->
+    <div style="width:100%; height:8px; background:#eee; border-radius:6px; overflow:hidden;">
+      <div id="progressBar"
+           style="
+             width:0%;
+             height:100%;
+             background:#c40037;
+             transition: width .35s ease;
+             border-radius: 20px;
+           ">
+      </div>
+    </div>
+
+    <!-- STATUS TEXT -->
+    <div id="progressText"
+         style="
+           margin-top:12px;
+           font-size:14px;
+           color:#444;
+           text-align:center;
+         ">
+      Preparing…
+    </div>
+
+    <!-- DONE -->
+    <div id="progressDone"
+         style="
+           display:none;
+           margin-top:16px;
+           font-size:16px;
+           font-weight:450;
+           color:green;
+           text-align:center;
+         ">
+      ✔ All messages sent!
+    </div>
+
+    <!-- Warning -->
+    <div id="progressWarning"
+         style="
+           margin-top:12px;
+           font-size:13px;
+           color:#555;
+           text-align:center;
+           line-height:1.4;
+         ">
+      Please do not close this window or turn off your device<br>
+      until the sending process is complete.
+    </div>
+
+  </div>
+</div>
+
+<script>
+let totalToSend = 0;
+let currentSent = 0;
+
+const sendProgressOverlay = document.getElementById("sendProgressOverlay");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const progressTitle = document.getElementById("progressTitle");
+const progressDone = document.getElementById("progressDone");
+
+function showSendProgress(total = 0) {
+  totalToSend = total;
+  currentSent = 0;
+
+  progressBar.style.width = "0%";
+  progressDone.style.display = "none";
+
+  progressText.textContent = "Preparing…";
+  document.getElementById("progressWarning").classList.add("pulse");
+
+  progressTitle.textContent = "Preparing…";
+
+  sendProgressOverlay.style.display = "flex";
+}
+
+function updateSendProgress(percent, label = "", current = null) {
+  progressBar.style.width = percent + "%";
+
+  if (label) progressText.textContent = label;
+
+  if (current !== null) {
+    currentSent = current;
+    progressTitle.textContent = `Sending ${currentSent} / ${totalToSend}`;
+  }
+}
+
+function finishSendProgress() {
+  progressText.textContent = "";
+  progressDone.style.display = "block";
+
+  // Снимаем пульсацию
+  document.getElementById("progressWarning").classList.remove("pulse");
+
+  setTimeout(() => {
+
+    sendProgressOverlay.style.display = "none";
+
+    // --- TOAST после отправки ---
+    if (window.failedEmails > 0) {
+        showToast(`${window.failedEmails} email(s) failed to deliver`, "error");
+    } else {
+        showToast("All emails sent successfully!", "success");
+    }
+
+    // Окно с ошибками (как раньше)
+    if (window.failedEmails && window.failedEmails > 0) {
+      setTimeout(() => showDeliveryNotice(), 150);
+    }
+
+  }, 1500);
+}
+
+function showDeliveryNotice() {
+    const overlay = document.getElementById("deliveryNoticeOverlay");
+    overlay.style.display = "flex";
+
+    document.getElementById("deliveryNoticeClose").onclick = () => {
+        overlay.style.display = "none";
+    };
+}
+
+
+document.getElementById("progressClose").onclick = function () {
+  sendProgressOverlay.style.display = "none";
+
+  // Проверяем глобальную переменную window.failedEmails
+  if (window.failedEmails && window.failedEmails > 0) {
+    setTimeout(() => showDeliveryNotice(), 250);
+  }
+};
+
+</script>
+
+<!-- TITLE AUTO-FILL FIXED SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const titleEl = document.getElementById("guidelinesTitle");
+  const coupleEl = document.getElementById("coupleSmallName");
+
+  if (!titleEl || !coupleEl) return;
+
+  const observer = new MutationObserver(() => applyTitle());
+  observer.observe(coupleEl, { childList: true });
+
+  applyTitle();
+
+  function applyTitle() {
+    const couple = coupleEl.textContent.trim();
+    if (!couple) return;
+
+    const base = titleEl.textContent
+      .replace("Instructions", "")
+      .replace("  ", " ")
+      .trim();
+
+    titleEl.textContent = `${base}: ${couple}`;
+  }
+});
+</script>
+
+
+<!-- DELIVERY NOTICE MODAL -->
+<div id="deliveryNoticeOverlay" style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999999;
+">
+  <div style="
+        background: #fff;
+        padding: 26px;
+        width: 360px;
+        border-radius: 14px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  ">
+    <h3 style="margin-top:0; margin-bottom:12px; font-size:18px;">Delivery notice</h3>
+
+    <p style="font-size:15px; color:#444; line-height:1.5;">
+      Some emails could not be delivered.<br>
+      Check the highlighted rows in the list<br>
+      and try sending them again.
+    </p>
+
+    <button id="deliveryNoticeClose" style="
+        margin-top: 18px;
+        padding: 10px 20px;
+        background: #c40037;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+    ">OK</button>
+  </div>
+</div>
+
+<script>
+// 2️⃣ ловим кнопку Delete Selected
+const deleteSelected = document.getElementById("deleteSelected");
+
+deleteSelected.addEventListener("click", () => {
+  const overlay = document.getElementById("deleteModalOverlay");
+  const frame   = document.getElementById("deleteFrame");
+
+  const params = new URLSearchParams(location.search);
+  const token  = params.get("t") || "";
+
+  frame.src = "guests.html" + (token ? `?t=${encodeURIComponent(token)}` : "");
+
+  overlay.style.display = "flex";
+});
+
+// 3️⃣ закрытие крестиком
+document.getElementById("closeDeleteModal").onclick = () => {
+  document.getElementById("deleteModalOverlay").style.display = "none";
+  loadGuests(); // ← обновляем таблицу после закрытия
+};
+
+// закрытие по клику на фон
+document.getElementById("deleteModalOverlay").onclick = (e) => {
+  if (e.target.id === "deleteModalOverlay") {
+    e.target.style.display = "none";
+    loadGuests(); // ← обновляем таблицу после закрытия по фону
+  }
+};
+</script>
+
+<script>
+
+window.closeDeleteModalFromIframe = function () {
+  document.getElementById("deleteModalOverlay").style.display = "none";
+
+  // ДАЁМ ВРЕМЯ SUPABASE ОБНОВИТЬСЯ
+  setTimeout(() => {
+    loadGuests();
+  }, 600); // 600ms самое оптимальное
+};
+
+
+</script>
+
+<script>
+document.getElementById("backBtn").onclick = (e) => {
+    e.preventDefault();
+
+    // 1️⃣ Если у страницы есть история — возвращаемся назад
+    if (history.length > 1) {
+        history.back();
+        return;
+    }
+
+    // 2️⃣ Фолбэк — если страница открыта напрямую
+    const params = new URLSearchParams(location.search);
+    const token  = params.get("t")    || "";
+    const type   = params.get("type") || "save";
+
+    window.location.href =
+      `templates.html?t=${encodeURIComponent(token)}&type=${encodeURIComponent(type)}`;
+};
+</script>
+
+<script type="module" src="preview.js"></script>
+
+<script type="module">
+  import { initPreview } from "./preview.js";
+  initPreview();
+</script>
+
+<!-- TOASTS -->
+<style>
+#toastBox {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 2147483647;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.toast {
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: toastIn .3s forwards;
+}
+.toast-success { background: #28c76f; }
+.toast-error   { background: #ff3b3b; }
+
+@keyframes toastIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pulse {
+  animation: bubblePulse 3.5s infinite ease-in-out;
+  display: inline-block;
+}
+
+@keyframes bubblePulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pulseNotice {
+  0%   { opacity: 1; transform: scale(1); }
+  50%  { opacity: .55; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+#progressWarning.pulse {
+  animation: pulseNotice 2s ease-in-out infinite;
+}
+
+.gfilter-btn {
+  background: #b41111;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.22),
+    inset 0 2px 3px rgba(255,255,255,0.15);
+}
+
+
+  /* ← ВОТ ЭТО ДЕЛАЕТ КНОПКИ МЕНЬШЕ */
+  transform: scale(0.85);
+  transform-origin: left center;
+}
+
+.gfilter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 16px rgba(0,0,0,0.32),
+    inset 0 3px 4px rgba(255,255,255,0.2);
+}
+
+.gfilter-btn.active {
+  outline: 2px solid white;
+}
+
+/* --- FIX SUBJECT + CHIP --- */
+
+#subjectRow {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+#subjectRow .subject-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+#previewInfo {
+  display: inline-flex !important;
+  align-items: center;
+  background: #ffffffcc; /* лёгкая прозрачность */
+  border: 1px solid #e5e5e5;
+  
+  padding: 8px 18px;      /* больше воздуха */
+  border-radius: 12px;
+
+  font-size: 15px;
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+
+  flex-shrink: 0;
+  margin: 0 !important;
+
+  /* 🟣 ЭФФЕКТ ОБЪЁМА */
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.10),
+    0 1px 3px rgba(0,0,0,0.08),
+    inset 0 1px 2px rgba(255,255,255,0.7);
+
+  backdrop-filter: blur(6px); /* эффект стекла */
+}
+
+@keyframes pulseHere {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.08); opacity: 0.85; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.pulse-here {
+  display: inline-flex;
+  align-items: center;
+  animation: pulseHere 8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.guidelines-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+/* Левый блок шире */
+.guidelines-box:not(.empty-box) {
+  flex: 1; /* <-- занимает всё доступное */
+}
+
+/* Правый блок — убираем фиксированные проценты и задаём нужную ширину */
+.guidelines-box.empty-box {
+  flex: 0 0 260px; /* ← ширина примерно как на твоём скрине */
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.guidelines-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.guidelines-box.empty-box {
+  flex: 0 0 260px; /* ширина карточки */
+  padding: 30px 20px; /* уменьшенная вертикаль */
+  border-radius: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #ffffff;
+  box-shadow:
+      0 4px 14px rgba(0,0,0,0.06),
+      0 1px 3px rgba(0,0,0,0.04);
+}
+
+.guidelines-box:not(.empty-box) {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='%2300C853' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 16.2l-3.5-3.5L4 14.2l5 5 12-12-1.5-1.5L9 16.2z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 90px center;
+  background-size: 72px;
+}
+
+/* Disable email buttons inside PREVIEW only */
+#emailBodyInner [data-preview-disabled="true"] {
+    pointer-events: none !important;
+    cursor: default !important;
+    opacity: 0.75;
+    position: relative;
+}
+
+/* Tooltip hidden by default */
+#emailBodyInner [data-preview-disabled="true"]::after {
+    content: "This button is disabled in preview mode";
+    position: absolute;
+    bottom: -34px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+}
+
+/* Tooltip on hover */
+#emailBodyInner [data-preview-disabled="true"]:hover::after {
+    opacity: 1;
+}
+
+
+</style>
+
+
+</body>
+</html>

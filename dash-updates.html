@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modify Your 'Our Story' Page</title>
+
+  <style>
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont,
+             "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+     background: linear-gradient(
+  180deg,
+  #f8d9dc 0%,
+  #f6e2e5 30%,
+  #f9edef 80%,
+  #fff5f6 100%
+);
+      margin: 0;
+      padding: 40px 40px 80px 40px; /* top / left-right / bottom (bottom = 2x sides) */
+    }
+
+    /* HEADER: TITLE + INFO BUBBLE */
+    .page-header {
+  display: flex;
+  justify-content: center;   /* ← ЦЕНТР */
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+
+    .page-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0px 2px 4px rgba(0,0,0,0.25);
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    /* INFO BUBBLE — FIXED VERSION */
+.info-bubble {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 20px;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.22),
+    0 3px 6px rgba(0,0,0,0.14);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  /* ← УВЕЛИЧИЛ В 2 РАЗА */
+  min-width: 920px;
+
+  /* ← ПОНИЗИЛ ВЫСОТУ */
+  height: 12px;
+
+  transform: translateY(2px);
+}
+
+.info-text {
+  font-size: 15px;
+  white-space: nowrap;  /* ← одна строка, не переносится */
+  color: #444;
+}
+
+.info-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1f8bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    0 0 0 2px rgba(255,255,255,0.9);
+}
+
+.editor-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* нижняя плашка */
+.info-bubble--bottom {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  align-self: center;      /* чтобы ты мог управлять шириной */
+  width: 70%;              /* ← РЕГУЛИРУЕШЬ САМ */
+  max-width: 900px;        /* ← РЕГУЛИРУЕШЬ САМ */
+  margin-top: 40px;
+}
+
+/* текстовый блок */
+.bottom-info-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+/* стрелка */
+.bottom-info-arrow {
+  font-size: 20px;
+  font-weight: 600;
+  color: #b40012;
+}
+
+/* кнопка */
+.bottom-info-btn {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #0075ff;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bottom-info-btn:hover {
+  background: #005bd1;
+}
+
+.info-bubble--bottom,
+.info-bubble--bottom * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+    /* MAIN 2-COLUMN LAYOUT */
+    .page-wrapper {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start; /* same height */
+      width: 100%;
+    }
+
+    /* LEFT UPLOADER BOX */
+    .uploader-container {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      width: 420px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #previewBox {
+      width: 100%;
+      height: 300px;
+      border: 1.5px solid #d2d2d2;
+      border-radius: 14px;
+      background: #fafafa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    #previewBox.placeholder::before {
+      content: "";
+      width: 70px;
+      height: 70px;
+      opacity: 0.30;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/685/685655.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    #preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      border-radius: 14px;
+    }
+
+    select,
+input[type=file] {
+  padding: 10px;
+  height: 38px;      
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+
+    button {
+      background: #0075ff;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+#uploadBtn {
+  margin-top: 10px;        /* отступ от file input */
+  height: 42px;            /* нормальная высота */
+  border-radius: 14px;     /* 🔵 скруглённые края */
+  font-size: 17px;         /* 🔤 крупнее текст */
+  font-weight: 600;
+  background: #c30c1e;
+  color: white;
+  cursor: pointer;
+}
+
+
+    button:hover {
+      background: #d0404d;
+    }
+
+
+
+    .progress-container {
+      margin-top: 15px;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 12px;
+      width: 100%;
+      display: none;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #d0404d;
+      transition: width 0.3s;
+    }
+
+    #status {
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    #tokenDisplay, #slugDisplay {
+      display: none;
+    }
+
+    /* RIGHT TEXT EDITOR — FULL WIDTH */
+    .text-editor-box {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      flex: 1; /* takes remaining width */
+      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .save-btn {
+      background: #c00111;
+      color: white;
+    }
+
+    .update-btn {
+      background: #6f685e;
+      color: white;
+    }
+
+    .editor-btn:hover {
+      opacity: 0.82;
+    }
+.update-btn:hover {
+  background: #827b6f; /* темнее */
+  opacity: 1;          /* убираем общее затемнение */
+}
+
+
+.editor-actions {
+  display: flex;
+  gap: 16px;          /* расстояние между кнопками */
+  margin-top: 14px;
+ align-items: stretch;   
+}
+
+/* кнопки одной высоты и нормальной ширины */
+.editor-btn {
+  flex: 1;
+  padding: 14px 0;        /* ← ВОТ ЭТО КЛЮЧ */
+  height: 48px;           /* ← И ЭТО */
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+/* ============================= */
+/* QUILL EDITOR — FIXED SCROLL  */
+/* ============================= */
+
+/* ВНЕШНИЙ КОНТЕЙНЕР */
+#editor {
+  border: 1.5px dashed #bbb;
+  border-radius: 12px;
+  background: #fafafa;
+  height: 260px;
+  box-sizing: border-box;
+  padding: 0;               /* padding ТОЛЬКО у ql-editor */
+  overflow: hidden;         /* ❗ важно */
+}
+
+/* ВНУТРЕННИЙ СКРОЛЛИМЫЙ БЛОК */
+#editor .ql-editor {
+  height: 100%;
+  padding: 18px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #444;
+
+  overflow-y: auto;         /* ✅ СКРОЛЛ ТУТ */
+  overflow-x: hidden;
+
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ============================= */
+/* RUBY SCROLLBAR (WEBKIT)       */
+/* ============================= */
+
+#editor .ql-editor::-webkit-scrollbar {
+  width: 9px;
+}
+
+#editor .ql-editor::-webkit-scrollbar-track {
+  background: #ffe6eb;
+  border-radius: 10px;
+}
+
+#editor .ql-editor::-webkit-scrollbar-thumb {
+  background: #b41111;
+  border-radius: 10px;
+  border: 2px solid #ffe6eb;
+}
+
+#editor .ql-editor::-webkit-scrollbar-thumb:hover {
+  background: #9c1818;
+}
+
+
+/* ============================= */
+/* QUILL — РЕАЛЬНЫЙ FIX SCROLL  */
+/* ============================= */
+
+/* Quill container */
+#editor.ql-container {
+  border: 1.5px dashed #bbb;
+  border-radius: 14px;
+  background: #fafafa;
+  margin-bottom: 12px;
+
+  height: 260px;        /* 🔒 ФИКС ВЫСОТЫ */
+  overflow: hidden;     /* ❗ обязательно */
+}
+
+/* ТЕКСТОВОЕ ПОЛЕ */
+#editor .ql-editor {
+  height: 260px;        /* 🔥 НЕ 100%, А ТОЧНО */
+  padding: 18px;
+
+  font-size: 17px;
+  line-height: 1.6;
+  color: #444;
+
+  overflow-y: auto;     /* ✅ СКРОЛЛ */
+  overflow-x: hidden;
+
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ============================= */
+/* RUBY SCROLLBAR               */
+/* ============================= */
+
+#editor .ql-editor::-webkit-scrollbar {
+  width: 9px;
+}
+
+#editor .ql-editor::-webkit-scrollbar-track {
+  background: #ffe6eb;
+  border-radius: 10px;
+}
+
+#editor .ql-editor::-webkit-scrollbar-thumb {
+  background: #b41111;
+  border-radius: 10px;
+  border: 2px solid #ffe6eb;
+}
+
+#editor .ql-editor::-webkit-scrollbar-thumb:hover {
+  background: #9c1818;
+}
+
+#editor .ql-editor {
+  overflow-y: scroll;        /* всегда */
+  scrollbar-gutter: stable;  /* не прыгает */
+}
+
+
+/* MODAL BACKDROP — MUST cover ENTIRE SCREEN */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;                    /* ← заменяет top:0; left:0; width:100vw; height:100vh */
+  background: rgba(0,0,0,0.55);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
+}
+
+/* MODAL WINDOW */
+.modal-window {
+  position: relative;
+  background: white;
+  width: 75vw;
+  height: 75vh;
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 9999999;           /* ← поверх backdrop */
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* iframe must NEVER sit above X */
+.modal-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: relative;
+  z-index: 1;                  /* lower than button */
+}
+
+/* TOAST STYLES */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  background: #28a745;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 10px;
+  font-size: 18px;
+
+  width: auto;
+  max-width: 320px;
+  box-sizing: border-box;
+  white-space: normal;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 999999999;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.apple-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 26px;
+  border-radius: 999px;
+
+  /* Apple-like glass */
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.95) 0%,
+    rgba(245,245,245,0.92) 45%,
+    rgba(230,230,230,0.9) 100%
+  );
+
+  backdrop-filter: blur(6px);
+
+  color: #b40012;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  /* Real Apple depth */
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.22),   /* outer soft depth */
+    inset 0 1px 0 rgba(255,255,255,0.95), /* top highlight */
+    inset 0 -1px 0 rgba(0,0,0,0.08);      /* bottom edge */
+
+  /* subtle lift */
+  transform: translateY(-1px);
+}
+
+/* Send Email — прозрачная кнопка с hover */
+.info-action-btn {
+  all: unset;
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 14px;
+  border-radius: 999px;
+
+  background: transparent;              /* ← ПРОЗРАЧНАЯ */
+  color: #b40012;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+
+  white-space: nowrap;
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* hover — появляется цвет */
+.info-action-btn:hover {
+  background: rgba(180, 0, 18, 0.12);   /* мягкий ruby-hover */
+  transform: translateY(-1px);
+}
+
+/* active */
+.info-action-btn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.18),
+    inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* disabled */
+.info-action-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.info-action-btn {
+  margin-left: 20px; /* подбери значение: 8px, 12px, 20px и т.д. */
+}
+
+
+.info-bubble--bottom {
+  display: flex;
+  align-items: center;
+
+  padding: 20px 40px;   /* 🔥 ВОТ ОНО */
+  background: #fff;
+  border-radius: 999px;
+}
+
+.info-bubble--top {
+  display: flex;
+  align-items: center;
+
+  padding: 20px 40px;     /* ← та же высота белого поля */
+  line-height: 1.4;
+
+  background: #fff;
+  border-radius: 999px;
+ margin-left: 240px;   /* ← СДВИГ ВПРАВО */
+
+}
+
+.info-bubble {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ================= TOP NAV ================= */
+
+.top-nav-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center; /* центрируем navbar */
+  align-items: center;
+  height: 52px;            /* фикс высоты */
+  margin-bottom: 32px;     /* отступ от заголовка */
+}
+
+.top-nav {
+  display: flex;
+  gap: 36px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #7a6772;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #7a6772;
+  transition: 0.2s;
+}
+
+.top-nav a:hover {
+  color: #b40012;
+}
+
+.top-nav a.active {
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(180,17,17,0.25);
+}
+
+/* ================= BACK BUTTON ================= */
+
+.back-btn {
+  position: absolute;
+  left: 40px;              /* ← под твой layout */
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+
+  border-radius: 8px;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(180,17,17,0.25);
+  color: #b40012;
+
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+
+  cursor: pointer;
+  transition: background .2s ease, box-shadow .2s ease;
+}
+
+.back-btn svg {
+  display: block;     /* убираем baseline-сдвиг */
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.6);
+  box-shadow: 0 4px 12px rgba(180,17,17,0.18);
+}
+
+
+  </style>
+
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+</head>
+
+<body data-page="updates">
+
+
+<!-- ======= TOP NAV + BACK BUTTON ======= -->
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24"
+         stroke-width="2" stroke="#6d6d6d"
+         fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Back
+  </button>
+
+ <div class="top-nav">
+  <a href="/photo-gallery.html">Photo Gallery</a>
+  <a href="/gift-registry.html">Gift Registry</a>
+  <a href="/our-story.html">Our Story</a>
+  <a href="/wedding-party.html">Wedding Party</a>
+  <a href="/wedding-info.html">Wedding Info</a>
+  <a href="/venue-map.html">Venue & Map</a>
+  <a href="/travel-info.html">Travel Info</a>
+  <a href="/updates.html">Updates</a>
+  <a href="/faq.html">FAQ</a>
+</div>
+
+
+</div>
+
+
+  <!-- HEADER: TITLE + INFO BUBBLE -->
+  <div class="page-header">
+    <div class="apple-pill">
+  'UPDATES' 
+ </div>
+
+
+    <div class="info-bubble info-bubble--top">
+
+      <div class="info-icon">i</div>
+      <div class="info-text">
+        Here you can customize the “Updates” page of your website.
+        Update the photos and share your updates whenever you like.
+      </div>
+    </div>
+  </div>
+
+ <div class="page-wrapper">
+
+  <!-- LEFT SIDE — UPLOADER -->
+  <div class="uploader-container">
+
+    <div id="tokenDisplay"></div>
+    <div id="slugDisplay"></div>
+
+    <div id="previewBox" class="placeholder">
+      <img id="preview">
+    </div>
+
+    <select id="slotSelect">
+  <option value="img1">Photo 1</option>
+</select>
+
+
+    <input type="file" id="fileInput" accept="image/*">
+
+    <button id="uploadBtn">Upload Photo to Your Page</button>
+
+
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="status"></div>
+
+  </div>
+
+  <!-- RIGHT SIDE — COLUMN -->
+  <div class="editor-column">
+
+    <!-- WHITE EDITOR CONTAINER -->
+    <div class="text-editor-box">
+
+      <div id="toolbar-container">
+        <select class="ql-font"></select>
+        <select class="ql-size"></select>
+        <button class="ql-bold"></button>
+        <button class="ql-italic"></button>
+        <button class="ql-underline"></button>
+        <button class="ql-strike"></button>
+        <select class="ql-color"></select>
+        <select class="ql-background"></select>
+        <button class="ql-list" value="ordered"></button>
+        <button class="ql-list" value="bullet"></button>
+        <button class="ql-align"></button>
+      </div>
+
+      <div id="editor"></div>
+
+      <div class="editor-actions">
+        <button class="editor-btn save-btn">Save Text Changes</button>
+        <button class="editor-btn update-btn">  👁 Preview Your Page Photo & Text Updates</button>
+      </div>
+
+    </div>
+
+    <!-- INFO BUBBLE — UNDER EDITOR, SAME COLUMN -->
+    <div class="info-bubble info-bubble--bottom">
+
+  <div class="info-icon">i</div>
+
+  <div class="info-content">
+    <span class="info-text">
+      Want to inform your guests? You can notify them about your update via email & SMS here
+
+    </span>
+
+
+  </div>
+
+  <button class="info-action-btn">
+    Send Email & SMS
+  </button>
+
+</div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // TOAST HELPER
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    if (!t) return;
+
+    t.innerText = msg;
+    t.classList.add("show");
+
+    setTimeout(() => {
+      t.classList.remove("show");
+    }, 2000);
+  }
+
+
+  // ===============================
+  // 1) AUTO-LOAD STORY TEXT FROM SUPABASE
+  // ===============================
+  async function loadStoryText() {
+    if (!token) return;
+
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/wed_updates?select=how_we_met&edit_token=eq.${token}`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
+        }
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.length && data[0].how_we_met) {
+  window.quill.root.innerHTML = data[0].how_we_met;
+}
+
+  }
+
+  // ВАЖНО — вызываем!
+  loadStoryText();
+
+
+
+  // ===============================
+  // 2) SAVE BUTTON — SAVE TEXT ONLY
+  // ===============================
+  document.querySelector(".save-btn").addEventListener("click", async () => {
+
+    if (!token) {
+      alert("Missing token");
+      return;
+    }
+
+    const text = window.quill.root.innerHTML;
+
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/wed_updates?edit_token=eq.${token}`,
+  {
+    method: "PATCH",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "return=representation"
+    },
+    body: JSON.stringify({ how_we_met: text })
+  }
+);
+
+    if (res.ok) showToast("Message saved!");
+    else showToast("Save failed");
+
+  });
+
+});
+</script>
+
+<script>
+
+// отправлять текст при открытии модалки
+function sendTextToIframe() {
+  const iframe = document.getElementById("storyIframe");
+  if (!iframe) return;
+
+  const text = window.quill.root.innerHTML;
+
+  iframe.contentWindow.postMessage(
+    { type: "setWixText", text },
+    "*"
+  );
+}
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const sendEmailBtn = document.querySelector(".info-action-btn");
+  const modal = document.getElementById("storyModal");
+  const iframe = document.getElementById("storyIframe");
+
+  if (!sendEmailBtn || !modal || !iframe) return;
+
+  // берём ТОТ ЖЕ token, что используется везде
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  sendEmailBtn.addEventListener("click", () => {
+    if (!token) {
+      alert("Missing token");
+      return;
+    }
+
+    // 👇 ВАЖНО: МЕНЯЕМ ТОЛЬКО URL iframe
+    iframe.src =
+      `https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`;
+
+    modal.style.display = "flex";
+  });
+
+});
+</script>
+
+
+
+<script>
+  const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+  const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  const tokenDisplay = document.getElementById("tokenDisplay");
+  const slugDisplay = document.getElementById("slugDisplay");
+  const uploadBtn = document.getElementById("uploadBtn");
+  const preview = document.getElementById("preview");
+  const previewBox = document.getElementById("previewBox");
+  const status = document.getElementById("status");
+  const slotSelect = document.getElementById("slotSelect");
+  const progressContainer = document.getElementById("progressContainer");
+  const progressBar = document.getElementById("progressBar");
+
+  let slug = null;
+
+  slotSelect.addEventListener("change", () => {
+    const fileInput = document.getElementById("fileInput");
+    fileInput.value = "";
+    preview.style.display = "none";
+    previewBox.classList.add("placeholder");
+    status.innerText = "";
+  });
+
+  function showPreview(file) {
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = "block";
+    previewBox.classList.remove("placeholder");
+  }
+
+  async function loadSlugFromGallery(token) {
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/rpc/get_site_gallery`,
+        {
+          method: "POST",
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: "Bearer " + SUPABASE_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ p_token: token })
+        }
+      );
+
+      const rows = await res.json();
+      console.log(rows);
+
+      if (Array.isArray(rows) && rows.length > 0) {
+        slug = rows[0].slug;
+        slugDisplay.innerText = "Slug: " + slug;
+     
+      } else {
+        slugDisplay.innerText = "❌ No rows returned for token";
+      }
+
+    } catch (err) {
+      slugDisplay.innerText = "Error loading slug: " + err.message;
+    }
+  }
+
+  if (!token) {
+    tokenDisplay.innerText = "❌ No token in URL";
+  } else {
+    tokenDisplay.innerText = "Token: " + token;
+    loadSlugFromGallery(token);
+  }
+
+  uploadBtn.onclick = async () => {
+
+const originalUploadText = uploadBtn.innerHTML;
+
+  const fileInput = document.getElementById("fileInput");
+
+  if (!fileInput.files.length) {
+    status.innerText = "❌ Choose a file first.";
+    return;
+  }
+
+  if (!token) {
+    status.innerText = "❌ Missing token.";
+    return;
+  }
+
+  if (!slug) {
+    status.innerText = "⚠️ Slug not loaded. Trying upload anyway...";
+  }
+
+uploadBtn.disabled = true;
+uploadBtn.innerHTML = "Uploading...";
+
+  const file = fileInput.files[0];
+  const slot = slotSelect.value;
+
+  status.innerText = "Requesting upload URL...";
+  progressContainer.style.display = "none";
+  preview.style.display = "none";
+
+  try {
+  const res = await fetch("/.netlify/functions/mint-upload-url-2", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      slug: slug || "fallback",
+      token,
+      slot,
+      filename: file.name
+    })
+  });
+
+  if (!res.ok) {
+    throw new Error("Upload URL request failed");
+  }
+
+  const data = await res.json();
+  const uploadURL = data.url || data.signedUrl || data.uploadURL;
+
+  if (!uploadURL) {
+    throw new Error("No upload URL returned");
+  }
+
+  progressBar.style.width = "0%";
+  progressContainer.style.display = "block";
+  status.innerText = "";
+
+  await uploadFileWithProgress(uploadURL, file, (p) => {
+    progressBar.style.width = p + "%";
+  });
+
+  // ----------------------------------------
+  // 🔥 ДОБАВЛЕНО: обновляем path в записи галереи
+  // ----------------------------------------
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/site_gallery?slot=eq.${slot}`,
+    {
+      method:"PATCH",
+      headers:{
+        apikey: SUPABASE_KEY,
+        Authorization:"Bearer " + SUPABASE_KEY,
+        "Content-Type":"application/json",
+        Prefer:"return=minimal"
+      },
+      body: JSON.stringify({
+        path:`${slug}/${slot}/${file.name}`
+      })
+    }
+  );
+
+uploadBtn.disabled = false;
+uploadBtn.innerHTML = originalUploadText;
+
+  status.innerText = "✅ Uploaded!";
+  showPreview(file);
+
+  setTimeout(() => {
+    progressContainer.style.display = "none";
+    progressBar.style.width = "0%";
+  }, 800);
+
+} catch (err) {
+  console.error(err);
+  status.innerText = "❌ Upload failed: " + err.message;
+}
+
+};
+
+
+  function uploadFileWithProgress(url, file, onProgress) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", url, true);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          onProgress(percent);
+        }
+      };
+
+      xhr.onload = () =>
+        xhr.status === 200 ? resolve() : reject("Error " + xhr.status);
+
+      xhr.onerror = () => reject("Upload failed");
+
+      xhr.send(file);
+    });
+  }
+</script>
+
+<!-- OPEN + SAVE + MODAL -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+
+  // кнопка UPDATE
+  document.querySelector(".update-btn").addEventListener("click", async () => {
+
+    if (!token) {
+      alert("Missing token in URL");
+      return;
+    }
+
+  const text = window.quill.root.innerHTML;
+
+await fetch(
+  `${SUPABASE_URL}/rest/v1/wed_updates?edit_token=eq.${token}`,
+  {
+    method: "PATCH",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "return=representation"
+    },
+    body: JSON.stringify({ how_we_met: text })
+  }
+);
+
+
+    const modal = document.getElementById("storyModal");
+    const iframe = document.getElementById("storyIframe");
+
+    iframe.src = `https://flowwed.netlify.app/web-updates?token=${token}`;
+
+    modal.style.display = "flex";
+
+    setTimeout(sendTextToIframe, 500);
+
+  });
+
+
+  // КРЕСТИК ЗАКРЫТИЯ — ТЕПЕРЬ РАБОТАЕТ ВСЕГДА
+  document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("storyModal").style.display = "none";
+  });
+
+});
+</script>
+
+<!-- MODAL STRUCTURE -->
+<div class="modal-backdrop" id="storyModal">
+  <div class="modal-window">
+
+    <!-- ОДИН ЕДИНСТВЕННЫЙ closeModal -->
+    <div id="closeModal" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999999;
+    ">×</div>
+
+    <iframe id="storyIframe" class="modal-iframe"></iframe>
+
+  </div>
+</div>
+
+<div id="toast" class="toast">Message saved!</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  if (!window.Quill) {
+    console.error("Quill NOT loaded");
+    return;
+  }
+
+  window.quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+      toolbar: '#toolbar-container'
+    }
+  });
+
+  /* ====== ВОТ ИМЕННО СЮДА ====== */
+  /* 🔥 НЕ ДАЁМ toolbar воровать фокус */
+
+  const toolbarEl = document.querySelector('#toolbar-container');
+  if (toolbarEl) {
+    toolbarEl.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+    });
+  }
+
+});
+</script>
+
+<script>
+/* ===============================
+   TOP NAV — TOKEN + BACK
+================================ */
+
+const tokenNav = new URLSearchParams(location.search).get("t") || "";
+
+/* прокинуть token во все ссылки меню */
+document.querySelectorAll(".top-nav a").forEach(a => {
+  if (tokenNav) {
+    a.href = a.href + "?t=" + tokenNav;
+  }
+});
+
+/* back button */
+document.getElementById("backBtn")?.addEventListener("click", () => {
+  window.location.href = "/dashboard.html?t=" + tokenNav;
+});
+
+/* active nav link */
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page || "photo-gallery";
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    if (link.getAttribute("href").includes(page)) {
+      link.classList.add("active");
+    }
+  });
+});
+</script>
+
+
+
+</body>
+</html>

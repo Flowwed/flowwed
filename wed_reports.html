@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wedding Reports — Ruby Tables with Email & CSV</title>
+
+<style>
+/* ====================================================== */
+/* GLOBAL                                                 */
+/* ====================================================== */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom, #fff0f4, #fff);
+  margin: 0;
+  padding: 40px 26px;
+  color: #5a1a1a;
+}
+
+h1 {
+  text-align: center;
+  font-size: 44px;
+  font-weight: 800;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 36px;
+  letter-spacing: -1px;
+}
+
+/* ====================================================== */
+/* TOTAL CARDS                                            */
+/* ====================================================== */
+#totals {
+  display: grid;
+  grid-template-columns: repeat(4, 150px); /* было 3 → стало 4 и шире */
+  gap: 28px;                                 /* увеличен промежуток */
+  justify-content: center;
+  grid-auto-rows: 100px;                     /* чуть выше ряд */
+  margin: 0 auto 48px auto;
+}
+
+/* clickable glass ruby cards */
+.total-card {
+  width: 140px;
+  height: 80px;
+  padding: 8px;
+  border-radius: 18px;
+
+  cursor: pointer;                     /* ← добавлено */
+  transition: transform .35s ease,
+              box-shadow .35s ease,
+              opacity .35s ease;       /* ← добавлено */
+
+  /* Стекло + рубин */
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
+
+  border: 1px solid rgba(255,255,255,0.40);
+  backdrop-filter: blur(14px) saturate(170%);
+
+  /* текст */
+  color: white;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow:
+    0 6px 12px rgba(0,0,0,0.18),
+    inset 0 2px 4px rgba(255,255,255,0.15),
+    inset 0 -3px 6px rgba(80,0,20,0.25);
+
+
+  position: relative;
+  overflow: hidden;
+
+  /* лёгкое дыхание */
+  animation: totalBreath 5s ease-in-out infinite;
+}
+
+/* glossy reflection */
+.total-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 45%;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.55),
+    rgba(255,255,255,0)
+  );
+  pointer-events: none;
+}
+
+/* hover pop + glow */
+.total-card:hover {
+  transform: translateY(-6px) scale(1.06);
+  opacity: 0.96;
+
+  box-shadow:
+    0 28px 58px rgba(0,0,0,0.55),
+    0 12px 26px rgba(0,0,0,0.40),
+    inset 0 8px 18px rgba(255,255,255,0.35),
+    inset 0 -16px 30px rgba(90,0,30,0.60),
+
+    /* ruby aura glow */
+    0 0 22px rgba(255,70,120,0.32),
+    0 0 42px rgba(255,70,120,0.25);
+}
+
+/* --- breathing ---- */
+@keyframes totalBreath {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.018); }
+  100% { transform: scale(1); }
+}
+
+.total-title {
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0.9;
+}
+
+.total-number {
+  font-size: 20px;
+  font-weight: 800;
+  text-shadow:
+    0 2px 6px rgba(0,0,0,0.28),
+    0 0 12px rgba(255,220,240,0.45);
+}
+
+
+/* ========================================= */
+/* TOTAL GUESTS — FLAT VERSION               */
+/* ========================================= */
+#totalGuestsBox {
+  margin: 26px auto 0 auto;
+  padding: 10px 18px;
+
+  width: fit-content;
+  max-width: 520px;
+
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* 🔥 прозрачный ruby фон */
+  background: #375b57
+  border: 1px solid rgba(255,255,255,0.35);
+
+  /* ruby текст */
+  color: #b41111;
+
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+/* Menu View*/
+
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 0 !important;
+  margin-bottom: 6px !important;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  padding: 14px 0 10px !important; 
+  font-size: 16px;
+  font-weight: 500;
+  color: #7a6772;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: #7a6772;
+  transition: 0.2s;
+}
+
+
+.top-nav a.active {
+  color: #7a6772 !important;  /* ruby */
+  font-weight: 550 !important;
+  text-shadow: 0 0 4px rgba(180,17,17,0.25);
+}
+
+
+.top-nav a:hover {
+  color: #d6003d;
+}
+
+/* Back Button */
+.back-btn {
+  position: absolute;
+  left: 135px;            /* ↓↓↓ больше пространства справа */
+  top: 12px;
+
+  padding: 3px 10px;     /* уменьшили кнопку */
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(196, 0, 55, 0.25);
+
+  color: #b1162a;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  backdrop-filter: blur(6px);
+
+  transition: 0.25s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.45);
+  border-color: rgba(196,0,55,0.45);
+  box-shadow: 0 4px 12px rgba(196,0,55,0.15);
+  transform: translateY(-1px);
+}
+
+/* ====================================================== */
+/* TABLE BLOCK HEADER (НЕ ТРОГАЕМ СТРУКТУРУ)              */
+/* ====================================================== */
+.table-block {
+  background: rgba(255,255,255,0.75);
+  padding: 28px;
+  border-radius: 22px;
+  max-width: 1100px;
+  margin: 0 auto 40px auto;
+  position: relative;   /* ← вот это добавляем */
+
+}
+
+.table-top-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #b41111;
+  margin-bottom: 18px;
+}
+
+.table-count {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  font-weight: 700;
+  color: #b41111;
+}
+
+.table-actions {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 8px;
+
+  z-index:20;           /* ← кнопки снова поверх */
+}
+
+.table-action-btn {
+  background: #b41111;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.18),
+    inset 0 2px 4px rgba(255,255,255,0.25),
+    inset 0 -3px 6px rgba(70,0,20,0.3);
+  transition: 0.2s ease;
+}
+.table-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 7px 16px rgba(0,0,0,0.25),
+    inset 0 3px 6px rgba(255,255,255,0.28),
+    inset 0 -4px 8px rgba(70,0,20,0.32);
+}
+
+/* ====================================================== */
+/* RUBY FRAMES (облегчённый вариант)                      */
+/* ====================================================== */
+.ruby-frame-outer {
+  border: 3px solid #b41111;
+  border-radius: 16px;
+  padding: 10px;
+  margin-bottom: 12px;
+  box-shadow:
+    0 0 12px rgba(180,17,17,0.18),
+    inset 0 0 6px rgba(255,255,255,0.45);
+}
+
+.ruby-frame-inner {
+  border: 2px solid #ffcccc;
+  border-radius: 14px;
+  padding: 6px;
+}
+
+/* ====================================================== */
+/* SCROLL CONTAINER — как Seating Chart (light)          */
+/* ====================================================== */
+.custom-scroll-container {
+  position: relative;
+  height: 180px;          /* компактная высота */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+}
+
+/* Хак, чтобы скролл был даже при 1 строке */
+.custom-scroll-container::after {
+  content: "";
+  display: block;
+  height: 160px;          /* "виртуальная" высота */
+}
+
+.scrollbar-indicator { display:none !important; }
+
+
+/* ====================================================== */
+/* ruby SCROLLBAR                                         */
+/* ====================================================== */
+.custom-scroll-container::-webkit-scrollbar {
+  width: 12px;
+}
+
+.custom-scroll-container::-webkit-scrollbar-track {
+  background: #ffe6eb;
+  border-radius: 8px;
+}
+
+.custom-scroll-container::-webkit-scrollbar-thumb {
+  background: #b41111;
+  border-radius: 10px;
+  border: 3px solid #ffe6eb;
+}
+
+/* ====================================================== */
+/* TABLE THEMING                                          */
+/* ====================================================== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ebcccc;
+  text-align: center;
+}
+
+th {
+  color: #b41111;
+  font-weight: 800;
+  font-size: 16px;
+}
+
+/* ====================================================== */
+/* FLOATING SCROLLBAR INDICATOR                           */
+/* ====================================================== */
+.scrollbar-indicator {
+  position: absolute;
+  right: 4px;
+  width: 6px;
+  height: 40px;
+  background: linear-gradient(to bottom, #ff6666, #b41111);
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ====================================================== */
+/* EMAIL COMPOSERS (по одному на каждую таблицу)          */
+/* ====================================================== */
+.email-composer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 360px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+  z-index: 9999;
+
+  /* ↓ ВАЖНЫЕ ПРАВКИ */
+  display: none;              /* скрыт по умолчанию */
+  flex-direction: column;     /* layout */
+  max-height: 90vh;           /* чтобы не выпадал */
+  overflow-y: auto;           /* прокрутка */
+  transition: height .25s ease;
+}
+.composer-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: #b41111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.composer-header .close-btn {
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.composer-label {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.composer-input,
+.composer-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(180,0,40,0.25);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.composer-textarea {
+  height: 110px;
+  resize: vertical;
+}
+
+.composer-send {
+  margin-top: 14px;
+  background: #b41111;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(255,255,255,0.22),
+    inset 0 -4px 8px rgba(70,0,20,0.28);
+  transition: 0.2s ease;
+}
+
+.composer-send {
+  margin-top: auto; /* притягивает кнопку вниз */
+}
+
+.composer-send:hover {
+  transform: translateY(-2px);
+}
+
+.email-composer.expanded {
+  width: 900px !important;
+  height: 540px !important;
+  right: 20px;
+  bottom: 20px;
+}
+
+.email-composer.expanded .composer-textarea {
+  height: 250px !important;
+}
+
+
+/* SIMPLE TOAST */
+#greenToast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #28a745;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: 0.3s ease;
+  z-index: 10000;
+}
+#greenToast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.table-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  cursor: pointer;
+
+  background: radial-gradient(circle at 30% 30%, #ff6f8f, #b41111 70%);
+  border: 1px solid rgba(255,255,255,0.6);
+
+  font-size: 18px;
+  font-weight: 900;
+  color: white;
+
+  pointer-events:auto;         /* клики разрешены */
+  z-index:50;                  /* выше всего */
+}
+
+.table-close::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:transparent;
+  pointer-events:none;         /* не блокирует */
+}
+
+.table-close:hover {
+  transform: scale(1.15) translateY(-1px);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.45),
+    0 0 10px rgba(255,120,150,0.6);
+}
+
+/* highlight failed row */
+.row-error {
+  background: #ffe6ec !important;
+  box-shadow: inset 0 0 0 3px #ff0033 !important;
+}
+
+
+/* ============================================================ */
+/* LIGHT iOS INFO BANNER (same style as other page)             */
+/* ============================================================ */
+.ios-banner {
+  margin: 0 auto 26px auto;
+  padding: 16px 24px;
+
+  max-width: 880px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color:  #555;
+  font-size: 15.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,0.12),
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
+
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- ======= TOP NAV + BACK BUTTON (COPY FROM PREVIEW PAGE) ======= -->
+
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn">
+    <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="#6d6d6d" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Back
+  </button>
+
+  <div class="top-nav">
+    <a href="#">Guest Manager</a>
+    <a href="#">Save The Date</a>
+    <a href="#">RSVP</a>
+    <a href="#">Seating Chart</a>
+    <a href="#">Registry</a>
+    <a href="#">Budget</a>
+    <a href="#">Web Manager</a>
+    <a href="#">Wed Reports</a>
+  </div>
+
+
+</div>
+
+
+<h1>Wed Reports</h1>
+
+<div id="coupleSmallName" style="
+  text-align:center;
+  font-size:22px;
+  font-weight:600;
+  margin-top:-20px;
+  margin-bottom:25px;
+  color:#b41111;
+  opacity:0.85;
+"></div>
+
+<div class="ios-banner">
+  Track all your wedding stats in one place. View the Quick User Guide for this page
+  <span id="openGuide" class="guide-link">here</span>.
+</div>
+
+
+<div id="totals"></div>
+
+<div id="totalGuestsBox">
+<span id="totalGuestsLabel"></span>
+</div>
+
+<div id="tablesContainer"></div>
+
+<!-- ================= EMAIL COMPOSERS (6 штук) ================= -->
+
+<!-- STD — YES -->
+<div class="email-composer" id="composer_stdYes">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="stdYes" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="stdYes">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_stdYes" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_stdYes" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_stdYes" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_stdYes" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+   <!-- FOOTER ✨ -->
+  <div class="composer-footer" data-group="stdYes">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_stdYes"></b>
+  </p>
+</div>
+
+  <button class="composer-send" data-group="stdYes">Send Email & SMS</button>
+</div>
+
+<!-- STD — NO -->
+<div class="email-composer" id="composer_stdNo">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="stdNo" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="stdNo">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_stdNo" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_stdNo" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_stdNo" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_stdNo" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+  <!-- FOOTER ✨ -->
+  <div class="composer-footer" data-group="stdNo">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_stdNo"></b>
+  </p>
+</div>
+
+  <button class="composer-send" data-group="stdNo">Send Email & SMS</button>
+</div>
+
+<!-- STD — MAYBE -->
+<div class="email-composer" id="composer_stdMaybe">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="stdMaybe" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="stdMaybe">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_stdMaybe" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_stdMaybe" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_stdMaybe" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_stdMaybe" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+
+<!-- FOOTER ✨ -->
+<div class="composer-footer" data-group="stdMaybe">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_stdMaybe"></b>
+  </p>
+</div>
+
+  <button class="composer-send" data-group="stdMaybe">Send Email & SMS</button>
+</div>
+
+<!-- STD — NO RESPONSE -->
+<div class="email-composer" id="composer_stdNoResponse">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="stdNoResponse" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="stdNoResponse">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_stdNoResponse" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_stdNoResponse" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_stdNoResponse" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_stdNoResponse" class="composer-textarea">Hello…</textarea>
+
+
+<!-- FOOTER ✨ -->
+<div class="composer-footer" data-group="stdNoResponse">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_stdNoResponse"></b>
+  </p>
+</div>
+
+  <button class="composer-send" data-group="stdNoResponse">Send Email & SMS</button>
+</div>
+
+<!-- RSVP — YES -->
+<div class="email-composer" id="composer_rsvpYes">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="rsvpYes" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="rsvpYes">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_rsvpYes" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_rsvpYes" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_rsvpYes" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_rsvpYes" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+<!-- FOOTER ✨ -->
+  <div class="composer-footer" data-group="rsvpYes">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_rsvpYes"></b>
+  </p>
+</div>
+
+
+  <button class="composer-send" data-group="rsvpYes">Send Email & SMS</button>
+</div>
+
+<!-- RSVP — NO -->
+<div class="email-composer" id="composer_rsvpNo">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="rsvpNo" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="rsvpNo">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_rsvpNo" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_rsvpNo" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_rsvpNo" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_rsvpNo" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+<!-- FOOTER ✨ -->
+  <div class="composer-footer" data-group="rsvpNo">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_rsvpNo"></b>
+  </p>
+</div>
+
+
+  <button class="composer-send" data-group="rsvpNo">Send Email & SMS</button>
+</div>
+
+<!-- RSVP — MAYBE -->
+<div class="email-composer" id="composer_rsvpMaybe">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="rsvpMaybe" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="rsvpMaybe">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_rsvpMaybe" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_rsvpMaybe" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_rsvpMaybe" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_rsvpMaybe" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+<!-- FOOTER ✨ -->
+  <div class="composer-footer" data-group="rsvpMaybe">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_rsvpMaybe"></b>
+  </p>
+</div>
+
+
+  <button class="composer-send" data-group="rsvpMaybe">Send Email & SMS</button>
+</div>
+
+<!-- RSVP — NO RESPONSE -->
+<div class="email-composer" id="composer_rsvpNoResponse">
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span class="composerExpand" data-group="rsvpNoResponse" style="cursor:pointer;">⤢</span>
+      <span class="close-btn" data-group="rsvpNoResponse">&times;</span>
+    </div>
+  </div>
+
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="toEmail_rsvpNoResponse" class="composer-input">
+
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="toPhone_rsvpNoResponse" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="subject_rsvpNoResponse" class="composer-input" value="Wedding Update">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="body_rsvpNoResponse" class="composer-textarea">Hello, here is the latest update…</textarea>
+
+<!-- FOOTER ✨ -->
+  <div class="composer-footer" data-group="rsvpNoResponse">
+  <p style="font-size:12px;color:#666;margin-top:12px;">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <b id="composerReply_rsvpNoResponse"></b>
+  </p>
+</div>
+
+
+  <button class="composer-send" data-group="rsvpNoResponse">Send Email & SMS</button>
+</div>
+
+<div id="greenToast">Done!</div>
+
+<!-- RED TOAST -->
+<div id="toastError"
+     style="
+       position: fixed;
+       top: 20px;
+       right: 20px;
+       background: #cc0000;
+       color: white;
+       padding: 14px 22px;
+       border-radius: 10px;
+       font-weight: 600;
+       font-size: 15px;
+       opacity: 0;
+       transform: translateY(-20px);
+       transition: 0.4s ease;
+       z-index: 99999;">
+  Error!
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+const token = new URLSearchParams(location.search).get("t");
+
+const totalsBox = document.getElementById("totals");
+const tables = document.getElementById("tablesContainer");
+const greenToast = document.getElementById("greenToast");
+
+let groupsGlobal = null;
+let totalGuestsCount = 0;
+
+
+/* ====================================================== */
+/* TOAST                                                  */
+/* ====================================================== */
+function showToast(msg = "Done!") {
+  greenToast.textContent = msg;
+  greenToast.classList.add("show");
+  setTimeout(() => greenToast.classList.remove("show"), 1400);
+}
+
+function showRedToast(msg = "Error!") {
+  showToastBox(msg, "error");   // просто вызываем твою универсальную систему
+}
+
+//------------------------------------------------------
+// LOAD COUPLE NAME (same logic as dashboard)
+//------------------------------------------------------
+function cap(s) {
+  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+}
+
+async function loadCoupleName() {
+  const { data } = await supabase
+    .from("sites")
+    .select("slug")
+    .eq("edit_token", token)
+    .single();
+
+  if (!data || !data.slug) return;
+
+  const parts = data.slug.split("-");
+  const bride = cap(parts[0]);
+  const groom = cap(parts[1]);
+
+  document.getElementById("coupleSmallName").textContent = `${bride} & ${groom}`;
+}
+
+loadCoupleName();
+
+/* ====================================================== */
+/* LOAD GUESTS                                            */
+/* ====================================================== */
+async function loadGuests() {
+  const { data, error } = await supabase
+    .from("guests")
+    .select("*")
+    .eq("token", token);
+
+  if (error) {
+    console.error("Error loading guests:", error);
+    return;
+  }
+
+  const groups = {
+  stdYes: data.filter(g => g.std_status?.toLowerCase() === "yes"),
+  stdNo: data.filter(g => g.std_status?.toLowerCase() === "no"),
+  stdMaybe: data.filter(g => g.std_status?.toLowerCase() === "maybe"),
+  stdNoResponse: data.filter(g => !g.std_status),          // ← added
+
+  rsvpYes: data.filter(g => g.rsvp_status?.toLowerCase() === "yes"),
+  rsvpNo: data.filter(g => g.rsvp_status?.toLowerCase() === "no"),
+  rsvpMaybe: data.filter(g => g.rsvp_status?.toLowerCase() === "maybe"),
+  rsvpNoResponse: data.filter(g => !g.rsvp_status)         // ← added
+};
+
+
+  groupsGlobal = groups;
+
+renderTotals(groups);
+renderTables(groups);
+addTotalClicks();
+initScrollIndicators();
+initTableActions();
+initComposerClosers();
+initTableCloseButtons(); // ← добавили
+hideAllTables();
+
+ /* >>>>>>> обновляем Total Guests box <<<<<<<< */
+/* set initial guests total only */
+const totalGuests = data?.length || 0;
+totalGuestsCount = totalGuests;
+
+const label = document.getElementById("totalGuestsLabel");
+if (label) {
+  label.textContent = `Guests Total: ${totalGuests}`;
+}
+
+}
+
+/* ====================================================== */
+/* TOTALS                                                 */
+/* ====================================================== */
+
+function totalCard(groupKey, label, num) {
+  return `
+    <div class="total-card" data-group="${groupKey}">
+      <div class="total-title">${label}</div>
+      <div class="total-number">${num}</div>
+    </div>
+  `;
+}
+
+function renderTotals(g) {
+  totalsBox.innerHTML = `
+    ${totalCard("stdYes", "SD — ✔", g.stdYes.length)}
+    ${totalCard("stdNo", "SD — ✘", g.stdNo.length)}
+    ${totalCard("stdMaybe", 'SD — <span style="color:white;">❔</span>', g.stdMaybe.length)}
+    ${totalCard("stdNoResponse", "SD — ⚠️", g.stdNoResponse.length)}
+
+    ${totalCard("rsvpYes", "RSVP — ✔", g.rsvpYes.length)}
+    ${totalCard("rsvpNo", "RSVP — ✘", g.rsvpNo.length)}
+    ${totalCard("stdMaybe", 'RSVP — <span style="color:white;">❔</span>', g.stdMaybe.length)}
+    ${totalCard("rsvpNoResponse", "RSVP — ⚠️", g.rsvpNoResponse.length)}
+  `;
+}
+/* ====================================================== */
+/* СКРЫТЬ ВСЕ ТАБЛИЦЫ                                      */
+/* ====================================================== */
+function hideAllTables() {
+  const blocks = document.querySelectorAll(".table-block");
+  blocks.forEach(block => {
+    block.style.setProperty("display","none","important");
+  });
+}
+
+/* ====================================================== */
+/* ПОКАЗАТЬ ТОЛЬКО ОДНУ ТАБЛИЦУ                           */
+/* ====================================================== */
+function showTable(group) {
+  hideAllTables(); // скрываем все снова перед показом
+
+  const block = document.querySelector(`.table-block[data-group="${group}"]`);
+
+  if (block) {
+    block.style.setProperty("display","block","important");
+    block.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
+
+
+/* ====================================================== */
+/* КЛИК по стеклянным total-картам                        */
+/* ====================================================== */
+function addTotalClicks() {
+  document.querySelectorAll(".total-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const group = card.dataset.group;
+      if (!group) return;
+
+      showTable(group);
+
+      // обновляем плашку
+    const total = totalGuestsCount;
+
+      const current = groupsGlobal[group].length;
+
+      const title = card.querySelector(".total-title")?.textContent.trim();
+
+      const label = document.getElementById("totalGuestsLabel");
+      if (label) {
+        label.textContent = `Guests Total: ${total} / ${title}: ${current}`;
+      }
+    });
+  });
+}
+
+function initTableCloseButtons() {
+  document.querySelectorAll(".table-close").forEach(btn => {
+    btn.addEventListener("click", () => {
+
+      const group = btn.dataset.close;
+
+      // hide that table
+      const block = document.querySelector(`.table-block[data-group="${group}"]`);
+      if (block) block.style.display = "none";
+
+      // reset total label
+      const label = document.getElementById("totalGuestsLabel");
+      if (label) {
+        label.textContent = `Guests Total: ${totalGuestsCount}`;
+      }
+
+      // optional: scroll page back to totals cards
+      const totals = document.getElementById("totals");
+      if (totals) {
+        totals.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    });
+  });
+}
+
+/* ====================================================== */
+/* RENDER ONE TABLE                                       */
+/* ====================================================== */
+function renderTable(name, arr, key) {
+  const icon =
+  name.includes("NO RESPONSE")
+    ? '<span style="color:#ffcc00;">⚠️</span>'        // ← yellow triangle warning
+
+  : name.includes("YES")
+    ? '<span style="color:#28a745;">✔</span>'        // green
+
+  : name.includes("NO")
+    ? '<span style="color:#fe413f;">✘</span>'        // red
+
+  : name.includes("MAYBE")
+    ? '<span style="color:#ffd400;">❓</span>'        // yellow question
+
+  : "";
+
+  return `
+  <div class="table-block" data-group="${key}">
+
+    <div class="table-close" data-close="${key}">×</div>
+
+    <div class="table-top-title">
+      <span>${icon}</span> ${name.startsWith("STD") ? "Save-The-Date" : "RSVP"}
+      <span class="table-count">${name.split("—")[1].trim()}: ${arr.length}</span>
+
+
+      <div class="table-actions">
+        <button class="table-action-btn btn-send" data-group="${key}">
+          Send Email &amp; SMS
+        </button>
+        <button class="table-action-btn btn-export" data-group="${key}">
+          Download & Print
+        </button>
+      </div>
+    </div>
+
+    <div class="ruby-frame-outer">
+      <div class="ruby-frame-inner">
+        <div class="custom-scroll-container" data-scroll="${key}">
+          <table>
+            <thead>
+                <tr>
+                 <th>
+                  <input type="checkbox"
+                   class="master-checkbox"
+                    data-group="${key}">
+                  </th>
+                   <th>Name</th>
+                    <th>Email</th>
+                       <th>Phone</th>
+                       </tr>
+                   </thead>
+            <tbody>
+              ${arr
+                .map(
+                  g => `
+              <tr>
+                <td>
+                  <input type="checkbox"
+                         data-email="${(g.email || "").replace(/"/g, "&quot;")}"
+                         data-phone="${(g.phone || "").replace(/"/g, "&quot;")}"
+                         data-group="${key}">
+                </td>
+                <td>${g.first_name || ""} ${g.last_name || ""}</td>
+                <td>${g.email || ""}</td>
+                <td>${g.phone || ""}</td>
+              </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="scrollbar-indicator" data-indicator="${key}"></div>
+    </div>
+  </div>`;
+}
+
+/* ====================================================== */
+/* RENDER ALL TABLES                                      */
+/* ====================================================== */
+function renderTables(g) {
+
+  // clear + insert fresh HTML for all tables
+  tables.innerHTML = `
+    ${renderTable("STD — YES", g.stdYes, "stdYes")}
+    ${renderTable("STD — NO", g.stdNo, "stdNo")}
+    ${renderTable("STD — MAYBE", g.stdMaybe, "stdMaybe")}
+    ${renderTable("STD — NO RESPONSE", g.stdNoResponse, "stdNoResponse")}
+
+    ${renderTable("RSVP — YES", g.rsvpYes, "rsvpYes")}
+    ${renderTable("RSVP — NO", g.rsvpNo, "rsvpNo")}
+    ${renderTable("RSVP — MAYBE", g.rsvpMaybe, "rsvpMaybe")}
+    ${renderTable("RSVP — NO RESPONSE", g.rsvpNoResponse, "rsvpNoResponse")}
+  `;
+
+  // init UI interactions
+  initScrollIndicators();
+  initTableActions();
+  initComposerClosers();
+  initMasterCheckboxes();
+  initComposerCheckboxSync();
+  initErrorRowClickReset(); // single global listener
+}
+
+
+/* ====================================================== */
+/* REMOVE ERROR HIGHLIGHT BY CLICKING ROW                 */
+/* ====================================================== */
+
+let errorResetBound = false; // prevent duplicate listeners
+
+function initErrorRowClickReset() {
+
+  if (errorResetBound) return;  // avoid multiple binds on rerender
+  errorResetBound = true;
+
+  document.addEventListener("click", (e) => {
+
+    // allow clicking any element inside row
+    const row = e.target.closest("tbody tr");
+    if (!row) return;
+
+    // only reset if row was in error state
+    if (row.classList.contains("row-error")) {
+      row.classList.remove("row-error");
+
+      // uncheck checkbox too for clean retry
+      const cb = row.querySelector('input[type="checkbox"]');
+      if (cb) cb.checked = false;
+    }
+
+  });
+}
+
+/* ====================================================== */
+/* SCROLLBAR INDICATORS                                   */
+/* ====================================================== */
+function initScrollIndicators() {
+  document.querySelectorAll(".custom-scroll-container").forEach(container => {
+    const key = container.dataset.scroll;
+    const indicator = document.querySelector(
+      `.scrollbar-indicator[data-indicator="${key}"]`
+    );
+    if (!indicator) return;
+
+    container.addEventListener("scroll", () => {
+      const visible = container.clientHeight;
+      const total = container.scrollHeight;
+      const scrolled = container.scrollTop;
+
+      if (total <= visible) {
+        indicator.style.opacity = 0;
+        return;
+      }
+
+      const h = Math.max(40, (visible / total) * visible);
+      indicator.style.height = h + "px";
+
+      const maxTop = visible - h;
+      indicator.style.top = (scrolled / (total - visible)) * maxTop + "px";
+
+      indicator.style.opacity = 1;
+
+      clearTimeout(container._timer);
+      container._timer = setTimeout(() => {
+        indicator.style.opacity = 0;
+      }, 900);
+    });
+  });
+}
+
+/* ====================================================== */
+/* TABLE ACTIONS (Send / Export)                          */
+/* ====================================================== */
+
+
+
+function initTableActions() {
+  // Export CSV
+  document.querySelectorAll(".btn-export").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.dataset.group;
+      exportCSVForGroup(group);
+    });
+  });
+
+  // Send Email & SMS (email only пока)
+  document.querySelectorAll(".btn-send").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.dataset.group;
+      openComposerForGroup(group);
+    });
+  });
+
+  // Send button INSIDE composer  
+document.querySelectorAll(".composer-send").forEach(btn => {
+  btn.onclick = () => {
+    const group = btn.dataset.group;
+
+    const emailField  = document.getElementById(`toEmail_${group}`);
+    const subjectField = document.getElementById(`subject_${group}`);
+    const bodyField    = document.getElementById(`body_${group}`);
+
+    const emails = (emailField?.value || "")
+      .split(",")
+      .map(x => x.trim())
+      .filter(x => x);
+
+    const subject = subjectField?.value?.trim() || "Wedding Update";
+
+    const html = (bodyField?.value || "")
+      .trim()
+      .replace(/\n/g, "<br>");
+
+    sendEmails(emails, subject, html, group);
+  };
+});
+}
+
+function initMasterCheckboxes() {
+  document.querySelectorAll(".master-checkbox").forEach(master => {
+    master.addEventListener("change", () => {
+      const group = master.dataset.group;
+
+      const block = document.querySelector(
+        `.table-block[data-group="${group}"]`
+      );
+      if (!block) return;
+
+      const list = block.querySelectorAll(
+        'tbody input[type="checkbox"]'
+      );
+
+      list.forEach(ch => {
+        ch.checked = master.checked;
+      });
+
+      // <<< ДОБАВЛЕНО — обновить composer >>>
+      updateComposerRecipients(group);
+    });
+  });
+}
+
+
+/* ====================================================== */
+/* COMPOSER CLOSE BUTTONS                                 */
+/* ====================================================== */
+function initComposerClosers() {
+  document.querySelectorAll(".composer-header .close-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.dataset.group;
+      const comp = document.getElementById(`composer_${group}`);
+      if (comp) comp.style.display = "none";
+    });
+  });
+}
+
+function initComposerCheckboxSync() {
+
+  document.querySelectorAll('.master-checkbox').forEach(master => {
+    master.addEventListener("change", () => {
+      const group = master.dataset.group;
+
+      const compEmail = document.getElementById(`toEmail_${group}`);
+      const compPhone = document.getElementById(`toPhone_${group}`);
+
+      if (!compEmail || !compPhone) return;
+
+      // если мастер снят — очистить поля email-composer
+      if (!master.checked) {
+        compEmail.value = "";
+        compPhone.value = "";
+      }
+    });
+  });
+
+  // если снимаем отдельные чекбоксы
+  document.querySelectorAll('tbody input[type="checkbox"]').forEach(ch => {
+    ch.addEventListener("change", () => {
+      const group = ch.dataset.group;
+
+      const compEmail = document.getElementById(`toEmail_${group}`);
+      const compPhone = document.getElementById(`toPhone_${group}`);
+
+      if (!compEmail || !compPhone) return;
+
+      const rowBlock = document.querySelector(
+        `.table-block[data-group="${group}"]`
+      );
+
+      const checked = rowBlock.querySelectorAll('tbody input[type="checkbox"]:checked');
+
+      const emails = [];
+      const phones = [];
+
+      checked.forEach(c => {
+        if (c.dataset.email) emails.push(c.dataset.email);
+        if (c.dataset.phone) phones.push(c.dataset.phone);
+      });
+
+      compEmail.value = emails.join(", ");
+      compPhone.value = phones.join(", ");
+    });
+  });
+}
+
+function updateComposerRecipients(group) {
+
+  const compEmail = document.getElementById(`toEmail_${group}`);
+  const compPhone = document.getElementById(`toPhone_${group}`);
+  if (!compEmail || !compPhone) return;
+
+  const block = document.querySelector(
+    `.table-block[data-group="${group}"]`
+  );
+  if (!block) return;
+
+  const checked = block.querySelectorAll(
+    'tbody input[type="checkbox"]:checked'
+  );
+
+  const emails = [];
+  const phones = [];
+
+  checked.forEach(c => {
+    if (c.dataset.email) emails.push(c.dataset.email);
+    if (c.dataset.phone) phones.push(c.dataset.phone);
+  });
+
+  compEmail.value = emails.join(", ");
+  compPhone.value = phones.join(", ");
+
+}
+
+
+/* ====================================================== */
+/* EXPORT CSV                                             */
+/* ====================================================== */
+function exportCSVForGroup(group) {
+  if (!groupsGlobal) return;
+  const arr = groupsGlobal[group] || [];
+
+  let csv = ["Name,Email,Phone"];
+  arr.forEach(g => {
+    const name = `${g.first_name || ""} ${g.last_name || ""}`.trim();
+    const email = g.email || "";
+    const phone = g.phone || "";
+
+    const safeName = `"${name.replace(/"/g, '""')}"`;
+    const safeEmail = `"${email.replace(/"/g, '""')}"`;
+    const safePhone = `"${phone.replace(/"/g, '""')}"`;
+
+    csv.push(`${safeName},${safeEmail},${safePhone}`);
+  });
+
+  const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${group}_guests.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ====================================================== */
+/* OPEN COMPOSER FOR GROUP                                */
+/* ====================================================== */
+function openComposerForGroup(group) {
+  const block = document.querySelector(`.table-block[data-group="${group}"]`);
+  if (!block) return;
+
+  const checkboxes = block.querySelectorAll(
+    'tbody input[type="checkbox"]:checked'
+  );
+
+  const emails = [];
+  const phones = [];
+
+  checkboxes.forEach(ch => {
+    const email = ch.dataset.email?.trim();
+    const phone = ch.dataset.phone?.trim();
+    if (email) emails.push(email);
+    if (phone) phones.push(phone);
+  });
+
+  if (emails.length === 0 && phones.length === 0) {
+    showRedToast("Select at least one guest!");
+    return;
+  }
+
+  const comp = document.getElementById(`composer_${group}`);
+  if (!comp) return;
+
+  const emailField = document.getElementById(`toEmail_${group}`);
+  const phoneField = document.getElementById(`toPhone_${group}`);
+
+  if (emailField) emailField.value = [...new Set(emails)].join(", ");
+  if (phoneField) phoneField.value = [...new Set(phones)].join(", ");
+
+// <<< ВОТ ЭТО ДОБАВИЛИ >>>
+  const coupleName = document.getElementById("coupleSmallName")?.textContent.trim() || "";
+  const subjectField = document.getElementById(`subject_${group}`);
+  if (subjectField && coupleName) {
+    subjectField.value = `Wedding Update: ${coupleName}`;
+  }
+
+  comp.style.display = "block";
+}
+
+/* ====================================================== */
+/* UNIVERSAL SEND EMAIL / SMS FOR ANY GROUP – NEW VERSION */
+/* ====================================================== */
+
+function markRowError(email) {
+  const normalized = email.trim().toLowerCase();
+
+  document
+    .querySelectorAll('tbody input[type="checkbox"]')
+    .forEach(ch => {
+      const cellEmail = (ch.dataset.email || "").trim().toLowerCase();
+
+      if (cellEmail === normalized) {
+        const row = ch.closest("tr");
+        if (row) row.classList.add("row-error");
+      }
+    });
+}
+
+async function sendEmails(emails, subject, html, group) {
+  const overlay = document.getElementById("sendProgressOverlay");
+  const bar = document.getElementById("progressBar");
+  const text = document.getElementById("progressText");
+
+  overlay.style.display = "flex";
+  bar.style.width = "0%";
+  text.textContent = `Sending 0 / ${emails.length}`;
+
+  let failures = 0;
+
+  for (let i = 0; i < emails.length; i++) {
+    const email = emails[i];
+    let ok = true;
+
+    try {
+      const res = await fetch("/.netlify/functions/send-invites", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "REPORT",
+          subject,
+          html,
+          guests: [{ email }]
+        })
+      });
+
+      const json = await res.json();
+      ok = json?.results?.[0]?.ok === true;
+
+    } catch {
+      ok = false;
+    }
+
+ if (!ok) {
+  failures++;
+  markRowError(email);
+}
+
+const done = i + 1;
+const pct = Math.round(done / emails.length * 100);
+bar.style.width = pct + "%";
+text.textContent = `Sending ${done} / ${emails.length}`;
+}
+
+// << цикл закрывается >>
+
+overlay.style.display = "none";
+
+if (failures > 0) {
+  showRedToast("Some emails failed");
+  document.getElementById("deliveryNoticeOverlay").style.display = "flex";
+} else {
+  showToastBox("All emails sent successfully!", "success");
+}
+
+const comp = document.getElementById(`composer_${group}`);
+if (comp) comp.style.display = "none";
+
+
+// === CLEAR CHECKBOXES ===
+const block = document.querySelector(`.table-block[data-group="${group}"]`);
+if (block) {
+
+  // remove row checkboxes
+  block.querySelectorAll('tbody input[type="checkbox"]').forEach(ch => {
+    ch.checked = false;
+  });
+
+  // remove master checkbox
+  const master = block.querySelector('.master-checkbox');
+  if (master) master.checked = false;
+}
+
+
+// === CLEAR COMPOSER RECIPIENTS ===
+const compEmail = document.getElementById(`toEmail_${group}`);
+const compPhone = document.getElementById(`toPhone_${group}`);
+if (compEmail) compEmail.value = "";
+if (compPhone) compPhone.value = "";
+
+
+}
+
+/* ====================================================== */
+/* LOAD REPLY EMAIL for composer footer                   */
+/* ====================================================== */
+async function loadReplyAddress() {
+
+  const { data, error } = await supabase
+    .from("sites")
+    .select("email")
+    .eq("edit_token", token)
+    .single();
+
+  if (error) {
+    console.error("Error loading reply email:", error);
+    return;
+  }
+
+  if (!data || !data.email) return;
+
+  // вставляем email во все composer footer
+  document.querySelectorAll("[id^='composerReply_']").forEach(el => {
+    el.textContent = data.email.trim();
+  });
+}
+
+loadReplyAddress();
+
+
+/* INIT */
+loadGuests();
+</script>
+
+
+<script>
+function showToastBox(msg, type="info") {
+
+  const box = document.getElementById("toastBox");
+  if (!box) return;
+
+  const toast = document.createElement("div");
+  toast.textContent = msg;
+
+  toast.style.padding = "10px 16px";
+  toast.style.borderRadius = "8px";
+  toast.style.fontWeight = "600";
+  toast.style.fontSize = "14px";
+  toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.25)";
+  toast.style.opacity = "0";
+  toast.style.transition = "opacity .3s, transform .3s";
+  toast.style.transform = "translateY(-10px)";
+
+  toast.style.background =
+    type==="error" ? "#cc0000" :
+    type==="success" ? "#28a745" :
+    "#444";
+
+  toast.style.color = "white";
+
+  box.appendChild(toast);
+
+  requestAnimationFrame(()=>{
+    toast.style.opacity = "1";
+    toast.style.transform = "translateY(0)";
+  });
+
+  setTimeout(()=>{
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(-10px)";
+    setTimeout(()=>toast.remove(), 350);
+  }, 2400);
+}
+</script>
+
+
+
+<script>
+
+// ==== EXPAND / SHRINK EMAIL COMPOSERS ====
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".composerExpand").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const group = btn.dataset.group;
+      const composer = document.getElementById(`composer_${group}`);
+      if (composer) {
+        composer.classList.toggle("expanded");
+      }
+    });
+  });
+});
+
+</script>
+
+<script>
+const tokenNav = new URLSearchParams(location.search).get("t");
+
+// apply token to nav links
+document.querySelectorAll(".top-nav a").forEach(a => {
+  a.href = a.href + tokenNav;
+});
+
+// back button logic
+document.getElementById("backBtn").addEventListener("click", () => {
+  window.location.href = "/dashboard.html?t=" + tokenNav;
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const title = document.querySelector("h1")?.textContent.trim().toLowerCase();
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    const txt = link.textContent.trim().toLowerCase();
+
+    if (txt === title) {
+      link.classList.add("active");
+    }
+  });
+
+});
+</script>
+
+<!-- PROGRESS OVERLAY -->
+<div id="sendProgressOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 22px 26px;
+    border-radius:14px;
+    width: 320px;
+    text-align:center;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  ">
+    <div id="progressText">Sending…</div>
+
+    <div style="margin-top:16px; height:8px; background:#eee; border-radius:6px; overflow:hidden;">
+      <div id="progressBar" style="
+        width:0%;
+        height:100%;
+        background:#b41111;
+        transition: width 0.3s ease;
+      "></div>
+    </div>
+
+    <div id="sendingNote" style="margin-top:10px; font-size:13px; color:#777;">
+      Please do not close this window…
+    </div>
+  </div>
+</div>
+
+<!-- DELIVERY NOTICE -->
+<div id="deliveryNoticeOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 26px 32px;
+    border-radius: 16px;
+    width: 360px;
+    text-align:center;
+    box-shadow:0 12px 28px rgba(0,0,0,0.35);
+  ">
+    <div style="font-size:20px; font-weight:700; color:#b41111; margin-bottom:10px;">
+      Delivery Notice
+    </div>
+
+    <div style="font-size:14px; color:#7e2a2a; margin-bottom:20px;">
+      Some messages failed. Check highlighted guests.
+    </div>
+
+    <button onclick="document.getElementById('deliveryNoticeOverlay').style.display='none'"
+      style="
+        background:#b41111;
+        color:#fff;
+        padding:10px 22px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">
+      OK
+    </button>
+</div> <!-- конец overlay -->
+</div> <!-- конец popup -->
+
+
+<!-- TOAST CONTAINER -->
+<div id="toastBox"
+  style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999999999;
+"></div>
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttwedreports.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+<script>
+document.getElementById("openGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+</script>
+
+
+</body>
+</html>
+

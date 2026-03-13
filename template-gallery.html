@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Select a Template</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #fff4f7;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* LOADER */
+#loaderOverlay {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.insta-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #ffd3df;
+  border-top-color: #c40037;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* MAIN CONTAINER */
+.container {
+  display: none;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+/* BUTTON */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(156, 24, 24, 0.35);
+
+  backdrop-filter: blur(6px);
+  color: #9c1818;
+  font-weight: 500;
+
+  text-decoration: none;
+  border-radius: 12px;
+
+  transition: 0.25s ease;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+  transform: translateY(-2px);
+}
+
+/* TEXT */
+#typeHeader {
+  text-align: center;
+  font-size: 20px;
+  color: #444;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+#coupleLine {
+  text-align: center;
+  color: #555;
+  margin-bottom: 35px;
+  font-weight: 500;
+}
+
+/* --------------------------- */
+/* COMPACT GRID (UPDATED)      */
+/* --------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  position: relative;
+  padding: 15px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  text-align: center;
+  cursor: pointer;
+  transition: 0.25s ease;
+  overflow: hidden;
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.12),
+    0 6px 18px rgba(0,0,0,0.08);
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+
+/* Thumbnail (smaller height) */
+.thumb {
+  width: 100%;
+  height: 140px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.thumb.loaded {
+  opacity: 1;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: #777;
+}
+
+/* ---------------------------------------- */
+/* DESKTOP: FORCE EXACTLY 4 IN ONE ROW      */
+/* ---------------------------------------- */
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .card {
+    padding: 12px;
+  }
+  .thumb {
+    height: 130px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+<div id="loaderOverlay">
+  <div class="insta-spinner"></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <a id="backBtn" href="#" class="back-btn">← Back</a>
+
+  <div id="typeHeader"></div>
+  <p id="coupleLine"></p>
+
+  <div id="templateGrid" class="grid"></div>
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+const params  = new URLSearchParams(location.search);
+const token   = params.get("t") || "";
+const type    = params.get("type") || "save";
+const method  = params.get("method") || "email";
+
+const grid        = document.getElementById("templateGrid");
+const coupleLine  = document.getElementById("coupleLine");
+const typeHeader  = document.getElementById("typeHeader");
+const backBtn     = document.getElementById("backBtn");
+
+const capitalize = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+
+/* LOAD COUPLE */
+async function loadCouple() {
+  if (!token) return null;
+
+  const { data } = await supabase
+    .from("sites")
+    .select("slug")
+    .eq("edit_token", token)
+    .single();
+
+  if (!data) return null;
+
+  const parts = (data.slug || "").split("-");
+
+  return {
+    bride: capitalize(parts[0] || "Bride"),
+    groom: capitalize(parts[1] || "Groom"),
+    location: capitalize(parts[2] || "Location")
+  };
+}
+
+/* TEMPLATE PREVIEW IMAGES */
+const previewImages = {
+  save1: "./images/PH1.jpg",
+  save2: "./images/PH2.jpg",
+  save3: "./images/PH4.jpg",
+  save4: "./images/SH8.png",
+  rsvp1: "./images/PH1.jpg",
+  rsvp2: "./images/PH2.jpg",
+  rsvp3: "./images/PH4.jpg",
+  rsvp4: "./images/SH8.png"
+};
+
+const templates = {
+  save: [
+    { id: "save1", title: "Template 1" },
+    { id: "save2", title: "Template 2" },
+    { id: "save3", title: "Template 3" },
+    { id: "save4", title: "Write Your Own Email" }
+  ],
+
+  rsvp: [
+    { id: "rsvp1", title: "Template 1" },
+    { id: "rsvp2", title: "Template 2" },
+    { id: "rsvp3", title: "Template 3" },
+    { id: "rsvp4", title: "Write Your Own Email" }
+  ]
+};
+
+/* RENDER TEMPLATES */
+function renderTemplates(couple) {
+  grid.innerHTML = "";
+
+  typeHeader.textContent =
+    type === "save" ? "Save-The-Date Templates" : "RSVP Templates";
+
+  const list = templates[type] || [];
+
+  list.forEach(tpl => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const img = document.createElement("div");
+    img.className = "thumb";
+    img.style.backgroundImage = `url('${previewImages[tpl.id]}')`;
+
+    const testImage = new Image();
+    testImage.src = previewImages[tpl.id];
+    testImage.onload = () => img.classList.add("loaded");
+
+    card.appendChild(img);
+
+    const title = document.createElement("div");
+    title.className = "card-title";
+    title.textContent = tpl.title;
+
+    const desc = document.createElement("div");
+    desc.className = "card-desc";
+    desc.textContent =
+      method === "email"
+        ? "Try this option"
+        : "Short SMS message";
+
+    card.appendChild(title);
+    card.appendChild(desc);
+
+    card.onclick = () => {
+      window.location.href =
+        `template-preview.html?t=${token}&type=${type}&method=${method}&tpl=${tpl.id}`;
+    };
+
+    grid.appendChild(card);
+  });
+
+  if (couple) {
+    coupleLine.textContent = `${couple.bride} & ${couple.groom} · ${couple.location}`;
+  }
+}
+
+/* BACK BUTTON: always return to dashboard */
+backBtn.onclick = (e) => {
+  e.preventDefault();
+
+  const params = new URLSearchParams(location.search);
+  const token  = params.get("t") || "";
+
+  // Всегда ведём на dashboard с нужным токеном
+  window.location.href = `dashboard.html?t=${encodeURIComponent(token)}`;
+};
+
+/* INIT */
+async function init() {
+
+  // ✔ Сохраняем текущую страницу как последнюю
+  //    (для корректной работы Back в дальнейшем)
+  sessionStorage.setItem("last_page", window.location.href);
+
+  const couple = await loadCouple();
+
+  renderTemplates(couple);
+
+  document.getElementById("loaderOverlay").style.display = "none";
+  document.querySelector(".container").style.display = "block";
+}
+
+init();
+</script>
+
+</body>
+</html>
+
+
