@@ -1560,6 +1560,26 @@ if (rsvpDateInput) {
 
 }
 
+
+async function loadRSVPdate(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data } = await supabase
+.from("sites")
+.select("rsvp_date")
+.eq("edit_token", token)
+.single();
+
+if (data?.rsvp_date) {
+  const input = document.getElementById("rsvpDate");
+  if (input) input.value = data.rsvp_date;
+}
+
+}
+
+loadRSVPdate();
+
 // ======================================================
 // LOAD COUPLE NAME (dashboard style)
 // ======================================================
@@ -2949,27 +2969,6 @@ extraGuests.style.display = "none";
 </script>
 
 
-<script>
-
-async function loadRSVPdate(){
-
-const token = new URLSearchParams(location.search).get("t");
-
-const { data } = await supabase
-.from("sites")
-.select("rsvp_date")
-.eq("edit_token", token)
-.single();
-
-if(data?.rsvp_date){
-document.getElementById("rsvpDate").value = data.rsvp_date;
-}
-
-}
-
-loadRSVPdate();
-
-</script>
 
 </body>
 </html>
