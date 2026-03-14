@@ -1529,6 +1529,7 @@ Submit
 
   <!-- TOAST -->
   <div id="greenToast">Message Sent!</div>
+
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -1540,6 +1541,24 @@ const supabase = createClient(
 let guests = [];
 let coupleFullName = "";
 const tbody = document.querySelector("#guestTable tbody");
+
+const rsvpDateInput = document.getElementById("rsvpDate");
+
+if (rsvpDateInput) {
+
+  rsvpDateInput.addEventListener("change", async () => {
+
+    const token = new URLSearchParams(location.search).get("t");
+    const date = rsvpDateInput.value;
+
+    await supabase
+      .from("sites")
+      .update({ rsvp_date: date })
+      .eq("edit_token", token);
+
+  });
+
+}
 
 // ======================================================
 // LOAD COUPLE NAME (dashboard style)
@@ -2929,23 +2948,6 @@ extraGuests.style.display = "none";
 
 </script>
 
-<script>
-
-const rsvpDateInput = document.getElementById("rsvpDate");
-
-rsvpDateInput.addEventListener("change", async () => {
-
-const token = new URLSearchParams(location.search).get("t");
-const date = rsvpDateInput.value;
-
-await supabase
-.from("sites")
-.update({ rsvp_date: date })
-.eq("edit_token", token);
-
-});
-
-</script>
 
 <script>
 
