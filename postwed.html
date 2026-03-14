@@ -1268,7 +1268,7 @@
 </div>
 
 <div class="top-logo-title" style="gap:16px;">
-  <h1 id="topMainTitle">Post-Wedding</h1>
+  <h1 id="topMainTitle">RSVP</h1>
 
   <!-- mini info bubble -->
   <div class="ios-banner-inline">
@@ -1344,8 +1344,7 @@ font-size:16px;
 Please RSVP by
 </div>
 
-<input type="date"
-style="
+<input id="rsvpDate" type="date"style="
 border:1px solid rgba(160,0,40,0.25);
 padding:6px 10px;
 border-radius:8px;
@@ -1365,7 +1364,7 @@ cursor:pointer;
 <div class="field">
 <label>Number of guests</label>
 
-<select style="
+<select id="guestCountSelect" style="
 width:100%;
 padding:10px;
 border-radius:10px;
@@ -1379,6 +1378,21 @@ border:1px solid rgba(160,0,40,0.25);
 </select>
 
 </div>
+
+<div class="field" id="extraGuestsField" style="display:none;">
+<label>Names of additional guests</label>
+
+<input type="text"
+placeholder="Enter names separated by commas"
+style="
+width:100%;
+padding:10px;
+border-radius:10px;
+border:1px solid rgba(160,0,40,0.25);
+">
+
+</div>
+
 
 
 <div class="field">
@@ -1404,6 +1418,23 @@ border:1px solid rgba(160,0,40,0.25);
 </select>
 
 </div>
+
+<div id="missYouBox" style="
+display:none;
+margin-top:12px;
+padding:12px 14px;
+border:1px solid #ffd0d0;
+border-radius:10px;
+background:#fff7f7;
+color:#8b1a1a;
+font-size:14px;
+">
+
+We’ll miss you!  
+Feel free to leave a message for the couple below.
+
+</div>
+
 
 <div class="field">
 <label>Leave a message</label>
@@ -2861,26 +2892,81 @@ document.getElementById("closeGuide")?.addEventListener("click", () => {
 <script src="https://player.vimeo.com/api/player.js"></script>
 
 <script>
-const rsvp = document.getElementById("rsvpSelect");
-const guests = document.getElementById("guestsField");
-const email = document.getElementById("emailField");
-const message = document.getElementById("messageField");
 
-rsvp.addEventListener("change", () => {
+const rsvpSelect = document.getElementById("rsvpSelect");
+const missYou = document.getElementById("missYouBox");
 
-  if (rsvp.value === "no") {
+rsvpSelect.addEventListener("change", () => {
 
-    guests.style.display = "none";
-    email.style.display = "none";
+if (rsvpSelect.value === "no") {
 
-  } else {
+missYou.style.display = "block";
 
-    guests.style.display = "block";
-    email.style.display = "block";
+} else {
 
-  }
+missYou.style.display = "none";
+
+}
 
 });
+
+</script>
+
+<script>
+
+const guestCount = document.getElementById("guestCountSelect");
+const extraGuests = document.getElementById("extraGuestsField");
+
+guestCount.addEventListener("change", () => {
+
+if (guestCount.value === "more") {
+extraGuests.style.display = "block";
+} else {
+extraGuests.style.display = "none";
+}
+
+});
+
+</script>
+
+<script>
+
+const rsvpDateInput = document.getElementById("rsvpDate");
+
+rsvpDateInput.addEventListener("change", async () => {
+
+const token = new URLSearchParams(location.search).get("t");
+const date = rsvpDateInput.value;
+
+await supabase
+.from("sites")
+.update({ rsvp_date: date })
+.eq("edit_token", token);
+
+});
+
+</script>
+
+<script>
+
+async function loadRSVPdate(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data } = await supabase
+.from("sites")
+.select("rsvp_date")
+.eq("edit_token", token)
+.single();
+
+if(data?.rsvp_date){
+document.getElementById("rsvpDate").value = data.rsvp_date;
+}
+
+}
+
+loadRSVPdate();
+
 </script>
 
 </body>
