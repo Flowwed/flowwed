@@ -2102,18 +2102,29 @@ function refreshComposerFields() {
    OPEN COMPOSER
 -----------------------------------------*/
 function openComposer() {
+
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
   if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
 
+  refreshComposerFields();
 
-  refreshComposerFields(); // ← ВАЖНО! вызываем при открытии
+  const token = new URLSearchParams(location.search).get("t");
+  const firstGuest = selected[0];
 
-  // Auto Subject
-document.getElementById("composerSubject").value =
-  `${coupleFullName || "Wedding"} — RSVP Request`;
+  if(firstGuest){
+    const guestId = firstGuest.dataset.id;
+
+    const link =
+    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
+
+    document.getElementById("rsvpPreviewLink").textContent = link;
+  }
+
+  document.getElementById("composerSubject").value =
+    `${coupleFullName || "Wedding"} — RSVP Request`;
+
   emailComposer.style.display = "block";
 }
-
 // ===== EXPAND / SHRINK EMAIL COMPOSER =====
 document.getElementById("composerExpand").onclick = () => {
   emailComposer.classList.toggle("expanded");
@@ -2168,15 +2179,15 @@ for (let i = 0; i < batchGuests.length; i++) {
 
   try {
 
-    const res = await fetch("/.netlify/functions/send-invites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        subject,
+const res = await fetch("/.netlify/functions/send-invites", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    subject,
 
-html:
-htmlBody +
-`
+    html:
+      htmlBody +
+      `
 <br><br>
 <hr style="margin:18px 0;border:none;border-top:1px solid #eee;">
 
@@ -2195,12 +2206,11 @@ font-weight:700;
 ">
 Open RSVP Form
 </a>
-`        
+`,
 
     guests: [g]
-      })
-    });
-
+  })
+});
     const json = await res.json();
     ok = json?.results?.[0]?.ok === true;
 
