@@ -288,7 +288,7 @@ Kindly respond by the RSVP date below
 
 <div class="form-box">
 
-
+<form id="rsvpForm">
 
 <div id="guestFormTitle"></div>
 
@@ -369,7 +369,7 @@ We’ll miss you! Feel free to leave a message for the couple.
 
 <button type="submit">Submit RSVP</button>
 
-
+</form>
 
 <div id="thanksScreen">
 <h2>Thank you!</h2>
@@ -409,21 +409,6 @@ if(!data) return;
 
 document.getElementById("coupleName").textContent=data.couple_name;
 
-/* rsvp date */
-
-if(data.rsvp_date){
-
-const d=new Date(data.rsvp_date);
-
-const formatted=d.toLocaleDateString("en-US",{
-day:"numeric",
-month:"long",
-year:"numeric"
-});
-
-document.getElementById("rsvpDateText").textContent=formatted;
-
-}
 
 /* video */
 
