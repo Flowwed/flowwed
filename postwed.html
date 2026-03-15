@@ -1703,15 +1703,12 @@ margin-bottom:20px;
 background:rgba(255,255,255,0.9);
 ">
 
-
-
-<div id="rsvpFormTitle" style="
-  font-weight:700;
-  color:#9c1818;
-  font-size:22px;
-  margin-bottom:18px;
+<div id="guestFormTitle" style="
+font-size:22px;
+font-weight:700;
+color:#9c1818;
+margin-bottom:18px;
 "></div>
-
 
   <div class="field">
     <label>Name</label>
@@ -1981,17 +1978,20 @@ if(!data) return;
 
 coupleFullName = data.couple_name;
 
-
 const title = document.getElementById("rsvpFormTitle");
 if(title){
 title.textContent = coupleFullName + " · RSVP";
+}
+
+const guestTitle = document.getElementById("guestFormTitle");
+if(guestTitle){
+guestTitle.textContent = coupleFullName + " · RSVP";
 }
 
 }
 
 loadCoupleName();
 loadPostWeddingVideo();
-
 
 // ======================================
 // LOAD POST-WEDDING VIDEO
