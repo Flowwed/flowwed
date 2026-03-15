@@ -1638,24 +1638,22 @@ loadRSVPdate();
 // LOAD COUPLE NAME (dashboard style)
 // ======================================================
 async function loadCoupleName() {
-  const token = new URLSearchParams(location.search).get("t");
 
-  const { data } = await supabase
-    .from("sites")
-    .select("slug")
-    .eq("edit_token", token)
-    .single();
+const token = new URLSearchParams(location.search).get("t");
 
-  if (!data || !data.slug) return;
+const { data } = await supabase
+.from("sites")
+.select("couple_name")
+.eq("edit_token", token)
+.single();
 
-  const parts = data.slug.split("-");
-  const bride = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-  const groom = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+if(!data) return;
 
-  coupleFullName = `${bride} & ${groom}`;
-  document.getElementById("coupleSmallName").textContent = coupleFullName;
+coupleFullName = data.couple_name;
 
- }
+document.getElementById("coupleSmallName").textContent = coupleFullName;
+
+}
  loadCoupleName();
 loadPostWeddingVideo();
 
@@ -1759,6 +1757,17 @@ function render() {
 document.addEventListener("change", (e) => {
   if (e.target.classList.contains("rowCheck")) {
     refreshComposerFields();
+
+document.getElementById("composerBody").value =
+`Hello!
+
+${coupleFullName} invite you to RSVP for their wedding.
+
+Please open the RSVP form using the link that will be included below.
+
+Thank you!`;
+
+
   }
 
   // 🔽 Реагируем на master checkbox (#selectAll)
@@ -2081,8 +2090,7 @@ function openComposer() {
 
   // Auto Subject
 document.getElementById("composerSubject").value =
-  `${coupleFullName} — RSVP Request`;
-
+  `${coupleFullName || "Wedding"} — RSVP Request`;
   emailComposer.style.display = "block";
 }
 
