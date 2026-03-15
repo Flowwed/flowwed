@@ -70,6 +70,7 @@ inset 0 0 4px rgba(255,255,255,0.6);
 
 display:flex;
 flex-direction:column;
+overflow:hidden;
 }
 
 /* FIELDS */
@@ -88,12 +89,12 @@ color:#7e2a2a;
 
 input,select,textarea{
 width:100%;
+box-sizing:border-box;
 padding:8px;
 border-radius:8px;
 border:1px solid rgba(160,0,40,0.25);
 font-size:13px;
 }
-
 textarea{
 height:60px;
 resize:none;
@@ -276,26 +277,54 @@ font-size:16px;
 
 <div class="form-box">
 
-<form id="rsvpForm">
+
+
+<div id="guestFormTitle"></div>
 
 <div class="field">
-<label>RSVP by <span id="rsvpDateText"></span></label>
+<label>Wedding Date</label>
+<div data-preview="date"></div>
 </div>
 
 <div class="field">
+<label>Wedding Time</label>
+<div data-preview="time"></div>
+</div>
+
+<div class="field">
+<label>Venue</label>
+<div data-preview="venue"></div>
+</div>
+
+<div class="field">
+<label>Address</label>
+<div data-preview="address"></div>
+</div>
+
+<div class="field">
+<label>RSVP Deadline</label>
+<div data-preview="deadline"></div>
+</div>
+
+<hr style="
+margin:18px 0 20px 0;
+border:none;
+height:2px;
+background:#9c1818;
+">
+
+<div class="field">
 <label>Name</label>
-<input type="text" id="nameInput" required>
+<input type="text" id="nameInput">
 </div>
 
 <div class="field">
 <label>Number of guests</label>
-
 <select id="guestCount">
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="more">More than 2</option>
 </select>
-
 </div>
 
 <div class="field" id="extraGuests">
@@ -305,19 +334,17 @@ font-size:16px;
 
 <div class="field">
 <label>Email</label>
-<input type="email" id="emailInput" required>
+<input type="email" id="emailInput">
 </div>
 
 <div class="field">
 <label>RSVP</label>
-
-<select id="rsvpSelect" required>
+<select id="rsvpSelect">
 <option value="">Select</option>
 <option value="yes">Yes</option>
 <option value="no">No</option>
 <option value="maybe">Maybe</option>
 </select>
-
 </div>
 
 <div id="missYou">
@@ -331,7 +358,7 @@ We’ll miss you! Feel free to leave a message for the couple.
 
 <button type="submit">Submit RSVP</button>
 
-</form>
+
 
 <div id="thanksScreen">
 <h2>Thank you!</h2>
