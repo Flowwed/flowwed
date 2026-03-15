@@ -326,6 +326,7 @@ const supabase=createClient(
 );
 
 const token=new URLSearchParams(location.search).get("t");
+const guestId=new URLSearchParams(location.search).get("g");
 
 /* LOAD SITE DATA */
 
@@ -367,6 +368,25 @@ document.getElementById("videoFrame").src=data.video_url;
 }
 
 loadSiteData();
+
+async function loadGuestData(){
+
+if(!guestId) return;
+
+const {data}=await supabase
+.from("guests")
+.select("first_name,last_name,email")
+.eq("id",guestId)
+.single();
+
+if(!data) return;
+
+nameInput.value = `${data.first_name} ${data.last_name}`;
+emailInput.value = data.email;
+
+}
+
+loadGuestData();
 
 /* EXTRA GUESTS */
 
@@ -431,12 +451,31 @@ message:messageInput.value
 
 try{
 
-await supabase.from("rsvp_responses").insert(payload);
+const { data: guest } = await supabase
+.from("guests")
+.select("id")
+.eq("email", emailInput.value.trim().toLowerCase())
+.eq("token", token)
+.single();
 
+if(!guest){
+alert("Guest not found on the list.");
+btn.classList.remove("loading");
+sending=false;
+return;
+}
+
+await supabase
+.from("guests")
+.update({
+  rsvp_status: rsvpSelect.value
+})
+.eq("email", emailInput.value.trim().toLowerCase())
+.eq("token", token);
 toast.classList.add("show");
 
 setTimeout(()=>{
-toast.classList.remove("show");
+  toast.classList.remove("show");
 },2000);
 
 form.style.display="none";
@@ -449,7 +488,6 @@ btn.classList.remove("loading");
 sending=false;
 
 }
-
 });
 
 </script>
