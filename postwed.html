@@ -2080,8 +2080,8 @@ function openComposer() {
   refreshComposerFields(); // ← ВАЖНО! вызываем при открытии
 
   // Auto Subject
-  document.getElementById("composerSubject").value =
-    `Wedding Update: ${coupleFullName}`;
+document.getElementById("composerSubject").value =
+  `${coupleFullName} — RSVP Request`;
 
   emailComposer.style.display = "block";
 }
@@ -2104,6 +2104,7 @@ const footer = document.getElementById("composerFooter").innerHTML;
 const htmlBody = body + "<br><br>" + footer;
 
 const token = new URLSearchParams(location.search).get("t");
+
 
 // Проверка выбранных гостей
 const selected = [...document.querySelectorAll(".rowCheck:checked")];
@@ -2137,7 +2138,6 @@ for (let i = 0; i < batchGuests.length; i++) {
     const res = await fetch("/.netlify/functions/send-invites", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      
 const rsvpLink =
 `${window.location.origin}/rsvpresponse.html?t=${token}&g=${g.guest_id}`;
 
@@ -2146,8 +2146,8 @@ body: JSON.stringify({
   html: htmlBody + `<br><br><a href="${rsvpLink}">Open RSVP Form</a>`,
   guests: [g]
 })
-
     });
+
 
     const json = await res.json();
     ok = json?.results?.[0]?.ok === true;
