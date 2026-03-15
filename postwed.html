@@ -1567,6 +1567,26 @@ Submit
     <label class="composer-label">Message:</label>
     <textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
 
+<div id="rsvpPreviewBlock" style="
+margin-top:10px;
+padding:10px;
+border-radius:8px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+font-size:13px;
+">
+
+<div style="font-weight:700;color:#9c1818;margin-bottom:6px;">
+RSVP Form Link
+</div>
+
+<div id="rsvpPreviewLink"
+style="word-break:break-all;">
+Link will appear automatically
+</div>
+
+</div>
+
    <div id="composerFooter" class="composer-footer">
    This message is sent from a notification-only address.<br>
    If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
@@ -2153,8 +2173,31 @@ for (let i = 0; i < batchGuests.length; i++) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         subject,
-        html: htmlBody + `<br><br><a href="${rsvpLink}">Open RSVP Form</a>`,
-        guests: [g]
+
+html:
+htmlBody +
+`
+<br><br>
+<hr style="margin:18px 0;border:none;border-top:1px solid #eee;">
+
+<div style="font-weight:700;color:#9c1818;margin-bottom:8px;">
+RSVP Form
+</div>
+
+<a href="${rsvpLink}" style="
+display:inline-block;
+padding:12px 18px;
+background:#b41111;
+color:white;
+text-decoration:none;
+border-radius:6px;
+font-weight:700;
+">
+Open RSVP Form
+</a>
+`        
+
+    guests: [g]
       })
     });
 
