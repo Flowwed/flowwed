@@ -2103,6 +2103,8 @@ const body = document.getElementById("composerBody").value.trim();
 const footer = document.getElementById("composerFooter").innerHTML;
 const htmlBody = body + "<br><br>" + footer;
 
+const token = new URLSearchParams(location.search).get("t");
+
 // Проверка выбранных гостей
 const selected = [...document.querySelectorAll(".rowCheck:checked")];
 if (!selected.length)
@@ -2113,9 +2115,9 @@ const subject = document.getElementById("composerSubject").value.trim();
 // Prepare guest objects
 const batchGuests = selected.map(ch => ({
   email: ch.dataset.email,
-  name: "Guest"
+  name: "Guest",
+  guest_id: ch.dataset.id
 }));
-
 const overlay = document.getElementById("sendProgressOverlay");
 const bar = document.getElementById("progressBar");
 const text = document.getElementById("progressText");
@@ -2135,11 +2137,16 @@ for (let i = 0; i < batchGuests.length; i++) {
     const res = await fetch("/.netlify/functions/send-invites", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        subject,
-        html: htmlBody,   // ← ИСПОЛЬЗУЕМ УЖЕ ГОТОВОЕ
-        guests: [g]
-      })
+      
+const rsvpLink =
+`${window.location.origin}/rsvpresponse.html?t=${token}&g=${g.guest_id}`;
+
+body: JSON.stringify({
+  subject,
+  html: htmlBody + `<br><br><a href="${rsvpLink}">Open RSVP Form</a>`,
+  guests: [g]
+})
+
     });
 
     const json = await res.json();
