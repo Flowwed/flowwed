@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RSVP</title>
 
 <style>
@@ -110,6 +111,10 @@ color:white;
 font-weight:700;
 cursor:pointer;
 transition:.25s;
+
+button:active{
+transform:scale(0.97);
+
 }
 
 /* LOADING */
@@ -226,14 +231,35 @@ flex-direction:column;
 align-items:center;
 }
 
+.player{
+order:1;
+}
+
+.form-box{
+order:2;
+}
+
 .player,
 .form-box{
-width:420px;
-max-width:100%;
+width:100%;
+max-width:420px;
+margin:auto;
+}
+/* MOBILE FORM UX */
+
+input,
+select,
+textarea{
+font-size:16px;
+padding:12px;
+}
+
+button{
+padding:14px;
+font-size:16px;
 }
 
 }
-
 </style>
 </head>
 

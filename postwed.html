@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Guest Manager — Ruby Edition</title>
 
   <style>
@@ -1265,6 +1266,76 @@
 
 </style>
 
+<style>
+
+/* ============================
+   MOBILE VIDEO + FORM LAYOUT
+============================ */
+
+@media (max-width: 768px) {
+
+  body {
+    margin: 16px;
+    max-width: 100%;
+  }
+
+  .info-bubble-inline {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  #postWeddingVideo {
+    order: 1;
+    margin: 10px 0 0 0 !important;
+  }
+
+  #postWeddingVideo + div {
+    order: 2;
+    padding: 10px 0 !important;
+  }
+
+#videoPlayerBox {
+  width: 100% !important;
+  max-width: 420px;
+  margin: 8px auto;
+  border-radius: 18px;
+  aspect-ratio: 9/16;
+}
+  /* RSVP FORM MOBILE FIX */
+
+  .info-bubble-inline > div {
+    padding: 14px !important;
+  }
+
+  .field input,
+  .field select,
+  textarea {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+/* MOBILE NAVBAR FIX */
+
+.top-nav {
+  overflow-x: auto;
+  white-space: nowrap;
+  justify-content: flex-start;
+  padding-left: 12px;
+  gap: 22px;
+  -webkit-overflow-scrolling: touch;
+}
+.top-nav::-webkit-scrollbar {
+  display: none;
+}
+
+}
+
+</style>
 </head>
 
 <body>
@@ -1781,9 +1852,11 @@ document.addEventListener("change", (e) => {
 document.getElementById("composerBody").value =
 `Hello!
 
-${coupleFullName} invite you to RSVP for their wedding.
+${coupleFullName} are happy to invite you to celebrate their wedding.
 
-Please open the RSVP form using the link that will be included below.
+Please find their official invitation and RSVP form using the link below.
+
+We would be grateful if you could confirm your attendance.
 
 Thank you!`;
 
