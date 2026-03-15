@@ -2131,23 +2131,24 @@ document.getElementById("sendingNote").classList.add("pulse");
 let failures = 0;
 
 for (let i = 0; i < batchGuests.length; i++) {
+
   const g = batchGuests[i];
   let ok = true;
 
+  const rsvpLink =
+  `${window.location.origin}/rsvpresponse.html?t=${token}&g=${g.guest_id}`;
+
   try {
+
     const res = await fetch("/.netlify/functions/send-invites", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-const rsvpLink =
-`${window.location.origin}/rsvpresponse.html?t=${token}&g=${g.guest_id}`;
-
-body: JSON.stringify({
-  subject,
-  html: htmlBody + `<br><br><a href="${rsvpLink}">Open RSVP Form</a>`,
-  guests: [g]
-})
+      body: JSON.stringify({
+        subject,
+        html: htmlBody + `<br><br><a href="${rsvpLink}">Open RSVP Form</a>`,
+        guests: [g]
+      })
     });
-
 
     const json = await res.json();
     ok = json?.results?.[0]?.ok === true;
@@ -2155,7 +2156,6 @@ body: JSON.stringify({
   } catch (e) {
     ok = false;
   }
-
   if (!ok) {
     failures++;
     markRowError(g.email);
