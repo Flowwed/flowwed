@@ -124,7 +124,7 @@
 }
 
 .table-section {
-  width: 95%;
+  width: 93%;
   margin: 40px auto;
   padding: 18px;
 
@@ -1601,24 +1601,24 @@ inset 0 0 6px rgba(255,255,255,0.5);
 
 <div class="field">
 <label>Wedding Date</label>
-<input type="date" class="couple-field">
+<input id="weddingDateInput" type="date" class="couple-field" data-sync="date">
 </div>
 
 <div class="field">
 <label>Wedding Time</label>
-<input type="time" class="couple-field">
+<input type="time" class="couple-field" data-sync="time">
 </div>
 
 
 <div class="field">
 <label>Venue</label>
-<input type="text" placeholder="Venue name" class="couple-field">
+<input type="text" placeholder="Venue name" class="couple-field" data-sync="venue">
 </div>
 
 
 <div class="field">
 <label>Address</label>
-<input id="venueAddressInput" type="text" placeholder="Venue address" class="couple-field">
+<input id="venueAddressInput" type="text" placeholder="Venue address" class="couple-field" data-sync="address">
 
 <div style="margin-top:14px;font-size:13px;">
 <a id="checkMapLink" href="#" target="_blank" style="color:#1e63ff;text-decoration:underline;">
@@ -1653,7 +1653,7 @@ align-items:center;
 gap:8px;
 ">
 
-<input id="rsvpDate" type="date"
+<input id="rsvpDate" type="date" data-sync="deadline"
 style="
 border:1px solid rgba(160,0,40,0.25);
 padding:6px 10px;
@@ -1710,8 +1710,41 @@ color:#9c1818;
 margin-bottom:18px;
 "></div>
 
+
+<div class="field" style="display:flex; gap:10px; margin-bottom:12px;">
+<label>Wedding Date</label>
+<div data-preview="date"></div>
+</div>
+
+<div class="field" style="display:flex; gap:10px; margin-bottom:12px;">
+<label>Wedding Time</label>
+<div data-preview="time"></div>
+</div>
+
+<div class="field" style="display:flex; gap:10px; margin-bottom:12px;">
+<label>Venue</label>
+<div data-preview="venue"></div>
+</div>
+
+<div class="field" style="display:flex; gap:10px; margin-bottom:12px;">
+<label>Address</label>
+<div data-preview="address"></div>
+</div>
+
+
+<div class="field" style="display:flex; gap:10px; margin-bottom:12px;">
+<label>RSVP Deadline</label>
+<div data-preview="deadline"></div>
+</div>
+
+
+<hr style="
+margin:18px 0 20px 0;
+border:none;
+border-top:3px solid #b41111;
+">
   <div class="field">
-    <label>Name</label>
+    <label style="margin-top:6px;">Name</label>
     <input type="text" placeholder="Your name" disabled>
   </div>
 
@@ -1798,7 +1831,6 @@ margin-bottom:18px;
       <div class="preview-info-icon">i</div>
       <div class="preview-info-text">
         This is the RSVP form your guests will receive.<br>
-        The submit button works only for invited guests.
       </div>
     </div>
   </div>
@@ -3493,6 +3525,43 @@ mapModal.style.display = "flex";
 closeMap.onclick = () => {
 mapModal.style.display = "none";
 };
+
+</script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+const fields = document.querySelectorAll("[data-sync]");
+
+fields.forEach(field => {
+
+const key = field.dataset.sync;
+const preview = document.querySelector(`[data-preview="${key}"]`);
+
+if(!preview) return;
+
+const update = () => {
+
+let value = field.value;
+
+if(field.type === "date" && value){
+const [y,m,d] = value.split("-");
+value = `${d} / ${m} / ${y}`;
+}
+
+preview.textContent = value;
+
+};
+
+field.addEventListener("input", update);
+
+update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
+
+});
+
+});
+
 
 </script>
 
