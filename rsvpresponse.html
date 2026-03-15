@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RSVP</title>
+
+<style>
+
+/* PAGE */
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(180deg,#fff1f4,#ffffff);
+margin:40px auto;
+max-width:1000px;
+padding:0 16px;
+color:#6a2a2a;
+}
+
+#coupleName{
+text-align:center;
+font-size:32px;
+color:#9c1818;
+margin-bottom:24px;
+font-weight:700;
+}
+
+/* LAYOUT */
+
+.layout{
+display:flex;
+gap:28px;
+justify-content:center;
+align-items:stretch;
+flex-wrap:wrap;
+}
+
+/* VIDEO */
+
+.player{
+width:360px;
+max-width:100%;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 18px 40px rgba(0,0,0,0.25);
+display:flex;
+}
+
+.player iframe{
+width:100%;
+height:100%;
+aspect-ratio:9/16;
+border:0;
+}
+
+/* FORM */
+
+.form-box{
+width:360px;
+max-width:100%;
+background:white;
+padding:20px;
+border-radius:16px;
+border:2px solid #b41111;
+
+box-shadow:
+0 10px 20px rgba(0,0,0,0.18),
+inset 0 0 4px rgba(255,255,255,0.6);
+
+display:flex;
+flex-direction:column;
+}
+
+/* FIELDS */
+
+.field{
+margin-bottom:10px;
+}
+
+.field label{
+display:block;
+font-weight:700;
+margin-bottom:3px;
+font-size:13px;
+color:#7e2a2a;
+}
+
+input,select,textarea{
+width:100%;
+padding:8px;
+border-radius:8px;
+border:1px solid rgba(160,0,40,0.25);
+font-size:13px;
+}
+
+textarea{
+height:60px;
+resize:none;
+}
+
+/* BUTTON */
+
+button{
+margin-top:10px;
+padding:10px 14px;
+border:none;
+border-radius:10px;
+background:#9c1818;
+color:white;
+font-weight:700;
+cursor:pointer;
+transition:.25s;
+}
+
+/* LOADING */
+
+button.loading{
+opacity:.7;
+pointer-events:none;
+position:relative;
+}
+
+button.loading::after{
+content:"";
+width:14px;
+height:14px;
+
+border:2px solid white;
+border-top:2px solid transparent;
+border-radius:50%;
+
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:translateY(-50%) rotate(0deg);}
+100%{transform:translateY(-50%) rotate(360deg);}
+}
+
+/* EXTRA GUEST FIELD */
+
+#extraGuests{
+display:none;
+}
+
+.highlight-field{
+background:#ffe6ec;
+animation:fadeHighlight 1.6s ease;
+}
+
+@keyframes fadeHighlight{
+0%{background:#ffe6ec;}
+100%{background:white;}
+}
+
+.slide-down{
+animation:slideDown .35s ease;
+}
+
+@keyframes slideDown{
+0%{opacity:0;transform:translateY(-6px);}
+100%{opacity:1;transform:translateY(0);}
+}
+
+/* MISS YOU */
+
+#missYou{
+display:none;
+margin-top:8px;
+padding:8px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:8px;
+font-size:13px;
+}
+
+/* THANK YOU */
+
+#thanksScreen{
+display:none;
+text-align:center;
+padding:30px 20px;
+}
+
+#thanksScreen h2{
+color:#9c1818;
+margin-bottom:10px;
+}
+
+/* TOAST */
+
+#toast{
+position:fixed;
+top:20px;
+right:20px;
+
+background:#28a745;
+color:white;
+
+padding:10px 16px;
+border-radius:8px;
+
+font-size:13px;
+font-weight:600;
+
+opacity:0;
+transform:translateY(-20px);
+transition:.3s;
+}
+
+#toast.show{
+opacity:1;
+transform:translateY(0);
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+.layout{
+flex-direction:column;
+align-items:center;
+}
+
+.player,
+.form-box{
+width:420px;
+max-width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<h1 id="coupleName"></h1>
+
+<div class="layout">
+
+<div class="player">
+<iframe id="videoFrame" allow="autoplay;fullscreen"></iframe>
+</div>
+
+<div class="form-box">
+
+<form id="rsvpForm">
+
+<div class="field">
+<label>RSVP by <span id="rsvpDateText"></span></label>
+</div>
+
+<div class="field">
+<label>Name</label>
+<input type="text" id="nameInput" required>
+</div>
+
+<div class="field">
+<label>Number of guests</label>
+
+<select id="guestCount">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="more">More than 2</option>
+</select>
+
+</div>
+
+<div class="field" id="extraGuests">
+<label>Names of additional guests</label>
+<input type="text" id="extraGuestsInput">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input type="email" id="emailInput" required>
+</div>
+
+<div class="field">
+<label>RSVP</label>
+
+<select id="rsvpSelect" required>
+<option value="">Select</option>
+<option value="yes">Yes</option>
+<option value="no">No</option>
+<option value="maybe">Maybe</option>
+</select>
+
+</div>
+
+<div id="missYou">
+We’ll miss you! Feel free to leave a message for the couple.
+</div>
+
+<div class="field">
+<label>Message</label>
+<textarea id="messageInput"></textarea>
+</div>
+
+<button type="submit">Submit RSVP</button>
+
+</form>
+
+<div id="thanksScreen">
+<h2>Thank you!</h2>
+<p>Your RSVP has been received.<br>We look forward to celebrating with you ❤️</p>
+</div>
+
+</div>
+</div>
+
+<div id="toast">RSVP saved!</div>
+
+<script type="module">
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase=createClient(
+"https://octwwpatppbenqwkcqaw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+const token=new URLSearchParams(location.search).get("t");
+
+/* LOAD SITE DATA */
+
+async function loadSiteData(){
+
+const {data}=await supabase
+.from("sites")
+.select("couple_name, rsvp_date, video_url")
+.eq("edit_token",token)
+.single();
+
+if(!data) return;
+
+/* couple name */
+
+document.getElementById("coupleName").textContent=data.couple_name;
+
+/* rsvp date */
+
+if(data.rsvp_date){
+
+const d=new Date(data.rsvp_date);
+
+const formatted=d.toLocaleDateString("en-US",{
+day:"numeric",
+month:"long",
+year:"numeric"
+});
+
+document.getElementById("rsvpDateText").textContent=formatted;
+
+}
+
+/* video */
+
+if(data.video_url)
+document.getElementById("videoFrame").src=data.video_url;
+
+}
+
+loadSiteData();
+
+/* EXTRA GUESTS */
+
+const guestCount=document.getElementById("guestCount");
+const extraGuests=document.getElementById("extraGuests");
+
+guestCount.addEventListener("change",()=>{
+
+if(guestCount.value==="more"){
+
+extraGuests.style.display="block";
+extraGuests.classList.add("slide-down");
+extraGuests.classList.add("highlight-field");
+
+setTimeout(()=>{
+extraGuests.classList.remove("highlight-field");
+},1600);
+
+}else{
+
+extraGuests.style.display="none";
+
+}
+
+});
+
+/* MISS YOU */
+
+const rsvpSelect=document.getElementById("rsvpSelect");
+const missYou=document.getElementById("missYou");
+
+rsvpSelect.addEventListener("change",()=>{
+missYou.style.display=rsvpSelect.value==="no"?"block":"none";
+});
+
+/* SUBMIT */
+
+const form=document.getElementById("rsvpForm");
+const btn=form.querySelector("button");
+const toast=document.getElementById("toast");
+
+let sending=false;
+
+form.addEventListener("submit",async(e)=>{
+
+e.preventDefault();
+
+if(sending)return;
+
+sending=true;
+btn.classList.add("loading");
+
+const payload={
+token:token,
+name:nameInput.value,
+email:emailInput.value,
+guest_count:guestCount.value,
+extra_guests:extraGuestsInput.value,
+rsvp_status:rsvpSelect.value,
+message:messageInput.value
+};
+
+try{
+
+await supabase.from("rsvp_responses").insert(payload);
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+toast.classList.remove("show");
+},2000);
+
+form.style.display="none";
+document.getElementById("thanksScreen").style.display="block";
+
+}catch(err){
+
+alert("Error sending RSVP");
+btn.classList.remove("loading");
+sending=false;
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
