@@ -3641,32 +3641,36 @@ border:0;
 <script>
 
 const addressInput = document.getElementById("venueAddressInput");
-const mapLink = document.getElementById("checkMapLink");
 
 const mapModal = document.getElementById("mapModal");
 const mapFrame = document.getElementById("mapModalFrame");
 const closeMap = document.getElementById("closeMapModal");
 
-mapLink.addEventListener("click", (e) => {
+/* обе ссылки */
+document.querySelectorAll("#checkMapLink, #previewMapLink").forEach(link => {
 
-e.preventDefault();
+  link.addEventListener("click", (e) => {
 
-const address = addressInput.value.trim();
+    e.preventDefault();
 
-if(!address){
-alert("Please enter the venue address first.");
-return;
-}
+    const address = addressInput.value.trim();
 
-mapFrame.src =
-`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+    if (!address) {
+      alert("Please enter the venue address first.");
+      return;
+    }
 
-mapModal.style.display = "flex";
+    mapFrame.src =
+      `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+
+    mapModal.style.display = "flex";
+
+  });
 
 });
 
 closeMap.onclick = () => {
-mapModal.style.display = "none";
+  mapModal.style.display = "none";
 };
 
 </script>
