@@ -2056,96 +2056,55 @@ if (addressInput) {
 
 }
 
-async function loadRSVPdate(){
+async function loadWeddingData(){
 
 const token = new URLSearchParams(location.search).get("t");
 
-const { data } = await supabase
+const { data, error } = await supabase
 .from("sites")
-.select("rsvp_date")
+.select("rsvp_date, wedding_date, wedding_time, venue, address")
 .eq("edit_token", token)
 .single();
 
-if (data?.rsvp_date) {
-  const input = document.getElementById("rsvpDate");
-  if (input) input.value = data.rsvp_date;
+if(error || !data) return;
+
+/* верхняя форма */
+
+const rsvp = document.getElementById("rsvpDate");
+const date = document.getElementById("weddingDateInput");
+const time = document.getElementById("weddingTimeInput");
+const venue = document.getElementById("venueInput");
+const address = document.getElementById("venueAddressInput");
+
+if(rsvp && data.rsvp_date) rsvp.value = data.rsvp_date;
+if(date && data.wedding_date) date.value = data.wedding_date;
+if(time && data.wedding_time) time.value = data.wedding_time;
+if(venue && data.venue) venue.value = data.venue;
+if(address && data.address) address.value = data.address;
+
+/* обновляем preview */
+
+document.querySelectorAll("[data-sync]").forEach(field => {
+
+const key = field.dataset.sync;
+const preview = document.querySelector(`[data-preview="${key}"]`);
+
+if(!preview) return;
+
+let value = field.value;
+
+if(field.type === "date" && value){
+const [y,m,d] = value.split("-");
+value = `${d} / ${m} / ${y}`;
 }
 
-}
+preview.textContent = value;
 
-/* --- ВСТАВИТЬ НОВУЮ ФУНКЦИЮ ЗДЕСЬ --- */
-
-async function loadWeddingDate(){
-
-const token = new URLSearchParams(location.search).get("t");
-
-const { data } = await supabase
-.from("sites")
-.select("wedding_date")
-.eq("edit_token", token)
-.single();
-
-if (data?.wedding_date) {
-  const input = document.getElementById("weddingDateInput");
-  if (input) input.value = data.wedding_date;
-}
-
-}
-
-async function loadWeddingTime(){
-
-const token = new URLSearchParams(location.search).get("t");
-
-const { data } = await supabase
-.from("sites")
-.select("wedding_time")
-.eq("edit_token", token)
-.single();
-
-if (data?.wedding_time) {
-  const input = document.getElementById("weddingTimeInput");
-  if (input) input.value = data.wedding_time;
-}
-
-}
-
-async function loadVenueAndAddress(){
-
-const token = new URLSearchParams(location.search).get("t");
-
-const { data } = await supabase
-.from("sites")
-.select("venue, address")
-.eq("edit_token", token)
-.single();
-
-if (!data) return;
-
-const venueInput = document.getElementById("venueInput");
-const addressInput = document.getElementById("venueAddressInput");
-
-if (venueInput && data.venue) venueInput.value = data.venue;
-if (addressInput && data.address) addressInput.value = data.address;
-
-/* ДОБАВИТЬ ЭТО ↓ */
-
-document.querySelectorAll("[data-sync]").forEach(el => {
-  el.dispatchEvent(new Event("change"));
 });
 
 }
 
-loadRSVPdate();
-loadWeddingDate();
-loadWeddingTime();
-loadVenueAndAddress();
-
-setTimeout(() => {
-  document.querySelectorAll("[data-sync]").forEach(el => {
-    el.dispatchEvent(new Event("change"));
-  });
-}, 100);
-
+loadWeddingData();
 
 // ======================================================
 // LOAD COUPLE NAME (dashboard style)
