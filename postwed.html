@@ -1508,6 +1508,45 @@ min-width:140px;
 font-weight:700;
 }
 
+
+.preview-line{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+
+.preview-line label{
+  white-space:nowrap;
+}
+
+.preview-line .dot{
+  white-space:nowrap;
+}
+
+.preview-line [data-preview="address"]{
+  flex:1;
+}
+
+.map-link-box{
+  margin-top:12px;
+  margin-bottom:18px;
+}
+
+.map-link-box a{
+  font-size:12px;
+  font-weight:500;
+  color:#1e63ff;
+  text-decoration:none;
+  border-bottom:1px dashed rgba(180,17,17,0.35);
+  padding-bottom:2px;
+
+  transition:0.2s;
+}
+
+.map-link-box a:hover{
+  text-decoration:underline;
+}
+
 </style>
 </head>
 
@@ -1547,7 +1586,6 @@ font-weight:700;
   <div class="ios-banner-inline">
     ℹ️ This is the cinematic invitation and RSVP form your guests will receive.
 Fill in the blue fields, select your guests, and reach them by email and SMS.
-    <span id="openGuide" class="guide-link">here</span>.
   </div>
 
   <div id="coupleSmallName"></div>
@@ -1583,9 +1621,12 @@ Fill in the blue fields, select your guests, and reach them by email and SMS.
       style="width:100%;height:100%;">
     </iframe>
 
-  </div>
+</div>
 
 </div>
+
+
+
 
 <div style="
 flex:1;
@@ -1728,32 +1769,39 @@ margin-bottom:18px;
 
 <div class="field" style="display:flex; gap:8px;">
 <label>Wedding Date</label>
-<span>—</span>
+<span class="dot">·</span>
 <div data-preview="date"></div>
 </div>
 
 
 <div class="field" style="display:flex; gap:8px;">
 <label>Wedding Time</label>
-<span>—</span>
+<span class="dot">·</span>
 <div data-preview="time"></div>
 </div>
 
+
 <div class="field" style="display:flex; gap:8px;">
 <label>Venue</label>
-<span>—</span>
+<span class="dot">·</span>
 <div data-preview="venue"></div>
 </div>
 
-<div class="field" style="display:flex; gap:8px;">
-<label>Address</label>
-<span>—</span>
-<div data-preview="address"></div>
+<div class="field preview-line">
+  <label>Address</label>
+  <span class="dot">·</span>
+  <span data-preview="address"></span>
 </div>
 
+<div class="map-link-box">
+  <a id="previewMapLink" href="#" target="_blank">
+    Check this address on map
+  </a>
+
+</div>
 <div class="field" style="display:flex; gap:8px;">
 <label>RSVP Deadline</label>
-<span>—</span>
+<span class="dot">·</span>
 <div data-preview="deadline"></div>
 </div>
 
@@ -2513,9 +2561,12 @@ async function loadSenderEmail() {
 }
 
 document.getElementById("sendEmailBtn").onclick = () => {
-  openComposer();
-};
 
+if(!validateRequiredFields()) return;
+
+openComposer();
+
+};
 // загрузка email отправителя
 loadSenderEmail();
 
@@ -2928,6 +2979,50 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 
 <script>
 
+<script>
+
+/* =========================
+   REQUIRED FIELDS CHECK
+========================= */
+
+function validateRequiredFields(){
+
+const required = [
+document.getElementById("weddingDateInput"),
+document.getElementById("weddingTimeInput"),
+document.getElementById("venueInput"),
+document.getElementById("venueAddressInput"),
+document.getElementById("rsvpDate")
+];
+
+for(const field of required){
+
+if(!field.value.trim()){
+
+showRequiredPopup();
+field.focus();
+
+return false;
+}
+
+}
+
+return true;
+}
+
+function showRequiredPopup(){
+
+const popup = document.getElementById("requiredPopup");
+
+popup.style.display = "block";
+
+setTimeout(()=>{
+popup.style.display = "none";
+},2500);
+
+}
+
+
 document.getElementById("backBtn").onclick = () => {
     const params = new URLSearchParams(location.search);
     const token = params.get("t") || localStorage.getItem("verified_token") || "";
@@ -3001,6 +3096,8 @@ document.getElementById("closeTestEmail").onclick = () => {
 
 // SEND test email
 document.getElementById("sendTestEmailBtn").onclick = async (e) => {
+
+ if(!validateRequiredFields()) return;
   const btn = e.target;
   const email = document.getElementById("testEmailInput").value.trim();
 
@@ -3666,6 +3763,28 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
 
 
 </script>
+
+
+<div id="requiredPopup" style="
+position:fixed;
+top:22px;
+left:50%;
+transform:translateX(-50%);
+background:#fff;
+border:1px solid #ffd0d0;
+padding:10px 16px;
+border-radius:10px;
+box-shadow:0 6px 20px rgba(0,0,0,0.25);
+display:none;
+z-index:999999;
+font-size:14px;
+font-weight:600;
+color:#7e2a2a;
+">
+
+⚠ Please fill in all required blue fields
+
+</div>
 
 </body>
 </html>
