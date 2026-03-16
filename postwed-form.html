@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Share Your Wedding Memories</title>
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(180deg,#fff1f4,#ffffff);
+margin:40px auto;
+max-width:760px;
+padding:0 18px;
+color:#6a2a2a;
+}
+
+h1{
+text-align:center;
+font-size:32px;
+color:#9c1818;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+font-size:15px;
+margin-bottom:30px;
+color:#7a3a3a;
+}
+
+.form-box{
+background:white;
+padding:26px;
+border-radius:18px;
+border:2px solid #b41111;
+
+box-shadow:
+0 16px 38px rgba(0,0,0,0.18),
+inset 0 0 6px rgba(255,255,255,0.6);
+}
+
+.field{
+margin-bottom:18px;
+}
+
+.field label{
+display:block;
+font-weight:700;
+margin-bottom:6px;
+font-size:14px;
+color:#7e2a2a;
+}
+
+input,textarea{
+width:100%;
+box-sizing:border-box;
+padding:11px;
+border-radius:10px;
+border:1px solid rgba(160,0,40,0.25);
+font-size:14px;
+}
+
+textarea{
+height:120px;
+resize:vertical;
+}
+
+.upload-box{
+border:2px dashed #e0a8a8;
+border-radius:12px;
+padding:18px;
+text-align:center;
+background:#fff7f9;
+}
+
+.preview{
+margin-top:12px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.preview img{
+width:90px;
+height:90px;
+object-fit:cover;
+border-radius:10px;
+}
+
+button{
+margin-top:16px;
+padding:12px 20px;
+border:none;
+border-radius:12px;
+background:#9c1818;
+color:white;
+font-weight:700;
+font-size:15px;
+cursor:pointer;
+transition:.25s;
+}
+
+button:hover{
+transform:translateY(-2px);
+}
+
+button.loading{
+opacity:.7;
+pointer-events:none;
+}
+
+#thanks{
+display:none;
+text-align:center;
+padding:40px 20px;
+}
+
+#thanks h2{
+color:#9c1818;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Share Your Wedding Memories</h1>
+
+<div class="subtitle">
+We would love to see your photos and hear your favorite moments ❤️
+</div>
+
+<div class="form-box">
+
+<div id="formArea">
+
+<div class="field">
+<label>Your Name</label>
+<input id="guestName">
+</div>
+
+<div class="field">
+<label>Your Message</label>
+<textarea id="guestMessage"></textarea>
+</div>
+
+<div class="field">
+<label>Upload Photos (max 5)</label>
+
+<div class="upload-box">
+
+<input type="file"
+id="photoUpload"
+multiple
+accept="image/*">
+
+<div style="font-size:12px;color:#777;margin-top:6px">
+You can upload up to 5 photos
+</div>
+
+<div id="photoPreview" class="preview"></div>
+
+</div>
+
+</div>
+
+<button id="submitBtn">Submit Memory</button>
+
+</div>
+
+<div id="thanks">
+<h2>Thank you ❤️</h2>
+<p>Your memories have been shared with the couple.</p>
+</div>
+
+</div>
+
+<script type="module">
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+"https://YOUR_PROJECT.supabase.co",
+"YOUR_ANON_KEY"
+);
+
+const token = new URLSearchParams(location.search).get("t");
+
+const photoInput = document.getElementById("photoUpload");
+const preview = document.getElementById("photoPreview");
+
+photoInput.addEventListener("change",()=>{
+
+preview.innerHTML="";
+
+const files=[...photoInput.files].slice(0,5);
+
+files.forEach(file=>{
+
+const reader=new FileReader();
+
+reader.onload=e=>{
+
+const img=document.createElement("img");
+img.src=e.target.result;
+
+preview.appendChild(img);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+});
+
+document.getElementById("submitBtn").onclick=async()=>{
+
+const btn=document.getElementById("submitBtn");
+
+btn.classList.add("loading");
+
+const name=document.getElementById("guestName").value.trim();
+const message=document.getElementById("guestMessage").value.trim();
+
+const files=[...photoInput.files].slice(0,5);
+
+let urls=[];
+
+for(let i=0;i<files.length;i++){
+
+const file=files[i];
+
+const path=
+token+"/"+Date.now()+"_"+file.name;
+
+const {error}=await supabase
+.storage
+.from("postwed-photos")
+.upload(path,file);
+
+if(!error){
+
+const url=supabase
+.storage
+.from("postwed-photos")
+.getPublicUrl(path).data.publicUrl;
+
+urls.push(url);
+
+}
+
+}
+
+await supabase
+.from("postwed_messages")
+.insert({
+token:token,
+guest_name:name,
+message:message,
+photo1:urls[0]||null,
+photo2:urls[1]||null,
+photo3:urls[2]||null,
+photo4:urls[3]||null,
+photo5:urls[4]||null
+});
+
+document.getElementById("formArea").style.display="none";
+document.getElementById("thanks").style.display="block";
+
+};
+
+</script>
+
+</body>
+</html>

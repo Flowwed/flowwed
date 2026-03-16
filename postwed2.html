@@ -1296,6 +1296,70 @@
   </div>
 </div>
 
+<!-- POST WEDDING FORM PREVIEW -->
+
+<div class="section" style="margin-bottom:22px;">
+
+<h2 style="margin-top:0;color:#9c1818;">Guest Memories Form</h2>
+
+<div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap;">
+
+<!-- TEXT FORM -->
+<div style="flex:1;min-width:260px;">
+
+<label style="font-weight:700;font-size:14px;">Your Name</label>
+<input type="text" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ccc;">
+
+<label style="font-weight:700;font-size:14px;margin-top:10px;display:block;">
+Share a few words
+</label>
+
+<textarea style="
+width:100%;
+height:120px;
+padding:10px;
+border-radius:10px;
+border:1px solid #ccc;
+resize:vertical;
+"></textarea>
+
+</div>
+
+<!-- PHOTO UPLOAD -->
+<div style="flex:1;min-width:260px;">
+
+<label style="font-weight:700;font-size:14px;">
+Upload up to 3 photos
+</label>
+
+<input type="file" id="photoUpload" multiple accept="image/*"
+style="
+display:block;
+margin-top:8px;
+padding:8px;
+">
+
+<div style="
+font-size:12px;
+color:#777;
+margin-top:6px;
+">
+Max 3 photos
+</div>
+
+<div id="photoPreview" style="
+margin-top:10px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+"></div>
+
+</div>
+
+</div>
+
+</div>
+
     <div class="ruby-frame-outer">
       <div class="ruby-frame-inner">
         <div class="scroll-container">
@@ -2699,6 +2763,42 @@ document.getElementById("closeGuide")?.addEventListener("click", () => {
 });
 </script>
 
+<script>
+
+const photoInput = document.getElementById("photoUpload");
+const preview = document.getElementById("photoPreview");
+
+photoInput.addEventListener("change", () => {
+
+preview.innerHTML = "";
+
+const files = [...photoInput.files].slice(0,3);
+
+files.forEach(file => {
+
+const reader = new FileReader();
+
+reader.onload = e => {
+
+const img = document.createElement("img");
+img.src = e.target.result;
+
+img.style.width = "90px";
+img.style.height = "90px";
+img.style.objectFit = "cover";
+img.style.borderRadius = "10px";
+
+preview.appendChild(img);
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+});
+
+</script>
 
 </body>
 </html>
