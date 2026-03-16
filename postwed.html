@@ -1548,6 +1548,11 @@ font-weight:700;
 }
 
 
+.required-error{
+border:2px solid #ff0033 !important;
+box-shadow:0 0 6px rgba(255,0,50,0.4);
+}
+
 
 </style>
 </head>
@@ -2561,6 +2566,9 @@ async function loadSenderEmail() {
 }
 
 document.getElementById("sendEmailBtn").onclick = () => {
+
+if(!validateBlueFields()) return;
+
   openComposer();
 };
 
@@ -2827,6 +2835,53 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
     applyGuestFilters();
     updateColumnVisibility(); // ← добавлено
   });
+});
+
+
+function validateBlueFields(){
+
+const fields = document.querySelectorAll(".couple-field");
+let firstEmpty = null;
+
+fields.forEach(field => {
+
+field.classList.remove("required-error");
+
+if(!field.value.trim()){
+
+field.classList.add("required-error");
+
+if(!firstEmpty){
+firstEmpty = field;
+}
+
+}
+
+});
+
+if(firstEmpty){
+
+firstEmpty.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+firstEmpty.focus();
+
+return false;
+}
+
+return true;
+
+}
+
+/* УБИРАЕМ КРАСНУЮ РАМКУ ПРИ ВВОДЕ */
+document.querySelectorAll(".couple-field").forEach(field => {
+
+field.addEventListener("input", () => {
+field.classList.remove("required-error");
+});
+
 });
 
 </script>
