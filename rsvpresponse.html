@@ -327,7 +327,12 @@ Kindly respond by the RSVP date below
 
 <form id="rsvpForm">
 
-<div id="guestFormTitle"></div>
+<div id="guestFormTitle" style="
+font-size:22px;
+font-weight:700;
+color:#9c1818;
+margin-bottom:18px;
+"></div>
 
 
 <div class="field preview-line">
@@ -352,6 +357,17 @@ Kindly respond by the RSVP date below
 <label>Address</label>
 <span class="dot">·</span>
 <span data-preview="address"></span>
+</div>
+
+<div style="margin-top:6px;margin-bottom:10px;">
+<a id="mapLink" href="#" style="
+font-size:12px;
+color:#1e63ff;
+text-decoration:none;
+border-bottom:1px dashed rgba(180,17,17,0.35);
+">
+Check this address on map
+</a>
 </div>
 
 <div class="field preview-line">
@@ -476,6 +492,9 @@ if(!data) return;
 /* couple name */
 
 document.getElementById("coupleName").textContent = data.couple_name || "";
+
+document.getElementById("guestFormTitle").textContent =
+data.couple_name + " · RSVP";
 
 /* video */
 
@@ -616,6 +635,26 @@ btn.classList.remove("loading");
 sending=false;
 
 }
+});
+
+/* MAP LINK */
+
+const mapLink = document.getElementById("mapLink");
+
+mapLink?.addEventListener("click",(e)=>{
+
+e.preventDefault();
+
+const address =
+document.querySelector('[data-preview="address"]').textContent;
+
+if(!address) return;
+
+window.open(
+`https://www.google.com/maps?q=${encodeURIComponent(address)}`,
+"_blank"
+);
+
 });
 
 </script>
