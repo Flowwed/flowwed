@@ -1547,6 +1547,8 @@ font-weight:700;
   text-decoration:underline;
 }
 
+
+
 </style>
 </head>
 
@@ -1586,6 +1588,7 @@ font-weight:700;
   <div class="ios-banner-inline">
     ℹ️ This is the cinematic invitation and RSVP form your guests will receive.
 Fill in the blue fields, select your guests, and reach them by email and SMS.
+    <span id="openGuide" class="guide-link">here</span>.
   </div>
 
   <div id="coupleSmallName"></div>
@@ -1621,12 +1624,9 @@ Fill in the blue fields, select your guests, and reach them by email and SMS.
       style="width:100%;height:100%;">
     </iframe>
 
-</div>
+  </div>
 
 </div>
-
-
-
 
 <div style="
 flex:1;
@@ -2561,11 +2561,7 @@ async function loadSenderEmail() {
 }
 
 document.getElementById("sendEmailBtn").onclick = () => {
-
-if(!validateRequiredFields()) return;
-
-openComposer();
-
+  openComposer();
 };
 
 // загрузка email отправителя
@@ -2980,46 +2976,6 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 
 <script>
 
-<script>
-
-/* =========================
-   REQUIRED FIELDS CHECK
-========================= */
-
-function validateRequiredFields(){
-
-const fields = [
-"weddingDateInput",
-"weddingTimeInput",
-"venueInput",
-"venueAddressInput",
-"rsvpDate"
-];
-
-for(const id of fields){
-
-const field = document.getElementById(id);
-
-if(!field) continue; // если элемента нет — пропускаем
-
-if(!field.value || !field.value.trim()){
-
-showRequiredPopup();
-field.focus();
-
-return false;
-
-}
-
-}
-
-return true;
-}
-
-
-
-
-
 document.getElementById("backBtn").onclick = () => {
     const params = new URLSearchParams(location.search);
     const token = params.get("t") || localStorage.getItem("verified_token") || "";
@@ -3093,8 +3049,6 @@ document.getElementById("closeTestEmail").onclick = () => {
 
 // SEND test email
 document.getElementById("sendTestEmailBtn").onclick = async (e) => {
-
- if(!validateRequiredFields()) return;
   const btn = e.target;
   const email = document.getElementById("testEmailInput").value.trim();
 
@@ -3760,28 +3714,6 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
 
 
 </script>
-
-
-<div id="requiredPopup" style="
-position:fixed;
-top:22px;
-left:50%;
-transform:translateX(-50%);
-background:#fff;
-border:1px solid #ffd0d0;
-padding:10px 16px;
-border-radius:10px;
-box-shadow:0 6px 20px rgba(0,0,0,0.25);
-display:none;
-z-index:999999;
-font-size:14px;
-font-weight:600;
-color:#7e2a2a;
-">
-
-⚠ Please fill in all required blue fields
-
-</div>
 
 </body>
 </html>
