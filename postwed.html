@@ -1498,13 +1498,15 @@ letter-spacing:0.4px;
 background:#eef4ff !important;
 }
 
-
 .field{
 border-bottom:1px solid rgba(180,17,17,0.15);
 padding-bottom:6px;
 margin-bottom:10px;
 }
-
+.field label{
+min-width:140px;
+font-weight:700;
+}
 
 </style>
 </head>
@@ -1724,35 +1726,37 @@ margin-bottom:18px;
 "></div>
 
 
-<div class="field" style="display:flex; gap:8px; margin-bottom:12px;">
+<div class="field" style="display:flex; gap:8px;">
 <label>Wedding Date</label>
-<span>·</span>
+<span>—</span>
 <div data-preview="date"></div>
 </div>
 
 
-<div class="field" style="display:flex; gap:8px; margin-bottom:12px;">
+<div class="field" style="display:flex; gap:8px;">
 <label>Wedding Time</label>
-<span>·</span>
+<span>—</span>
 <div data-preview="time"></div>
+</div>
 
-
-<div class="field" style="display:flex; gap:8px; margin-bottom:12px;">
+<div class="field" style="display:flex; gap:8px;">
 <label>Venue</label>
-<span>·</span>
+<span>—</span>
 <div data-preview="venue"></div>
+</div>
 
-
-<div class="field" style="display:flex; gap:8px; margin-bottom:12px;">
+<div class="field" style="display:flex; gap:8px;">
 <label>Address</label>
-<span>·</span>
+<span>—</span>
 <div data-preview="address"></div>
+</div>
 
-
-<div class="field" style="display:flex; gap:8px; margin-bottom:12px;">
+<div class="field" style="display:flex; gap:8px;">
 <label>RSVP Deadline</label>
-<span>·</span>
+<span>—</span>
 <div data-preview="deadline"></div>
+</div>
+
 
 <hr style="
 margin:18px 0 20px 0;
@@ -2067,10 +2071,16 @@ if(!preview) return;
 let value = field.value;
 
 if(field.type === "date" && value){
-const [y,m,d] = value.split("-");
-value = `${d} / ${m} / ${y}`;
-}
 
+const months = [
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+
+const [y,m,d] = value.split("-");
+value = `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+
+}
 preview.textContent = value;
 
 });
@@ -3631,10 +3641,16 @@ const update = () => {
 let value = field.value;
 
 if(field.type === "date" && value){
-const [y,m,d] = value.split("-");
-value = `${d} / ${m} / ${y}`;
-}
 
+const months = [
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+
+const [y,m,d] = value.split("-");
+value = `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+
+}
 preview.textContent = value;
 
 };
