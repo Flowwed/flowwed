@@ -395,11 +395,12 @@ const guestId=new URLSearchParams(location.search).get("g");
 
 /* LOAD SITE DATA */
 
+
 async function loadSiteData(){
 
 const {data}=await supabase
 .from("sites")
-.select("couple_name, rsvp_date, video_url")
+.select("couple_name, rsvp_date, video_url, wedding_date, wedding_time, venue, address")
 .eq("edit_token",token)
 .single();
 
@@ -407,17 +408,27 @@ if(!data) return;
 
 /* couple name */
 
-document.getElementById("coupleName").textContent=data.couple_name;
-
+document.getElementById("coupleName").textContent = data.couple_name || "";
 
 /* video */
 
-if(data.video_url)
-document.getElementById("videoFrame").src=data.video_url;
+if(data.video_url){
+document.getElementById("videoFrame").src = data.video_url;
+}
+
+/* preview fields */
+
+document.querySelector('[data-preview="date"]').textContent = data.wedding_date || "";
+document.querySelector('[data-preview="time"]').textContent = data.wedding_time || "";
+document.querySelector('[data-preview="venue"]').textContent = data.venue || "";
+document.querySelector('[data-preview="address"]').textContent = data.address || "";
+document.querySelector('[data-preview="deadline"]').textContent = data.rsvp_date || "";
 
 }
 
 loadSiteData();
+
+
 
 async function loadGuestData(){
 
@@ -437,6 +448,7 @@ emailInput.value = data.email;
 }
 
 loadGuestData();
+
 
 /* EXTRA GUESTS */
 
