@@ -2127,13 +2127,25 @@ const addressInput = document.getElementById("venueAddressInput");
 if (venueInput && data.venue) venueInput.value = data.venue;
 if (addressInput && data.address) addressInput.value = data.address;
 
-}
+/* ДОБАВИТЬ ЭТО ↓ */
 
+document.querySelectorAll("[data-sync]").forEach(el => {
+  el.dispatchEvent(new Event("change"));
+});
+
+}
 
 loadRSVPdate();
 loadWeddingDate();
 loadWeddingTime();
 loadVenueAndAddress();
+
+setTimeout(() => {
+  document.querySelectorAll("[data-sync]").forEach(el => {
+    el.dispatchEvent(new Event("change"));
+  });
+}, 100);
+
 
 // ======================================================
 // LOAD COUPLE NAME (dashboard style)
@@ -3697,6 +3709,7 @@ preview.textContent = value;
 };
 
 field.addEventListener("input", update);
+field.addEventListener("change", update);
 
 update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
 
