@@ -639,28 +639,21 @@ sending=false;
 
 /* MAP LINK */
 
-const mapLink = document.getElementById("mapLink");
-
-mapLink?.addEventListener("click",(e)=>{
-
-e.preventDefault();
-
-const address =
-document.querySelector('[data-preview="address"]').textContent;
-
-if(!address) return;
+document.addEventListener("DOMContentLoaded", () => {
 
 const mapLink = document.getElementById("mapLink");
 const mapModal = document.getElementById("mapModal");
 const mapFrame = document.getElementById("mapModalFrame");
 const closeMap = document.getElementById("closeMapModal");
 
-mapLink?.addEventListener("click",(e)=>{
+if(!mapLink) return;
+
+mapLink.addEventListener("click",(e)=>{
 
 e.preventDefault();
 
 const address =
-document.querySelector('[data-preview="address"]').textContent;
+document.querySelector('[data-preview="address"]').textContent.trim();
 
 if(!address) return;
 
@@ -671,10 +664,12 @@ mapModal.style.display="flex";
 
 });
 
-closeMap.onclick=()=>{
+closeMap.addEventListener("click",()=>{
 mapModal.style.display="none";
-};
 });
+
+});
+
 
 </script>
 
