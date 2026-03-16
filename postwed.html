@@ -1613,13 +1613,13 @@ Wedding Details
 
 <div class="field">
 <label>Wedding Time</label>
-<input type="time" class="couple-field" data-sync="time">
+<input id="weddingTimeInput" type="time" class="couple-field" data-sync="time">
 </div>
 
 
 <div class="field">
 <label>Venue</label>
-<input type="text" placeholder="Venue name" class="couple-field" data-sync="venue">
+<input id="venueInput" type="text" placeholder="Venue name" class="couple-field" data-sync="venue">
 </div>
 
 
@@ -1981,6 +1981,81 @@ const saved = document.getElementById("rsvpSaved");
 }
 
 
+/* --- ВСТАВИТЬ ЗДЕСЬ --- */
+
+const weddingDateInput = document.getElementById("weddingDateInput");
+
+if (weddingDateInput) {
+
+  weddingDateInput.addEventListener("change", async () => {
+
+    const token = new URLSearchParams(location.search).get("t");
+    const date = weddingDateInput.value;
+
+    await supabase
+      .from("sites")
+      .update({ wedding_date: date })
+      .eq("edit_token", token);
+
+  });
+
+}
+
+const weddingTimeInput = document.getElementById("weddingTimeInput");
+
+if (weddingTimeInput) {
+
+  weddingTimeInput.addEventListener("change", async () => {
+
+    const token = new URLSearchParams(location.search).get("t");
+    const time = weddingTimeInput.value;
+
+    await supabase
+      .from("sites")
+      .update({ wedding_time: time })
+      .eq("edit_token", token);
+
+  });
+
+}
+
+
+const venueInput = document.getElementById("venueInput");
+
+if (venueInput) {
+
+  venueInput.addEventListener("change", async () => {
+
+    const token = new URLSearchParams(location.search).get("t");
+    const venue = venueInput.value;
+
+    await supabase
+      .from("sites")
+      .update({ venue: venue })
+      .eq("edit_token", token);
+
+  });
+
+}
+
+const addressInput = document.getElementById("venueAddressInput");
+
+if (addressInput) {
+
+  addressInput.addEventListener("change", async () => {
+
+    const token = new URLSearchParams(location.search).get("t");
+    const address = addressInput.value;
+
+    await supabase
+      .from("sites")
+      .update({ address: address })
+      .eq("edit_token", token);
+
+  });
+
+}
+
 async function loadRSVPdate(){
 
 const token = new URLSearchParams(location.search).get("t");
@@ -1998,7 +2073,67 @@ if (data?.rsvp_date) {
 
 }
 
+/* --- ВСТАВИТЬ НОВУЮ ФУНКЦИЮ ЗДЕСЬ --- */
+
+async function loadWeddingDate(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data } = await supabase
+.from("sites")
+.select("wedding_date")
+.eq("edit_token", token)
+.single();
+
+if (data?.wedding_date) {
+  const input = document.getElementById("weddingDateInput");
+  if (input) input.value = data.wedding_date;
+}
+
+}
+
+async function loadWeddingTime(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data } = await supabase
+.from("sites")
+.select("wedding_time")
+.eq("edit_token", token)
+.single();
+
+if (data?.wedding_time) {
+  const input = document.getElementById("weddingTimeInput");
+  if (input) input.value = data.wedding_time;
+}
+
+}
+
+async function loadVenueAndAddress(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data } = await supabase
+.from("sites")
+.select("venue, address")
+.eq("edit_token", token)
+.single();
+
+if (!data) return;
+
+const venueInput = document.getElementById("venueInput");
+const addressInput = document.getElementById("venueAddressInput");
+
+if (venueInput && data.venue) venueInput.value = data.venue;
+if (addressInput && data.address) addressInput.value = data.address;
+
+}
+
+
 loadRSVPdate();
+loadWeddingDate();
+loadWeddingTime();
+loadVenueAndAddress();
 
 // ======================================================
 // LOAD COUPLE NAME (dashboard style)
