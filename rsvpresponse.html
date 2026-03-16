@@ -262,6 +262,33 @@ font-size:16px;
 }
 
 }
+
+.preview-line{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.preview-line label{
+white-space:nowrap;
+}
+
+.preview-line .dot{
+white-space:nowrap;
+}
+
+.preview-line span[data-preview]{
+font-weight:700;
+color:#9c1818;
+}
+
+.preview-line{
+border-bottom:1px solid rgba(180,17,17,0.15);
+padding-bottom:6px;
+margin-bottom:10px;
+}
+
+
 </style>
 </head>
 
@@ -292,30 +319,37 @@ Kindly respond by the RSVP date below
 
 <div id="guestFormTitle"></div>
 
-<div class="field">
+
+<div class="field preview-line">
 <label>Wedding Date</label>
-<div data-preview="date"></div>
+<span class="dot">·</span>
+<span data-preview="date"></span>
 </div>
 
-<div class="field">
+<div class="field preview-line">
 <label>Wedding Time</label>
-<div data-preview="time"></div>
+<span class="dot">·</span>
+<span data-preview="time"></span>
 </div>
 
-<div class="field">
+<div class="field preview-line">
 <label>Venue</label>
-<div data-preview="venue"></div>
+<span class="dot">·</span>
+<span data-preview="venue"></span>
 </div>
 
-<div class="field">
+<div class="field preview-line">
 <label>Address</label>
-<div data-preview="address"></div>
+<span class="dot">·</span>
+<span data-preview="address"></span>
 </div>
 
-<div class="field">
+<div class="field preview-line">
 <label>RSVP Deadline</label>
-<div data-preview="deadline"></div>
+<span class="dot">·</span>
+<span data-preview="deadline"></span>
 </div>
+
 
 <hr style="
 margin:18px 0 20px 0;
@@ -395,6 +429,29 @@ const guestId=new URLSearchParams(location.search).get("g");
 
 /* LOAD SITE DATA */
 
+function formatDate(date){
+
+if(!date) return "";
+
+const months=[
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+
+const d=new Date(date);
+
+return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+
+}
+
+function formatTime(time){
+
+if(!time) return "";
+
+return time.slice(0,5);
+
+}
+
 
 async function loadSiteData(){
 
@@ -418,16 +475,15 @@ document.getElementById("videoFrame").src = data.video_url;
 
 /* preview fields */
 
-document.querySelector('[data-preview="date"]').textContent = data.wedding_date || "";
+document.querySelector('[data-preview="date"]').textContent = formatDate(data.wedding_date);
 document.querySelector('[data-preview="time"]').textContent = data.wedding_time || "";
 document.querySelector('[data-preview="venue"]').textContent = data.venue || "";
 document.querySelector('[data-preview="address"]').textContent = data.address || "";
-document.querySelector('[data-preview="deadline"]').textContent = data.rsvp_date || "";
+document.querySelector('[data-preview="deadline"]').textContent = formatDate(data.rsvp_date);
 
 }
 
 loadSiteData();
-
 
 
 async function loadGuestData(){
