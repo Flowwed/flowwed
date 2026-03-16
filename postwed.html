@@ -1981,80 +1981,37 @@ const saved = document.getElementById("rsvpSaved");
 }
 
 
-/* --- ВСТАВИТЬ ЗДЕСЬ --- */
 
-const weddingDateInput = document.getElementById("weddingDateInput");
+/* UNIVERSAL AUTOSAVE */
 
-if (weddingDateInput) {
+document.querySelectorAll("[data-sync]").forEach(field => {
 
-  weddingDateInput.addEventListener("change", async () => {
+field.addEventListener("change", async () => {
 
-    const token = new URLSearchParams(location.search).get("t");
-    const date = weddingDateInput.value;
+const token = new URLSearchParams(location.search).get("t");
 
-    await supabase
-      .from("sites")
-      .update({ wedding_date: date })
-      .eq("edit_token", token);
+const columnMap = {
+deadline: "rsvp_date",
+date: "wedding_date",
+time: "wedding_time",
+venue: "venue",
+address: "address"
+};
 
-  });
+const column = columnMap[field.dataset.sync];
+if(!column) return;
 
-}
+let value = field.value;
 
-const weddingTimeInput = document.getElementById("weddingTimeInput");
+await supabase
+.from("sites")
+.update({ [column]: value })
+.eq("edit_token", token);
 
-if (weddingTimeInput) {
+});
 
-  weddingTimeInput.addEventListener("change", async () => {
+});
 
-    const token = new URLSearchParams(location.search).get("t");
-    const time = weddingTimeInput.value;
-
-    await supabase
-      .from("sites")
-      .update({ wedding_time: time })
-      .eq("edit_token", token);
-
-  });
-
-}
-
-
-const venueInput = document.getElementById("venueInput");
-
-if (venueInput) {
-
-  venueInput.addEventListener("change", async () => {
-
-    const token = new URLSearchParams(location.search).get("t");
-    const venue = venueInput.value;
-
-    await supabase
-      .from("sites")
-      .update({ venue: venue })
-      .eq("edit_token", token);
-
-  });
-
-}
-
-const addressInput = document.getElementById("venueAddressInput");
-
-if (addressInput) {
-
-  addressInput.addEventListener("change", async () => {
-
-    const token = new URLSearchParams(location.search).get("t");
-    const address = addressInput.value;
-
-    await supabase
-      .from("sites")
-      .update({ address: address })
-      .eq("edit_token", token);
-
-  });
-
-}
 
 async function loadWeddingData(){
 
