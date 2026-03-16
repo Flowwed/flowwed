@@ -2084,7 +2084,8 @@ const address = document.getElementById("venueAddressInput");
 /* заполнение */
 
 if(rsvp) rsvp.value = data.rsvp_date || "";
-if(date) date.value = data.wedding_date || "";
+if(date && data.wedding_date)
+date.value = data.wedding_date.split("T")[0];
 if(time) time.value = data.wedding_time || "";
 if(venue) venue.value = data.venue || "";
 if(address) address.value = data.address || "";
