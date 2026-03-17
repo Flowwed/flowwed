@@ -142,6 +142,11 @@ We would love to see your photos and hear your favorite moments ❤️
 </div>
 
 <div class="field">
+<label>Your Email</label>
+<input id="guestEmail" type="email" required>
+</div>
+
+<div class="field">
 <label>Your Message</label>
 <textarea id="guestMessage"></textarea>
 </div>
@@ -182,8 +187,8 @@ You can upload up to 5 photos
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabase = createClient(
-"https://YOUR_PROJECT.supabase.co",
-"YOUR_ANON_KEY"
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
 
 const token = new URLSearchParams(location.search).get("t");
@@ -225,6 +230,22 @@ btn.classList.add("loading");
 const name=document.getElementById("guestName").value.trim();
 const message=document.getElementById("guestMessage").value.trim();
 
+const email=document.getElementById("guestEmail").value.trim().toLowerCase();
+
+const { data:guestRow } = await supabase
+.from("postwed_messages")
+.select("*")
+.eq("token",token)
+.eq("guest_email",email)
+.single();
+
+if(!guestRow){
+alert("Guest not found. Please use the same email that received the invitation.");
+return;
+}
+
+
+
 const files=[...photoInput.files].slice(0,5);
 
 let urls=[];
@@ -256,8 +277,7 @@ urls.push(url);
 
 await supabase
 .from("postwed_messages")
-.insert({
-token:token,
+.update({
 guest_name:name,
 message:message,
 photo1:urls[0]||null,
@@ -265,13 +285,14 @@ photo2:urls[1]||null,
 photo3:urls[2]||null,
 photo4:urls[3]||null,
 photo5:urls[4]||null
-});
+})
+.eq("token",token)
+.eq("guest_email",email);
 
 document.getElementById("formArea").style.display="none";
 document.getElementById("thanks").style.display="block";
 
 };
-
 </script>
 
 </body>

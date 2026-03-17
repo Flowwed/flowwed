@@ -1420,7 +1420,9 @@ flex-wrap:wrap;
     <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
 
     <label class="composer-label">Message:</label>
-    <textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
+
+<textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
+
 
    <div id="composerFooter" class="composer-footer">
    This message is sent from a notification-only address.<br>
@@ -1853,19 +1855,34 @@ function refreshComposerFields() {
 /* ----------------------------------------
    OPEN COMPOSER
 -----------------------------------------*/
+
+
 function openComposer() {
+
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
   if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
 
+  refreshComposerFields();
 
-  refreshComposerFields(); // ← ВАЖНО! вызываем при открытии
+  const token = new URLSearchParams(location.search).get("t");
 
-  // Auto Subject
+  // Subject
   document.getElementById("composerSubject").value =
     `Wedding Update: ${coupleFullName}`;
 
+  // Message with Post-Wedding form link
+  document.getElementById("composerBody").value =
+`The celebration may be over, but the memories live on!
+
+We would love to see your favorite wedding moments.
+
+Please share your photos and a short message here:
+
+https://coruscating-pika-435f9a.netlify.app/postwed-form?t=${token}`;
+
   emailComposer.style.display = "block";
 }
+
 
 // ===== EXPAND / SHRINK EMAIL COMPOSER =====
 document.getElementById("composerExpand").onclick = () => {
