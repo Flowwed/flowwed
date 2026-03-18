@@ -224,59 +224,58 @@ return;
 }
 
 // ===== UPLOAD =====
-const files = [...photoInput.files].slice(0,5);
+const files = allFiles.slice(0,5);
 let urls = [];
 
-for(let i=0;i<files.length;i++){
+for (let i = 0; i < files.length; i++) {
 
-const file = files[i];
+  const file = files[i];
 
-// 🔥 УНИКАЛЬНОЕ имя (фикс бага)
-const fileName = `${token}_${crypto.randomUUID()}_${file.name}`;
+  const fileName = `${token}_${crypto.randomUUID()}_${file.name}`;
 
-const { error } = await supabase.storage
-.from("postwed-photos")
-.upload(fileName, file);
+  const { error } = await supabase.storage
+    .from("postwed-photos")
+    .upload(fileName, file);
 
-if(error){
-console.log("UPLOAD ERROR:", error);
-continue;
+  if (error) {
+    console.log("UPLOAD ERROR:", error);
+    continue;
+  }
+
+  const { data } = supabase.storage
+    .from("postwed-photos")
+    .getPublicUrl(fileName);
+
+  urls.push(data.publicUrl);
 }
 
-const { data } = supabase.storage
-.from("postwed-photos")
-.getPublicUrl(fileName);
+console.log("FINAL URLS:", urls);
 
-urls.push(data.publicUrl);
-}
-
-console.log("FILES:", urls);
-
-// ===== UPSERT (фикс бага)
+// ===== INSERT =====
 const { error: dbError } = await supabase
-.from("postwed_messages")
-.insert({
-token: token,
-guest_email: email,
-guest_name: name,
-message: message,
-photo1: urls[0] || null,
-photo2: urls[1] || null,
-photo3: urls[2] || null,
-photo4: urls[3] || null,
-photo5: urls[4] || null
-});
+  .from("postwed_messages")
+  .insert({
+    token: token,
+    guest_email: email,
+    guest_name: name,
+    message: message,
+    photo1: urls[0] || null,
+    photo2: urls[1] || null,
+    photo3: urls[2] || null,
+    photo4: urls[3] || null,
+    photo5: urls[4] || null
+  });
 
-if(dbError){
-console.log("DB ERROR:", dbError);
-alert("Error saving");
-btn.classList.remove("loading");
-return;
+if (dbError) {
+  console.log("DB ERROR:", dbError);
+  alert("Error saving");
+  btn.classList.remove("loading");
+  return;
 }
 
 // SUCCESS
-document.getElementById("formArea").style.display="none";
-document.getElementById("thanks").style.display="block";
+document.getElementById("formArea").style.display = "none";
+document.getElementById("thanks").style.display = "block";
 
 } catch(err){
 console.log("FATAL:", err);
