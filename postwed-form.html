@@ -234,7 +234,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js";
 const supabase = createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-
 );
 
 const token = new URLSearchParams(location.search).get("t");
@@ -245,13 +244,10 @@ const preview = document.getElementById("photoPreview");
 let allFiles = [];
 
 // ===== PREVIEW =====
-
-// функция отрисовки
 function renderPreview() {
   preview.innerHTML = "";
 
   allFiles.forEach((file, index) => {
-
     const wrapper = document.createElement("div");
     wrapper.style.position = "relative";
 
@@ -263,21 +259,23 @@ function renderPreview() {
 
       const removeBtn = document.createElement("div");
       removeBtn.innerText = "✕";
-      removeBtn.style.position = "absolute";
-      removeBtn.style.top = "4px";
-      removeBtn.style.right = "6px";
-      removeBtn.style.background = "#9c1818";
-      removeBtn.style.color = "white";
-      removeBtn.style.width = "18px";
-      removeBtn.style.height = "18px";
-      removeBtn.style.borderRadius = "50%";
-      removeBtn.style.fontSize = "12px";
-      removeBtn.style.display = "flex";
-      removeBtn.style.alignItems = "center";
-      removeBtn.style.justifyContent = "center";
-      removeBtn.style.cursor = "pointer";
 
-      // ✅ УДАЛЕНИЕ РАБОТАЕТ НОРМАЛЬНО
+      Object.assign(removeBtn.style, {
+        position: "absolute",
+        top: "4px",
+        right: "6px",
+        background: "#9c1818",
+        color: "white",
+        width: "18px",
+        height: "18px",
+        borderRadius: "50%",
+        fontSize: "12px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: "pointer"
+      });
+
       removeBtn.onclick = () => {
         allFiles.splice(index, 1);
         renderPreview();
@@ -292,144 +290,150 @@ function renderPreview() {
   });
 }
 
-// обработчик выбора файлов
 photoInput.addEventListener("change", () => {
-
   const newFiles = [...photoInput.files];
 
-  // 🔥 ограничение 5
   if (allFiles.length >= 5) {
     showToast("You can upload up to 5 photos only.");
     return;
   }
 
   allFiles = [...allFiles, ...newFiles].slice(0, 5);
-
   renderPreview();
-
 });
 
 // ===== SUBMIT =====
 document.getElementById("submitBtn").onclick = async () => {
 
-const btn = document.getElementById("submitBtn");
-btn.classList.add("loading");
+  const btn = document.getElementById("submitBtn");
+  btn.classList.add("loading");
 
-try {
+  try {
 
-const name = document.getElementById("guestName").value.trim();
-const message = document.getElementById("guestMessage").value.trim();
-const email = document.getElementById("guestEmail").value.trim().toLowerCase();
+    const name = document.getElementById("guestName").value.trim();
+    const message = document.getElementById("guestMessage").value.trim();
+    const email = document.getElementById("guestEmail").value.trim().toLowerCase();
 
-if(!email){
-showToast("Please enter your email.");
-btn.classList.remove("loading");
-return;
-}
+    if (!email) {
+      showToast("Please enter your email.");
+      btn.classList.remove("loading");
+      return;
+    }
 
-// ✅ ПРОВЕРЯЕМ В guests (НЕ postwed)
-const { data: guest } = await supabase
-.from("guests")
-.select("*")
-.eq("token", token)
-.eq("email", email)
-.maybeSingle();
+    if (!token) {
+      showToast("Invalid link.");
+      btn.classList.remove("loading");
+      return;
+    }
 
-if(!guest){
-showToast("Guest not found.");
-btn.classList.remove("loading");
-return;
-}
+    // ===== CHECK GUEST =====
+    const { data: guest } = await supabase
+      .from("guests")
+      .select("*")
+      .eq("token", token)
+      .eq("email", email)
+      .maybeSingle();
 
-// ===== UPLOAD =====
-const files = allFiles.slice(0,5);
-let urls = [];
+    if (!guest) {
+      showToast("Guest not found.");
+      btn.classList.remove("loading");
+      return;
+    }
 
-for (let i = 0; i < files.length; i++) {
+    // ===== UPLOAD PHOTOS =====
+    let urls = [];
 
-  const file = files[i];
+    for (let file of allFiles.slice(0, 5)) {
 
-  const fileName = `${token}_${crypto.randomUUID()}_${file.name}`;
+      const fileName = `${token}_${crypto.randomUUID()}_${file.name}`;
 
-  const { error } = await supabase.storage
-    .from("postwed-photos")
-    .upload(fileName, file);
+      const { error: uploadError } = await supabase.storage
+        .from("postwed-photos")
+        .upload(fileName, file);
 
-  if (error) {
-    console.log("UPLOAD ERROR:", error);
-    continue;
+      if (uploadError) {
+        console.error("UPLOAD ERROR:", uploadError);
+        showToast("Upload failed");
+        btn.classList.remove("loading");
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from("postwed-photos")
+        .getPublicUrl(fileName);
+
+      urls.push(data.publicUrl);
+    }
+
+    // ===== CHECK EXISTING =====
+    const { data: existing } = await supabase
+      .from("postwed_messages")
+      .select("*")
+      .eq("token", token)
+      .eq("guest_email", email)
+      .maybeSingle();
+
+    // ===== UPDATE IF EXISTS =====
+    if (existing) {
+
+      const { error: updateError } = await supabase
+        .from("postwed_messages")
+        .update({
+          guest_name: name,
+          message: message,
+          photo1: urls[0] || existing.photo1,
+          photo2: urls[1] || existing.photo2,
+          photo3: urls[2] || existing.photo3,
+          photo4: urls[3] || existing.photo4,
+          photo5: urls[4] || existing.photo5
+        })
+        .eq("id", existing.id);
+
+      if (updateError) {
+        console.error("UPDATE ERROR:", updateError);
+        showToast("Error saving data");
+        btn.classList.remove("loading");
+        return;
+      }
+
+    } else {
+
+      // ===== INSERT NEW =====
+      const { error: insertError } = await supabase
+        .from("postwed_messages")
+        .insert({
+          token: token,
+          guest_email: email,
+          guest_name: name,
+          message: message,
+          photo1: urls[0] || null,
+          photo2: urls[1] || null,
+          photo3: urls[2] || null,
+          photo4: urls[3] || null,
+          photo5: urls[4] || null
+        });
+
+      if (insertError) {
+        console.error("INSERT ERROR:", insertError);
+        showToast("Error saving data");
+        btn.classList.remove("loading");
+        return;
+      }
+    }
+
+    // ===== SUCCESS =====
+    document.getElementById("formArea").style.display = "none";
+    document.getElementById("thanks").style.display = "block";
+
+  } catch (err) {
+    console.error("FATAL:", err);
+    showToast("Something went wrong");
   }
 
-  const { data } = supabase.storage
-    .from("postwed-photos")
-    .getPublicUrl(fileName);
-
-  urls.push(data.publicUrl);
-}
-
-console.log("FINAL URLS:", urls);
-
-
-const { data: existing, error: existingError } = await supabase
-  .from("postwed_messages")
-  .select("*")
-  .eq("token", token)
-  .eq("guest_email", email)
-  .maybeSingle();
-
-console.log("EXISTING:", existing);
-console.log("EXISTING ERROR:", existingError);
-
-if (existing) {
-  showToast("You have already submitted your memories.");
-  btn.classList.remove("loading");
-  return;
-}
-
-// ===== INSERT =====
-const { error: dbError } = await supabase
-  .from("postwed_messages")
-  .insert({
-    token: token,
-    guest_email: email,
-    guest_name: name,
-    message: message,
-    photo1: urls[0] || null,
-    photo2: urls[1] || null,
-    photo3: urls[2] || null,
-    photo4: urls[3] || null,
-    photo5: urls[4] || null
-  });
-
-if (dbError) {
-  console.log("DB ERROR:", dbError);
-
-  // 👉 если реально дубликат (Postgres unique violation)
-  if (dbError.code === "23505") {
-    showToast("You have already submitted your memories.");
-  } else {
-    showToast("Something went wrong. Please try again.");
-  }
-
-  btn.classList.remove("loading");
-  return;
-}
-
-// SUCCESS
-document.getElementById("formArea").style.display = "none";
-document.getElementById("thanks").style.display = "block";
-
-return;
-
-} catch(err){
-  console.log("FATAL:", err);
-  showToast("Something went wrong");
-}
-
-btn.classList.remove("loading");
+  document.getElementById("submitBtn").classList.remove("loading");
 };
-
 </script>
+
 
 <div id="toast" style="
 position: fixed;
