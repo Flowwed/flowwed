@@ -370,19 +370,21 @@ for (let i = 0; i < files.length; i++) {
 console.log("FINAL URLS:", urls);
 
 
-const { data: existing } = await supabase
+const { data: existing, error: existingError } = await supabase
   .from("postwed_messages")
-  .select("id")
+  .select("*")
   .eq("token", token)
   .eq("guest_email", email)
   .maybeSingle();
 
-if (existing && existing.message) {
+console.log("EXISTING:", existing);
+console.log("EXISTING ERROR:", existingError);
+
+if (existing) {
   showToast("You have already submitted your memories.");
   btn.classList.remove("loading");
   return;
 }
-
 
 // ===== INSERT =====
 const { error: dbError } = await supabase
@@ -401,12 +403,17 @@ const { error: dbError } = await supabase
 
 if (dbError) {
   console.log("DB ERROR:", dbError);
-  showToast("You have already submitted this form.");
+
+  // 👉 если реально дубликат (Postgres unique violation)
+  if (dbError.code === "23505") {
+    showToast("You have already submitted your memories.");
+  } else {
+    showToast("Something went wrong. Please try again.");
+  }
 
   btn.classList.remove("loading");
   return;
 }
-
 
 // SUCCESS
 document.getElementById("formArea").style.display = "none";
