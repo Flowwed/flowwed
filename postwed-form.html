@@ -125,10 +125,16 @@ const safeName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
 const fileName = `${token}_${crypto.randomUUID()}_${safeName}`;
 console.log("UPLOAD:", fileName);
 
+// 💥 FIX: пересоздаём файл (убираем все метаданные)
+const cleanFile = new File(
+  [await file.arrayBuffer()],
+  fileName,
+  { type: file.type }
+);
+
 const { error } = await supabase.storage
 .from("postwed-photos")
-.upload(fileName, file);
-
+.upload(fileName, cleanFile);
 if(error){
 console.log("UPLOAD ERROR:", error);
 continue;
