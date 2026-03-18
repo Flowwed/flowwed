@@ -94,92 +94,38 @@ opacity:.6;
 pointer-events:none;
 }
 
-#thanks{
-display:none;
-text-align:center;
-padding:40px;
-}
-
-#photoUpload {
-  width: 300px;
-}
-
-.upload-btn {
-  display: inline-block;
-  padding: 10px 18px;
-  background: #9c1818;
-  color: #fff; /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
-}
-
-.upload-btn:hover {
-  background: #7a1212;
-  color: #fff; /* на всякий случай */
-}
-
-.upload-btn input {
-  display: none;
-}
-
-.upload-btn {
-  width: auto;
-}
-
 .upload-tile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  width: 140px;
-  height: 110px;
-
-  margin: 0 auto;
-
-  border: 2px dashed #e0a8a8;
-  border-radius: 14px;
-
-  cursor: pointer;
-  transition: 0.2s;
-  background: #fff7f9;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+width:140px;
+height:110px;
+margin:0 auto;
+border:2px dashed #e0a8a8;
+border-radius:14px;
+cursor:pointer;
+transition:.2s;
+background:#fff7f9;
 }
 
 .upload-tile:hover {
-  background: #ffecee;
-  border-color: #9c1818;
+background:#ffecee;
+border-color:#9c1818;
 }
 
-.upload-icon {
-  font-size: 28px;
-  margin-bottom: 6px;
-}
-
-.upload-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: #7a3a3a;
-}
-
-.upload-tile input {
-  display: none;
-}
-
+.upload-icon {font-size:28px;margin-bottom:6px;}
+.upload-text {font-size:13px;font-weight:600;color:#7a3a3a;}
+.upload-tile input {display:none;}
 </style>
 </head>
 
 <body>
 
 <h1>Share Your Wedding Memories</h1>
-
-<div class="subtitle">
-We would love to see your photos and hear your favorite moments ❤️
-</div>
+<div class="subtitle">We would love to see your photos and hear your favorite moments ❤️</div>
 
 <div class="form-box">
-
 <div id="formArea">
 
 <div class="field">
@@ -189,7 +135,7 @@ We would love to see your photos and hear your favorite moments ❤️
 
 <div class="field">
 <label>Your Email</label>
-<input id="guestEmail" type="email" required>
+<input id="guestEmail" type="email">
 </div>
 
 <div class="field">
@@ -197,43 +143,56 @@ We would love to see your photos and hear your favorite moments ❤️
 <textarea id="guestMessage"></textarea>
 </div>
 
-
 <div class="upload-box">
-
-  <label class="upload-tile">
-    <div class="upload-icon">📷</div>
-    <div class="upload-text">Add Photos</div>
-    <input type="file" id="photoUpload" multiple accept="image/*">
-  </label>
-
-  <div class="upload-hint">
-    Max 5 photos
-  </div>
-
-  <div id="photoPreview" class="preview"></div>
-
+<label class="upload-tile">
+<div class="upload-icon">📷</div>
+<div class="upload-text">Add Photos</div>
+<input type="file" id="photoUpload" multiple accept="image/*">
+</label>
+<div id="photoPreview" class="preview"></div>
 </div>
-
 
 </div>
 
 <button id="submitBtn">Submit Memory</button>
-
 </div>
 
-<div id="thanks">
-<h2>Thank you ❤️</h2>
-<p>Your memories have been shared.</p>
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+background:#9c1818;color:white;padding:14px 20px;border-radius:10px;font-weight:600;
+display:none;z-index:999;"></div>
+
+<!-- SUCCESS OVERLAY -->
+<div id="successOverlay" style="
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(255,255,255,0.95);
+display:none;align-items:center;justify-content:center;z-index:9999;
+">
+<div style="
+background:white;padding:40px;border-radius:20px;text-align:center;
+box-shadow:0 20px 50px rgba(0,0,0,0.2);max-width:320px;
+animation:pop .4s ease;
+">
+<div style="font-size:40px;">❤️</div>
+<h2 style="color:#9c1818;">Thank you!</h2>
+<p>Your memories have been saved</p>
+<button id="closeOverlay">Close</button>
+</div>
 </div>
 
-</div>
+<style>
+@keyframes pop {
+from {transform:scale(.8);opacity:0;}
+to {transform:scale(1);opacity:1;}
+}
+</style>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabase = createClient(
-  "https://octwwpatppbenqwkcqaw.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+"https://octwwpatppbenqwkcqaw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
 
 const token = new URLSearchParams(location.search).get("t");
@@ -243,226 +202,99 @@ const preview = document.getElementById("photoPreview");
 
 let allFiles = [];
 
-// ===== PREVIEW =====
-function renderPreview() {
-  preview.innerHTML = "";
-
-  allFiles.forEach((file, index) => {
-    const wrapper = document.createElement("div");
-    wrapper.style.position = "relative";
-
-    const reader = new FileReader();
-
-    reader.onload = e => {
-      const img = document.createElement("img");
-      img.src = e.target.result;
-
-      const removeBtn = document.createElement("div");
-      removeBtn.innerText = "✕";
-
-      Object.assign(removeBtn.style, {
-        position: "absolute",
-        top: "4px",
-        right: "6px",
-        background: "#9c1818",
-        color: "white",
-        width: "18px",
-        height: "18px",
-        borderRadius: "50%",
-        fontSize: "12px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer"
-      });
-
-      removeBtn.onclick = () => {
-        allFiles.splice(index, 1);
-        renderPreview();
-      };
-
-      wrapper.appendChild(img);
-      wrapper.appendChild(removeBtn);
-      preview.appendChild(wrapper);
-    };
-
-    reader.readAsDataURL(file);
-  });
+function showToast(text){
+const t=document.getElementById("toast");
+t.innerText=text;
+t.style.display="block";
+setTimeout(()=>t.style.display="none",3000);
 }
 
-photoInput.addEventListener("change", () => {
-  const newFiles = [...photoInput.files];
-
-  if (allFiles.length >= 5) {
-    showToast("You can upload up to 5 photos only.");
-    return;
-  }
-
-  allFiles = [...allFiles, ...newFiles].slice(0, 5);
-  renderPreview();
+// PREVIEW
+function renderPreview(){
+preview.innerHTML="";
+allFiles.forEach((file,i)=>{
+const img=document.createElement("img");
+img.src=URL.createObjectURL(file);
+preview.appendChild(img);
 });
-
-// ===== SUBMIT =====
-document.getElementById("submitBtn").onclick = async () => {
-
-  const btn = document.getElementById("submitBtn");
-  btn.classList.add("loading");
-
-  try {
-
-    const name = document.getElementById("guestName").value.trim();
-    const message = document.getElementById("guestMessage").value.trim();
-    const email = document.getElementById("guestEmail").value.trim().toLowerCase();
-
-    if (!email) {
-      showToast("Please enter your email.");
-      btn.classList.remove("loading");
-      return;
-    }
-
-    if (!token) {
-      showToast("Invalid link.");
-      btn.classList.remove("loading");
-      return;
-    }
-
-    // ===== CHECK GUEST =====
-    const { data: guest } = await supabase
-      .from("guests")
-      .select("*")
-      .eq("token", token)
-      .eq("email", email)
-      .maybeSingle();
-
-    if (!guest) {
-      showToast("Guest not found.");
-      btn.classList.remove("loading");
-      return;
-    }
-
-    // ===== UPLOAD PHOTOS =====
-    let urls = [];
-
-    for (let file of allFiles.slice(0, 5)) {
-
-      const fileName = `${token}_${crypto.randomUUID()}_${file.name}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from("postwed-photos")
-        .upload(fileName, file);
-
-      if (uploadError) {
-        console.error("UPLOAD ERROR:", uploadError);
-        showToast("Upload failed");
-        btn.classList.remove("loading");
-        return;
-      }
-
-      const { data } = supabase.storage
-        .from("postwed-photos")
-        .getPublicUrl(fileName);
-
-      urls.push(data.publicUrl);
-    }
-
-    // ===== CHECK EXISTING =====
-    const { data: existing } = await supabase
-      .from("postwed_messages")
-      .select("*")
-      .eq("token", token)
-      .eq("guest_email", email)
-      .maybeSingle();
-
-    // ===== UPDATE IF EXISTS =====
-    if (existing) {
-
-      const { error: updateError } = await supabase
-        .from("postwed_messages")
-        .update({
-          guest_name: name,
-          message: message,
-          photo1: urls[0] || existing.photo1,
-          photo2: urls[1] || existing.photo2,
-          photo3: urls[2] || existing.photo3,
-          photo4: urls[3] || existing.photo4,
-          photo5: urls[4] || existing.photo5
-        })
-        .eq("id", existing.id);
-
-      if (updateError) {
-        console.error("UPDATE ERROR:", updateError);
-        showToast("Error saving data");
-        btn.classList.remove("loading");
-        return;
-      }
-
-    } else {
-
-      // ===== INSERT NEW =====
-      const { error: insertError } = await supabase
-        .from("postwed_messages")
-        .insert({
-          token: token,
-          guest_email: email,
-          guest_name: name,
-          message: message,
-          photo1: urls[0] || null,
-          photo2: urls[1] || null,
-          photo3: urls[2] || null,
-          photo4: urls[3] || null,
-          photo5: urls[4] || null
-        });
-
-      if (insertError) {
-        console.error("INSERT ERROR:", insertError);
-        showToast("Error saving data");
-        btn.classList.remove("loading");
-        return;
-      }
-    }
-
-    // ===== SUCCESS =====
-    document.getElementById("formArea").style.display = "none";
-    document.getElementById("thanks").style.display = "block";
-
-  } catch (err) {
-    console.error("FATAL:", err);
-    showToast("Something went wrong");
-  }
-
-  document.getElementById("submitBtn").classList.remove("loading");
-};
-</script>
-
-
-<div id="toast" style="
-position: fixed;
-bottom: 30px;
-left: 50%;
-transform: translateX(-50%);
-background: #9c1818;
-color: white;
-padding: 14px 20px;
-border-radius: 10px;
-font-weight: 600;
-display: none;
-z-index: 999;
-box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-"></div>
-
-<script>
-
-function showToast(text) {
-  const toast = document.getElementById("toast");
-  toast.innerText = text;
-  toast.style.display = "block";
-
-  setTimeout(() => {
-    toast.style.display = "none";
-  }, 3000);
 }
 
+photoInput.onchange=()=>{
+allFiles=[...allFiles,...photoInput.files].slice(0,5);
+renderPreview();
+};
 
+// SUBMIT
+document.getElementById("submitBtn").onclick=async()=>{
+
+const btn=document.getElementById("submitBtn");
+btn.classList.add("loading");
+
+try{
+
+const name=document.getElementById("guestName").value.trim();
+const email=document.getElementById("guestEmail").value.trim().toLowerCase();
+const message=document.getElementById("guestMessage").value.trim();
+
+if(!email){showToast("Enter email");return;}
+
+let urls=[];
+
+for(let file of allFiles){
+const fileName=`${crypto.randomUUID()}_${file.name}`;
+
+const {error}=await supabase.storage.from("postwed-photos").upload(fileName,file);
+if(error){showToast("Upload error");return;}
+
+const {data}=supabase.storage.from("postwed-photos").getPublicUrl(fileName);
+urls.push(data.publicUrl);
+}
+
+const {data:existing}=await supabase
+.from("postwed_messages")
+.select("*")
+.eq("guest_email",email)
+.maybeSingle();
+
+if(existing){
+await supabase.from("postwed_messages").update({
+guest_name:name,
+message,
+photo1:urls[0]||existing.photo1,
+photo2:urls[1]||existing.photo2
+}).eq("id",existing.id);
+}else{
+await supabase.from("postwed_messages").insert({
+token,
+guest_email:email,
+guest_name:name,
+message,
+photo1:urls[0]||null,
+photo2:urls[1]||null
+});
+}
+
+// SUCCESS
+document.getElementById("successOverlay").style.display="flex";
+
+// очистка
+document.getElementById("guestName").value="";
+document.getElementById("guestEmail").value="";
+document.getElementById("guestMessage").value="";
+allFiles=[];
+renderPreview();
+
+}catch(e){
+console.log(e);
+showToast("Error");
+}
+
+btn.classList.remove("loading");
+};
+
+document.getElementById("closeOverlay").onclick=()=>{
+document.getElementById("successOverlay").style.display="none";
+};
 </script>
 
 </body>
