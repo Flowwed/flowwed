@@ -210,15 +210,46 @@ setTimeout(()=>t.style.display="none",3000);
 }
 
 // PREVIEW
-function renderPreview(){
-preview.innerHTML="";
-allFiles.forEach((file,i)=>{
-const img=document.createElement("img");
-img.src=URL.createObjectURL(file);
-preview.appendChild(img);
-});
-}
+function renderPreview() {
+  preview.innerHTML = "";
 
+  allFiles.forEach((file, index) => {
+
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+
+    const removeBtn = document.createElement("div");
+    removeBtn.innerText = "✕";
+
+    Object.assign(removeBtn.style, {
+      position: "absolute",
+      top: "4px",
+      right: "6px",
+      background: "#9c1818",
+      color: "white",
+      width: "18px",
+      height: "18px",
+      borderRadius: "50%",
+      fontSize: "12px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      cursor: "pointer"
+    });
+
+    removeBtn.onclick = () => {
+      allFiles.splice(index, 1);
+      renderPreview();
+    };
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(removeBtn);
+    preview.appendChild(wrapper);
+  });
+}
 photoInput.onchange=()=>{
 allFiles=[...allFiles,...photoInput.files].slice(0,5);
 renderPreview();
