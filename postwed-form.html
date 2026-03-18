@@ -234,8 +234,6 @@ photoInput.addEventListener("change", () => {
 
 });
 
-});
-
 // ===== SUBMIT =====
 document.getElementById("submitBtn").onclick = async () => {
 
@@ -358,50 +356,6 @@ function showToast(text) {
   setTimeout(() => {
     toast.style.display = "none";
   }, 3000);
-}
-
-function renderPreview() {
-  preview.innerHTML = "";
-
-  allFiles.forEach((file, index) => {
-
-    const wrapper = document.createElement("div");
-    wrapper.style.position = "relative";
-
-    const reader = new FileReader();
-
-    reader.onload = e => {
-      const img = document.createElement("img");
-      img.src = e.target.result;
-
-      const removeBtn = document.createElement("div");
-      removeBtn.innerText = "✕";
-      removeBtn.style.position = "absolute";
-      removeBtn.style.top = "4px";
-      removeBtn.style.right = "6px";
-      removeBtn.style.background = "#9c1818";
-      removeBtn.style.color = "white";
-      removeBtn.style.width = "18px";
-      removeBtn.style.height = "18px";
-      removeBtn.style.borderRadius = "50%";
-      removeBtn.style.fontSize = "12px";
-      removeBtn.style.display = "flex";
-      removeBtn.style.alignItems = "center";
-      removeBtn.style.justifyContent = "center";
-      removeBtn.style.cursor = "pointer";
-
-      removeBtn.onclick = () => {
-        allFiles.splice(index, 1);
-        renderPreview(); // 🔥 вместо change
-      };
-
-      wrapper.appendChild(img);
-      wrapper.appendChild(removeBtn);
-      preview.appendChild(wrapper);
-    };
-
-    reader.readAsDataURL(file);
-  });
 }
 
 
