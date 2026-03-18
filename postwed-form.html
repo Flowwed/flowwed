@@ -171,60 +171,69 @@ let allFiles = [];
 
 // ===== PREVIEW =====
 
-photoInput.addEventListener("change",()=>{
+// функция отрисовки
+function renderPreview() {
+  preview.innerHTML = "";
 
-const newFiles = [...photoInput.files];
+  allFiles.forEach((file, index) => {
 
-if (allFiles.length >= 5) {
-  showToast("You can upload up to 5 photos only.");
-  return;
-}
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
 
-allFiles = [...allFiles, ...newFiles].slice(0,5);
+    const reader = new FileReader();
 
-preview.innerHTML="";
+    reader.onload = e => {
+      const img = document.createElement("img");
+      img.src = e.target.result;
 
-allFiles.forEach((file, index)=>{
+      const removeBtn = document.createElement("div");
+      removeBtn.innerText = "✕";
+      removeBtn.style.position = "absolute";
+      removeBtn.style.top = "4px";
+      removeBtn.style.right = "6px";
+      removeBtn.style.background = "#9c1818";
+      removeBtn.style.color = "white";
+      removeBtn.style.width = "18px";
+      removeBtn.style.height = "18px";
+      removeBtn.style.borderRadius = "50%";
+      removeBtn.style.fontSize = "12px";
+      removeBtn.style.display = "flex";
+      removeBtn.style.alignItems = "center";
+      removeBtn.style.justifyContent = "center";
+      removeBtn.style.cursor = "pointer";
 
-  const wrapper = document.createElement("div");
-  wrapper.style.position = "relative";
+      // ✅ УДАЛЕНИЕ РАБОТАЕТ НОРМАЛЬНО
+      removeBtn.onclick = () => {
+        allFiles.splice(index, 1);
+        renderPreview();
+      };
 
-  const reader = new FileReader();
-
-  reader.onload = e => {
-    const img = document.createElement("img");
-    img.src = e.target.result;
-
-    const removeBtn = document.createElement("div");
-    removeBtn.innerText = "✕";
-    removeBtn.style.position = "absolute";
-    removeBtn.style.top = "4px";
-    removeBtn.style.right = "6px";
-    removeBtn.style.background = "#9c1818";
-    removeBtn.style.color = "white";
-    removeBtn.style.width = "18px";
-    removeBtn.style.height = "18px";
-    removeBtn.style.borderRadius = "50%";
-    removeBtn.style.fontSize = "12px";
-    removeBtn.style.display = "flex";
-    removeBtn.style.alignItems = "center";
-    removeBtn.style.justifyContent = "center";
-    removeBtn.style.cursor = "pointer";
-
-    // 🔥 УДАЛЕНИЕ
-    removeBtn.onclick = () => {
-      allFiles.splice(index, 1);
-      photoInput.dispatchEvent(new Event("change"));
+      wrapper.appendChild(img);
+      wrapper.appendChild(removeBtn);
+      preview.appendChild(wrapper);
     };
 
-    wrapper.appendChild(img);
-    wrapper.appendChild(removeBtn);
-    preview.appendChild(wrapper);
-  };
+    reader.readAsDataURL(file);
+  });
+}
 
-  reader.readAsDataURL(file);
+// обработчик выбора файлов
+photoInput.addEventListener("change", () => {
+
+  const newFiles = [...photoInput.files];
+
+  // 🔥 ограничение 5
+  if (allFiles.length >= 5) {
+    showToast("You can upload up to 5 photos only.");
+    return;
+  }
+
+  allFiles = [...allFiles, ...newFiles].slice(0, 5);
+
+  renderPreview();
 
 });
+
 });
 
 // ===== SUBMIT =====
@@ -350,6 +359,51 @@ function showToast(text) {
     toast.style.display = "none";
   }, 3000);
 }
+
+function renderPreview() {
+  preview.innerHTML = "";
+
+  allFiles.forEach((file, index) => {
+
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      const img = document.createElement("img");
+      img.src = e.target.result;
+
+      const removeBtn = document.createElement("div");
+      removeBtn.innerText = "✕";
+      removeBtn.style.position = "absolute";
+      removeBtn.style.top = "4px";
+      removeBtn.style.right = "6px";
+      removeBtn.style.background = "#9c1818";
+      removeBtn.style.color = "white";
+      removeBtn.style.width = "18px";
+      removeBtn.style.height = "18px";
+      removeBtn.style.borderRadius = "50%";
+      removeBtn.style.fontSize = "12px";
+      removeBtn.style.display = "flex";
+      removeBtn.style.alignItems = "center";
+      removeBtn.style.justifyContent = "center";
+      removeBtn.style.cursor = "pointer";
+
+      removeBtn.onclick = () => {
+        allFiles.splice(index, 1);
+        renderPreview(); // 🔥 вместо change
+      };
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(removeBtn);
+      preview.appendChild(wrapper);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
 
 </script>
 
