@@ -254,7 +254,7 @@ const { data: guest } = await supabase
 .maybeSingle();
 
 if(!guest){
-showToast("You have already submitted your memories.");
+showToast("Guest Not Found.");
 btn.classList.remove("loading");
 return;
 }
@@ -304,7 +304,8 @@ const { error: dbError } = await supabase
 
 if (dbError) {
   console.log("DB ERROR:", dbError);
-  alert("Error saving");
+  showToast("You have already submitted your memories.");
+
   btn.classList.remove("loading");
   return;
 }
