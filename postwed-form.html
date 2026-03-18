@@ -15,15 +15,90 @@ padding:0 18px;
 color:#6a2a2a;
 }
 
-h1{text-align:center;color:#9c1818;}
-.form-box{background:white;padding:24px;border-radius:16px;border:2px solid #b41111;}
-.field{margin-bottom:16px;}
-input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;}
-.preview{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
-.preview img{width:80px;height:80px;object-fit:cover;border-radius:8px;}
-button{padding:12px;background:#9c1818;color:white;border:none;border-radius:10px;font-weight:700;cursor:pointer;}
-button.loading{opacity:.6;pointer-events:none;}
-#thanks{display:none;text-align:center;padding:30px;}
+h1{
+text-align:center;
+font-size:32px;
+color:#9c1818;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+font-size:15px;
+margin-bottom:30px;
+color:#7a3a3a;
+}
+
+.form-box{
+background:white;
+padding:26px;
+border-radius:18px;
+border:2px solid #b41111;
+box-shadow:0 16px 38px rgba(0,0,0,0.18);
+}
+
+.field{margin-bottom:18px;}
+
+.field label{
+display:block;
+font-weight:700;
+margin-bottom:6px;
+font-size:14px;
+color:#7e2a2a;
+}
+
+input,textarea{
+width:100%;
+padding:11px;
+border-radius:10px;
+border:1px solid rgba(160,0,40,0.25);
+}
+
+textarea{height:120px;}
+
+.upload-box{
+border:2px dashed #e0a8a8;
+border-radius:12px;
+padding:18px;
+text-align:center;
+background:#fff7f9;
+}
+
+.preview{
+margin-top:12px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.preview img{
+width:90px;
+height:90px;
+object-fit:cover;
+border-radius:10px;
+}
+
+button{
+margin-top:16px;
+padding:12px;
+border:none;
+border-radius:12px;
+background:#9c1818;
+color:white;
+font-weight:700;
+cursor:pointer;
+}
+
+button.loading{
+opacity:.6;
+pointer-events:none;
+}
+
+#thanks{
+display:none;
+text-align:center;
+padding:40px;
+}
 </style>
 </head>
 
@@ -31,37 +106,49 @@ button.loading{opacity:.6;pointer-events:none;}
 
 <h1>Share Your Wedding Memories</h1>
 
+<div class="subtitle">
+We would love to see your photos and hear your favorite moments ❤️
+</div>
+
 <div class="form-box">
 
 <div id="formArea">
 
 <div class="field">
-<label>Name</label>
+<label>Your Name</label>
 <input id="guestName">
 </div>
 
 <div class="field">
-<label>Email</label>
-<input id="guestEmail" type="email">
+<label>Your Email</label>
+<input id="guestEmail" type="email" required>
 </div>
 
 <div class="field">
-<label>Message</label>
+<label>Your Message</label>
 <textarea id="guestMessage"></textarea>
 </div>
 
 <div class="field">
-<label>Photos (max 5)</label>
+<label>Upload Photos (max 5)</label>
+
+<div class="upload-box">
 <input type="file" id="photoUpload" multiple accept="image/*">
+<div style="font-size:12px;color:#777;margin-top:6px">
+Max 5 photos
+</div>
 <div id="photoPreview" class="preview"></div>
 </div>
 
-<button id="submitBtn">Submit</button>
+</div>
+
+<button id="submitBtn">Submit Memory</button>
 
 </div>
 
 <div id="thanks">
 <h2>Thank you ❤️</h2>
+<p>Your memories have been shared.</p>
 </div>
 
 </div>
@@ -102,17 +189,31 @@ btn.classList.add("loading");
 
 try {
 
-const email = guestEmail.value.trim().toLowerCase();
-const name = guestName.value.trim();
-const message = guestMessage.value.trim();
+const name = document.getElementById("guestName").value.trim();
+const message = document.getElementById("guestMessage").value.trim();
+const email = document.getElementById("guestEmail").value.trim().toLowerCase();
 
-console.log("START SUBMIT");
-console.log("TOKEN:", token);
-console.log("EMAIL:", email);
+if(!email){
+alert("Enter email");
+btn.classList.remove("loading");
+return;
+}
 
-// ❗ УБРАЛИ ЖЕСТКУЮ ПРОВЕРКУ ГОСТЯ
-// (она ломала тебе всё)
+// ✅ ПРОВЕРЯЕМ В guests (НЕ postwed)
+const { data: guest } = await supabase
+.from("guests")
+.select("*")
+.eq("token", token)
+.eq("email", email)
+.single();
 
+if(!guest){
+alert("Guest not found");
+btn.classList.remove("loading");
+return;
+}
+
+// ===== UPLOAD =====
 const files = [...photoInput.files].slice(0,5);
 let urls = [];
 
@@ -120,22 +221,13 @@ for(let i=0;i<files.length;i++){
 
 const file = files[i];
 
-// 💥 UUID = 100% уникально
-const safeName = file.name.replace(/[^a-zA-Z0-9.]/g, "_");
-
-const fileName = `${token}_${crypto.randomUUID()}_${safeName}`;
-console.log("UPLOAD:", fileName);
-
-// 💥 FIX: пересоздаём файл (убираем все метаданные)
-const cleanFile = new File(
-  [await file.arrayBuffer()],
-  fileName,
-  { type: file.type }
-);
+// 🔥 УНИКАЛЬНОЕ имя (фикс бага)
+const fileName = `${token}_${Date.now()}_${i}_${Math.random().toString(36).slice(2)}_${file.name}`;
 
 const { error } = await supabase.storage
 .from("postwed-photos")
-.upload(fileName, cleanFile);
+.upload(fileName, file);
+
 if(error){
 console.log("UPLOAD ERROR:", error);
 continue;
@@ -148,12 +240,12 @@ const { data } = supabase.storage
 urls.push(data.publicUrl);
 }
 
-console.log("UPLOADED URLS:", urls);
+console.log("FILES:", urls);
 
-// 💥 ВСЕГДА ВСТАВЛЯЕМ НОВУЮ ЗАПИСЬ
+// ===== UPSERT (фикс бага)
 const { error: dbError } = await supabase
 .from("postwed_messages")
-.insert({
+.upsert({
 token: token,
 guest_email: email,
 guest_name: name,
@@ -167,18 +259,18 @@ photo5: urls[4] || null
 
 if(dbError){
 console.log("DB ERROR:", dbError);
-alert("DB ERROR — открой console");
+alert("Error saving");
 btn.classList.remove("loading");
 return;
 }
 
 // SUCCESS
-formArea.style.display="none";
-thanks.style.display="block";
+document.getElementById("formArea").style.display="none";
+document.getElementById("thanks").style.display="block";
 
 } catch(err){
 console.log("FATAL:", err);
-alert("FATAL ERROR");
+alert("Something went wrong");
 }
 
 btn.classList.remove("loading");
