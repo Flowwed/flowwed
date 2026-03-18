@@ -370,6 +370,22 @@ for (let i = 0; i < files.length; i++) {
 console.log("FINAL URLS:", urls);
 
 
+const { data: existing, error: existingError } = await supabase
+  .from("postwed_messages")
+  .select("*")
+  .eq("token", token)
+  .eq("guest_email", email)
+  .maybeSingle();
+
+console.log("EXISTING:", existing);
+console.log("EXISTING ERROR:", existingError);
+
+if (existing) {
+  showToast("You have already submitted your memories.");
+  btn.classList.remove("loading");
+  return;
+}
+
 // ===== INSERT =====
 const { error: dbError } = await supabase
   .from("postwed_messages")
