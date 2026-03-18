@@ -6,7 +6,6 @@
 <title>Share Your Wedding Memories</title>
 
 <style>
-
 body{
 font-family:'Segoe UI',sans-serif;
 background:linear-gradient(180deg,#fff1f4,#ffffff);
@@ -35,15 +34,10 @@ background:white;
 padding:26px;
 border-radius:18px;
 border:2px solid #b41111;
-
-box-shadow:
-0 16px 38px rgba(0,0,0,0.18),
-inset 0 0 6px rgba(255,255,255,0.6);
+box-shadow:0 16px 38px rgba(0,0,0,0.18), inset 0 0 6px rgba(255,255,255,0.6);
 }
 
-.field{
-margin-bottom:18px;
-}
+.field{margin-bottom:18px;}
 
 .field label{
 display:block;
@@ -55,17 +49,13 @@ color:#7e2a2a;
 
 input,textarea{
 width:100%;
-box-sizing:border-box;
 padding:11px;
 border-radius:10px;
 border:1px solid rgba(160,0,40,0.25);
 font-size:14px;
 }
 
-textarea{
-height:120px;
-resize:vertical;
-}
+textarea{height:120px;}
 
 .upload-box{
 border:2px dashed #e0a8a8;
@@ -97,13 +87,7 @@ border-radius:12px;
 background:#9c1818;
 color:white;
 font-weight:700;
-font-size:15px;
 cursor:pointer;
-transition:.25s;
-}
-
-button:hover{
-transform:translateY(-2px);
 }
 
 button.loading{
@@ -116,11 +100,6 @@ display:none;
 text-align:center;
 padding:40px 20px;
 }
-
-#thanks h2{
-color:#9c1818;
-}
-
 </style>
 </head>
 
@@ -156,10 +135,7 @@ We would love to see your photos and hear your favorite moments ❤️
 
 <div class="upload-box">
 
-<input type="file"
-id="photoUpload"
-multiple
-accept="image/*">
+<input type="file" id="photoUpload" multiple accept="image/*">
 
 <div style="font-size:12px;color:#777;margin-top:6px">
 You can upload up to 5 photos
@@ -183,12 +159,11 @@ You can upload up to 5 photos
 </div>
 
 <script type="module">
-
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabase = createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+  "YOUR_ANON_KEY"
 );
 
 const token = new URLSearchParams(location.search).get("t");
@@ -196,101 +171,104 @@ const token = new URLSearchParams(location.search).get("t");
 const photoInput = document.getElementById("photoUpload");
 const preview = document.getElementById("photoPreview");
 
+// PREVIEW
 photoInput.addEventListener("change",()=>{
-
 preview.innerHTML="";
-
 const files=[...photoInput.files].slice(0,5);
 
 files.forEach(file=>{
-
 const reader=new FileReader();
-
 reader.onload=e=>{
-
 const img=document.createElement("img");
 img.src=e.target.result;
-
 preview.appendChild(img);
-
 };
-
 reader.readAsDataURL(file);
-
+});
 });
 
-});
+// SUBMIT
+document.getElementById("submitBtn").onclick = async () => {
 
-document.getElementById("submitBtn").onclick=async()=>{
-
-const btn=document.getElementById("submitBtn");
-
+const btn = document.getElementById("submitBtn");
 btn.classList.add("loading");
 
-const name=document.getElementById("guestName").value.trim();
-const message=document.getElementById("guestMessage").value.trim();
+try {
 
-const email=document.getElementById("guestEmail").value.trim().toLowerCase();
+const name = document.getElementById("guestName").value.trim();
+const message = document.getElementById("guestMessage").value.trim();
+const email = document.getElementById("guestEmail").value.trim().toLowerCase();
 
-const { data:guestRow } = await supabase
-.from("postwed_messages")
-.select("*")
-.eq("token",token)
-.eq("guest_email",email)
-.single();
-
-if(!guestRow){
-alert("Guest not found. Please use the same email that received the invitation.");
+if(!email){
+alert("Enter email");
+btn.classList.remove("loading");
 return;
 }
 
+// CHECK GUEST
+const { data: guestRow } = await supabase
+.from("postwed_messages")
+.select("*")
+.eq("token", token)
+.eq("guest_email", email)
+.single();
 
+if(!guestRow){
+alert("Guest not found");
+btn.classList.remove("loading");
+return;
+}
 
-const files=[...photoInput.files].slice(0,5);
-
-let urls=[];
+// UPLOAD PHOTOS
+const files = [...photoInput.files].slice(0,5);
+let urls = [];
 
 for(let i=0;i<files.length;i++){
 
-const file=files[i];
+const file = files[i];
+const fileName = `${token}_${Date.now()}_${i}_${file.name}`;
 
-const path=
-token+"/"+Date.now()+"_"+file.name;
-
-const {error}=await supabase
-.storage
+const { error } = await supabase.storage
 .from("postwed-photos")
-.upload(path,file);
+.upload(fileName, file);
 
-if(!error){
-
-const url=supabase
-.storage
-.from("postwed-photos")
-.getPublicUrl(path).data.publicUrl;
-
-urls.push(url);
-
+if(error){
+console.log(error);
+continue;
 }
 
+const { data } = supabase.storage
+.from("postwed-photos")
+.getPublicUrl(fileName);
+
+urls.push(data.publicUrl);
 }
 
+// SAVE
 await supabase
 .from("postwed_messages")
 .update({
-guest_name:name,
-message:message,
-photo1:urls[0]||null,
-photo2:urls[1]||null,
-photo3:urls[2]||null,
-photo4:urls[3]||null,
-photo5:urls[4]||null
+guest_name: name,
+message: message,
+photo1: urls[0] || null,
+photo2: urls[1] || null,
+photo3: urls[2] || null,
+photo4: urls[3] || null,
+photo5: urls[4] || null
 })
-.eq("token",token)
-.eq("guest_email",email);
+.eq("token", token)
+.eq("guest_email", email);
 
+// SUCCESS
 document.getElementById("formArea").style.display="none";
 document.getElementById("thanks").style.display="block";
+
+} catch(err){
+console.log(err);
+alert("Error");
+}
+
+btn.classList.remove("loading");
 
 };
 </script>
