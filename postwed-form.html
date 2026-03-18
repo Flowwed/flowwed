@@ -245,7 +245,7 @@ console.log("FILES:", urls);
 // ===== UPSERT (фикс бага)
 const { error: dbError } = await supabase
 .from("postwed_messages")
-.upsert({
+.insert({
 token: token,
 guest_email: email,
 guest_name: name,
