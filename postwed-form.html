@@ -401,7 +401,7 @@ const { error: dbError } = await supabase
 
 if (dbError) {
   console.log("DB ERROR:", dbError);
-  showToast("Something went wrong. Please try again.");
+  showToast("You have already submitted this form.");
 
   btn.classList.remove("loading");
   return;
@@ -412,14 +412,16 @@ if (dbError) {
 document.getElementById("formArea").style.display = "none";
 document.getElementById("thanks").style.display = "block";
 
+return;
+
 } catch(err){
-console.log("FATAL:", err);
-alert("Something went wrong");
+  console.log("FATAL:", err);
+  showToast("Something went wrong");
 }
 
 btn.classList.remove("loading");
-
 };
+
 </script>
 
 <div id="toast" style="
