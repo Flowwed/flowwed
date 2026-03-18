@@ -167,20 +167,30 @@ const token = new URLSearchParams(location.search).get("t");
 const photoInput = document.getElementById("photoUpload");
 const preview = document.getElementById("photoPreview");
 
+let allFiles = [];
+
 // ===== PREVIEW =====
 photoInput.addEventListener("change",()=>{
+
+const newFiles = [...photoInput.files];
+
+// добавляем новые к старым
+allFiles = [...allFiles, ...newFiles].slice(0,5);
+
+// обновляем preview
 preview.innerHTML="";
-[...photoInput.files].slice(0,5).forEach(file=>{
-const reader=new FileReader();
-reader.onload=e=>{
-const img=document.createElement("img");
-img.src=e.target.result;
-preview.appendChild(img);
-};
-reader.readAsDataURL(file);
-});
+
+allFiles.forEach(file=>{
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=document.createElement("img");
+    img.src=e.target.result;
+    preview.appendChild(img);
+  };
+  reader.readAsDataURL(file);
 });
 
+});
 // ===== SUBMIT =====
 document.getElementById("submitBtn").onclick = async () => {
 
