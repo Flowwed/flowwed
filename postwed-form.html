@@ -99,6 +99,74 @@ display:none;
 text-align:center;
 padding:40px;
 }
+
+#photoUpload {
+  width: 300px;
+}
+
+.upload-btn {
+  display: inline-block;
+  padding: 10px 18px;
+  background: #9c1818;
+  color: #fff; /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.upload-btn:hover {
+  background: #7a1212;
+  color: #fff; /* на всякий случай */
+}
+
+.upload-btn input {
+  display: none;
+}
+
+.upload-btn {
+  width: auto;
+}
+
+.upload-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 140px;
+  height: 110px;
+
+  margin: 0 auto;
+
+  border: 2px dashed #e0a8a8;
+  border-radius: 14px;
+
+  cursor: pointer;
+  transition: 0.2s;
+  background: #fff7f9;
+}
+
+.upload-tile:hover {
+  background: #ffecee;
+  border-color: #9c1818;
+}
+
+.upload-icon {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.upload-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a3a3a;
+}
+
+.upload-tile input {
+  display: none;
+}
+
 </style>
 </head>
 
@@ -129,10 +197,24 @@ We would love to see your photos and hear your favorite moments ❤️
 <textarea id="guestMessage"></textarea>
 </div>
 
+
 <div class="upload-box">
-<input type="file" id="photoUpload" multiple accept="image/*">
-<div style="font-size:12px;margin-top:6px">Max 5 photos</div>
-<div id="photoPreview" class="preview"></div>
+
+  <label class="upload-tile">
+    <div class="upload-icon">📷</div>
+    <div class="upload-text">Add Photos</div>
+    <input type="file" id="photoUpload" multiple accept="image/*">
+  </label>
+
+  <div class="upload-hint">
+    Max 5 photos
+  </div>
+
+  <div id="photoPreview" class="preview"></div>
+
+</div>
+
+
 </div>
 
 <button id="submitBtn">Submit Memory</button>
@@ -146,6 +228,209 @@ We would love to see your photos and hear your favorite moments ❤️
 
 </div>
 
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+
+);
+
+const token = new URLSearchParams(location.search).get("t");
+
+const photoInput = document.getElementById("photoUpload");
+const preview = document.getElementById("photoPreview");
+
+let allFiles = [];
+
+// ===== PREVIEW =====
+
+// функция отрисовки
+function renderPreview() {
+  preview.innerHTML = "";
+
+  allFiles.forEach((file, index) => {
+
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      const img = document.createElement("img");
+      img.src = e.target.result;
+
+      const removeBtn = document.createElement("div");
+      removeBtn.innerText = "✕";
+      removeBtn.style.position = "absolute";
+      removeBtn.style.top = "4px";
+      removeBtn.style.right = "6px";
+      removeBtn.style.background = "#9c1818";
+      removeBtn.style.color = "white";
+      removeBtn.style.width = "18px";
+      removeBtn.style.height = "18px";
+      removeBtn.style.borderRadius = "50%";
+      removeBtn.style.fontSize = "12px";
+      removeBtn.style.display = "flex";
+      removeBtn.style.alignItems = "center";
+      removeBtn.style.justifyContent = "center";
+      removeBtn.style.cursor = "pointer";
+
+      // ✅ УДАЛЕНИЕ РАБОТАЕТ НОРМАЛЬНО
+      removeBtn.onclick = () => {
+        allFiles.splice(index, 1);
+        renderPreview();
+      };
+
+      wrapper.appendChild(img);
+      wrapper.appendChild(removeBtn);
+      preview.appendChild(wrapper);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+// обработчик выбора файлов
+photoInput.addEventListener("change", () => {
+
+  const newFiles = [...photoInput.files];
+
+  // 🔥 ограничение 5
+  if (allFiles.length >= 5) {
+    showToast("You can upload up to 5 photos only.");
+    return;
+  }
+
+  allFiles = [...allFiles, ...newFiles].slice(0, 5);
+
+  renderPreview();
+
+});
+
+// ===== SUBMIT =====
+document.getElementById("submitBtn").onclick = async () => {
+
+const btn = document.getElementById("submitBtn");
+btn.classList.add("loading");
+
+try {
+
+const name = document.getElementById("guestName").value.trim();
+const message = document.getElementById("guestMessage").value.trim();
+const email = document.getElementById("guestEmail").value.trim().toLowerCase();
+
+if(!email){
+showToast("Please enter your email.");
+btn.classList.remove("loading");
+return;
+}
+
+// ✅ ПРОВЕРЯЕМ В guests (НЕ postwed)
+const { data: guest } = await supabase
+.from("guests")
+.select("*")
+.eq("token", token)
+.eq("email", email)
+.maybeSingle();
+
+if(!guest){
+showToast("Guest not found.");
+btn.classList.remove("loading");
+return;
+}
+
+// ===== UPLOAD =====
+const files = allFiles.slice(0,5);
+let urls = [];
+
+for (let i = 0; i < files.length; i++) {
+
+  const file = files[i];
+
+  const fileName = `${token}_${crypto.randomUUID()}_${file.name}`;
+
+  const { error } = await supabase.storage
+    .from("postwed-photos")
+    .upload(fileName, file);
+
+  if (error) {
+    console.log("UPLOAD ERROR:", error);
+    continue;
+  }
+
+  const { data } = supabase.storage
+    .from("postwed-photos")
+    .getPublicUrl(fileName);
+
+  urls.push(data.publicUrl);
+}
+
+console.log("FINAL URLS:", urls);
+
+
+const { data: existing, error: existingError } = await supabase
+  .from("postwed_messages")
+  .select("*")
+  .eq("token", token)
+  .eq("guest_email", email)
+  .maybeSingle();
+
+console.log("EXISTING:", existing);
+console.log("EXISTING ERROR:", existingError);
+
+if (existing) {
+  showToast("You have already submitted your memories.");
+  btn.classList.remove("loading");
+  return;
+}
+
+// ===== INSERT =====
+const { error: dbError } = await supabase
+  .from("postwed_messages")
+  .insert({
+    token: token,
+    guest_email: email,
+    guest_name: name,
+    message: message,
+    photo1: urls[0] || null,
+    photo2: urls[1] || null,
+    photo3: urls[2] || null,
+    photo4: urls[3] || null,
+    photo5: urls[4] || null
+  });
+
+if (dbError) {
+  console.log("DB ERROR:", dbError);
+
+  // 👉 если реально дубликат (Postgres unique violation)
+  if (dbError.code === "23505") {
+    showToast("You have already submitted your memories.");
+  } else {
+    showToast("Something went wrong. Please try again.");
+  }
+
+  btn.classList.remove("loading");
+  return;
+}
+
+// SUCCESS
+document.getElementById("formArea").style.display = "none";
+document.getElementById("thanks").style.display = "block";
+
+return;
+
+} catch(err){
+  console.log("FATAL:", err);
+  showToast("Something went wrong");
+}
+
+btn.classList.remove("loading");
+};
+
+</script>
+
 <div id="toast" style="
 position: fixed;
 bottom: 30px;
@@ -158,168 +443,22 @@ border-radius: 10px;
 font-weight: 600;
 display: none;
 z-index: 999;
+box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 "></div>
 
 <script>
-function showToast(text){
-const t=document.getElementById("toast");
-t.innerText=text;
-t.style.display="block";
-setTimeout(()=>t.style.display="none",3000);
-}
-</script>
 
-<script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js";
+function showToast(text) {
+  const toast = document.getElementById("toast");
+  toast.innerText = text;
+  toast.style.display = "block";
 
-const supabase = createClient(
-"https://octwwpatppbenqwkcqaw.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-);
-
-const token = new URLSearchParams(location.search).get("t");
-
-const photoInput = document.getElementById("photoUpload");
-const preview = document.getElementById("photoPreview");
-
-let allFiles=[];
-
-// preview
-photoInput.addEventListener("change",()=>{
-const newFiles=[...photoInput.files];
-
-if(allFiles.length>=5){
-showToast("Max 5 photos");
-photoInput.value="";
-return;
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 3000);
 }
 
-allFiles=[...allFiles,...newFiles].slice(0,5);
 
-preview.innerHTML="";
-
-allFiles.forEach(file=>{
-const reader=new FileReader();
-reader.onload=e=>{
-const img=document.createElement("img");
-img.src=e.target.result;
-preview.appendChild(img);
-};
-reader.readAsDataURL(file);
-});
-
-photoInput.value="";
-});
-
-// submit
-document.getElementById("submitBtn").onclick=async()=>{
-
-const btn=document.getElementById("submitBtn");
-btn.classList.add("loading");
-
-try{
-
-const name=document.getElementById("guestName").value.trim();
-const message=document.getElementById("guestMessage").value.trim();
-const email=document.getElementById("guestEmail").value.trim().toLowerCase();
-
-if(!email){
-showToast("Enter email");
-btn.classList.remove("loading");
-return;
-}
-
-// guest check
-const {data:guest}=await supabase
-.from("guests")
-.select("id")
-.eq("token",token)
-.eq("email",email)
-.maybeSingle();
-
-if(!guest){
-showToast("Guest not found");
-btn.classList.remove("loading");
-return;
-}
-
-// duplicate check
-const {data:existing}=await supabase
-.from("postwed_messages")
-.select("id")
-.eq("token",token)
-.eq("guest_email",email)
-.maybeSingle();
-
-if(existing){
-showToast("You already submitted");
-btn.classList.remove("loading");
-return;
-}
-
-// upload
-const files=allFiles.slice(0,5);
-let urls=[];
-
-for(let file of files){
-
-const fileName=token+"_"+crypto.randomUUID()+"_"+file.name;
-
-const {error}=await supabase.storage
-.from("postwed-photos")
-.upload(fileName,file);
-
-if(!error){
-
-const {data}=supabase.storage
-.from("postwed-photos")
-.getPublicUrl(fileName);
-
-urls.push(data.publicUrl);
-
-}
-
-}
-
-// insert
-const {error}=await supabase
-.from("postwed_messages")
-.insert({
-token:token,
-guest_email:email,
-guest_name:name,
-message:message,
-photo1:urls[0]||null,
-photo2:urls[1]||null,
-photo3:urls[2]||null,
-photo4:urls[3]||null,
-photo5:urls[4]||null
-});
-
-if(error){
-console.log(error);
-
-if(error.code==="23505"){
-showToast("You already submitted");
-}else{
-showToast("Error saving");
-}
-
-btn.classList.remove("loading");
-return;
-}
-
-// SUCCESS
-document.getElementById("formArea").style.display="none";
-document.getElementById("thanks").style.display="block";
-
-}catch(e){
-console.log(e);
-showToast("Something went wrong");
-}
-
-btn.classList.remove("loading");
-};
 </script>
 
 </body>
