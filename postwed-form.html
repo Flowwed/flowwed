@@ -205,7 +205,7 @@ const { data: guest } = await supabase
 .select("*")
 .eq("token", token)
 .eq("email", email)
-.single();
+.maybeSingle();
 
 if(!guest){
 alert("Guest not found");
@@ -222,7 +222,7 @@ for(let i=0;i<files.length;i++){
 const file = files[i];
 
 // 🔥 УНИКАЛЬНОЕ имя (фикс бага)
-const fileName = `${token}_${Date.now()}_${i}_${Math.random().toString(36).slice(2)}_${file.name}`;
+const fileName = `${token}_${crypto.randomUUID()}_${file.name}`;
 
 const { error } = await supabase.storage
 .from("postwed-photos")
