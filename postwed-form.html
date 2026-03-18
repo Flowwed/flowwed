@@ -417,8 +417,20 @@ if (dbError) {
 
 // SUCCESS
 document.getElementById("formArea").style.display = "none";
-document.getElementById("thanks").style.display = "block";
 
+const thanks = document.getElementById("thanks");
+thanks.style.display = "block";
+
+// 👇 прокрутка к thank you (важно)
+window.scrollTo({
+  top: thanks.offsetTop - 40,
+  behavior: "smooth"
+});
+
+// 👇 подстраховка — убираем кнопку полностью
+btn.style.display = "none";
+
+btn.classList.remove("loading");
 return;
 
 } catch(err){
