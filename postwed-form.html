@@ -275,6 +275,21 @@ const message=document.getElementById("guestMessage").value.trim();
 
 if(!email){showToast("Enter email");return;}
 
+// ===== CHECK GUEST =====
+const { data: guest } = await supabase
+  .from("guests")
+  .select("*")
+  .eq("token", token)
+  .eq("email", email)
+  .maybeSingle();
+
+if (!guest) {
+  showToast("You are not on the guest list.");
+  btn.classList.remove("loading");
+  return;
+}
+
+
 let urls=[];
 
 for(let file of allFiles){
