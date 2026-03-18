@@ -34,7 +34,7 @@ background:white;
 padding:26px;
 border-radius:18px;
 border:2px solid #b41111;
-box-shadow:0 16px 38px rgba(0,0,0,0.18), inset 0 0 6px rgba(255,255,255,0.6);
+box-shadow:0 16px 38px rgba(0,0,0,0.18);
 }
 
 .field{margin-bottom:18px;}
@@ -52,7 +52,6 @@ width:100%;
 padding:11px;
 border-radius:10px;
 border:1px solid rgba(160,0,40,0.25);
-font-size:14px;
 }
 
 textarea{height:120px;}
@@ -81,7 +80,7 @@ border-radius:10px;
 
 button{
 margin-top:16px;
-padding:12px 20px;
+padding:12px;
 border:none;
 border-radius:12px;
 background:#9c1818;
@@ -91,14 +90,14 @@ cursor:pointer;
 }
 
 button.loading{
-opacity:.7;
+opacity:.6;
 pointer-events:none;
 }
 
 #thanks{
 display:none;
 text-align:center;
-padding:40px 20px;
+padding:40px;
 }
 </style>
 </head>
@@ -134,15 +133,11 @@ We would love to see your photos and hear your favorite moments ❤️
 <label>Upload Photos (max 5)</label>
 
 <div class="upload-box">
-
 <input type="file" id="photoUpload" multiple accept="image/*">
-
 <div style="font-size:12px;color:#777;margin-top:6px">
-You can upload up to 5 photos
+Max 5 photos
 </div>
-
 <div id="photoPreview" class="preview"></div>
-
 </div>
 
 </div>
@@ -153,7 +148,7 @@ You can upload up to 5 photos
 
 <div id="thanks">
 <h2>Thank you ❤️</h2>
-<p>Your memories have been shared with the couple.</p>
+<p>Your memories have been shared.</p>
 </div>
 
 </div>
@@ -163,7 +158,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabase = createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
-  "YOUR_ANON_KEY"
+  "ТВОЙ_KEY"
 );
 
 const token = new URLSearchParams(location.search).get("t");
@@ -171,12 +166,10 @@ const token = new URLSearchParams(location.search).get("t");
 const photoInput = document.getElementById("photoUpload");
 const preview = document.getElementById("photoPreview");
 
-// PREVIEW
+// ===== PREVIEW =====
 photoInput.addEventListener("change",()=>{
 preview.innerHTML="";
-const files=[...photoInput.files].slice(0,5);
-
-files.forEach(file=>{
+[...photoInput.files].slice(0,5).forEach(file=>{
 const reader=new FileReader();
 reader.onload=e=>{
 const img=document.createElement("img");
@@ -187,7 +180,7 @@ reader.readAsDataURL(file);
 });
 });
 
-// SUBMIT
+// ===== SUBMIT =====
 document.getElementById("submitBtn").onclick = async () => {
 
 const btn = document.getElementById("submitBtn");
@@ -205,35 +198,37 @@ btn.classList.remove("loading");
 return;
 }
 
-// CHECK GUEST
-const { data: guestRow } = await supabase
-.from("postwed_messages")
+// ✅ ПРОВЕРЯЕМ В guests (НЕ postwed)
+const { data: guest } = await supabase
+.from("guests")
 .select("*")
 .eq("token", token)
-.eq("guest_email", email)
+.eq("email", email)
 .single();
 
-if(!guestRow){
+if(!guest){
 alert("Guest not found");
 btn.classList.remove("loading");
 return;
 }
 
-// UPLOAD PHOTOS
+// ===== UPLOAD =====
 const files = [...photoInput.files].slice(0,5);
 let urls = [];
 
 for(let i=0;i<files.length;i++){
 
 const file = files[i];
-const fileName = `${token}_${Date.now()}_${i}_${file.name}`;
+
+// 🔥 УНИКАЛЬНОЕ имя (фикс бага)
+const fileName = `${token}_${Date.now()}_${i}_${Math.random().toString(36).slice(2)}_${file.name}`;
 
 const { error } = await supabase.storage
 .from("postwed-photos")
 .upload(fileName, file);
 
 if(error){
-console.log(error);
+console.log("UPLOAD ERROR:", error);
 continue;
 }
 
@@ -244,10 +239,14 @@ const { data } = supabase.storage
 urls.push(data.publicUrl);
 }
 
-// SAVE
-await supabase
+console.log("FILES:", urls);
+
+// ===== UPSERT (фикс бага)
+const { error: dbError } = await supabase
 .from("postwed_messages")
-.update({
+.upsert({
+token: token,
+guest_email: email,
 guest_name: name,
 message: message,
 photo1: urls[0] || null,
@@ -255,17 +254,22 @@ photo2: urls[1] || null,
 photo3: urls[2] || null,
 photo4: urls[3] || null,
 photo5: urls[4] || null
-})
-.eq("token", token)
-.eq("guest_email", email);
+});
+
+if(dbError){
+console.log("DB ERROR:", dbError);
+alert("Error saving");
+btn.classList.remove("loading");
+return;
+}
 
 // SUCCESS
 document.getElementById("formArea").style.display="none";
 document.getElementById("thanks").style.display="block";
 
 } catch(err){
-console.log(err);
-alert("Error");
+console.log("FATAL:", err);
+alert("Something went wrong");
 }
 
 btn.classList.remove("loading");
