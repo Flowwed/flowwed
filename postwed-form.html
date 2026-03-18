@@ -144,14 +144,20 @@ border-color:#9c1818;
 </div>
 
 <div class="upload-box">
-<label class="upload-tile">
-<div class="upload-icon">📷</div>
-<div class="upload-text">Add Photos</div>
-<input type="file" id="photoUpload" multiple accept="image/*">
-</label>
-<div id="photoPreview" class="preview"></div>
-</div>
 
+  <label class="upload-tile">
+    <div class="upload-icon">📷</div>
+    <div class="upload-text">Add Photos</div>
+    <input type="file" id="photoUpload" multiple accept="image/*">
+  </label>
+
+  <div class="upload-hint">
+    Max 5 photos
+  </div>
+
+  <div id="photoPreview" class="preview"></div>
+
+</div>
 </div>
 
 <button id="submitBtn">Submit Memory</button>
