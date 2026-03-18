@@ -170,27 +170,63 @@ const preview = document.getElementById("photoPreview");
 let allFiles = [];
 
 // ===== PREVIEW =====
+
 photoInput.addEventListener("change",()=>{
 
 const newFiles = [...photoInput.files];
 
-// добавляем новые к старым
+if (allFiles.length >= 5) {
+  showToast("You can upload up to 5 photos only.");
+  return;
+}
+
 allFiles = [...allFiles, ...newFiles].slice(0,5);
 
-// обновляем preview
 preview.innerHTML="";
 
-allFiles.forEach(file=>{
-  const reader=new FileReader();
-  reader.onload=e=>{
-    const img=document.createElement("img");
-    img.src=e.target.result;
-    preview.appendChild(img);
+allFiles.forEach((file, index)=>{
+
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "relative";
+
+  const reader = new FileReader();
+
+  reader.onload = e => {
+    const img = document.createElement("img");
+    img.src = e.target.result;
+
+    const removeBtn = document.createElement("div");
+    removeBtn.innerText = "✕";
+    removeBtn.style.position = "absolute";
+    removeBtn.style.top = "4px";
+    removeBtn.style.right = "6px";
+    removeBtn.style.background = "#9c1818";
+    removeBtn.style.color = "white";
+    removeBtn.style.width = "18px";
+    removeBtn.style.height = "18px";
+    removeBtn.style.borderRadius = "50%";
+    removeBtn.style.fontSize = "12px";
+    removeBtn.style.display = "flex";
+    removeBtn.style.alignItems = "center";
+    removeBtn.style.justifyContent = "center";
+    removeBtn.style.cursor = "pointer";
+
+    // 🔥 УДАЛЕНИЕ
+    removeBtn.onclick = () => {
+      allFiles.splice(index, 1);
+      photoInput.dispatchEvent(new Event("change"));
+    };
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(removeBtn);
+    preview.appendChild(wrapper);
   };
+
   reader.readAsDataURL(file);
-});
 
 });
+});
+
 // ===== SUBMIT =====
 document.getElementById("submitBtn").onclick = async () => {
 
@@ -218,7 +254,7 @@ const { data: guest } = await supabase
 .maybeSingle();
 
 if(!guest){
-alert("Guest not found");
+showToast("You have already submitted your memories.");
 btn.classList.remove("loading");
 return;
 }
@@ -285,6 +321,35 @@ alert("Something went wrong");
 btn.classList.remove("loading");
 
 };
+</script>
+
+<div id="toast" style="
+position: fixed;
+bottom: 30px;
+left: 50%;
+transform: translateX(-50%);
+background: #9c1818;
+color: white;
+padding: 14px 20px;
+border-radius: 10px;
+font-weight: 600;
+display: none;
+z-index: 999;
+box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+"></div>
+
+<script>
+
+function showToast(text) {
+  const toast = document.getElementById("toast");
+  toast.innerText = text;
+  toast.style.display = "block";
+
+  setTimeout(() => {
+    toast.style.display = "none";
+  }, 3000);
+}
+
 </script>
 
 </body>
