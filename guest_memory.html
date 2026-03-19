@@ -13,8 +13,6 @@ max-width:900px;
 color:#6a2a2a;
 }
 
-/* ARCHIVE */
-
 .archive-box{
 background:rgba(255,255,255,0.9);
 border-radius:18px;
@@ -36,8 +34,6 @@ flex-direction:column;
 gap:12px;
 }
 
-/* folders */
-
 .archive-folder{
 border:1px solid #ffc9c9;
 border-radius:12px;
@@ -52,16 +48,10 @@ background:#ffe3e3;
 cursor:pointer;
 }
 
-.folder-header:hover{
-background:#ffd0d0;
-}
-
 .folder-content{
 padding:10px;
 display:none;
 }
-
-/* items */
 
 .archive-item{
 padding:10px;
@@ -73,83 +63,57 @@ width:70px;
 height:70px;
 object-fit:cover;
 border-radius:8px;
-margin-right:8px;
-margin-top:8px;
+margin:5px;
 cursor:pointer;
-transition:0.2s;
-}
-
-.archive-item img:hover{
-transform:scale(1.05);
 }
 
 .msg-box{
 background:#fff7f9;
-padding:10px 12px;
+padding:10px;
 border-radius:10px;
 margin-bottom:10px;
 border:1px solid #ffd6d6;
-line-height:1.4;
 }
 
 .archive-photos{
 display:flex;
 flex-wrap:wrap;
 gap:8px;
-margin-top:6px;
 }
-
-
 </style>
 </head>
 
 <body>
 
 <div class="archive-box">
-
-<div class="archive-header">
-📁 Guest Memories Archive
-</div>
-
-
-
-
+<div class="archive-header">📁 Guest Memories Archive</div>
 <div id="archiveList" class="archive-list"></div>
-
 </div>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const supabase = createClient(
-"https://octwwpatppbenqwkcqaw.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-);
+const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let selectedPhotoUrl = null;
 
 async function loadArchive(){
-
 const token = new URLSearchParams(location.search).get("t");
 
-const { data, error } = await supabase
+const { data } = await supabase
 .from("postwed_messages")
 .select("*")
 .eq("token", token)
 .order("created_at",{ascending:false});
 
-if(error){
-console.log(error);
-return;
-}
-
 const grouped = {};
 
 data.forEach(item=>{
 const key = item.guest_email || "unknown";
-
-if(!grouped[key]){
-grouped[key] = [];
-}
-
+if(!grouped[key]) grouped[key] = [];
 grouped[key].push(item);
 });
 
@@ -167,8 +131,6 @@ header.textContent="📁 " + email;
 
 const content=document.createElement("div");
 content.className="folder-content";
-content.style.display = "none";
-
 
 header.onclick=()=>{
 content.style.display =
@@ -177,190 +139,114 @@ content.style.display==="none" ? "block" : "none";
 
 grouped[email].forEach(item=>{
 
-const photos=[
-item.photo1,
-item.photo2,
-item.photo3,
-item.photo4,
-item.photo5
-].filter(Boolean);
+const photos=[item.photo1,item.photo2,item.photo3,item.photo4,item.photo5].filter(Boolean);
 
 const div=document.createElement("div");
 div.className="archive-item";
 
 div.innerHTML=`
 <div><b>${item.guest_email}</b></div>
-
 <div class="msg-box">${item.message||""}</div>
-
-
 <div class="archive-photos">
-
-${photos.map(p=>`
-  <img src="${p}" onclick="selectGuestPhoto('${p}')">
-`).join("")}
-
+${photos.map(p=>`<img src="${p}" onclick="selectGuestPhoto('${p}')">`).join("")}
 </div>
 `;
 
 content.appendChild(div);
-
 });
 
 folder.appendChild(header);
 folder.appendChild(content);
 list.appendChild(folder);
-
 });
-
 }
 
 loadArchive();
 
-window.openPhoto = function(src){
-const modal = document.getElementById("photoModal");
-const img = document.getElementById("photoModalImg");
-
-if(!modal || !img) return;
-
-img.src = src;
-modal.style.display = "flex";
-};
-window.addEventListener("DOMContentLoaded", () => {
-
-const modal = document.getElementById("photoModal");
-
-if(modal){
-modal.onclick = () => {
-modal.style.display = "none";
-};
-}
-
-});
-
-
-let selectedPhotoUrl = null;
-
 window.selectGuestPhoto = function(url){
 selectedPhotoUrl = url;
-
-const modal = document.getElementById("selectPhotoModal");
-modal.style.display = "flex";
+document.getElementById("selectPhotoModal").style.display = "flex";
 };
 
-window.addEventListener("DOMContentLoaded", () => {
-
-/* кнопка NO */
 document.getElementById("cancelAddPhoto").onclick = () => {
-  document.getElementById("selectPhotoModal").style.display = "none";
+document.getElementById("selectPhotoModal").style.display = "none";
 };
 
-/* кнопка YES */
 document.getElementById("confirmAddPhoto").onclick = async () => {
 
-  document.getElementById("selectPhotoModal").style.display = "none";
+document.getElementById("selectPhotoModal").style.display = "none";
 
-  if(!selectedPhotoUrl) return;
+if(!selectedPhotoUrl) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("t") || params.get("token");
+const token = new URLSearchParams(window.location.search).get("t");
 
+try{
 
-  console.log("SENDING TO DB:", {
-    token,
-    slot,
-    path: selectedPhotoUrl
-  });
-
-const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
-
-
-// чистим path
-const cleanPath = selectedPhotoUrl.split("/galleries/")[1];
-
-// получаем существующие слоты
-const resSlots = await fetch(
-  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&select=slot`,
-  {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY
-    }
-  }
+// 🔥 получить slug
+const slugRes = await fetch(
+`${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&select=path&limit=1`,
+{ headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY }}
 );
 
-const existing = await resSlots.json();
-const used = existing.map(x => x.slot);
+const slugData = await slugRes.json();
+if(!slugData.length){
+alert("No gallery yet");
+return;
+}
 
-// ищем свободный слот
-let i = 51;
-while (used.includes("img" + i)) i++;
+const slug = slugData[0].path.split("/")[0];
 
-const slot = "img" + i;
-
-// вставляем в БД
-await fetch(
-  `${SUPABASE_URL}/rest/v1/gallery_images`,
-  {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      edit_token: token,
-      slot: slot,
-      path: cleanPath,
-      page_key: "just_married"
-    })
-  }
+// 🔥 получить занятые слоты
+const slotsRes = await fetch(
+`${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&select=slot`,
+{ headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY }}
 );
 
-alert("DONE");
-  const text = await res.text();
-  console.log("STATUS:", res.status);
-  console.log("RESPONSE:", text);
+const used = (await slotsRes.json()).map(x=>x.slot);
 
-  if(res.ok){
-    alert("✅ Photo added to your gallery!");
-  } else {
-    alert("❌ ERROR: " + res.status);
-  }
+// 🔥 найти слот
+let i=51;
+while(used.includes("img"+i)) i++;
+const slot="img"+i;
 
+// 🔥 собрать path
+const fileName = selectedPhotoUrl.split("/").pop();
+const finalPath = `${slug}/${slot}/${fileName}`;
+
+// 🔥 вставка
+const res = await fetch(
+`${SUPABASE_URL}/rest/v1/gallery_images`,
+{
+method:"POST",
+headers:{
+apikey:SUPABASE_KEY,
+Authorization:"Bearer "+SUPABASE_KEY,
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+edit_token:token,
+slot,
+path:finalPath,
+page_key:"just_married"
+})
+}
+);
+
+if(res.ok){
+alert("✅ Added!");
+}else{
+alert("❌ Error");
+}
+
+}catch(e){
+console.error(e);
+alert("FAIL");
+}
 };
 
-/* крестик */
-document.getElementById("closeSelectModal").onclick = () => {
-  document.getElementById("selectPhotoModal").style.display = "none";
-};
-
-});
 </script>
 
-
-<div id="photoModal" style="
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.8);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
-">
-
-<img id="photoModalImg"
-onclick="event.stopPropagation()"
-style="
-max-width:90%;
-max-height:90%;
-border-radius:12px;
-box-shadow:0 10px 40px rgba(0,0,0,0.6);
-">
-</div>
-
-
+<!-- MODAL -->
 <div id="selectPhotoModal" style="
 position:fixed;
 inset:0;
@@ -368,56 +254,18 @@ background:rgba(0,0,0,0.6);
 display:none;
 align-items:center;
 justify-content:center;
-z-index:99999;
 ">
 
-<div style="
-  background:white;
-  position:relative;    
-  padding:24px;
-    border-radius:16px;
-    max-width:320px;
-    text-align:center;
-  ">
+<div style="background:white;padding:20px;border-radius:12px;">
+<div>Would you like to add this photo?</div>
 
-<div id="closeSelectModal" style="
-position:absolute;
-top:10px;
-right:14px;
-font-size:22px;
-font-weight:bold;
-cursor:pointer;
-">×</div>
-
-
-    <div style="font-size:16px; margin-bottom:18px;">
-      Would you like to add this photo to your post-wedding gallery?
-    </div>
-
-    <div style="display:flex; gap:12px; justify-content:center;">
-      <button id="confirmAddPhoto" style="
-        padding:10px 18px;
-        border:none;
-        border-radius:10px;
-        background:#c30c1e;
-        color:white;
-        font-weight:600;
-        cursor:pointer;
-      ">Yes</button>
-
-      <button id="cancelAddPhoto" style="
-        padding:10px 18px;
-        border:none;
-        border-radius:10px;
-        background:#ccc;
-        cursor:pointer;
-      ">No</button>
-    </div>
-
-  </div>
-
+<div style="margin-top:10px;">
+<button id="confirmAddPhoto">Yes</button>
+<button id="cancelAddPhoto">No</button>
 </div>
 
+</div>
+</div>
 
 </body>
 </html>
