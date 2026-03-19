@@ -1097,8 +1097,14 @@ async function loadSlugFromGallery(token) {
     console.log(rows);
 
     if (Array.isArray(rows) && rows.length > 0) {
-      window.slug = rows[0].slug;
 
+window.slug = rows[0]?.slug || null;
+
+if (!window.slug) {
+  alert("❌ CRITICAL: slug is NULL");
+  console.error("SLUG FAILED:", rows);
+  return;
+}
       slugDisplay.innerText = "Slug: " + slug;
 
       const musicUploadBtn = document.getElementById("musicUploadBtn");
