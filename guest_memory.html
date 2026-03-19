@@ -265,7 +265,6 @@ document.getElementById("confirmAddPhoto").onclick = async () => {
   const params = new URLSearchParams(window.location.search);
   const token = params.get("t") || params.get("token");
 
-  const slot = "img" + Date.now();
 
   console.log("SENDING TO DB:", {
     token,
