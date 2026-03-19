@@ -1150,6 +1150,8 @@ uploadBtn.innerHTML = "Uploading...";
 const file = fileInput.files[0];
 const slot = slotSelect.value;
 
+console.log("SLUG DEBUG:", slug);
+
 // 🔎 ПРОВЕРКА: есть ли уже фото в этом слоте
 const checkRes = await fetch(
   `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}&select=slot`,
