@@ -357,6 +357,24 @@ btn.classList.remove("loading");
 document.getElementById("closeOverlay").onclick=()=>{
 document.getElementById("successOverlay").style.display="none";
 };
+
+
+const messageInput = document.getElementById("guestMessage");
+
+messageInput.addEventListener("input", () => {
+
+  let words = messageInput.value.trim().split(/\s+/).filter(w => w.length > 0);
+
+  if (words.length > 30) {
+    showToast("Max 30 words please");
+
+    // обрезаем лишние слова
+    messageInput.value = words.slice(0, 30).join(" ");
+  }
+
+});
+
+
 </script>
 
 </body>
