@@ -308,32 +308,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const cancelBtn = document.getElementById("cancelAddPhoto");
   const confirmBtn = document.getElementById("confirmAddPhoto");
 
-  if (!modal) return;
+if (!modal) return;
 
-  const innerBox = modal.querySelector("div");
+const innerBox = modal.firstElementChild;
 
-  if (innerBox) {
-    innerBox.onclick = (e) => e.stopPropagation();
-  }
+if (innerBox) {
+  innerBox.onclick = (e) => e.stopPropagation();
+}
 
-  if (closeBtn) {
-    closeBtn.onclick = (e) => {
-      e.stopPropagation();
-      modal.style.display = "none";
-    };
-  }
-
-  if (cancelBtn) {
-    cancelBtn.onclick = (e) => {
-      e.stopPropagation();
-      modal.style.display = "none";
-    };
-  }
-
-  modal.onclick = () => {
+if (closeBtn) {
+  closeBtn.onclick = (e) => {
+    e.stopPropagation();
     modal.style.display = "none";
   };
+}
 
+if (cancelBtn) {
+  cancelBtn.onclick = (e) => {
+    e.stopPropagation();
+    modal.style.display = "none";
+  };
+}
+
+modal.onclick = () => {
+  modal.style.display = "none";
+};
   if(confirmBtn){
     confirmBtn.onclick = async () => {
 
