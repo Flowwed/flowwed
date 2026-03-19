@@ -218,6 +218,33 @@ const supabase = createClient(
 
 const token = new URLSearchParams(location.search).get("t");
 
+
+async function loadSiteData() {
+
+  if (!token) return;
+
+  const { data, error } = await supabase
+    .from("sites")
+    .select("couple_name")
+    .eq("token", token)
+    .maybeSingle();
+
+  console.log("SITE DATA:", data, error); // 🔥 для проверки
+
+  if (error) {
+    console.log("SITE LOAD ERROR:", error);
+    return;
+  }
+
+  if (data && data.couple_name) {
+    document.getElementById("pageTitle").innerText =
+      `${data.couple_name} Wedding Memories`;
+  }
+
+}
+
+loadSiteData();
+
 const photoInput = document.getElementById("photoUpload");
 const preview = document.getElementById("photoPreview");
 
@@ -397,29 +424,6 @@ messageInput.addEventListener("input", () => {
   } else {
     wordCount.style.color = "#a05a5a";
   }
-
-async function loadSiteData() {
-
-  const { data, error } = await supabase
-    .from("sites")
-    .select("couple_name")
-    .eq("token", token)
-    .maybeSingle();
-
-  if (error) {
-    console.log("SITE LOAD ERROR:", error);
-    return;
-  }
-
-  if (data && data.couple_name) {
-    document.getElementById("pageTitle").innerText =
-      `${data.couple_name} Wedding Memories`;
-  }
-
-}
-
-loadSiteData();
-
 
 
 });
