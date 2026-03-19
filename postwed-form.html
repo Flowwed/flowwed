@@ -52,9 +52,14 @@ width:100%;
 padding:11px;
 border-radius:10px;
 border:1px solid rgba(160,0,40,0.25);
+box-sizing: border-box; /* 🔥 ВАЖНО */
 }
 
-textarea{height:120px;}
+textarea{
+height:120px;
+font-size:16px;
+line-height:1.5;
+}
 
 .upload-box{
 border:2px dashed #e0a8a8;
@@ -122,7 +127,7 @@ border-color:#9c1818;
 
 <body>
 
-<h1>Share Your Wedding Memories</h1>
+<h1 id="pageTitle">Share Your Wedding Memories</h1>
 <div class="subtitle">We would love to see your photos and hear your favorite moments ❤️</div>
 
 <div class="form-box">
@@ -140,7 +145,17 @@ border-color:#9c1818;
 
 <div class="field">
 <label>Your Message</label>
-<textarea id="guestMessage"></textarea>
+<textarea id="guestMessage" placeholder="Max 30 words please"></textarea>
+</div>
+
+<div id="wordCount" style="
+font-size:14px;
+color:#a05a5a;
+margin-top:6px;
+text-align:right;
+font-weight:500;
+">
+30 words left
 </div>
 
 <div class="upload-box">
@@ -359,21 +374,55 @@ document.getElementById("successOverlay").style.display="none";
 
 
 const messageInput = document.getElementById("guestMessage");
+const wordCount = document.getElementById("wordCount");
 
 messageInput.addEventListener("input", () => {
 
   let words = messageInput.value.trim().split(/\s+/).filter(w => w.length > 0);
 
+  // ограничение 30 слов
   if (words.length > 30) {
     showToast("Max 30 words please");
-
-    // обрезаем лишние слова
-    messageInput.value = words.slice(0, 30).join(" ");
+    words = words.slice(0, 30);
+    messageInput.value = words.join(" ");
   }
 
+  const remaining = 30 - words.length;
+
+  wordCount.innerText = `${remaining} words left`;
+
+  // цвет при приближении к лимиту
+  if (remaining <= 5) {
+    wordCount.style.color = "#9c1818";
+  } else {
+    wordCount.style.color = "#a05a5a";
+  }
+
+async function loadSiteData() {
+
+  const { data, error } = await supabase
+    .from("sites")
+    .select("couple_name")
+    .eq("token", token)
+    .maybeSingle();
+
+  if (error) {
+    console.log("SITE LOAD ERROR:", error);
+    return;
+  }
+
+  if (data && data.couple_name) {
+    document.getElementById("pageTitle").innerText =
+      `${data.couple_name} Wedding Memories`;
+  }
+
+}
+
+loadSiteData();
+
+
+
 });
-
-
 </script>
 
 </body>
