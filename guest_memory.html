@@ -118,6 +118,85 @@ margin-top:6px;
 
 </div>
 
+
+<div id="photoModal" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.8);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+
+<img id="photoModalImg"
+onclick="event.stopPropagation()"
+style="
+max-width:90%;
+max-height:90%;
+border-radius:12px;
+box-shadow:0 10px 40px rgba(0,0,0,0.6);
+">
+</div>
+
+
+<div id="selectPhotoModal" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:99999;
+">
+
+<div style="
+  background:white;
+  position:relative;    
+  padding:24px;
+    border-radius:16px;
+    max-width:320px;
+    text-align:center;
+  ">
+
+<div id="closeSelectModal" style="
+position:absolute;
+top:10px;
+right:14px;
+font-size:22px;
+font-weight:bold;
+cursor:pointer;
+">×</div>
+
+
+    <div style="font-size:16px; margin-bottom:18px;">
+      Would you like to add this photo to your post-wedding gallery?
+    </div>
+
+    <div style="display:flex; gap:12px; justify-content:center;">
+      <button id="confirmAddPhoto" style="
+        padding:10px 18px;
+        border:none;
+        border-radius:10px;
+        background:#c30c1e;
+        color:white;
+        font-weight:600;
+        cursor:pointer;
+      ">Yes</button>
+
+      <button id="cancelAddPhoto" style="
+        padding:10px 18px;
+        border:none;
+        border-radius:10px;
+        background:#ccc;
+        cursor:pointer;
+      ">No</button>
+    </div>
+
+  </div>
+
+</div>
+
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -332,84 +411,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 </script>
 
-
-<div id="photoModal" style="
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.8);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
-">
-
-<img id="photoModalImg"
-onclick="event.stopPropagation()"
-style="
-max-width:90%;
-max-height:90%;
-border-radius:12px;
-box-shadow:0 10px 40px rgba(0,0,0,0.6);
-">
-</div>
-
-
-<div id="selectPhotoModal" style="
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.6);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:99999;
-">
-
-<div style="
-  background:white;
-  position:relative;    
-  padding:24px;
-    border-radius:16px;
-    max-width:320px;
-    text-align:center;
-  ">
-
-<div id="closeSelectModal" style="
-position:absolute;
-top:10px;
-right:14px;
-font-size:22px;
-font-weight:bold;
-cursor:pointer;
-">×</div>
-
-
-    <div style="font-size:16px; margin-bottom:18px;">
-      Would you like to add this photo to your post-wedding gallery?
-    </div>
-
-    <div style="display:flex; gap:12px; justify-content:center;">
-      <button id="confirmAddPhoto" style="
-        padding:10px 18px;
-        border:none;
-        border-radius:10px;
-        background:#c30c1e;
-        color:white;
-        font-weight:600;
-        cursor:pointer;
-      ">Yes</button>
-
-      <button id="cancelAddPhoto" style="
-        padding:10px 18px;
-        border:none;
-        border-radius:10px;
-        background:#ccc;
-        cursor:pointer;
-      ">No</button>
-    </div>
-
-  </div>
-
-</div>
 
 
 </body>
