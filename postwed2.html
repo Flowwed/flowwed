@@ -833,6 +833,77 @@
   top: 20px;
 }
 
+
+/* ===== ARCHIVE ===== */
+
+.archive-box{
+background:rgba(255,255,255,0.9);
+border-radius:18px;
+padding:18px;
+border:3px solid #b41111;
+box-shadow:0 18px 40px rgba(0,0,0,0.18);
+max-height:520px;
+overflow-y:auto;
+}
+
+.archive-header{
+font-weight:800;
+color:#9c1818;
+margin-bottom:14px;
+font-size:18px;
+}
+
+.archive-list{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.archive-folder{
+border:1px solid #ffc9c9;
+border-radius:12px;
+overflow:hidden;
+background:#fff;
+}
+
+.folder-header{
+padding:10px;
+font-weight:700;
+background:#ffe3e3;
+cursor:pointer;
+}
+
+.folder-content{
+padding:10px;
+display:none;
+}
+
+.archive-item{
+padding:8px;
+border-bottom:1px solid #eee;
+}
+
+.msg-box{
+background:#fff7f9;
+padding:8px;
+border-radius:8px;
+margin-bottom:6px;
+}
+
+.archive-photos{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+}
+
+.archive-photos img{
+width:70px;
+height:70px;
+object-fit:cover;
+border-radius:8px;
+cursor:pointer;
+}
+
 </style>
 
 </head>
@@ -1119,6 +1190,8 @@ async function loadGuests() {
   render();
 }
 loadGuests();
+
+loadArchive();
 
 // ======================================================
 // RENDER TABLE
@@ -1683,6 +1756,104 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
     updateColumnVisibility(); // ← добавлено
   });
 });
+
+
+async function loadArchive(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data, error } = await supabase
+.from("postwed_messages")
+.select("*")
+.eq("token", token)
+.order("created_at",{ascending:false});
+
+if(error){
+console.log(error);
+return;
+}
+
+const list = document.getElementById("archiveList");
+if(!list) return;
+
+list.innerHTML = "";
+
+const grouped = {};
+
+data.forEach(item=>{
+const key = item.guest_email || "unknown";
+if(!grouped[key]) grouped[key]=[];
+grouped[key].push(item);
+});
+
+Object.keys(grouped).forEach(email=>{
+
+const folder = document.createElement("div");
+folder.className="archive-folder";
+
+const header = document.createElement("div");
+header.className="folder-header";
+header.textContent="📁 " + email;
+
+const content = document.createElement("div");
+content.className="folder-content";
+content.style.display="none";
+
+header.onclick = ()=>{
+content.style.display =
+content.style.display==="none" ? "block" : "none";
+};
+
+grouped[email].forEach(item=>{
+
+const photos=[
+item.photo1,
+item.photo2,
+item.photo3,
+item.photo4,
+item.photo5
+].filter(Boolean);
+
+const div=document.createElement("div");
+div.className="archive-item";
+
+div.innerHTML=`
+<div><b>${item.guest_email}</b></div>
+
+<div class="msg-box">${item.message||""}</div>
+
+<div class="archive-photos">
+${photos.map(p=>`
+<img src="${p}" onclick="openPhoto('${p}')">
+`).join("")}
+</div>
+`;
+
+content.appendChild(div);
+
+});
+
+folder.appendChild(header);
+folder.appendChild(content);
+list.appendChild(folder);
+
+});
+
+}
+
+window.openPhoto = function(src){
+const modal = document.getElementById("photoModal");
+const img = document.getElementById("photoModalImg");
+
+if(!modal || !img) return;
+
+img.src = src;
+modal.style.display = "flex";
+};
+
+document.getElementById("photoModal").onclick = ()=>{
+document.getElementById("photoModal").style.display="none";
+};
 
 </script>
 
@@ -2428,6 +2599,22 @@ reader.readAsDataURL(file);
 });
 
 </script>
+
+<div id="photoModal" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.8);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+
+<img id="photoModalImg"
+onclick="event.stopPropagation()"
+style="max-width:90%;max-height:90%;border-radius:12px;">
+</div>
+
 
 </body>
 </html>
