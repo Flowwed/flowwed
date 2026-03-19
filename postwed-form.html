@@ -374,12 +374,18 @@ const { error: insertError } = await supabase
   });
 
 if (insertError) {
+
   console.log(insertError);
-  showToast("Error saving");
+
+  if (insertError.code === "23505") {
+    showToast("You have already submitted your memories ❤️");
+  } else {
+    showToast("Error saving");
+  }
+
   btn.classList.remove("loading");
   return;
 }
-
 // SUCCESS
 document.getElementById("successOverlay").style.display="flex";
 
