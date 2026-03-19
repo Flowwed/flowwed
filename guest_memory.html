@@ -111,6 +111,9 @@ margin-top:6px;
 📁 Guest Memories Archive
 </div>
 
+
+
+
 <div id="archiveList" class="archive-list"></div>
 
 </div>
@@ -194,7 +197,7 @@ div.innerHTML=`
 <div class="archive-photos">
 
 ${photos.map(p=>`
-  <img src="${p}" onclick="openPhoto('${p}')">
+  <img src="${p}" onclick="selectGuestPhoto('${p}')">
 `).join("")}
 
 </div>
@@ -235,6 +238,60 @@ modal.style.display = "none";
 
 });
 
+
+let selectedPhotoUrl = null;
+
+window.selectGuestPhoto = function(url){
+selectedPhotoUrl = url;
+
+const modal = document.getElementById("selectPhotoModal");
+modal.style.display = "flex";
+};
+
+/* кнопка NO */
+document.getElementById("cancelAddPhoto").onclick = () => {
+document.getElementById("selectPhotoModal").style.display = "none";
+};
+
+/* пока YES ничего не делает */
+
+document.getElementById("confirmAddPhoto").onclick = async () => {
+
+document.getElementById("selectPhotoModal").style.display = "none";
+
+if(!selectedPhotoUrl) return;
+
+/* берём token */
+const params = new URLSearchParams(window.location.search);
+const token = params.get("t") || params.get("token");
+
+/* берём первый свободный слот */
+const slot = "img" + Date.now(); // временно уникальный слот
+
+/* записываем в gallery_images */
+await fetch(
+  `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
+  {
+    method: "POST",
+    headers: {
+      apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+
+      Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      edit_token: token,
+      slot: slot,
+      path: selectedPhotoUrl,
+      page_key: "just_married"
+    })
+  }
+);
+
+alert("Photo added to your gallery!");
+
+};
+
 </script>
 
 
@@ -257,6 +314,54 @@ border-radius:12px;
 box-shadow:0 10px 40px rgba(0,0,0,0.6);
 ">
 </div>
+
+
+<div id="selectPhotoModal" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:99999;
+">
+
+  <div style="
+    background:white;
+    padding:24px;
+    border-radius:16px;
+    max-width:320px;
+    text-align:center;
+  ">
+
+    <div style="font-size:16px; margin-bottom:18px;">
+      Would you like to add this photo to your post-wedding gallery?
+    </div>
+
+    <div style="display:flex; gap:12px; justify-content:center;">
+      <button id="confirmAddPhoto" style="
+        padding:10px 18px;
+        border:none;
+        border-radius:10px;
+        background:#c30c1e;
+        color:white;
+        font-weight:600;
+        cursor:pointer;
+      ">Yes</button>
+
+      <button id="cancelAddPhoto" style="
+        padding:10px 18px;
+        border:none;
+        border-radius:10px;
+        background:#ccc;
+        cursor:pointer;
+      ">No</button>
+    </div>
+
+  </div>
+
+</div>
+
 
 </body>
 </html>
