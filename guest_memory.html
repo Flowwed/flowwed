@@ -248,50 +248,68 @@ const modal = document.getElementById("selectPhotoModal");
 modal.style.display = "flex";
 };
 
+window.addEventListener("DOMContentLoaded", () => {
+
 /* кнопка NO */
 document.getElementById("cancelAddPhoto").onclick = () => {
-document.getElementById("selectPhotoModal").style.display = "none";
+  document.getElementById("selectPhotoModal").style.display = "none";
 };
 
-/* пока YES ничего не делает */
-
+/* кнопка YES */
 document.getElementById("confirmAddPhoto").onclick = async () => {
 
-document.getElementById("selectPhotoModal").style.display = "none";
+  document.getElementById("selectPhotoModal").style.display = "none";
 
-if(!selectedPhotoUrl) return;
+  if(!selectedPhotoUrl) return;
 
-/* берём token */
-const params = new URLSearchParams(window.location.search);
-const token = params.get("t") || params.get("token");
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
 
-/* берём первый свободный слот */
-const slot = "img" + Date.now(); // временно уникальный слот
+  const slot = "img" + Date.now();
 
-/* записываем в gallery_images */
-await fetch(
-  `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
-  {
-    method: "POST",
-    headers: {
-      apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+  console.log("SENDING TO DB:", {
+    token,
+    slot,
+    path: selectedPhotoUrl
+  });
 
-      Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      edit_token: token,
-      slot: slot,
-      path: selectedPhotoUrl,
-      page_key: "just_married"
-    })
+  const res = await fetch(
+    `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
+    {
+      method: "POST",
+      headers: {
+        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24и,эЯЭЖ",  // ← ВАЖНО: СКОПИРУЙ СВОЙ НОРМАЛЬНЫЙ КЛЮЧ
+        "Content-Type": "application/json",
+        Prefer: "return=representation"
+      },
+      body: JSON.stringify({
+        edit_token: token,
+        slot: slot,
+        path: selectedPhotoUrl,
+        page_key: "just_married"
+      })
+    }
+  );
+
+  const text = await res.text();
+  console.log("STATUS:", res.status);
+  console.log("RESPONSE:", text);
+
+  if(res.ok){
+    alert("✅ Photo added to your gallery!");
+  } else {
+    alert("❌ ERROR: " + res.status);
   }
-);
-
-alert("Photo added to your gallery!");
 
 };
 
+/* крестик */
+document.getElementById("closeSelectModal").onclick = () => {
+  document.getElementById("selectPhotoModal").style.display = "none";
+};
+
+});
 </script>
 
 
@@ -326,13 +344,24 @@ justify-content:center;
 z-index:99999;
 ">
 
-  <div style="
-    background:white;
-    padding:24px;
+<div style="
+  background:white;
+  position:relative;    
+  padding:24px;
     border-radius:16px;
     max-width:320px;
     text-align:center;
   ">
+
+<div id="closeSelectModal" style="
+position:absolute;
+top:10px;
+right:14px;
+font-size:22px;
+font-weight:bold;
+cursor:pointer;
+">×</div>
+
 
     <div style="font-size:16px; margin-bottom:18px;">
       Would you like to add this photo to your post-wedding gallery?
