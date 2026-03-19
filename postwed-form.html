@@ -218,6 +218,8 @@ const supabase = createClient(
 
 const token = new URLSearchParams(location.search).get("t");
 
+console.log("TOKEN:", token);
+
 
 async function loadSiteData() {
 
