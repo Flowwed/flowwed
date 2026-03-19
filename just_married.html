@@ -1398,23 +1398,25 @@ captions.forEach(row => {
   label.className = "photo-label";
   label.innerText = `Photo ${photoNumber}`;
 
-  const img = document.createElement("img");
-
+const img = document.createElement("img");
 
 if (!path) return;
 
 if (path.startsWith("http")) {
   img.src = path;
-} else {
+} 
+else if (path.startsWith("galleries/")) {
+  img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/${path}`;
+} 
+else {
   img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
 }
 
-  img.onerror = () => {
-    setTimeout(() => {
-      img.src = img.src.split("?")[0] + "?v=" + Date.now();
-    }, 500);
-  };
-
+img.onerror = () => {
+  setTimeout(() => {
+    img.src = img.src.split("?")[0] + "?v=" + Date.now();
+  }, 500);
+};
   const text = document.createElement("div");
   text.className = "caption-text";
   text.innerText = row.caption || "—";
