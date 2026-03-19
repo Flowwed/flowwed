@@ -1400,9 +1400,9 @@ captions.forEach(row => {
 
   const img = document.createElement("img");
 
-img.src = path.startsWith("http")
+img.src = path.includes("http")
   ? path
-  : `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
+  : `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
 
   img.onerror = () => {
     setTimeout(() => {
