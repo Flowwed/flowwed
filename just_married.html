@@ -1101,11 +1101,13 @@ console.log("ROWS DEBUG:", rows);
 
 window.slug = rows[0]?.slug || null;
 
-if (!window.slug) {
-  alert("❌ CRITICAL: slug is NULL");
-  console.error("SLUG FAILED:", rows);
-  return;
+if (!window.slug && rows.length > 0) {
+  // fallback — берём slug из token
+  window.slug = token;
+  console.warn("⚠️ SLUG fallback to token:", window.slug);
 }
+
+
       slugDisplay.innerText = "Slug: " + slug;
 
       const musicUploadBtn = document.getElementById("musicUploadBtn");
