@@ -1399,8 +1399,10 @@ captions.forEach(row => {
   label.innerText = `Photo ${photoNumber}`;
 
   const img = document.createElement("img");
-  img.src =
-    `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
+
+img.src = path.startsWith("http")
+  ? path
+  : `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
 
   img.onerror = () => {
     setTimeout(() => {
