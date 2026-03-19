@@ -1340,10 +1340,39 @@ gallery.innerHTML = "";
 
 const items = [];
 
-captions.forEach(row => {
-  const path = slotToPath[row.slot];
+images.forEach(imgRow => {
+
+  const slot = imgRow.slot;
+  const path = imgRow.path;
+
   if (!path) return;
 
+  const captionRow = captions.find(c => c.slot === slot);
+
+  const item = document.createElement("div");
+  item.className = "caption-item";
+
+  const photoNumber = Number(slot.replace("img", "")) - 50;
+  item.dataset.num = photoNumber;
+
+  const label = document.createElement("div");
+  label.className = "photo-label";
+  label.innerText = `Photo ${photoNumber}`;
+
+  const img = document.createElement("img");
+  img.src =
+    `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
+
+  const text = document.createElement("div");
+  text.className = "caption-text";
+  text.innerText = captionRow?.caption || "—";
+
+  item.appendChild(label);
+  item.appendChild(img);
+  item.appendChild(text);
+
+  items.push(item);
+});
   const item = document.createElement("div");
   item.className = "caption-item";
 
