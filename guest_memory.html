@@ -248,12 +248,17 @@ const modal = document.getElementById("selectPhotoModal");
 modal.style.display = "flex";
 };
 
-window.addEventListener("DOMContentLoaded", () => {
+setTimeout(() => {
 
-/* кнопка NO */
-document.getElementById("cancelAddPhoto").onclick = () => {
-  document.getElementById("selectPhotoModal").style.display = "none";
-};
+const closeBtn = document.getElementById("closeSelectModal");
+
+if(closeBtn){
+  closeBtn.onclick = () => {
+    document.getElementById("selectPhotoModal").style.display = "none";
+  };
+}
+
+}, 300);
 
 /* кнопка YES */
 document.getElementById("confirmAddPhoto").onclick = async () => {
