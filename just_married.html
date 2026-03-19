@@ -1094,6 +1094,7 @@ async function loadSlugFromGallery(token) {
     );
 
     const rows = await res.json();
+console.log("ROWS DEBUG:", rows);
     console.log(rows);
 
     if (Array.isArray(rows) && rows.length > 0) {
