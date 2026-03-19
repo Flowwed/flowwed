@@ -887,6 +887,19 @@ input[type=file] {
     <input type="file" id="fileInput" accept="image/*" />
     <button id="uploadBtn">Upload Photo to Your Page</button>
 
+<button id="guestBtn" style="
+  margin-top:10px;
+  height:42px;
+  border-radius:14px;
+  font-size:17px;
+  font-weight:600;
+  background:#6f685e;
+  color:white;
+  cursor:pointer;
+">
+  📁 Guest Memories
+</button>
+
     <div class="progress-container" id="progressContainer">
       <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -1418,6 +1431,23 @@ const musicInput = document.getElementById("musicInput");
 const musicPreview = document.getElementById("musicPreview");
 
 }
+
+document.getElementById("guestBtn").onclick = () => {
+
+const params = new URLSearchParams(window.location.search);
+const token = params.get("t") || params.get("token");
+
+if(!token){
+  alert("Missing token");
+  return;
+}
+
+/* открываем страницу guest archive */
+window.open(`/guest_memory.html?t=${token}`, "_blank");
+
+};
+
+
 </script>
 
 
