@@ -202,6 +202,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
+
 const supabase = createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   API_KEY
@@ -212,6 +213,11 @@ let selectedPhotoUrl = null;
 /* LOAD ARCHIVE */
 async function loadArchive(){
   const token = new URLSearchParams(location.search).get("t");
+
+  if (!token) {
+    console.log("NO TOKEN");
+    return;
+  }
 
   const { data, error } = await supabase
     .from("postwed_messages")
@@ -245,9 +251,12 @@ async function loadArchive(){
     const content=document.createElement("div");
     content.className="folder-content";
 
-    header.onclick=()=>{
-      content.style.display =
-      content.style.display==="none" ? "block" : "none";
+    header.onclick = () => {
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
     };
 
     grouped[email].forEach(item=>{
@@ -281,60 +290,50 @@ async function loadArchive(){
   });
 }
 
-loadArchive();
-
 /* GLOBAL CLICK (фото) */
 document.addEventListener("click",(e)=>{
-  if(e.target.tagName==="IMG" && e.target.dataset.url){
+  if (e.target.matches(".archive-item img")) {
     selectedPhotoUrl = e.target.dataset.url;
     document.getElementById("selectPhotoModal").style.display="flex";
   }
 });
 
-/* MODALS */
-window.onload = () => {
+/* INIT AFTER DOM */
+document.addEventListener("DOMContentLoaded", () => {
 
-  // close photo modal
-  const photoModal = document.getElementById("photoModal");
-  if(photoModal){
-    photoModal.onclick = () => photoModal.style.display="none";
-  }
+  loadArchive();
 
-  // select modal
   const modal = document.getElementById("selectPhotoModal");
   const closeBtn = document.getElementById("closeSelectModal");
   const cancelBtn = document.getElementById("cancelAddPhoto");
   const confirmBtn = document.getElementById("confirmAddPhoto");
 
-const innerBox = modal.querySelector("div");
+  if (!modal) return;
 
-// клики внутри окна не закрывают модалку
-innerBox.onclick = (e) => {
-  e.stopPropagation();
-};
+  const innerBox = modal.querySelector("div");
 
-// крестик
-if (closeBtn) {
-  closeBtn.onclick = (e) => {
-    e.stopPropagation();
-    modal.style.display = "none";
-  };
-}
+  if (innerBox) {
+    innerBox.onclick = (e) => e.stopPropagation();
+  }
 
-// кнопка No
-if (cancelBtn) {
-  cancelBtn.onclick = (e) => {
-    e.stopPropagation();
-    modal.style.display = "none";
-  };
-}
+  if (closeBtn) {
+    closeBtn.onclick = (e) => {
+      e.stopPropagation();
+      modal.style.display = "none";
+    };
+  }
 
-// клик по фону закрывает
-if (modal) {
+  if (cancelBtn) {
+    cancelBtn.onclick = (e) => {
+      e.stopPropagation();
+      modal.style.display = "none";
+    };
+  }
+
   modal.onclick = () => {
     modal.style.display = "none";
   };
-}
+
   if(confirmBtn){
     confirmBtn.onclick = async () => {
 
@@ -344,7 +343,7 @@ if (modal) {
 
       const token = new URLSearchParams(window.location.search).get("t");
 
-      await fetch(
+      const res = await fetch(
         `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
         {
           method:"POST",
@@ -362,13 +361,17 @@ if (modal) {
         }
       );
 
+      if (!res.ok) {
+        alert("ERROR saving photo");
+        return;
+      }
+
       alert("done");
     };
   }
 
-};
+});
 </script>
-
 
 </body>
 </html>
