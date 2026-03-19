@@ -13,6 +13,8 @@ max-width:900px;
 color:#6a2a2a;
 }
 
+/* ARCHIVE */
+
 .archive-box{
 background:rgba(255,255,255,0.9);
 border-radius:18px;
@@ -34,6 +36,8 @@ flex-direction:column;
 gap:12px;
 }
 
+/* folders */
+
 .archive-folder{
 border:1px solid #ffc9c9;
 border-radius:12px;
@@ -48,10 +52,16 @@ background:#ffe3e3;
 cursor:pointer;
 }
 
+.folder-header:hover{
+background:#ffd0d0;
+}
+
 .folder-content{
 padding:10px;
 display:none;
 }
+
+/* items */
 
 .archive-item{
 padding:10px;
@@ -63,57 +73,80 @@ width:70px;
 height:70px;
 object-fit:cover;
 border-radius:8px;
-margin:5px;
+margin-right:8px;
+margin-top:8px;
 cursor:pointer;
+transition:0.2s;
+}
+
+.archive-item img:hover{
+transform:scale(1.05);
 }
 
 .msg-box{
 background:#fff7f9;
-padding:10px;
+padding:10px 12px;
 border-radius:10px;
 margin-bottom:10px;
 border:1px solid #ffd6d6;
+line-height:1.4;
 }
 
 .archive-photos{
 display:flex;
 flex-wrap:wrap;
 gap:8px;
+margin-top:6px;
 }
+
+
 </style>
 </head>
 
 <body>
 
 <div class="archive-box">
-<div class="archive-header">📁 Guest Memories Archive</div>
+
+<div class="archive-header">
+📁 Guest Memories Archive
+</div>
+
 <div id="archiveList" class="archive-list"></div>
+
 </div>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let selectedPhotoUrl = null;
+const supabase = createClient(
+"https://octwwpatppbenqwkcqaw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
 
 async function loadArchive(){
+
 const token = new URLSearchParams(location.search).get("t");
 
-const { data } = await supabase
+const { data, error } = await supabase
 .from("postwed_messages")
 .select("*")
 .eq("token", token)
 .order("created_at",{ascending:false});
 
+if(error){
+console.log(error);
+return;
+}
+
 const grouped = {};
 
 data.forEach(item=>{
 const key = item.guest_email || "unknown";
-if(!grouped[key]) grouped[key] = [];
+
+if(!grouped[key]){
+grouped[key] = [];
+}
+
 grouped[key].push(item);
 });
 
@@ -131,6 +164,8 @@ header.textContent="📁 " + email;
 
 const content=document.createElement("div");
 content.className="folder-content";
+content.style.display = "none";
+
 
 header.onclick=()=>{
 content.style.display =
@@ -139,154 +174,88 @@ content.style.display==="none" ? "block" : "none";
 
 grouped[email].forEach(item=>{
 
-const photos=[item.photo1,item.photo2,item.photo3,item.photo4,item.photo5].filter(Boolean);
+const photos=[
+item.photo1,
+item.photo2,
+item.photo3,
+item.photo4,
+item.photo5
+].filter(Boolean);
 
 const div=document.createElement("div");
 div.className="archive-item";
 
 div.innerHTML=`
 <div><b>${item.guest_email}</b></div>
+
 <div class="msg-box">${item.message||""}</div>
+
+
 <div class="archive-photos">
-${photos.map(p=>`<img src="${p}" onclick="selectGuestPhoto('${p}')">`).join("")}
+
+${photos.map(p=>`
+  <img src="${p}" onclick="openPhoto('${p}')">
+`).join("")}
+
 </div>
 `;
 
 content.appendChild(div);
+
 });
 
 folder.appendChild(header);
 folder.appendChild(content);
 list.appendChild(folder);
+
 });
+
 }
 
 loadArchive();
 
-window.selectGuestPhoto = function(url){
-selectedPhotoUrl = url;
-document.getElementById("selectPhotoModal").style.display = "flex";
+window.openPhoto = function(src){
+const modal = document.getElementById("photoModal");
+const img = document.getElementById("photoModalImg");
+
+if(!modal || !img) return;
+
+img.src = src;
+modal.style.display = "flex";
 };
+window.addEventListener("DOMContentLoaded", () => {
 
-document.getElementById("cancelAddPhoto").onclick = () => {
-document.getElementById("selectPhotoModal").style.display = "none";
+const modal = document.getElementById("photoModal");
+
+if(modal){
+modal.onclick = () => {
+modal.style.display = "none";
 };
-
-document.getElementById("confirmAddPhoto").onclick = async () => {
-
-document.getElementById("selectPhotoModal").style.display = "none";
-
-if(!selectedPhotoUrl) return;
-
-const token = new URLSearchParams(window.location.search).get("t");
-
-try{
-
-// 🔥 получить slug
-
-const slugRes = await fetch(
-  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&path=not.is.null&select=path&limit=1`,
-
-{ headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY }}
-);
-
-const slugData = await slugRes.json();
-if(!slugData.length){
-alert("No gallery yet");
-return;
 }
 
-const slug = slugData[0].path.split("/")[0];
-
-// 🔥 получить занятые слоты
-const slotsRes = await fetch(
-`${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&select=slot`,
-{ headers:{ apikey:SUPABASE_KEY, Authorization:"Bearer "+SUPABASE_KEY }}
-);
-
-const used = (await slotsRes.json()).map(x=>x.slot);
-
-// 🔥 найти слот
-let i=51;
-while(used.includes("img"+i)) i++;
-const slot="img"+i;
-
-// 🔥 собрать path
-const fileName = selectedPhotoUrl.split("/").pop();
-const finalPath = selectedPhotoUrl;
-
-// 🔥 вставка
-const res = await fetch(
-`${SUPABASE_URL}/rest/v1/gallery_images`,
-{
-method:"POST",
-headers:{
-apikey:SUPABASE_KEY,
-Authorization:"Bearer "+SUPABASE_KEY,
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-edit_token:token,
-slot,
-path:finalPath,
-page_key:"just_married"
-})
-}
-);
-
-if(res.ok){
-
-  await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions`,
-    {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        edit_token: token,
-        slot: slot,
-        caption: ""
-      })
-    }
-  );
-
-  alert("✅ Added!");
-
-}else{
-  alert("❌ Error");
-}
-
-
-}catch(e){
-console.error(e);
-alert("FAIL");
-}
-};
+});
 
 </script>
 
-<!-- MODAL -->
-<div id="selectPhotoModal" style="
+
+<div id="photoModal" style="
 position:fixed;
 inset:0;
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.8);
 display:none;
 align-items:center;
 justify-content:center;
+z-index:9999;
 ">
 
-<div style="background:white;padding:20px;border-radius:12px;">
-<div>Would you like to add this photo?</div>
-
-<div style="margin-top:10px;">
-<button id="confirmAddPhoto">Yes</button>
-<button id="cancelAddPhoto">No</button>
-</div>
-
-</div>
+<img id="photoModalImg"
+onclick="event.stopPropagation()"
+style="
+max-width:90%;
+max-height:90%;
+border-radius:12px;
+box-shadow:0 10px 40px rgba(0,0,0,0.6);
+">
 </div>
 
 </body>

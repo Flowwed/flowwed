@@ -887,19 +887,6 @@ input[type=file] {
     <input type="file" id="fileInput" accept="image/*" />
     <button id="uploadBtn">Upload Photo to Your Page</button>
 
-<button id="guestBtn" style="
-  margin-top:10px;
-  height:42px;
-  border-radius:14px;
-  font-size:17px;
-  font-weight:600;
-  background:#6f685e;
-  color:white;
-  cursor:pointer;
-">
-  📁 Guest Memories
-</button>
-
     <div class="progress-container" id="progressContainer">
       <div class="progress-bar" id="progressBar"></div>
     </div>
@@ -1094,19 +1081,10 @@ async function loadSlugFromGallery(token) {
     );
 
     const rows = await res.json();
-console.log("ROWS DEBUG:", rows);
     console.log(rows);
 
     if (Array.isArray(rows) && rows.length > 0) {
-
-window.slug = rows[0]?.slug || null;
-
-if (!window.slug && rows.length > 0) {
-  // fallback — берём slug из token
-  window.slug = token;
-  console.warn("⚠️ SLUG fallback to token:", window.slug);
-}
-
+      window.slug = rows[0].slug;
 
       slugDisplay.innerText = "Slug: " + slug;
 
@@ -1158,8 +1136,6 @@ uploadBtn.innerHTML = "Uploading...";
 
 const file = fileInput.files[0];
 const slot = slotSelect.value;
-
-console.log("SLUG DEBUG:", slug);
 
 // 🔎 ПРОВЕРКА: есть ли уже фото в этом слоте
 const checkRes = await fetch(
@@ -1409,27 +1385,16 @@ captions.forEach(row => {
   label.className = "photo-label";
   label.innerText = `Photo ${photoNumber}`;
 
-const img = document.createElement("img");
-console.log("PATH:", path);
+  const img = document.createElement("img");
+  img.src =
+    `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
 
+  img.onerror = () => {
+    setTimeout(() => {
+      img.src = img.src.split("?")[0] + "?v=" + Date.now();
+    }, 500);
+  };
 
-if (!path || path.startsWith("null/")) return;
-
-if (path.startsWith("http")) {
-  img.src = path;
-} 
-else if (path.startsWith("galleries/")) {
-  img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/${path}`;
-} 
-else {
-  img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
-}
-
-img.onerror = () => {
-  setTimeout(() => {
-    img.src = img.src.split("?")[0] + "?v=" + Date.now();
-  }, 500);
-};
   const text = document.createElement("div");
   text.className = "caption-text";
   text.innerText = row.caption || "—";
@@ -1453,42 +1418,6 @@ const musicInput = document.getElementById("musicInput");
 const musicPreview = document.getElementById("musicPreview");
 
 }
-
-document.getElementById("guestBtn").onclick = () => {
-
-const params = new URLSearchParams(window.location.search);
-const token = params.get("t") || params.get("token");
-
-if(!token){
-  alert("Missing token");
-  return;
-}
-
-/* открываем страницу guest archive */
-openGuestModal(token);
-
-
-function openGuestModal(token){
-
-const modal = document.getElementById("guestModal");
-const iframe = document.getElementById("guestIframe");
-
-iframe.src = `/guest_memory.html?t=${token}`;
-modal.style.display = "flex";
-
-}
-
-};
-
-
-document.getElementById("closeGuestModal").onclick = () => {
-const modal = document.getElementById("guestModal");
-const iframe = document.getElementById("guestIframe");
-
-modal.style.display = "none";
-iframe.src = "";
-};
-
 </script>
 
 
@@ -2016,27 +1945,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script>
-
-
-<div class="modal-backdrop centered" id="guestModal">
-
-  <div class="modal-window">
-
-    <div id="closeGuestModal" style="
-      position:absolute;
-      top:10px;
-      right:16px;
-      font-size:32px;
-      font-weight:bold;
-      cursor:pointer;
-      z-index:9999999;
-    ">×</div>
-
-    <iframe id="guestIframe" class="modal-iframe"></iframe>
-
-  </div>
-
-</div>
 
 
 </body>
