@@ -241,69 +241,92 @@ modal.style.display = "none";
 
 let selectedPhotoUrl = null;
 
+// открыть модалку
 window.selectGuestPhoto = function(url){
-selectedPhotoUrl = url;
+  selectedPhotoUrl = url;
 
-const modal = document.getElementById("selectPhotoModal");
-modal.style.display = "flex";
+  const modal = document.getElementById("selectPhotoModal");
+  if(modal){
+    modal.style.display = "flex";
+  }
 };
 
 window.addEventListener("DOMContentLoaded", () => {
 
-  document.getElementById("closeSelectModal").onclick = () => {
-    document.getElementById("selectPhotoModal").style.display = "none";
-  };
+  const modal = document.getElementById("selectPhotoModal");
+  const closeBtn = document.getElementById("closeSelectModal");
+  const cancelBtn = document.getElementById("cancelAddPhoto");
+  const confirmBtn = document.getElementById("confirmAddPhoto");
 
-  document.getElementById("cancelAddPhoto").onclick = () => {
-    document.getElementById("selectPhotoModal").style.display = "none";
-  };
+  // ❌ крестик
+  if(closeBtn){
+    closeBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+  }
 
-  document.getElementById("confirmAddPhoto").onclick = async () => {
+  // ❌ кнопка NO
+  if(cancelBtn){
+    cancelBtn.onclick = () => {
+      modal.style.display = "none";
+    };
+  }
 
-    document.getElementById("selectPhotoModal").style.display = "none";
-
-    if(!selectedPhotoUrl) return;
-
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("t") || params.get("token");
-
-    const slot = "img" + Date.now();
-
-    console.log("SENDING TO DB:", {
-      token,
-      slot,
-      path: selectedPhotoUrl
-    });
-
-    const res = await fetch(
-      `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
-      {
-        method: "POST",
-        headers: {
-          apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
-          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
-          "Content-Type": "application/json",
-          Prefer: "return=representation"
-        },
-        body: JSON.stringify({
-          edit_token: token,
-          slot: slot,
-          path: selectedPhotoUrl,
-          page_key: "just_married"
-        })
+  // 🔥 клик вне окна (очень важно)
+  if(modal){
+    modal.onclick = (e) => {
+      if(e.target === modal){
+        modal.style.display = "none";
       }
-    );
+    };
+  }
 
-    const text = await res.text();
-    console.log("STATUS:", res.status);
-    console.log("RESPONSE:", text);
+  // ✅ кнопка YES
+  if(confirmBtn){
+    confirmBtn.onclick = async () => {
 
-    if(res.ok){
-      alert("✅ Photo added to your gallery!");
-    } else {
-      alert("❌ ERROR: " + res.status);
-    }
-  };
+      modal.style.display = "none";
+
+      if(!selectedPhotoUrl) return;
+
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("t") || params.get("token");
+
+      const slot = "img" + Date.now();
+
+      console.log("SENDING TO DB:", {
+        token,
+        slot,
+        path: selectedPhotoUrl
+      });
+
+      const res = await fetch(
+        `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
+        {
+          method: "POST",
+          headers: {
+            apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+            Authorization: "Bearer "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+            "Content-Type": "application/json",
+            Prefer: "return=representation"
+          },
+          body: JSON.stringify({
+            edit_token: token,
+            slot: slot,
+            path: selectedPhotoUrl,
+            page_key: "just_married"
+          })
+        }
+      );
+
+      if(res.ok){
+        alert("✅ Photo added!");
+      } else {
+        alert("❌ Error: " + res.status);
+      }
+
+    };
+  }
 
 });
 
