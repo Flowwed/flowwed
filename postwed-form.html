@@ -309,12 +309,11 @@ const { data: existing } = await supabase
   .eq("guest_email", email)
   .maybeSingle();
 
-if (existing) {
+if (existing && (existing.message || existing.photo1)) {
   showToast("You have already submitted your memories ❤️");
   btn.classList.remove("loading");
   return;
 }
-
 const { error: insertError } = await supabase
   .from("postwed_messages")
   .insert({
