@@ -50,6 +50,7 @@ color:#7e2a2a;
 input,textarea{
 width:100%;
 padding:11px;
+font-size:14px;   /* ← ВОТ ЭТО */
 border-radius:10px;
 border:1px solid rgba(160,0,40,0.25);
 box-sizing: border-box; /* 🔥 ВАЖНО */
@@ -57,7 +58,7 @@ box-sizing: border-box; /* 🔥 ВАЖНО */
 
 textarea{
 height:120px;
-font-size:16px;
+font-size:17px;
 line-height:1.5;
 }
 
@@ -122,6 +123,22 @@ border-color:#9c1818;
 .upload-icon {font-size:28px;margin-bottom:6px;}
 .upload-text {font-size:13px;font-weight:600;color:#7a3a3a;}
 .upload-tile input {display:none;}
+
+.spinner{
+  width:18px;
+  height:18px;
+  border:2px solid rgba(255,255,255,0.4);
+  border-top:2px solid white;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+  margin-right:8px;
+}
+
+@keyframes spin{
+  to{ transform:rotate(360deg); }
+}
+
+
 </style>
 </head>
 
@@ -309,9 +326,10 @@ renderPreview();
 // SUBMIT
 document.getElementById("submitBtn").onclick=async()=>{
 
-const btn=document.getElementById("submitBtn");
-btn.classList.add("loading");
+const btn = document.getElementById("submitBtn");
 
+btn.classList.add("loading");
+btn.innerHTML = `<span class="spinner"></span> Submitting...`;
 try{
 
 const name=document.getElementById("guestName").value.trim();
@@ -331,6 +349,7 @@ const { data: guest } = await supabase
 if (!guest) {
   showToast("You are not on the guest list.");
   btn.classList.remove("loading");
+btn.innerText = "Submit Memory";
   return;
 }
 
@@ -357,6 +376,7 @@ const { data: existing } = await supabase
 if (existing) {
   showToast("You have already submitted your memories ❤️");
   btn.classList.remove("loading");
+btn.innerText = "Submit Memory";
   return;
 }
 
@@ -385,6 +405,7 @@ if (insertError) {
   }
 
   btn.classList.remove("loading");
+btn.innerText = "Submit Memory";
   return;
 }
 // SUCCESS
@@ -403,6 +424,8 @@ showToast("Error");
 }
 
 btn.classList.remove("loading");
+btn.innerText = "Submit Memory";
+
 };
 
 document.getElementById("closeOverlay").onclick=()=>{
