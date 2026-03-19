@@ -211,7 +211,7 @@ const slot="img"+i;
 
 // 🔥 собрать path
 const fileName = selectedPhotoUrl.split("/").pop();
-const finalPath = `${slug}/${slot}/${fileName}`;
+const finalPath = selectedPhotoUrl;
 
 // 🔥 вставка
 const res = await fetch(
