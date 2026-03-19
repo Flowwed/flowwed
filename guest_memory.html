@@ -13,6 +13,8 @@ max-width:900px;
 color:#6a2a2a;
 }
 
+/* ARCHIVE */
+
 .archive-box{
 background:rgba(255,255,255,0.9);
 border-radius:18px;
@@ -33,6 +35,8 @@ display:flex;
 flex-direction:column;
 gap:12px;
 }
+
+/* folders */
 
 .archive-folder{
 border:1px solid #ffc9c9;
@@ -56,6 +60,8 @@ background:#ffd0d0;
 padding:10px;
 display:none;
 }
+
+/* items */
 
 .archive-item{
 padding:10px;
@@ -92,17 +98,242 @@ flex-wrap:wrap;
 gap:8px;
 margin-top:6px;
 }
+
+
 </style>
 </head>
 
 <body>
 
 <div class="archive-box">
-<div class="archive-header">📁 Guest Memories Archive</div>
-<div id="archiveList" class="archive-list"></div>
+
+<div class="archive-header">
+📁 Guest Memories Archive
 </div>
 
-<!-- SELECT MODAL -->
+
+
+
+<div id="archiveList" class="archive-list"></div>
+
+</div>
+
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+"https://octwwpatppbenqwkcqaw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+async function loadArchive(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data, error } = await supabase
+.from("postwed_messages")
+.select("*")
+.eq("token", token)
+.order("created_at",{ascending:false});
+
+if(error){
+console.log(error);
+return;
+}
+
+const grouped = {};
+
+data.forEach(item=>{
+const key = item.guest_email || "unknown";
+
+if(!grouped[key]){
+grouped[key] = [];
+}
+
+grouped[key].push(item);
+});
+
+const list=document.getElementById("archiveList");
+list.innerHTML="";
+
+Object.keys(grouped).forEach(email=>{
+
+const folder=document.createElement("div");
+folder.className="archive-folder";
+
+const header=document.createElement("div");
+header.className="folder-header";
+header.textContent="📁 " + email;
+
+const content=document.createElement("div");
+content.className="folder-content";
+content.style.display = "none";
+
+
+header.onclick=()=>{
+content.style.display =
+content.style.display==="none" ? "block" : "none";
+};
+
+grouped[email].forEach(item=>{
+
+const photos=[
+item.photo1,
+item.photo2,
+item.photo3,
+item.photo4,
+item.photo5
+].filter(Boolean);
+
+const div=document.createElement("div");
+div.className="archive-item";
+
+div.innerHTML=`
+<div><b>${item.guest_email}</b></div>
+
+<div class="msg-box">${item.message||""}</div>
+
+
+<div class="archive-photos">
+
+${photos.map(p=>`
+  <img src="${p}" onclick="selectGuestPhoto('${p}')">
+`).join("")}
+
+</div>
+`;
+
+content.appendChild(div);
+
+});
+
+folder.appendChild(header);
+folder.appendChild(content);
+list.appendChild(folder);
+
+});
+
+}
+
+loadArchive();
+
+window.openPhoto = function(src){
+const modal = document.getElementById("photoModal");
+const img = document.getElementById("photoModalImg");
+
+if(!modal || !img) return;
+
+img.src = src;
+modal.style.display = "flex";
+};
+window.addEventListener("DOMContentLoaded", () => {
+
+const modal = document.getElementById("photoModal");
+
+if(modal){
+modal.onclick = () => {
+modal.style.display = "none";
+};
+}
+
+});
+
+
+let selectedPhotoUrl = null;
+
+window.selectGuestPhoto = function(url){
+selectedPhotoUrl = url;
+
+const modal = document.getElementById("selectPhotoModal");
+modal.style.display = "flex";
+};
+
+window.addEventListener("DOMContentLoaded", () => {
+
+/* кнопка NO */
+document.getElementById("cancelAddPhoto").onclick = () => {
+  document.getElementById("selectPhotoModal").style.display = "none";
+};
+
+/* кнопка YES */
+document.getElementById("confirmAddPhoto").onclick = async () => {
+
+  document.getElementById("selectPhotoModal").style.display = "none";
+
+  if(!selectedPhotoUrl) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  const slot = "img" + Date.now();
+
+  console.log("SENDING TO DB:", {
+    token,
+    slot,
+    path: selectedPhotoUrl
+  });
+
+  const res = await fetch(
+    `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
+    {
+      method: "POST",
+      headers: {
+        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24и,эЯЭЖ",  // ← ВАЖНО: СКОПИРУЙ СВОЙ НОРМАЛЬНЫЙ КЛЮЧ
+        "Content-Type": "application/json",
+        Prefer: "return=representation"
+      },
+      body: JSON.stringify({
+        edit_token: token,
+        slot: slot,
+        path: selectedPhotoUrl,
+        page_key: "just_married"
+      })
+    }
+  );
+
+  const text = await res.text();
+  console.log("STATUS:", res.status);
+  console.log("RESPONSE:", text);
+
+  if(res.ok){
+    alert("✅ Photo added to your gallery!");
+  } else {
+    alert("❌ ERROR: " + res.status);
+  }
+
+};
+
+/* крестик */
+document.getElementById("closeSelectModal").onclick = () => {
+  document.getElementById("selectPhotoModal").style.display = "none";
+};
+
+});
+</script>
+
+
+<div id="photoModal" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.8);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+
+<img id="photoModalImg"
+onclick="event.stopPropagation()"
+style="
+max-width:90%;
+max-height:90%;
+border-radius:12px;
+box-shadow:0 10px 40px rgba(0,0,0,0.6);
+">
+</div>
+
+
 <div id="selectPhotoModal" style="
 position:fixed;
 inset:0;
@@ -113,14 +344,14 @@ justify-content:center;
 z-index:99999;
 ">
 
-<div id="modalInner" style="
-background:white;
-position:relative;
-padding:24px;
-border-radius:16px;
-max-width:320px;
-text-align:center;
-">
+<div style="
+  background:white;
+  position:relative;    
+  padding:24px;
+    border-radius:16px;
+    max-width:320px;
+    text-align:center;
+  ">
 
 <div id="closeSelectModal" style="
 position:absolute;
@@ -131,169 +362,35 @@ font-weight:bold;
 cursor:pointer;
 ">×</div>
 
-<div style="font-size:16px; margin-bottom:18px;">
-Would you like to add this photo to your post-wedding gallery?
+
+    <div style="font-size:16px; margin-bottom:18px;">
+      Would you like to add this photo to your post-wedding gallery?
+    </div>
+
+    <div style="display:flex; gap:12px; justify-content:center;">
+      <button id="confirmAddPhoto" style="
+        padding:10px 18px;
+        border:none;
+        border-radius:10px;
+        background:#c30c1e;
+        color:white;
+        font-weight:600;
+        cursor:pointer;
+      ">Yes</button>
+
+      <button id="cancelAddPhoto" style="
+        padding:10px 18px;
+        border:none;
+        border-radius:10px;
+        background:#ccc;
+        cursor:pointer;
+      ">No</button>
+    </div>
+
+  </div>
+
 </div>
 
-<div style="display:flex; gap:12px; justify-content:center;">
-<button id="confirmAddPhoto" style="
-padding:10px 18px;
-border:none;
-border-radius:10px;
-background:#c30c1e;
-color:white;
-font-weight:600;
-cursor:pointer;
-">Yes</button>
-
-<button id="cancelAddPhoto" style="
-padding:10px 18px;
-border:none;
-border-radius:10px;
-background:#ccc;
-cursor:pointer;
-">No</button>
-</div>
-
-</div>
-</div>
-
-<script type="module">
-import { createClient } from "https://esm.sh/@supabase/supabase-js";
-
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
-
-const supabase = createClient(
-  "https://octwwpatppbenqwkcqaw.supabase.co",
-  API_KEY
-);
-
-let selectedPhotoUrl = null;
-
-/* LOAD */
-async function loadArchive(){
-  const token = new URLSearchParams(location.search).get("t");
-  if (!token) return;
-
-  const { data } = await supabase
-    .from("postwed_messages")
-    .select("*")
-    .eq("token", token)
-    .order("created_at",{ascending:false});
-
-  const grouped = {};
-  data.forEach(item=>{
-    const key = item.guest_email || "unknown";
-    if(!grouped[key]) grouped[key]=[];
-    grouped[key].push(item);
-  });
-
-  const list=document.getElementById("archiveList");
-  list.innerHTML="";
-
-  Object.keys(grouped).forEach(email=>{
-    const folder=document.createElement("div");
-    folder.className="archive-folder";
-
-    const header=document.createElement("div");
-    header.className="folder-header";
-    header.textContent="📁 "+email;
-
-    const content=document.createElement("div");
-    content.className="folder-content";
-
-    header.onclick=()=>{
-      content.style.display =
-      content.style.display==="block"?"none":"block";
-    };
-
-    grouped[email].forEach(item=>{
-      const photos=[
-        item.photo1,item.photo2,item.photo3,item.photo4,item.photo5
-      ].filter(Boolean);
-
-      const div=document.createElement("div");
-      div.className="archive-item";
-
-      div.innerHTML=`
-      <div><b>${item.guest_email}</b></div>
-      <div class="msg-box">${item.message||""}</div>
-      <div class="archive-photos">
-      ${photos.map(p=>`<img src="${p}" data-url="${p}">`).join("")}
-      </div>`;
-
-      content.appendChild(div);
-    });
-
-    folder.appendChild(header);
-    folder.appendChild(content);
-    list.appendChild(folder);
-  });
-}
-
-/* OPEN MODAL */
-document.addEventListener("click",(e)=>{
-  if (e.target.matches(".archive-item img")) {
-    selectedPhotoUrl = e.target.dataset.url;
-    document.getElementById("selectPhotoModal").style.display="flex";
-  }
-});
-
-/* MODAL LOGIC (ЖЁСТКИЙ, БЕЗ ПАДЕНИЙ) */
-document.addEventListener("click",(e)=>{
-
-  const modal = document.getElementById("selectPhotoModal");
-
-  if (!modal) return;
-
-  if (e.target.id === "closeSelectModal") {
-    modal.style.display = "none";
-  }
-
-  if (e.target.id === "cancelAddPhoto") {
-    modal.style.display = "none";
-  }
-
-  if (e.target.id === "selectPhotoModal") {
-    modal.style.display = "none";
-  }
-
-});
-
-/* CONFIRM */
-document.addEventListener("click", async (e)=>{
-  if (e.target.id !== "confirmAddPhoto") return;
-
-  const modal = document.getElementById("selectPhotoModal");
-  modal.style.display="none";
-
-  if(!selectedPhotoUrl) return;
-
-  const token = new URLSearchParams(location.search).get("t");
-
-  await fetch(
-    `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/gallery_images`,
-    {
-      method:"POST",
-      headers:{
-        apikey: API_KEY,
-        Authorization: "Bearer " + API_KEY,
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify({
-        edit_token: token,
-        slot: "img"+Date.now(),
-        path: selectedPhotoUrl,
-        page_key: "just_married"
-      })
-    }
-  );
-
-  alert("done");
-});
-
-loadArchive();
-</script>
 
 </body>
 </html>
