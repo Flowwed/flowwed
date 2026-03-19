@@ -129,6 +129,19 @@
       backdrop-filter: blur(18px) saturate(180%);
     }
 
+.archive-layout {
+  display: flex;
+  gap: 20px;
+}
+
+.archive-left {
+  flex: 0 0 420px;
+}
+
+.archive-right {
+  flex: 1;
+}
+
     /* RUBY FRAME AROUND TABLE */
     .ruby-frame-outer {
       border: 3px solid #b41111;
@@ -1233,6 +1246,154 @@
   cursor: pointer;
 }
 
+/* ===== MINI FORM PREVIEW ===== */
+
+.mini-form{
+  transform: scale(0.85);
+  transform-origin: top left;
+  max-width: 520px;
+}
+
+.subtitle-mini{
+  text-align:center;
+  font-size:14px;
+  margin-bottom:18px;
+  color:#7a3a3a;
+}
+
+.form-box-mini{
+  background:white;
+  padding:18px;
+  border-radius:14px;
+  border:2px solid #b41111;
+  box-shadow:0 10px 24px rgba(0,0,0,0.12);
+}
+
+.form-box-mini input,
+.form-box-mini textarea{
+  width:100%;
+  padding:9px;
+  font-size:14px;
+  border-radius:8px;
+  border:1px solid rgba(160,0,40,0.25);
+}
+
+.form-box-mini textarea{
+  height:80px;
+}
+
+.upload-box-mini{
+  border:2px dashed #e0a8a8;
+  border-radius:10px;
+  padding:12px;
+  text-align:center;
+  background:#fff7f9;
+  margin-top:10px;
+}
+
+.upload-tile-mini{
+  font-size:13px;
+  font-weight:600;
+  color:#7a3a3a;
+}
+
+.upload-hint{
+  font-size:11px;
+  margin-top:6px;
+  color:#999;
+}
+
+.mini-btn{
+  margin-top:12px;
+  padding:10px;
+  width:100%;
+  border:none;
+  border-radius:10px;
+  background:#9c1818;
+  color:white;
+  font-weight:700;
+  cursor:default;
+  opacity:0.9;
+}
+
+
+/* ================= ARCHIVE ================= */
+
+.archive-layout{
+display:flex;
+gap:24px;
+margin-top:20px;
+}
+
+.archive-left{
+flex:0 0 300px;
+}
+
+.archive-right{
+flex:1;
+}
+
+.archive-box{
+background:rgba(255,255,255,0.9);
+border-radius:18px;
+padding:18px;
+border:3px solid #b41111;
+box-shadow:0 18px 40px rgba(0,0,0,0.18);
+}
+
+.archive-header{
+font-weight:800;
+color:#9c1818;
+margin-bottom:14px;
+font-size:18px;
+}
+
+.archive-list{
+max-height:500px;
+overflow-y:auto;
+display:flex;
+flex-direction:column;
+gap:12px;
+}
+
+.archive-folder{
+border:1px solid #ffc9c9;
+border-radius:12px;
+overflow:hidden;
+background:#fff;
+}
+
+.folder-header{
+padding:12px;
+font-weight:700;
+background:#ffe3e3;
+cursor:pointer;
+}
+
+.folder-header:hover{
+background:#ffd0d0;
+}
+
+.folder-content{
+padding:10px;
+display:none;
+flex-direction:column;
+gap:10px;
+}
+
+.archive-item{
+padding:10px;
+border-bottom:1px solid #eee;
+}
+
+.archive-item img{
+width:60px;
+height:60px;
+object-fit:cover;
+border-radius:8px;
+margin-right:5px;
+}
+
 
 </style>
 
@@ -1296,92 +1457,122 @@
   </div>
 </div>
 
-<!-- POST WEDDING FORM PREVIEW -->
-
 <div class="section" style="margin-bottom:22px;">
+
+<!-- ================= ARCHIVE ================= -->
+
+<div class="archive-layout">
+
+  <div class="archive-left">
+    <!-- пока пусто -->
+  </div>
+
+  <div class="archive-right">
+
+    <div class="archive-box">
+
+      <div class="archive-header">
+        📁 Guest Memories Archive
+      </div>
+
+      <div id="archiveList" class="archive-list"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 
 <h2 style="margin-top:0;color:#9c1818;">Guest Memories Form</h2>
 
-<div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap;">
+<div class="mini-form">
 
-<!-- TEXT FORM -->
-<div style="flex:1;min-width:260px;">
+  <h1 style="font-size:22px;">Share Your Wedding Memories</h1>
 
-<label style="font-weight:700;font-size:14px;">Your Name</label>
-<input type="text" style="width:100%;padding:10px;border-radius:10px;border:1px solid #ccc;">
+  <div class="subtitle-mini">
+    Share your photos and leave us a few words ❤️
+  </div>
 
-<label style="font-weight:700;font-size:14px;margin-top:10px;display:block;">
-Share a few words
-</label>
+  <div class="form-box-mini">
 
-<textarea style="
-width:100%;
-height:120px;
-padding:10px;
-border-radius:10px;
-border:1px solid #ccc;
-resize:vertical;
-"></textarea>
-
-</div>
-
-<!-- PHOTO UPLOAD -->
-<div style="flex:1;min-width:260px;">
-
-<label style="font-weight:700;font-size:14px;">
-Upload up to 3 photos
-</label>
-
-<input type="file" id="photoUpload" multiple accept="image/*"
-style="
-display:block;
-margin-top:8px;
-padding:8px;
-">
-
-<div style="
-font-size:12px;
-color:#777;
-margin-top:6px;
-">
-Max 3 photos
-</div>
-
-<div id="photoPreview" style="
-margin-top:10px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-"></div>
-
-</div>
-
-</div>
-
-</div>
-
-    <div class="ruby-frame-outer">
-      <div class="ruby-frame-inner">
-        <div class="scroll-container">
-
-          <table id="guestTable">
-            <thead>
-              <tr>
-                <th><input type="checkbox" id="selectAll"></th>
-                <th>#</th>
-                <th>First</th>
-                <th>Last</th>
-                <th>Email</th>
-                <th>Phone</th>
-                
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-
-        </div>
-      </div>
+    <div class="field">
+      <label>Your Name</label>
+      <input placeholder="Your name">
     </div>
+
+    <div class="field">
+      <label>Your Email</label>
+      <input placeholder="your@email.com">
+    </div>
+
+    <div class="field">
+      <label>Your Message</label>
+      <textarea placeholder="Write a short message..."></textarea>
+    </div>
+
+    <div class="upload-box-mini">
+      <div class="upload-tile-mini">
+        📷 Add Photos
+      </div>
+      <div class="upload-hint">Max 5 photos</div>
+    </div>
+
+    <button class="mini-btn">Submit Memory</button>
+
+  </div>
+
+</div>
+
+<!-- ============================= -->
+<!-- GUEST TABLE (ВОССТАНОВЛЕНА) -->
+<!-- ============================= -->
+
+<div class="table-section">
+
+  <div class="guestlist-header">
+    <h2>Guest List</h2>
+  </div>
+
+  <div id="filterBar" style="margin-bottom:10px; display:flex; gap:8px; flex-wrap:wrap;">
+    <button class="filter-btn active" data-filter="all">All</button>
+  </div>
+
+  <div class="ruby-frame-outer">
+    <div class="ruby-frame-inner">
+
+      <div class="scroll-container">
+
+        <table id="guestTable">
+
+          <thead>
+            <tr>
+              <th>
+                <input type="checkbox" id="selectAll">
+              </th>
+              <th>#</th>
+              <th>First</th>
+              <th>Last</th>
+              <th>Email</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!-- JS будет сюда вставлять -->
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
 
     <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
@@ -1434,6 +1625,7 @@ flex-wrap:wrap;
 
   <!-- TOAST -->
   <div id="greenToast">Message Sent!</div>
+
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -2071,6 +2263,103 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
     updateColumnVisibility(); // ← добавлено
   });
 });
+
+
+/* =========================
+   LOAD POSTWED ARCHIVE
+========================= */
+
+async function loadArchive(){
+
+const token = new URLSearchParams(location.search).get("t");
+
+const { data, error } = await supabase
+.from("postwed_messages")
+.select("*")
+.eq("token", token)
+.order("created_at",{ascending:false});
+
+if(error){
+console.log(error);
+return;
+}
+
+const grouped = {};
+
+/* группировка по email */
+data.forEach(item=>{
+const key = item.guest_email || "unknown";
+
+if(!grouped[key]){
+grouped[key] = [];
+}
+
+grouped[key].push(item);
+});
+
+const list=document.getElementById("archiveList");
+if(!list) return;
+
+list.innerHTML="";
+
+/* создаём папки */
+Object.keys(grouped).forEach(email=>{
+
+const folder=document.createElement("div");
+folder.className="archive-folder";
+
+/* HEADER */
+const header=document.createElement("div");
+header.className="folder-header";
+header.textContent="📁 " + email;
+
+/* CONTENT */
+const content=document.createElement("div");
+content.className="folder-content";
+
+/* toggle */
+header.onclick=()=>{
+content.style.display =
+content.style.display==="none" ? "block" : "none";
+};
+
+/* сообщения внутри */
+grouped[email].forEach(item=>{
+
+const photos=[
+item.photo1,
+item.photo2,
+item.photo3,
+item.photo4,
+item.photo5
+].filter(Boolean);
+
+const div=document.createElement("div");
+div.className="archive-item";
+
+div.innerHTML=`
+<div><b>${item.guest_email}</b></div>
+<div>${item.message||""}</div>
+<div>
+${photos.map(p=>`<img src="${p}">`).join("")}
+</div>
+`;
+
+content.appendChild(div);
+
+});
+
+folder.appendChild(header);
+folder.appendChild(content);
+list.appendChild(folder);
+
+});
+
+}
+
+/* запуск */
+loadArchive();
+
 
 </script>
 
