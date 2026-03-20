@@ -88,3 +88,20 @@ function goBack() {
 }
 </style>
 
+<script>
+function savePage(url) {
+  localStorage.setItem("lastPage", window.location.pathname);
+}
+</script>
+
+<script>
+function goBack() {
+  const last = localStorage.getItem("lastPage");
+
+  if (last) {
+    window.location.href = last;
+  } else {
+    window.location.href = "/index.html";
+  }
+}
+</script>
