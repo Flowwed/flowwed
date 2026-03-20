@@ -1,0 +1,54 @@
+<div class="navbar">
+
+  <button onclick="history.back()" class="back-btn">← Back</button>
+
+  <div class="nav-links">
+    <a href="/index.html">Home</a>
+    <a href="/guests.html">Guests</a>
+    <a href="/date.html">Save the Date</a>
+    <a href="/rsvp.html">RSVP</a>
+    <a href="/budget.html">Budget</a>
+    <a href="/memories.html">Memories</a>
+    <a href="/gifts.html">Gifts</a>
+    <a href="/seating.html">Seating</a>
+    <a href="/album.html">Album</a>
+  </div>
+
+</div>
+
+<style>
+.navbar {
+  position: sticky;
+  top: 0;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(12px);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.nav-links {
+  display: flex;
+  gap: 18px;
+  font-size: 14px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #7a6772;
+  font-weight: 500;
+}
+
+.nav-links a:hover {
+  color: #b41111;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+</style>
