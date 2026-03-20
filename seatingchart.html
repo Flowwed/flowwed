@@ -584,9 +584,20 @@ fetch("/navbar.html")
   .then(res => res.text())
   .then(data => {
     document.getElementById("navbar-container").innerHTML = data;
+
+    // 🔥 ВОТ ТУТ ДЕЛАЕМ ACTIVE
+    const links = document.querySelectorAll(".nav-links a");
+    const currentPage = window.location.pathname.split("/").pop();
+
+    links.forEach(link => {
+      const linkPage = link.getAttribute("href").split("/").pop();
+
+      if (linkPage === currentPage) {
+        link.classList.add("active");
+      }
+    });
   });
 </script>
-
 
 <div class="top-logo-title" style="gap:16px;">
   <h1 id="topMainTitle">Seating Chart</h1>

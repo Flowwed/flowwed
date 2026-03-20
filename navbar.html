@@ -87,15 +87,3 @@ function goBack() {
 }
 </style>
 
-<script>
-setTimeout(() => {
-  const links = document.querySelectorAll(".nav-links a");
-  const current = window.location.pathname;
-
-  links.forEach(link => {
-    if (current.includes(link.getAttribute("href"))) {
-      link.classList.add("active");
-    }
-  });
-}, 100);
-</script>
