@@ -1,17 +1,16 @@
 <div class="navbar">
 
-  <button onclick="goBack()" class="back-btn">← Back</button>
 
 
   <div class="nav-links">
 
-<a href="/index.html" onclick="savePage('/index.html')">Home</a>
+<a href="/index.html" onclick="savePage('/dashboard.html')">Home</a>
 <a href="/guests.html" onclick="savePage('/guests.html')">Guests</a>
 <a href="/date.html" onclick="savePage('/date.html')">Save the Date</a>
-<a href="/rsvp.html" onclick="savePage('/rsvp.html')">RSVP</a>
+<a href="/rsvp.html" onclick="savePage('/postwed.html')">RSVP</a>
 <a href="/budget.html" onclick="savePage('/budget.html')">Budget</a>
 <a href="/memories.html" onclick="savePage('/memories.html')">Memories</a>
-<a href="/gifts.html" onclick="savePage('/gifts.html')">Gifts</a>
+<a href="/gifts.html" onclick="savePage('/gift_registry.html')">Gifts</a>
 <a href="/seatingchart.html" onclick="savePage('/seatingchart.html')">Seating</a>
 <a href="/album.html" onclick="savePage('/album.html')">Album</a>  
 </div>
@@ -19,22 +18,26 @@
 </div>
 
 <style>
+
 .navbar {
   position: sticky;
   top: 0;
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(12px);
-  padding: 12px 20px;
+
   display: flex;
-  justify-content: space-between;
+  justify-content: center;   /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
   align-items: center;
+
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(14px);
+
+  padding: 14px 20px;
   border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
 .nav-links {
   display: flex;
-  gap: 18px;
-  font-size: 14px;
+  gap: 26px;
+  font-size: 15px;
 }
 
 .nav-links a {
