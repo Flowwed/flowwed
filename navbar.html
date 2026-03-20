@@ -4,15 +4,16 @@
 
   <div class="nav-links">
 
-<a href="/index.html" onclick="savePage('/dashboard.html')">Home</a>
-<a href="/guests.html" onclick="savePage('/guests.html')">Guests</a>
-<a href="/date.html" onclick="savePage('/date.html')">Save the Date</a>
-<a href="/rsvp.html" onclick="savePage('/postwed.html')">RSVP</a>
-<a href="/budget.html" onclick="savePage('/budget.html')">Budget</a>
-<a href="/memories.html" onclick="savePage('/memories.html')">Memories</a>
-<a href="/gifts.html" onclick="savePage('/gift_registry.html')">Gifts</a>
-<a href="/seatingchart.html" onclick="savePage('/seatingchart.html')">Seating</a>
-<a href="/album.html" onclick="savePage('/album.html')">Album</a>  
+<a href="/dashboard.html">Home</a>
+<a href="/guests.html">Guests</a>
+<a href="/date.html">Save the Date</a>
+<a href="/postwed.html">RSVP</a>
+<a href="/budget.html">Budget</a>
+<a href="/memories.html">Memories</a>
+<a href="/gift_registry.html">Gifts</a>
+<a href="/seatingchart.html">Seating</a>
+<a href="/album.html">Album</a>
+
 </div>
 
 </div>
@@ -24,16 +25,15 @@
   top: 0;
 
   display: flex;
-  justify-content: center;   /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
+  justify-content: flex-end;   /* ← ВОТ ЭТО ГЛАВНОЕ */
   align-items: center;
 
   background: rgba(255,255,255,0.65);
   backdrop-filter: blur(14px);
 
-  padding: 14px 20px;
+  padding: 14px 40px;
   border-bottom: 1px solid rgba(0,0,0,0.08);
 }
-
 .nav-links {
   display: flex;
   gap: 26px;
