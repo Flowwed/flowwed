@@ -623,7 +623,15 @@ cursor: pointer;
   cursor: pointer;
 }
 
+.main-text {
+  font-size: 17px;
+  font-weight: 550;
+  letter-spacing: 0.2px;
+}
 
+.ios-banner.with-emily {
+  padding-left: 0;
+}
 
 </style>
 </head>
@@ -636,7 +644,7 @@ cursor: pointer;
   <button class="back-btn" onclick="goBack()">← Back</button>
 
   <!-- меняем класс -->
-  <div class="page-title">Guests Manager</div>
+  <div class="page-title">Wedding Manager</div>
 
 
   <button class="visit-btn" onclick="visitSite()">
@@ -653,8 +661,11 @@ cursor: pointer;
     </div>
   </div>
 
-  Your wedding planning, in one place. Explore the Quick User Guide for this page
-<span id="openGuide" class="guide-link">here</span>.
+  <span class="main-text">
+  Your wedding planning — all in one place.
+</span> 
+<!-- Explore the Quick User Guide for this page
+<span id="openGuide" class="guide-link">here</span>. -->
 
 </div>
 
@@ -920,8 +931,8 @@ document.getElementById("guestbook").onclick = () => openSection("Guests");
 
 document.getElementById("seating").onclick = () => openSection("SeatingChart");
 document.getElementById("budget").onclick = () => openSection("Budget");
-document.getElementById("reports2").onclick = () => openSection("wed_reports");
-document.getElementById("postwed").onclick = () => openSection("postwed2");
+document.getElementById("reports2").onclick = () => openSection("postwed2");
+document.getElementById("postwed").onclick = () => openSection("just_married");
 
 
 </script>
