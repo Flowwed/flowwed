@@ -1,21 +1,20 @@
-<!-- ================= NAVBAR ================= -->
 <div class="navbar">
   <div class="nav-links">
-    <a data-page="dashboard">Home</a>
-    <a data-page="Guests">Guests</a>
-    <a data-page="savethedate">Save the Date</a>
-    <a data-page="postwed">RSVP</a>
-    <a data-page="Budget">Budget</a>
-    <a data-page="postwed2">Memories</a>
-    <a data-page="gift_registry">Gifts</a>
-    <a data-page="SeatingChart">Seating</a>
-    <a data-page="just_married">Album</a>
+
+    <a href="dashboard.html">Home</a>
+    <a href="Guests.html">Guests</a>
+    <a href="savethedate.html">Save the Date</a>
+    <a href="postwed.html">RSVP</a>
+    <a href="Budget.html">Budget</a>
+    <a href="postwed2.html">Memories</a>
+    <a href="gift_registry.html">Gifts</a>
+    <a href="SeatingChart.html">Seating</a>
+    <a href="just_married.html">Album</a>
+
   </div>
 </div>
 
 <style>
-/* ================= NAVBAR ================= */
-
 .navbar {
   position: sticky;
   top: 0;
@@ -43,8 +42,6 @@
   text-decoration: none;
   color: #3a1a1a;
   font-weight: 600;
-  letter-spacing: 0.2px;
-  cursor: pointer;
   transition: 0.25s;
 }
 
@@ -52,7 +49,6 @@
   color: #b41111;
 }
 
-/* ACTIVE LINK */
 .nav-links a.active {
   color: #b41111;
   font-weight: 700;
@@ -67,14 +63,10 @@
   width: 100%;
   height: 2px;
   background: #b41111;
-  border-radius: 2px;
 }
 </style>
 
 <script>
-/* ================= NAVBAR LOGIC ================= */
-
-// универсальный токен
 function getToken() {
   const params = new URLSearchParams(window.location.search);
   return (
@@ -86,45 +78,28 @@ function getToken() {
   );
 }
 
-// переход
-function goToPage(page) {
-  const token = getToken();
-  const url = token ? `${page}.html?t=${token}` : `${page}.html`;
-  window.location.href = url;
-}
-
-// определяем текущую страницу
-function getCurrentPage() {
-  const path = window.location.pathname.split("/").pop().toLowerCase();
-
-  if (path.includes("dashboard")) return "dashboard";
-  if (path.includes("guests")) return "Guests";
-  if (path.includes("savethedate")) return "savethedate";
-  if (path.includes("postwed.html")) return "postwed";
-  if (path.includes("budget")) return "Budget";
-  if (path.includes("postwed2")) return "postwed2";
-  if (path.includes("gift_registry")) return "gift_registry";
-  if (path.includes("seatingchart")) return "SeatingChart";
-  if (path.includes("just_married")) return "just_married";
-
-  return "";
-}
-
-// инициализация
 document.addEventListener("DOMContentLoaded", () => {
+  const token = getToken();
   const links = document.querySelectorAll(".nav-links a");
-  const current = getCurrentPage();
+
+  // ✅ добавляем токен ко всем ссылкам
+  links.forEach(link => {
+    const url = new URL(link.getAttribute("href"), window.location.origin);
+
+    if (token) {
+      url.searchParams.set("t", token);
+    }
+
+    link.href = url.pathname + url.search;
+  });
+
+  // ✅ подсветка текущей страницы
+  const current = window.location.pathname.split("/").pop().toLowerCase();
 
   links.forEach(link => {
-    const page = link.getAttribute("data-page");
+    const linkPage = link.getAttribute("href").split("?")[0].toLowerCase();
 
-    // клик
-    link.addEventListener("click", () => {
-      goToPage(page);
-    });
-
-    // active подсветка
-    if (page === current) {
+    if (linkPage === current) {
       link.classList.add("active");
     }
   });
