@@ -2,15 +2,15 @@
 <div class="navbar">
   <div class="nav-links">
 
-    <a id="nav-home">Home</a>
-    <a id="nav-guests">Guests</a>
-    <a id="nav-std">Save the Date</a>
-    <a id="nav-rsvp">RSVP</a>
-    <a id="nav-budget">Budget</a>
-    <a id="nav-memories">Memories</a>
-    <a id="nav-gifts">Gifts</a>
-    <a id="nav-seating">Seating</a>
-    <a id="nav-album">Album</a>
+    <a href="#" onclick="goNav('dashboard.html')" id="nav-home">Home</a>
+    <a href="#" onclick="goNav('Guests.html')" id="nav-guests">Guests</a>
+    <a href="#" onclick="goNav('savethedate.html')" id="nav-std">Save the Date</a>
+    <a href="#" onclick="goNav('postwed.html')" id="nav-rsvp">RSVP</a>
+    <a href="#" onclick="goNav('Budget.html')" id="nav-budget">Budget</a>
+    <a href="#" onclick="goNav('postwed2.html')" id="nav-memories">Memories</a>
+    <a href="#" onclick="goNav('gift_registry.html')" id="nav-gifts">Gifts</a>
+    <a href="#" onclick="goNav('SeatingChart.html')" id="nav-seating">Seating</a>
+    <a href="#" onclick="goNav('just_married.html')" id="nav-album">Album</a>
 
   </div>
 </div>
@@ -20,13 +20,9 @@
   position: sticky;
   top: 0;
   z-index: 9999;
-
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-
   padding: 14px 40px;
-
   background: rgba(255,255,255,0.65);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(0,0,0,0.08);
@@ -36,7 +32,6 @@
   display: flex;
   gap: 26px;
   margin-left: auto;
-  font-size: 15px;
 }
 
 .nav-links a {
@@ -70,41 +65,37 @@
 
 <script>
 // ===== TOKEN =====
-const params = new URLSearchParams(window.location.search);
-const token =
-  params.get("t") ||
-  params.get("token") ||
-  params.get("TOKEN") ||
-  params.get("T") ||
-  "";
+function getToken() {
+  const p = new URLSearchParams(window.location.search);
+  return p.get("t") || p.get("token") || p.get("TOKEN") || p.get("T") || "";
+}
 
-// ===== LINKS (строго как у тебя в dashboard) =====
-document.getElementById("nav-home").href = `dashboard.html?t=${token}`;
-document.getElementById("nav-guests").href = `Guests.html?t=${token}`;
-document.getElementById("nav-std").href = `savethedate.html?t=${token}`;
-document.getElementById("nav-rsvp").href = `postwed.html?t=${token}`;
-document.getElementById("nav-budget").href = `Budget.html?t=${token}`;
-document.getElementById("nav-memories").href = `postwed2.html?t=${token}`;
-document.getElementById("nav-gifts").href = `gift_registry.html?t=${token}`;
-document.getElementById("nav-seating").href = `SeatingChart.html?t=${token}`;
-document.getElementById("nav-album").href = `just_married.html?t=${token}`;
+// ===== ПЕРЕХОД (ГЛАВНОЕ) =====
+function goNav(page) {
+  const token = getToken();
+  const url = token ? page + "?t=" + token : page;
+  window.location.href = url;
+}
 
 // ===== ACTIVE =====
-const current = window.location.pathname.split("/").pop().toLowerCase();
+(function() {
+  const current = window.location.pathname.split("/").pop().toLowerCase();
 
-const map = {
-  "dashboard.html": "nav-home",
-  "guests.html": "nav-guests",
-  "savethedate.html": "nav-std",
-  "postwed.html": "nav-rsvp",
-  "budget.html": "nav-budget",
-  "postwed2.html": "nav-memories",
-  "gift_registry.html": "nav-gifts",
-  "seatingchart.html": "nav-seating",
-  "just_married.html": "nav-album"
-};
+  const map = {
+    "dashboard.html": "nav-home",
+    "guests.html": "nav-guests",
+    "savethedate.html": "nav-std",
+    "postwed.html": "nav-rsvp",
+    "budget.html": "nav-budget",
+    "postwed2.html": "nav-memories",
+    "gift_registry.html": "nav-gifts",
+    "seatingchart.html": "nav-seating",
+    "just_married.html": "nav-album"
+  };
 
-if (map[current]) {
-  document.getElementById(map[current]).classList.add("active");
-}
+  if (map[current]) {
+    const el = document.getElementById(map[current]);
+    if (el) el.classList.add("active");
+  }
+})();
 </script>
