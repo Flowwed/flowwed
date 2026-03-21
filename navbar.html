@@ -1,51 +1,41 @@
+<!-- ================= NAVBAR ================= -->
 <div class="navbar">
-
-
-
   <div class="nav-links">
-
-<a href="/dashboard.html">Home</a>
-<a href="/guests.html">Guests</a>
-<a href="/savethedate.html">Save the Date</a>
-<a href="/postwed.html">RSVP</a>
-<a href="/budget.html">Budget</a>
-<a href="/memories.html">Memories</a>
-<a href="/gift_registry.html">Gifts</a>
-<a href="/seatingchart.html">Seating</a>
-<a href="/album.html">Album</a>
-
-</div>
-
+    <a data-page="dashboard">Home</a>
+    <a data-page="Guests">Guests</a>
+    <a data-page="savethedate">Save the Date</a>
+    <a data-page="postwed">RSVP</a>
+    <a data-page="Budget">Budget</a>
+    <a data-page="postwed2">Memories</a>
+    <a data-page="gift_registry">Gifts</a>
+    <a data-page="SeatingChart">Seating</a>
+    <a data-page="just_married">Album</a>
+  </div>
 </div>
 
 <style>
+/* ================= NAVBAR ================= */
 
 .navbar {
   position: sticky;
   top: 0;
+  z-index: 9999;
 
   display: flex;
-  justify-content: flex-end;   /* ← ВОТ ЭТО ГЛАВНОЕ */
+  justify-content: flex-end;
   align-items: center;
+
+  padding: 14px 40px;
 
   background: rgba(255,255,255,0.65);
   backdrop-filter: blur(14px);
-
-  padding: 14px 40px;
   border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-}
-
-.nav-links {
-  margin-left: auto;   /* 🔥 толкает вправо */
-}
 .nav-links {
   display: flex;
   gap: 26px;
+  margin-left: auto;
   font-size: 15px;
 }
 
@@ -54,6 +44,7 @@
   color: #3a1a1a;
   font-weight: 600;
   letter-spacing: 0.2px;
+  cursor: pointer;
   transition: 0.25s;
 }
 
@@ -61,6 +52,7 @@
   color: #b41111;
 }
 
+/* ACTIVE LINK */
 .nav-links a.active {
   color: #b41111;
   font-weight: 700;
@@ -77,11 +69,64 @@
   background: #b41111;
   border-radius: 2px;
 }
-
-.navbar {
-  backdrop-filter: blur(14px);
-  background: rgba(255,255,255,0.65);
-}
-
 </style>
 
+<script>
+/* ================= NAVBAR LOGIC ================= */
+
+// универсальный токен
+function getToken() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T") ||
+    ""
+  );
+}
+
+// переход
+function goToPage(page) {
+  const token = getToken();
+  const url = token ? `${page}.html?t=${token}` : `${page}.html`;
+  window.location.href = url;
+}
+
+// определяем текущую страницу
+function getCurrentPage() {
+  const path = window.location.pathname.split("/").pop().toLowerCase();
+
+  if (path.includes("dashboard")) return "dashboard";
+  if (path.includes("guests")) return "Guests";
+  if (path.includes("savethedate")) return "savethedate";
+  if (path.includes("postwed.html")) return "postwed";
+  if (path.includes("budget")) return "Budget";
+  if (path.includes("postwed2")) return "postwed2";
+  if (path.includes("gift_registry")) return "gift_registry";
+  if (path.includes("seatingchart")) return "SeatingChart";
+  if (path.includes("just_married")) return "just_married";
+
+  return "";
+}
+
+// инициализация
+document.addEventListener("DOMContentLoaded", () => {
+  const links = document.querySelectorAll(".nav-links a");
+  const current = getCurrentPage();
+
+  links.forEach(link => {
+    const page = link.getAttribute("data-page");
+
+    // клик
+    link.addEventListener("click", () => {
+      goToPage(page);
+    });
+
+    // active подсветка
+    if (page === current) {
+      link.classList.add("active");
+    }
+  });
+});
+</script>
