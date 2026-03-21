@@ -1,15 +1,16 @@
+<!-- ================= NAVBAR ================= -->
 <div class="navbar">
   <div class="nav-links">
 
-    <a href="dashboard.html">Home</a>
-    <a href="Guests.html">Guests</a>
-    <a href="savethedate.html">Save the Date</a>
-    <a href="postwed.html">RSVP</a>
-    <a href="Budget.html">Budget</a>
-    <a href="postwed2.html">Memories</a>
-    <a href="gift_registry.html">Gifts</a>
-    <a href="SeatingChart.html">Seating</a>
-    <a href="just_married.html">Album</a>
+    <a id="nav-home">Home</a>
+    <a id="nav-guests">Guests</a>
+    <a id="nav-std">Save the Date</a>
+    <a id="nav-rsvp">RSVP</a>
+    <a id="nav-budget">Budget</a>
+    <a id="nav-memories">Memories</a>
+    <a id="nav-gifts">Gifts</a>
+    <a id="nav-seating">Seating</a>
+    <a id="nav-album">Album</a>
 
   </div>
 </div>
@@ -42,6 +43,7 @@
   text-decoration: none;
   color: #3a1a1a;
   font-weight: 600;
+  cursor: pointer;
   transition: 0.25s;
 }
 
@@ -67,41 +69,42 @@
 </style>
 
 <script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
+// ===== TOKEN =====
+const params = new URLSearchParams(window.location.search);
+const token =
+  params.get("t") ||
+  params.get("token") ||
+  params.get("TOKEN") ||
+  params.get("T") ||
+  "";
+
+// ===== LINKS (строго как у тебя в dashboard) =====
+document.getElementById("nav-home").href = `dashboard.html?t=${token}`;
+document.getElementById("nav-guests").href = `Guests.html?t=${token}`;
+document.getElementById("nav-std").href = `savethedate.html?t=${token}`;
+document.getElementById("nav-rsvp").href = `postwed.html?t=${token}`;
+document.getElementById("nav-budget").href = `Budget.html?t=${token}`;
+document.getElementById("nav-memories").href = `postwed2.html?t=${token}`;
+document.getElementById("nav-gifts").href = `gift_registry.html?t=${token}`;
+document.getElementById("nav-seating").href = `SeatingChart.html?t=${token}`;
+document.getElementById("nav-album").href = `just_married.html?t=${token}`;
+
+// ===== ACTIVE =====
+const current = window.location.pathname.split("/").pop().toLowerCase();
+
+const map = {
+  "dashboard.html": "nav-home",
+  "guests.html": "nav-guests",
+  "savethedate.html": "nav-std",
+  "postwed.html": "nav-rsvp",
+  "budget.html": "nav-budget",
+  "postwed2.html": "nav-memories",
+  "gift_registry.html": "nav-gifts",
+  "seatingchart.html": "nav-seating",
+  "just_married.html": "nav-album"
+};
+
+if (map[current]) {
+  document.getElementById(map[current]).classList.add("active");
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  const token = getToken();
-  const links = document.querySelectorAll(".nav-links a");
-
-  // ✅ добавляем токен ко всем ссылкам
-  links.forEach(link => {
-    const url = new URL(link.getAttribute("href"), window.location.origin);
-
-    if (token) {
-      url.searchParams.set("t", token);
-    }
-
-    link.href = url.pathname + url.search;
-  });
-
-  // ✅ подсветка текущей страницы
-  const current = window.location.pathname.split("/").pop().toLowerCase();
-
-  links.forEach(link => {
-    const linkPage = link.getAttribute("href").split("?")[0].toLowerCase();
-
-    if (linkPage === current) {
-      link.classList.add("active");
-    }
-  });
-});
 </script>
