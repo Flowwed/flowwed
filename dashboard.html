@@ -663,7 +663,7 @@ cursor: pointer;
 <div class="button-row">
 
   <button class="big-btn" id="guestbook">
-    <i class="fa-solid fa-users"></i>Guest Hub
+    <i class="fa-solid fa-users"></i>Guests
     <div class="bubble">
     Manage, your guests <b></b>.<br>
     <b>Add them - track them!</b><br>
@@ -685,28 +685,28 @@ cursor: pointer;
   <button class="big-btn" id="std">
     <i class="fa-solid fa-file-lines"></i>Save The Date
     <div class="bubble">
-    Pick a template & send your <b>Save-the-Date!</b><br>
+    Send your <b>Save-the-Date!</b><br>
 </div>
 </button>
 
   <button class="big-btn" id="rsvp">
     <i class="fa-solid fa-envelope-open"></i>RSVP
     <div class="bubble">
-Pick a template & send your <b>RSVP!</b><br>
+Send your <b>RSVP!</b><br>
 </div>
 </button>
 
  <button class="big-btn" id="seating">
-    <i class="fa-solid fa-chair"></i>Seating Chart
+    <i class="fa-solid fa-chair"></i>Seating 
     <div class="bubble">
 Match your guests — make the perfect <b>table vibe!</b><br>
 </div>
 </button>
 
   <button class="big-btn" id="registry">
-    <i class="fa-solid fa-gift"></i>Gift Registry
+    <i class="fa-solid fa-gift"></i>Gifts
     <div class="bubble">
-Add your wishes — your <b>friends</b> love shopping anyway!<br>
+Add your wishes — your <b>friends love shopping</b> anyway!<br>
 </div>
 </button>
 
@@ -729,7 +729,7 @@ Stay on top of your wedding <b>budget!</b><br>
 
 <!--
 <button class="big-btn" id="reports">
-    <i class="fa-solid fa-chart-line"></i>Wed Reports
+    <i class="fa-solid fa-heart"></i>Memories
     <div class="bubble">
       Your reports are here — planning made <b>easy!</b><br>
     </div>
@@ -737,16 +737,16 @@ Stay on top of your wedding <b>budget!</b><br>
 -->
 
 <button class="big-btn" id="reports2">
-  <i class="fa-solid fa-chart-line"></i>Wed Reports
+    <i class="fa-solid fa-heart"></i>Memories
   <div class="bubble">
-    📊 Access web reports directly.
+    Collect <b>memories and messages</b> for your “Just Married” album!<br>
   </div>
 </button>
 
 <button class="big-btn" id="postwed">
-  <i class="fa-solid fa-heart"></i>Post-Wedding
+  <i class="fa-solid fa-images"></i>Album
   <div class="bubble">
-    Wrap things up after the big day — messages, memories, and next steps.
+    Relive your <b>wedding moments!</b><b> 
   </div>
 </button>
 
@@ -902,7 +902,7 @@ function openSection(page) {
 // TEMPLATE GALLERY (STD / RSVP)
 // ----------------------------
 document.getElementById("std").onclick = () => {
-  window.open(`template-gallery.html?t=${token}&type=save&method=email`, "_blank");
+ window.open(`savethedate.html?t=${token}`, "_blank");
 };
 
 document.getElementById("rsvp").onclick = () => openSection("postwed");
@@ -1151,7 +1151,7 @@ function visitSite() {
     params.get("TOKEN") ||
     params.get("T");
 
-  window.open(`https://www.flowwed.com/everaftercinema?token=${token}`, "_blank");
+  window.open(`https://flowwed.netlify.app/index.html?t=${token}`, "_blank");
 }
 
 </script>
