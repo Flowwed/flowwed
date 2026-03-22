@@ -580,24 +580,55 @@ th, td {
 <div id="navbar-container"></div>
 
 <script>
+function getToken() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T") ||
+    ""
+  );
+}
+
 fetch("/navbar.html")
   .then(res => res.text())
-  .then(data => {
-    document.getElementById("navbar-container").innerHTML = data;
+  .then(html => {
+    document.getElementById("navbar-container").innerHTML = html;
 
-    // 🔥 ВОТ ТУТ ДЕЛАЕМ ACTIVE
+    const token = getToken();
     const links = document.querySelectorAll(".nav-links a");
-    const currentPage = window.location.pathname.split("/").pop();
+
+    // ================= CLICK (100% контроль) =================
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const page = link.dataset.page;
+        if (!page) return;
+
+        const url = token
+          ? `${page}.html?t=${encodeURIComponent(token)}`
+          : `${page}.html`;
+
+        window.location.href = url;
+      });
+    });
+
+    // ================= ACTIVE =================
+    const current = window.location.pathname.split("/").pop().toLowerCase();
 
     links.forEach(link => {
-      const linkPage = link.getAttribute("href").split("/").pop();
+      const page = (link.dataset.page || "").toLowerCase() + ".html";
 
-      if (linkPage === currentPage) {
+      if (page === current) {
         link.classList.add("active");
       }
     });
   });
+
 </script>
+
 
 <div class="top-logo-title" style="gap:16px;">
   <h1 id="topMainTitle">Seating Chart</h1>
