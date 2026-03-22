@@ -1,16 +1,15 @@
-<!-- ================= NAVBAR ================= -->
 <div class="navbar">
   <div class="nav-links">
 
-    <a data-page="dashboard">Home</a>
-    <a data-page="Guests">Guests</a>
-    <a data-page="savethedate">Save the Date</a>
-    <a data-page="postwed">RSVP</a>
-    <a data-page="Budget">Budget</a>
-    <a data-page="postwed2">Memories</a>
-    <a data-page="gift_registry">Gifts</a>
-    <a data-page="SeatingChart">Seating</a>
-    <a data-page="just_married">Album</a>
+    <a href="dashboard.html">Home</a>
+    <a href="Guests.html">Guests</a>
+    <a href="savethedate.html">Save the Date</a>
+    <a href="postwed.html">RSVP</a>
+    <a href="Budget.html">Budget</a>
+    <a href="postwed2.html">Memories</a>
+    <a href="gift_registry.html">Gifts</a>
+    <a href="SeatingChart.html">Seating</a>
+    <a href="just_married.html">Album</a>
 
   </div>
 </div>
@@ -43,7 +42,6 @@
   text-decoration: none;
   color: #3a1a1a;
   font-weight: 600;
-  cursor: pointer;
   transition: 0.25s;
 }
 
@@ -69,7 +67,6 @@
 </style>
 
 <script>
-// ================= TOKEN =================
 function getToken() {
   const params = new URLSearchParams(window.location.search);
   return (
@@ -81,35 +78,28 @@ function getToken() {
   );
 }
 
-// ================= INIT =================
 document.addEventListener("DOMContentLoaded", () => {
   const token = getToken();
   const links = document.querySelectorAll(".nav-links a");
 
-  // ===== CLICK HANDLER (главное) =====
+  // ✅ добавляем токен ко всем ссылкам
   links.forEach(link => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
+    const url = new URL(link.getAttribute("href"), window.location.origin);
 
-      const page = link.dataset.page;
+    if (token) {
+      url.searchParams.set("t", token);
+    }
 
-      if (!page) return;
-
-      const url = token
-        ? `${page}.html?t=${encodeURIComponent(token)}`
-        : `${page}.html`;
-
-      window.location.href = url;
-    });
+    link.href = url.pathname + url.search;
   });
 
-  // ===== ACTIVE PAGE =====
+  // ✅ подсветка текущей страницы
   const current = window.location.pathname.split("/").pop().toLowerCase();
 
   links.forEach(link => {
-    const page = (link.dataset.page || "").toLowerCase() + ".html";
+    const linkPage = link.getAttribute("href").split("?")[0].toLowerCase();
 
-    if (page === current) {
+    if (linkPage === current) {
       link.classList.add("active");
     }
   });
