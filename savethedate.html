@@ -1653,6 +1653,11 @@ Wedding Details
 <label>State</label>
 <input id="venueAddressInput" type="text" placeholder="If in the USA, enter the state (e.g. California)" class="couple-field" data-sync="address">
 
+<div style="margin-top:14px;font-size:13px;">
+<a id="checkMapLink" href="#" target="_blank" style="color:#1e63ff;text-decoration:underline;">
+Check this address on map
+</a>
+</div>
 
 </div>
 
@@ -1700,6 +1705,12 @@ font-weight:600;
 ✓ Saved
 </span>
 
+<div class="date-info">
+  <div class="date-info-icon">i</div>
+  <div class="date-info-text">
+    Choose your RSVP deadline. Guests must respond before this date.
+  </div>
+</div>
 
 </div>
 </div>
@@ -1759,8 +1770,12 @@ margin-bottom:18px;
   <span data-preview="address"></span>
 </div>
 
+<div class="map-link-box">
+  <a id="previewMapLink" href="#" target="_blank">
+    Check this address on map
+  </a>
 
-
+</div>
 <div class="field" style="display:flex; gap:8px;">
 <label>RSVP Deadline</label>
 <span class="dot">·</span>
@@ -2521,27 +2536,6 @@ async function loadSenderEmail() {
   }
 }
 
-
-function validateBlueFields() {
-
-  const country = document.getElementById("weddingTimeInput").value.trim().toLowerCase();
-  const stateInput = document.getElementById("venueAddressInput");
-  const state = stateInput.value.trim();
-
-  // убираем старую ошибку
-  stateInput.classList.remove("input-error");
-
-  // проверка только для USA
-  if ((country === "usa" || country === "us") && !state) {
-    stateInput.classList.add("input-error");
-    showToastBox("Please enter state for USA", "error");
-    return false;
-  }
-
-  return true;
-}
-
-
 document.getElementById("sendEmailBtn").onclick = () => {
 
 if(!validateBlueFields()) return;
@@ -2848,6 +2842,15 @@ firstEmpty.focus();
 return false;
 }
 
+const country = document.getElementById("weddingTimeInput").value.trim().toLowerCase();
+const stateInput = document.getElementById("venueAddressInput");
+const state = stateInput.value.trim();
+
+if ((country === "usa" || country === "us") && !state) {
+  stateInput.classList.add("input-error");
+  showToastBox("Please enter state for USA", "error");
+  return false;
+}
 
 return true;
 
