@@ -594,12 +594,15 @@ function getToken() {
 fetch("/navbar.html")
   .then(res => res.text())
   .then(html => {
-    document.getElementById("navbar-container").innerHTML = html;
+    const container = document.getElementById("navbar-container");
+    container.innerHTML = html;
 
     const token = getToken();
-    const links = document.querySelectorAll(".nav-links a");
 
-    // ================= CLICK (100% контроль) =================
+    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
+    const links = container.querySelectorAll(".nav-links a");
+
+    // ================= CLICK =================
     links.forEach(link => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -615,20 +618,25 @@ fetch("/navbar.html")
       });
     });
 
-    // ================= ACTIVE =================
-    const current = window.location.pathname.split("/").pop().toLowerCase();
+    // ================= ACTIVE (FIXED) =================
+    let current = window.location.pathname;
+
+    // убираем trailing slash
+    if (current.endsWith("/")) {
+      current = current.slice(0, -1);
+    }
+
+    current = current.split("/").pop().toLowerCase();
 
     links.forEach(link => {
-      const page = (link.dataset.page || "").toLowerCase() + ".html";
+      const page = (link.dataset.page || "") + ".html";
 
-      if (page === current) {
+      if (current === page.toLowerCase()) {
         link.classList.add("active");
       }
     });
   });
-
 </script>
-
 
 <div class="top-logo-title" style="gap:16px;">
   <h1 id="topMainTitle">Seating Chart</h1>
