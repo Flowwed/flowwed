@@ -598,40 +598,44 @@ fetch("/navbar.html")
     container.innerHTML = html;
 
     const token = getToken();
+
+    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
     const links = container.querySelectorAll(".nav-links a");
 
-    // ================= TOKEN NAVIGATION =================
+    // ================= CLICK =================
     links.forEach(link => {
-      const baseHref = link.getAttribute("href");
-
-      // сразу прописываем токен в href
-      const url = new URL(baseHref, window.location.origin);
-
-      if (token) {
-        url.searchParams.set("t", token);
-      }
-
-      link.href = url.pathname + url.search;
-
-      // перехват клика (чтобы 100% контроль)
       link.addEventListener("click", (e) => {
         e.preventDefault();
-        window.location.href = link.href;
+
+        const page = link.dataset.page;
+        if (!page) return;
+
+        const url = token
+          ? `${page}.html?t=${encodeURIComponent(token)}`
+          : `${page}.html`;
+
+        window.location.href = url;
       });
     });
 
-    // ================= ACTIVE (КАК В СТАРОМ — ИМЕННО ЭТО РАБОТАЕТ) =================
-    const current = window.location.pathname.split("/").pop().toLowerCase();
+    // ================= ACTIVE (FIXED) =================
+    let current = window.location.pathname;
+
+    // убираем trailing slash
+    if (current.endsWith("/")) {
+      current = current.slice(0, -1);
+    }
+
+    current = current.split("/").pop().toLowerCase();
 
     links.forEach(link => {
-      const linkPage = link.getAttribute("href").split("?")[0].toLowerCase();
+      const page = (link.dataset.page || "") + ".html";
 
-      if (linkPage === current) {
+      if (current === page.toLowerCase()) {
         link.classList.add("active");
       }
     });
   });
-
 </script>
 
 <div class="top-logo-title" style="gap:16px;">
