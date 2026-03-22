@@ -15,22 +15,30 @@
 </div>
 
 <style>
+
 .navbar {
   position: sticky;
-  top: 0;
+  top: 20px;                 /* 🔥 отступ сверху */
   z-index: 9999;
 
   display: flex;
   justify-content: flex-end;
   align-items: center;
 
-  padding: 14px 40px;
+  padding: 14px 32px;
 
-  background: rgba(255,255,255,0.65);
+  margin: 0 24px;            /* 🔥 отступы по бокам */
+
+  background: rgba(255,255,255,0.75);
   backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-}
 
+  border-radius: 18px;       /* 🔥 скругление */
+  
+  box-shadow:               /* 🔥 "плавающий" эффект */
+    0 8px 24px rgba(0,0,0,0.12);
+
+  border: 1px solid rgba(0,0,0,0.06);
+}
 .nav-links {
   display: flex;
   gap: 26px;
