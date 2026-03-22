@@ -519,78 +519,6 @@ input[type=file] {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ================= TOP NAV ================= */
-
-.top-nav-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center; /* центрируем navbar */
-  align-items: center;
-  height: 52px;            /* фикс высоты */
-  margin-bottom: 32px;     /* отступ от заголовка */
-}
-
-.top-nav {
-  display: flex;
-  gap: 36px;
-  font-size: 15px;
-  font-weight: 500;
-  color: #7a6772;
-}
-
-.top-nav a {
-  text-decoration: none;
-  color: #7a6772;
-  transition: 0.2s;
-}
-
-.top-nav a:hover {
-  color: #b40012;
-}
-
-.top-nav a.active {
-  font-weight: 700;
-  text-shadow: 0 0 4px rgba(180,17,17,0.25);
-}
-
-/* ================= BACK BUTTON ================= */
-
-.back-btn {
-  position: absolute;
-  left: 40px;              /* ← под твой layout */
-  top: 50%;
-  transform: translateY(-50%);
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1;
-
-  border-radius: 8px;
-  background: rgba(255,255,255,0.35);
-  border: 1px solid rgba(180,17,17,0.25);
-  color: #b40012;
-
-  backdrop-filter: blur(6px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-
-  cursor: pointer;
-  transition: background .2s ease, box-shadow .2s ease;
-}
-
-.back-btn svg {
-  display: block;     /* убираем baseline-сдвиг */
-  flex-shrink: 0;
-}
-
-.back-btn:hover {
-  background: rgba(255,255,255,0.6);
-  box-shadow: 0 4px 12px rgba(180,17,17,0.18);
-}
 
 .caption-gallery {
   height: 260px;              /* поле фиксированное */
@@ -816,35 +744,73 @@ input[type=file] {
 
 </head>
 
-<body data-page="just_married">
+<body>
+
+<div id="navbar-container"></div>
+
+<script>
+function getToken() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T") ||
+    ""
+  );
+}
+
+fetch("/navbar.html")
+  .then(res => res.text())
+  .then(html => {
+    const container = document.getElementById("navbar-container");
+    container.innerHTML = html;
+
+    const token = getToken();
+
+    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
+    const links = container.querySelectorAll(".nav-links a");
+
+    // ================= CLICK =================
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const page = link.dataset.page;
+        if (!page) return;
+
+        const url = token
+          ? `${page}.html?t=${encodeURIComponent(token)}`
+          : `${page}.html`;
+
+        window.location.href = url;
+      });
+    });
+
+    // ================= ACTIVE (FIXED) =================
+    let current = window.location.pathname;
+
+    // убираем trailing slash
+    if (current.endsWith("/")) {
+      current = current.slice(0, -1);
+    }
+
+    current = current.split("/").pop().toLowerCase();
+
+    links.forEach(link => {
+      const page = (link.dataset.page || "") + ".html";
+
+      if (current === page.toLowerCase()) {
+        link.classList.add("active");
+      }
+    });
+  });
+</script>
 
 
-<!-- ======= TOP NAV + BACK BUTTON ======= -->
-<div class="top-nav-wrapper">
-
-  <button id="backBtn" class="back-btn">
-    <svg width="18" height="18" viewBox="0 0 24 24"
-         stroke-width="2" stroke="#6d6d6d"
-         fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    Back
-  </button>
-
-  <div class="top-nav">
-  <a href="/photo-gallery.html">Photo Gallery</a>
-  <a href="/gift-registry.html">Gift Registry</a>
-  <a href="/our-story.html">Our Story</a>
-  <a href="/updates.html">Updates</a>
-  <a href="/wedding-party.html">Wedding Party</a>
-  <a href="/wedding-info.html">Wedding Info</a>
-  <a href="/venue-map.html">Venue & Map</a>
-  <a href="/travel-info.html">Travel Info</a>
-  <a href="/just_married.html">Just Married</a>
-</div>
 
 
-</div>
+
 
 
 <!-- HEADER -->
@@ -1422,36 +1388,6 @@ const musicPreview = document.getElementById("musicPreview");
 
 
 
-<script>
-/* ===============================
-   TOP NAV — TOKEN + BACK
-================================ */
-
-const tokenNav = new URLSearchParams(location.search).get("t") || "";
-
-/* прокинуть token во все ссылки меню */
-document.querySelectorAll(".top-nav a").forEach(a => {
-  if (tokenNav) {
-    a.href = a.href + "?t=" + tokenNav;
-  }
-});
-
-/* back button */
-document.getElementById("backBtn")?.addEventListener("click", () => {
-  window.location.href = "/dashboard.html?t=" + tokenNav;
-});
-
-/* active nav link */
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body.dataset.page || "photo-gallery";
-
-  document.querySelectorAll(".top-nav a").forEach(link => {
-    if (link.getAttribute("href").includes(page)) {
-      link.classList.add("active");
-    }
-  });
-});
-</script>
 
 <!-- CAPTION MODAL -->
 <div class="modal-backdrop" id="captionModal">
