@@ -2536,6 +2536,31 @@ async function loadSenderEmail() {
   }
 }
 
+
+function validateBlueFields() {
+
+  const countryInput = document.getElementById("weddingTimeInput");
+  const stateInput = document.getElementById("venueAddressInput");
+
+  if (!countryInput || !stateInput) return true;
+
+  const country = countryInput.value.trim().toLowerCase();
+  const state = stateInput.value.trim();
+
+  // очистка
+  stateInput.classList.remove("input-error");
+
+  // правило только для USA
+  if ((country === "usa" || country === "us") && !state) {
+    stateInput.classList.add("input-error");
+    showToastBox("Please enter state for USA", "error");
+    return false;
+  }
+
+  return true;
+}
+
+
 document.getElementById("sendEmailBtn").onclick = () => {
 
 if(!validateBlueFields()) return;
