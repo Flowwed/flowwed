@@ -1638,20 +1638,20 @@ Wedding Details
 </div>
 
 <div class="field">
-<label>Wedding Time</label>
-<input id="weddingTimeInput" type="time" class="couple-field" data-sync="time">
+<label>Country</label>
+<input id="weddingTimeInput" type="text" class="couple-field" data-sync="time" placeholder="Enter country (e.g. USA)">
 </div>
 
 
 <div class="field">
-<label>Venue</label>
-<input id="venueInput" type="text" placeholder="Venue name" class="couple-field" data-sync="venue">
+<label>City</label>
+<input id="venueInput" type="text" placeholder="Enter city (e.g. New York)" class="couple-field" data-sync="venue">
 </div>
 
 
 <div class="field">
-<label>Address</label>
-<input id="venueAddressInput" type="text" placeholder="Venue address" class="couple-field" data-sync="address">
+<label>State</label>
+<input id="venueAddressInput" type="text" placeholder="If in the USA, enter the state (e.g. California)" class="couple-field" data-sync="address">
 
 <div style="margin-top:14px;font-size:13px;">
 <a id="checkMapLink" href="#" target="_blank" style="color:#1e63ff;text-decoration:underline;">
@@ -1752,20 +1752,20 @@ margin-bottom:18px;
 
 
 <div class="field" style="display:flex; gap:8px;">
-<label>Wedding Time</label>
+<label>Country</label>
 <span class="dot">·</span>
 <div data-preview="time"></div>
 </div>
 
 
 <div class="field" style="display:flex; gap:8px;">
-<label>Venue</label>
+<label>City</label>
 <span class="dot">·</span>
 <div data-preview="venue"></div>
 </div>
 
 <div class="field preview-line">
-  <label>Address</label>
+  <label>State</label>
   <span class="dot">·</span>
   <span data-preview="address"></span>
 </div>
@@ -2029,11 +2029,10 @@ field.addEventListener("change", async () => {
 const token = new URLSearchParams(location.search).get("t");
 
 const columnMap = {
-deadline: "rsvp_date",
-date: "wedding_date",
-time: "wedding_time",
-venue: "venue",
-address: "address"
+  date: "wedding_date",
+  time: "country",
+  venue: "city",
+  address: "state"
 };
 
 const column = columnMap[field.dataset.sync];
@@ -2059,7 +2058,7 @@ console.log("TOKEN:", token);
 
 const { data, error } = await supabase
   .from("sites")
-  .select("rsvp_date, wedding_date, wedding_time, venue, address")
+  .select("wedding_date, country, city, state")
   .eq("edit_token", token)
   .single();
 
@@ -2081,9 +2080,9 @@ const address = document.getElementById("venueAddressInput");
 if(rsvp) rsvp.value = data.rsvp_date || "";
 if(date && data.wedding_date)
 date.value = data.wedding_date.split("T")[0];
-if(time) time.value = data.wedding_time || "";
-if(venue) venue.value = data.venue || "";
-if(address) address.value = data.address || "";
+if(time) time.value = data.country || "";
+if(venue) venue.value = data.city || "";
+if(address) address.value = data.state || "";
 
 /* preview sync */
 
@@ -2841,6 +2840,16 @@ block:"center"
 firstEmpty.focus();
 
 return false;
+}
+
+const country = document.getElementById("weddingTimeInput").value.trim().toLowerCase();
+const stateInput = document.getElementById("venueAddressInput");
+const state = stateInput.value.trim();
+
+if ((country === "usa" || country === "us") && !state) {
+  stateInput.classList.add("input-error");
+  showToastBox("Please enter state for USA", "error");
+  return false;
 }
 
 return true;
