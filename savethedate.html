@@ -1770,10 +1770,6 @@ margin-bottom:18px;
   <span data-preview="address"></span>
 </div>
 
-<div class="map-link-box">
-  <a id="previewMapLink" href="#" target="_blank">
-    Check this address on map
-  </a>
 
 </div>
 <div class="field" style="display:flex; gap:8px;">
@@ -2812,57 +2808,70 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 
 function validateBlueFields(){
 
-const fields = document.querySelectorAll(".couple-field");
-let firstEmpty = null;
+  const fields = document.querySelectorAll(".couple-field");
+  let firstEmpty = null;
 
-fields.forEach(field => {
+  const country = document.getElementById("weddingTimeInput")
+    ?.value.trim().toLowerCase();
 
-field.classList.remove("required-error");
+  const isUSA = (country === "usa" || country === "us");
 
-if(!field.value.trim()){
+  fields.forEach(field => {
 
-field.classList.add("required-error");
+    field.classList.remove("required-error");
+    field.classList.remove("input-error");
 
-if(!firstEmpty){
-firstEmpty = field;
+    const key = field.dataset.sync;
+    const value = field.value.trim();
+
+    // ❗ ПРОПУСКАЕМ STATE если НЕ USA
+    if (key === "address" && !isUSA) {
+      return;
+    }
+
+    if(!value){
+      field.classList.add("required-error");
+
+      if(!firstEmpty){
+        firstEmpty = field;
+      }
+    }
+
+  });
+
+  if(firstEmpty){
+    firstEmpty.scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+
+    firstEmpty.focus();
+    return false;
+  }
+
+  // отдельная проверка USA → state
+  if (isUSA) {
+    const stateInput = document.getElementById("venueAddressInput");
+    const state = stateInput.value.trim();
+
+    if (!state) {
+      stateInput.classList.add("input-error");
+      showToastBox("Please enter state for USA", "error");
+      return false;
+    }
+  }
+
+  return true;
 }
 
-}
-
-});
-
-if(firstEmpty){
-
-firstEmpty.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-
-firstEmpty.focus();
-
-return false;
-}
-
-const country = document.getElementById("weddingTimeInput").value.trim().toLowerCase();
-const stateInput = document.getElementById("venueAddressInput");
-const state = stateInput.value.trim();
-
-if ((country === "usa" || country === "us") && !state) {
-  stateInput.classList.add("input-error");
-  showToastBox("Please enter state for USA", "error");
-  return false;
-}
-
-return true;
-
-}
 
 /* УБИРАЕМ КРАСНУЮ РАМКУ ПРИ ВВОДЕ */
 document.querySelectorAll(".couple-field").forEach(field => {
 
-field.addEventListener("input", () => {
-field.classList.remove("required-error");
-});
+  field.addEventListener("input", () => {
+    field.classList.remove("required-error");
+    field.classList.remove("input-error");
+  });
 
 });
 
@@ -3676,42 +3685,12 @@ border:0;
 
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
 
-const addressInput = document.getElementById("venueAddressInput");
-
-const mapModal = document.getElementById("mapModal");
-const mapFrame = document.getElementById("mapModalFrame");
-const closeMap = document.getElementById("closeMapModal");
-
-/* обе ссылки */
-document.querySelectorAll("#checkMapLink, #previewMapLink").forEach(link => {
-
-  link.addEventListener("click", (e) => {
-
-    e.preventDefault();
-
-    const address = addressInput.value.trim();
-
-    if (!address) {
-      alert("Please enter the venue address first.");
-      return;
-    }
-
-    mapFrame.src =
-      `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
-
-    mapModal.style.display = "flex";
-
-  });
+  // ничего не делаем — map полностью удалён
 
 });
-
-closeMap.onclick = () => {
-  mapModal.style.display = "none";
-};
-
 </script>
-
 <script>
 
 document.addEventListener("DOMContentLoaded", () => {
