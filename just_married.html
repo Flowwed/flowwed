@@ -1432,6 +1432,7 @@ const musicPreview = document.getElementById("musicPreview");
 </div>
 
 <script>
+
 let lastUploadedCaption = null;
   let lastUploadedFile = null;
 
@@ -1462,18 +1463,39 @@ document.addEventListener("keydown", (e) => {
 });
 
 
-function showToast(text) {
+let lastToastTime = 0;
+let toastTimer = null;
+let toastHideTimer = null;
+
+function showToast(text, duration = 3500) {
+
+  // ✅ ПАУЗА МЕЖДУ БАЛЛОНАМИ (ПРАВИЛЬНОЕ МЕСТО)
+  const now = Date.now();
+  if (now - lastToastTime < 800) return;
+  lastToastTime = now;
+
   const t = document.getElementById("toast");
+
+  t.classList.remove("show");
+
+  if (toastTimer) clearTimeout(toastTimer);
+  if (toastHideTimer) clearTimeout(toastHideTimer);
+
   t.innerText = text;
-  t.classList.add("show");
 
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => {
+  void t.offsetWidth;
+
+  requestAnimationFrame(() => {
+    t.classList.add("show");
+  });
+
+  toastTimer = setTimeout(() => {
     t.classList.remove("show");
-  }, 2200);
+
+    toastHideTimer = setTimeout(() => {}, 400);
+
+  }, duration);
 }
-
-
 function showConfirm(text) {
   return new Promise(resolve => {
     const wrap = document.getElementById("confirmToast");
