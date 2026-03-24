@@ -1303,54 +1303,14 @@ images.forEach(img => {
 const gallery = document.getElementById("captionGallery");
 gallery.innerHTML = "";
 
-const renderPromises = captions.map(async (row) => {
+const items = [];
+
+for (const row of captions) {
   const path = slotToPath[row.slot];
-  if (!path) return null;
+  if (!path) continue;
 
   const item = document.createElement("div");
   item.className = "caption-item";
-
-  const del = document.createElement("div");
-  del.className = "delete-btn";
-  del.innerText = "×";
-
-  del.onclick = async () => {
-    const ok = await showConfirm("Delete this photo?");
-    if (!ok) return;
-
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}`,
-      {
-        method: "DELETE",
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY,
-          Prefer: "return=minimal"
-        }
-      }
-    );
-
-    const imgDel = await fetch(
-      `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${row.slot}`,
-      {
-        method: "DELETE",
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY,
-          Prefer: "return=minimal"
-        }
-      }
-    );
-
-    if (!imgDel.ok) {
-      const t = await imgDel.text();
-      console.error("IMAGE DELETE FAILED:", t);
-      alert("Image was not deleted (RLS or token mismatch)");
-      return;
-    }
-
-    await loadCaptionsFromSupabase();
-  };
 
   const photoNumber = Number(row.slot.replace("img", "")) - 50;
   item.dataset.num = photoNumber;
@@ -1360,32 +1320,28 @@ const renderPromises = captions.map(async (row) => {
   label.innerText = `Photo ${photoNumber}`;
 
   const img = document.createElement("img");
-
-  await new Promise((resolve) => {
-    img.onload = resolve;
-    img.onerror = resolve;
-    img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
-  });
+  img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
 
   const text = document.createElement("div");
   text.className = "caption-text";
   text.innerText = row.caption || "—";
 
-  item.appendChild(del);
   item.appendChild(label);
   item.appendChild(img);
   item.appendChild(text);
 
-  return item;
-});
+  items.push(item);
+}
 
-const items = (await Promise.all(renderPromises))
-  .filter(Boolean)
-  .sort((a, b) => Number(a.dataset.num) - Number(b.dataset.num));
+// сортировка
+items.sort((a, b) => Number(a.dataset.num) - Number(b.dataset.num));
+
+// 🔥 ВАЖНО: через fragment
+const fragment = document.createDocumentFragment();
+items.forEach(el => fragment.appendChild(el));
 
 gallery.innerHTML = "";
-items.forEach(el => gallery.appendChild(el));
-
+gallery.appendChild(fragment);
 
 requestAnimationFrame(() => {
   gallery.style.opacity = "1";
