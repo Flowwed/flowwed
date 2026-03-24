@@ -1462,17 +1462,39 @@ document.addEventListener("keydown", (e) => {
 });
 
 
-function showToast(text) {
+let toastTimer = null
+let toastHideTimer = null
+
+function showToast(text, duration = 2200) {
   const t = document.getElementById("toast");
-  t.innerText = text;
-  t.classList.add("show");
 
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => {
-    t.classList.remove("show");
-  }, 2200);
+  // ❗ сброс если уже показывается
+  t.classList.remove("show")
+
+  if (toastTimer) clearTimeout(toastTimer)
+  if (toastHideTimer) clearTimeout(toastHideTimer)
+
+  // ❗ обновляем текст
+  t.innerText = text
+
+  // ❗ форсируем reflow (ВАЖНО для плавности)
+  void t.offsetWidth
+
+  // ❗ плавное появление
+  requestAnimationFrame(() => {
+    t.classList.add("show")
+  })
+
+  // ❗ скрытие
+  toastTimer = setTimeout(() => {
+    t.classList.remove("show")
+
+    toastHideTimer = setTimeout(() => {
+      // ничего не удаляем — как в первом коде (reuse)
+    }, 300)
+
+  }, duration)
 }
-
 function showConfirm(text) {
   return new Promise(resolve => {
     const wrap = document.getElementById("confirmToast");
