@@ -145,21 +145,27 @@ body::after { ... }
 /* ================================================= */
 
 .button-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 28px;
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 60px auto 0;
 }
 
+.last-row {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
 /* =============================================== */
 /*          RUBY GLASS BUTTONS — smooth version     */
 /* =============================================== */
 
 .big-btn {
-  width: 200px;
-  height: 200px;
+  width: 160px;
+  height: 160px;
+
   border-radius: 32px;
 
   background: linear-gradient(
@@ -173,8 +179,8 @@ body::after { ... }
   backdrop-filter: blur(22px) saturate(180%);
 
   color: white;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 18px;
+  font-weight: 600;
 
   display: flex;
   flex-direction: column;
@@ -216,7 +222,7 @@ body::after { ... }
 
 /* icon */
 .big-btn i {
-  font-size: 46px;
+  font-size: 30px;
   color: #ffe6ec;
   text-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
@@ -668,104 +674,119 @@ cursor: pointer;
 <span id="openGuide" class="guide-link">here</span>. -->
 
 </div>
-
 <div id="warning" class="warning"></div>
 
 <div class="button-row">
 
-  <button class="big-btn" id="guestbook">
+  <!-- ROW 1 -->
+  <button class="big-btn" id="guestbook" onclick="openPage('guestbook')">
     <i class="fa-solid fa-users"></i>Guests
     <div class="bubble">
-    Manage, your guests <b></b>.<br>
-    <b>Add them - track them!</b><br>
-</div>
-   </button>
+      Manage your guests.<br>
+      <b>Add them — track them!</b>
+    </div>
+  </button>
 
-<!--
-<button class="big-btn" id="yourweb">
-  <i class="fa-solid fa-globe"></i>Web Manager
-  <div class="bubble">
-    View, manage, and share your website <b></b>.<br>
-    Want to change the photos or update your story on the webpage?
-    <b>It's easy!</b><br>
-  </div>
-</button>
--->
-
+  <button class="big-btn" id="upload">
+    <i class="fa-solid fa-images"></i>Photo Gallery
+    <div class="bubble">
+      Relive your <b>wedding moments!</b>
+    </div>
+  </button>
 
   <button class="big-btn" id="std">
     <i class="fa-solid fa-file-lines"></i>Save The Date
     <div class="bubble">
-    Send your <b>Save-the-Date!</b><br>
-</div>
-</button>
+      Send your <b>Save-the-Date!</b>
+    </div>
+  </button>
 
   <button class="big-btn" id="rsvp">
     <i class="fa-solid fa-envelope-open"></i>RSVP
     <div class="bubble">
-Send your <b>RSVP!</b><br>
-</div>
-</button>
+      Send your <b>RSVP!</b>
+    </div>
+  </button>
 
- <button class="big-btn" id="seating">
-    <i class="fa-solid fa-chair"></i>Seating 
+  <!-- ROW 2 -->
+  <button class="big-btn" id="seating">
+    <i class="fa-solid fa-chair"></i>Seating
     <div class="bubble">
-Match your guests — make the perfect <b>table vibe!</b><br>
-</div>
-</button>
+      Match your guests — perfect <b>table vibe!</b>
+    </div>
+  </button>
 
   <button class="big-btn" id="registry">
     <i class="fa-solid fa-gift"></i>Gifts
     <div class="bubble">
-Add your wishes — your <b>friends love shopping</b> anyway!<br>
-</div>
-</button>
-
-  <!-- <button class="big-btn" id="map">
-    <i class="fa-solid fa-map-location-dot"></i>Map
-    <div class="bubble">Карта и навигация по локациям</div>
-  </button> -->
-
-   <!-- <button class="big-btn" id="upload">
-    <i class="fa-solid fa-cloud-arrow-up"></i>Upload Photos
-    <div class="bubble">Фотографии от гостей</div>
-  </button> -->
+      Add your wishes — <b>friends love shopping!</b>
+    </div>
+  </button>
 
   <button class="big-btn" id="budget">
     <i class="fa-solid fa-sack-dollar"></i>Budget
     <div class="bubble">
-Stay on top of your wedding <b>budget!</b><br>
-</div>
-</button>
+      Stay on top of your <b>budget!</b>
+    </div>
+  </button>
 
-<!--
-<button class="big-btn" id="reports">
+  <button class="big-btn" id="reports">
+    <i class="fa-solid fa-map-location-dot"></i>Event Details
+    <div class="bubble">
+      Planning made <b>easy!</b>
+    </div>
+  </button>
+
+  <!-- ROW 3 -->
+  <button class="big-btn" id="memories">
     <i class="fa-solid fa-heart"></i>Memories
     <div class="bubble">
-      Your reports are here — planning made <b>easy!</b><br>
+      Collect <b>memories & messages</b>
     </div>
-</button>
--->
+  </button>
 
-<button class="big-btn" id="reports2">
-    <i class="fa-solid fa-heart"></i>Memories
-  <div class="bubble">
-    Collect <b>memories and messages</b> for your “Just Married” album!<br>
-  </div>
-</button>
+  <button class="big-btn" id="album">
+    <i class="fa-solid fa-images"></i>Album
+    <div class="bubble">
+      Relive your <b>wedding moments!</b>
+    </div>
+  </button>
 
-<button class="big-btn" id="postwed">
-  <i class="fa-solid fa-images"></i>Album
-  <div class="bubble">
-    Relive your <b>wedding moments!</b><b> 
+  <button class="big-btn" id="story">
+    <i class="fa-solid fa-heart"></i>Our Story
+    <div class="bubble">
+      Tell your <b>love story</b>
+    </div>
+  </button>
+
+  <button class="big-btn" id="updates">
+    <i class="fa-solid fa-bullhorn"></i>Updates
+    <div class="bubble">
+      Share <b>important news</b>
+    </div>
+  </button>
+
+  <!-- ROW 4 (CENTERED 2 BUTTONS) -->
+  <div class="last-row">
+    <button class="big-btn" id="party">
+      <i class="fa-solid fa-people-group"></i>Wedding Party
+      <div class="bubble">
+        Meet your <b>team</b>
+      </div>
+    </button>
+
+    <button class="big-btn" id="yourweb">
+      <i class="fa-solid fa-globe"></i>Your Web
+      <div class="bubble">
+        Manage your <b>wedding website</b>
+      </div>
+    </button>
   </div>
-</button>
+
+</div>
+
 
 <script>
-const EMILY_ENABLED = false;
-</script>
-
-<script type="module">
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -826,326 +847,84 @@ async function loadCouple() {
 
 loadCouple();
 
-// ===============================
-// LOGIN OVERLAY LOGIC
-// ===============================
-/*
-const overlay = document.getElementById("loginOverlay");
-const emailInput = document.getElementById("emailInput");
-const verifyBtn = document.getElementById("verifyEmailBtn");
-const loginError = document.getElementById("loginError");
+</script>
 
-// 🎯 Позволяем нажимать Enter вместо клика по кнопке
-emailInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    verifyBtn.click(); // вызывает ту же логику, что и нажатие на кнопку
-  }
-});
 
-// disable dashboard until login ok
-// If user is already verified for this token → skip overlay
-if (
-  sessionStorage.getItem("verified") === "yes" &&
-  sessionStorage.getItem("verified_token") === token
-) {
-
-    document.getElementById("loginOverlay").style.display = "none";
-    document.body.style.overflow = "auto";   // разрешаем прокрутку
-
-} else {
-
-    // показываем overlay до верификации
-    document.body.style.overflow = "hidden";
-}
-
-verifyBtn.onclick = async () => {
-  const email = emailInput.value.trim().toLowerCase();
-  loginError.textContent = "";
-
-  if (!email) {
-    loginError.textContent = "Please enter email.";
-    return;
-  }
-
-  if (!token) {
-    loginError.textContent = "Token missing in URL.";
-    return;
-  }
-
-  // Query Supabase → check if email belongs to token
-  const { data, error } = await supabase
-    .from("sites")
-    .select("email")
-    .eq("edit_token", token);
-
-  if (!data || data.length === 0) {
-    loginError.textContent = "Invalid token.";
-    return;
-  }
-
-  // all emails for this token
-  const emails = data.map(row => row.email.toLowerCase());
-
-  // check user email
-  if (!emails.includes(email)) {
-    loginError.textContent = "Email not authorized for this dashboard.";
-    return;
-  }
-
-  // SUCCESS — hide overlay
-  overlay.style.display = "none";
-  document.body.style.overflow = "auto";
-
-  // SAVE VERIFIED STATUS
-  sessionStorage.setItem("verified", "yes");
-  sessionStorage.setItem("verified_token", token);
-};
-*/
+<script>
 
 // ----------------------------
 // UNIVERSAL OPEN FUNCTION
 // ----------------------------
-function openSection(page) {
-  window.open(`${page}.html?t=${token}`, "_blank");
-}
-
-// ----------------------------
-// TEMPLATE GALLERY (STD / RSVP)
-// ----------------------------
-document.getElementById("std").onclick = () => {
- window.open(`savethedate.html?t=${token}`, "_blank");
-};
-
-document.getElementById("rsvp").onclick = () => openSection("postwed");
-
-// ----------------------------
-// OTHER BUTTONS
-// ----------------------------
-document.getElementById("registry").onclick = () => openSection("gift_registry");
-document.getElementById("guestbook").onclick = () => openSection("Guests");
-
-// document.getElementById("map").onclick = () => openSection("Map");
-// document.getElementById("upload").onclick = () => openSection("upload");
-
-// document.getElementById("yourweb").onclick = () => openSection("YourWeb");
-
-document.getElementById("seating").onclick = () => openSection("SeatingChart");
-document.getElementById("budget").onclick = () => openSection("Budget");
-document.getElementById("reports2").onclick = () => openSection("postwed2");
-document.getElementById("postwed").onclick = () => openSection("just_married");
 
 
-</script>
+function openPage(page) {
+  let file = "";
 
-<!-- ============================ -->
-<!--      LOGIN OVERLAY          -->
-<!-- ============================ -->
-<!--
-<div id="loginOverlay" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 235, 245, 0.75);
-  backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  opacity: 0;
-  animation: fadeIn 0.6s ease forwards;
-">
+  switch (page) {
+    case "guestbook":
+      file = "Guests.html";
+      break;
 
-  <div style="
-    background: white;
-    padding: 40px 32px;
-    width: 360px;
-    border-radius: 26px;
-    box-shadow:
-      0 22px 65px rgba(0,0,0,0.15),
-      0 6px 14px rgba(0,0,0,0.10);
-    text-align: center;
-    transform: scale(0.85);
-    animation: popIn 0.5s ease forwards;
-  ">
-    
-    <h2 style="
-      margin-top: 0;
-      margin-bottom: 16px;
-      color: #c30c1e;
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      text-shadow: 0 2px 6px rgba(255,200,215,0.5);
-    ">
-      Email Verification
-    </h2>
+    case "upload":
+      file = "upload.html";
+      break;
 
-  <p style="
-  margin-top: -4px;
-  margin-bottom: 20px;
-  font-size: 15px;
-  color: #844258;
-  line-height: 1.45;
-">
-  Please enter the email used for your purchase.
-  </p>
- 
-    <input id="emailInput" type="email" placeholder="Enter your email" style="
-      width: 90%;
-      padding: 14px 16px;
-      font-size: 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(170, 50, 80, 0.25);
-      background: #fff9fb;
-      outline: none;
-      transition: 0.25s;
-    " 
-    onfocus="this.style.borderColor='#c83d66'">
+    case "std":
+      file = "savethedate.html";
+      break;
 
-    <button id="verifyEmailBtn" style="
-      margin-top: 20px;
-      width: 100%;
-      background: #c30c1e;
-      color: white;
-      padding: 14px;
-      border: none;
-      border-radius: 14px;
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 6px 18px rgba(160,30,70,0.35);
-      transition: 0.25s;
-    "
-    onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 28px rgba(160,30,70,0.45)'"
-    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 18px rgba(160,30,70,0.35)'">
-      Verify
-    </button>
+    case "rsvp":
+      file = "postwed.html";
+      break;
 
-    <div id="loginError" style="
-      margin-top: 14px;
-      color: #b00020;
-      font-weight: 700;
-      min-height: 20px;
-    "></div>
+    case "seating":
+      file = "SeatingChart.html";
+      break;
 
-  </div>
-</div>
--->
+    case "registry":
+      file = "gift_registry.html";
+      break;
 
-<style>
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
+    case "budget":
+      file = "Budget.html";
+      break;
 
-@keyframes popIn {
-  0%   { transform: scale(0.85); opacity: 0; }
-  100% { transform: scale(1);    opacity: 1; }
-}
-</style>
+    case "reports":
+      file = "reports.html";
+      break;
 
+    case "memories":
+      file = "postwed2.html";
+      break;
 
-<!-- MODAL FOR EMILY -->
-<div class="modal-backdrop" id="emilyModal" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: none;
-  justify-content: flex-end;   /* прижимаем вправо */
-  align-items: center;        /* центр по вертикали */
-  padding: 24px;              /* отступ от краёв экрана */
-  z-index: 999999;
-">
+    case "album":
+      file = "just_married.html";
+      break;
 
-<div class="modal-window" style="
-  background: white;
-  width: 38vw;
-  height: 55vh;               /* стало выше */
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding-top: 12px;          /* воздух сверху */
-">
+    case "story":
+      file = "story.html";
+      break;
 
-    <div id="closeEmilyModal" style="
-      position:absolute;
-      top:10px;
-      right:16px;
-      font-size:32px;
-      font-weight:bold;
-      cursor:pointer;
-      z-index:9999999;
-    ">×</div>
+    case "updates":
+      file = "updates.html";
+      break;
 
- <iframe id="emilyIframe" style="
-  width:100%;
-  height:100%;
-  border:none;
-  position:relative;
-  z-index:1;
-  margin-top: 6px;            /* отступ от верхнего края */
-">
-</iframe>
+    case "party":
+      file = "party.html";
+      break;
 
+    case "yourweb":
+      file = "YourWeb.html";
+      break;
 
-  </div>
-</div>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-if (!EMILY_ENABLED) return;
-
-
-  // элементы модалки
-  const modal = document.getElementById("emilyModal");
-  const iframe = document.getElementById("emilyIframe");
-  const closeBtn = document.getElementById("closeEmilyModal");
-
-  // clickable элементы
-  const knob = document.querySelector(".access-knob");
-  const banner = document.querySelector(".access-banner");
-
-  // получаем token из URL, как в остальном коде
-  const params = new URLSearchParams(window.location.search);
-  const token =
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T");
-
-
-function openEmilyModal() {
-  if (!token) {
-    alert("Missing token in URL");
-    return;
+    default:
+      alert("Not connected: " + page);
+      return;
   }
 
-  const page =
-    document.querySelector(".page-title")?.textContent ||
-    document.title ||
-    "Dashboard";
-
-  iframe.src = `https://coruscating-pika-435f9a.netlify.app/emillyai?t=${encodeURIComponent(token)}&page=${encodeURIComponent(page)}`;
-  modal.style.display = "flex";
+  window.open(`${file}?t=${token}`, "_blank");
 }
 
-  // назначаем клики
-if (knob) {
-  knob.addEventListener("click", openEmilyModal);
-}
-
-if (banner) {
-  banner.addEventListener("click", openEmilyModal);
-}
-
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-});
 </script>
 
 <script>

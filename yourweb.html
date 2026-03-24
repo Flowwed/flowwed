@@ -40,7 +40,7 @@ body {
 
 .manager-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 26px;
   max-width: 900px;
   margin: 0 auto;
@@ -417,7 +417,7 @@ body {
 
 <div class="header-row">
   <button class="back-btn" onclick="goBack()">← Back</button>
-  <div class="page-title">Web Manager</div>
+  <div class="page-title">FloWWeds Orchestra</div>
   <button class="visit-btn" onclick="visitSite()">
     <i class="fa-solid fa-globe"></i> My Web →
   </button>
@@ -442,50 +442,51 @@ body {
 
 <div class="manager-grid">
 
-  <div class="manager-btn" onclick="openPage('story')">
-    <i class="fa-solid fa-heart"></i>
-    Our Story
-  </div>
-
-  <div class="manager-btn" onclick="openPage('party')">
-    <i class="fa-solid fa-people-group"></i>
-    Wedding Party
-  </div>
-
-  <div class="manager-btn" onclick="openPage('info')">
-    <i class="fa-solid fa-circle-info"></i>
-    Wedding Info
-  </div>
-
-  <div class="manager-btn" onclick="openPage('map')">
-    <i class="fa-solid fa-map-location-dot"></i>
-    Venue & Map
-  </div>
-
-  <div class="manager-btn" onclick="openPage('travel')">
-    <i class="fa-solid fa-plane"></i>
-    Travel Info
-  </div>
-
-  <div class="manager-btn" onclick="openPage('registry')">
-    <i class="fa-solid fa-gift"></i>
-    Gift Registry
-  </div>
-
   <div class="manager-btn" onclick="openPage('upload')">
     <i class="fa-solid fa-images"></i>
     Photo Gallery
   </div>
 
-  <div class="manager-btn" onclick="openPage('jmarried')">
-<i class="fa-solid fa-ring"></i>
-    Just Married
+
+  <div class="manager-btn" onclick="openPage('story')">
+    <i class="fa-solid fa-heart"></i>
+    Our Story
   </div>
 
   <div class="manager-btn" onclick="openPage('updates')">
     <i class="fa-solid fa-bullhorn"></i>
     Updates
   </div>
+
+  <div class="manager-btn" onclick="openPage('map')">
+    <i class="fa-solid fa-map-location-dot"></i>
+    Travel & Details
+  </div>
+
+
+  <div class="manager-btn" onclick="openPage('registry')">
+    <i class="fa-solid fa-gift"></i>
+    Gift Registry
+  </div>
+
+
+
+  <div class="manager-btn" onclick="openPage('party')">
+    <i class="fa-solid fa-people-group"></i>
+    Wedding Party
+  </div>
+
+  <div class="manager-btn" onclick="openPage('travel')">
+    <i class="fa-solid fa-book-open"></i>
+    Memories
+  </div>
+
+
+  <div class="manager-btn" onclick="openPage('jmarried')">
+<i class="fa-solid fa-camera"></i>
+    Album
+  </div>
+
 
 </div>
 
