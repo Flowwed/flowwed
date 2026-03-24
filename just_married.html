@@ -1433,7 +1433,7 @@ const musicPreview = document.getElementById("musicPreview");
 
 <script>
 
-let lastUploadedCaption = null;
+  let lastUploadedCaption = null;
   let lastUploadedFile = null;
 
   function openCaptionModal() {
@@ -1463,45 +1463,15 @@ document.addEventListener("keydown", (e) => {
 });
 
 
-let toastQueue = [];
-let isShowingToast = false;
-
-function showToast(text, duration = 3000) {
-  toastQueue.push({ text, duration });
-  processToastQueue();
-}
-
-function processToastQueue() {
-  if (isShowingToast) return;
-  if (toastQueue.length === 0) return;
-
-  isShowingToast = true;
-
-  const { text, duration } = toastQueue.shift();
+function showToast(text) {
   const t = document.getElementById("toast");
-
   t.innerText = text;
-  t.classList.remove("show");
+  t.classList.add("show");
 
-  // reset анимации
-  void t.offsetWidth;
-
-  requestAnimationFrame(() => {
-    t.classList.add("show");
-  });
-
-  setTimeout(() => {
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => {
     t.classList.remove("show");
-
-    setTimeout(() => {
-      isShowingToast = false;
-
-      // ❗ вот это даёт ПЛАВНЫЙ интервал как в первом коде
-      setTimeout(processToastQueue, 400);
-
-    }, 400);
-
-  }, duration);
+  }, 2200);
 }
 
 function showConfirm(text) {
