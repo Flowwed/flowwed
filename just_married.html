@@ -1191,12 +1191,9 @@ uploadBtn.innerHTML = originalUploadText;
 status.innerText = "✅ Uploaded!";
 showPreview(file, true);
 
-setTimeout(async () => {
-  await loadCaptionsFromSupabase();
-}, 500);
 
 
-setTimeout(openCaptionModal, 300);
+openCaptionModal();
 
   setTimeout(() => {
     progressContainer.style.display = "none";
@@ -1246,8 +1243,15 @@ function resetUploaderForm() {
     });
   }
 
+let isLoadingCaptions = false;
+
 async function loadCaptionsFromSupabase() {
   if (!token) return;
+
+  if (isLoadingCaptions) return;
+  isLoadingCaptions = true;
+
+  try {
 
   // 1️⃣ captions
   const capRes = await fetch(
@@ -1379,14 +1383,26 @@ captions.forEach(row => {
 // гарантируем правильный порядок
 items.sort((a, b) => Number(a.dataset.num) - Number(b.dataset.num));
 
-gallery.innerHTML = "";
-items.forEach(el => gallery.appendChild(el));
+
+gallery.style.opacity = "0.4";
+
+setTimeout(() => {
+  gallery.innerHTML = "";
+  items.forEach(el => gallery.appendChild(el));
+  gallery.style.opacity = "1";
+}, 50);
+
 
 // 🎵 MUSIC PREVIEW (STEP 3)
 const musicInput = document.getElementById("musicInput");
 const musicPreview = document.getElementById("musicPreview");
 
+ } finally {
+    isLoadingCaptions = false;
+  }
 }
+
+
 </script>
 
 
@@ -1565,9 +1581,11 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
     }
   );
 
-  await loadCaptionsFromSupabase();
-  closeCaptionModal();
-  resetUploaderForm();
+closeCaptionModal();
+
+await loadCaptionsFromSupabase();
+
+resetUploaderForm();
 
   lastUploadedFile = null;
   lastUploadedCaption = null;
