@@ -1299,11 +1299,9 @@ images.forEach(img => {
 const gallery = document.getElementById("captionGallery");
 gallery.innerHTML = "";
 
-const items = [];
-
-captions.forEach(row => {
+const renderPromises = captions.map(async (row) => {
   const path = slotToPath[row.slot];
-  if (!path) return;
+  if (!path) return null;
 
   const item = document.createElement("div");
   item.className = "caption-item";
@@ -1316,7 +1314,6 @@ captions.forEach(row => {
     const ok = await showConfirm("Delete this photo?");
     if (!ok) return;
 
-    // 1️⃣ удалить caption (если есть)
     await fetch(
       `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}`,
       {
@@ -1329,7 +1326,6 @@ captions.forEach(row => {
       }
     );
 
-    // 2️⃣ удалить image ТОЛЬКО для этого token
     const imgDel = await fetch(
       `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${row.slot}`,
       {
@@ -1349,7 +1345,7 @@ captions.forEach(row => {
       return;
     }
 
-    // await loadCaptionsFromSupabase();
+    await loadCaptionsFromSupabase();
   };
 
   const photoNumber = Number(row.slot.replace("img", "")) - 50;
@@ -1361,14 +1357,11 @@ captions.forEach(row => {
 
   const img = document.createElement("img");
 
-img.src =
-  `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
-
-  img.onerror = () => {
-    setTimeout(() => {
-      img.src = img.src.split("?")[0] + "?v=" + Date.now();
-    }, 500);
-  };
+  await new Promise((resolve) => {
+    img.onload = resolve;
+    img.onerror = resolve;
+    img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
+  });
 
   const text = document.createElement("div");
   text.className = "caption-text";
@@ -1379,20 +1372,22 @@ img.src =
   item.appendChild(img);
   item.appendChild(text);
 
-  items.push(item);
+  return item;
 });
 
-// гарантируем правильный порядок
-items.sort((a, b) => Number(a.dataset.num) - Number(b.dataset.num));
-
-gallery.style.opacity = "0";
+const items = (await Promise.all(renderPromises))
+  .filter(Boolean)
+  .sort((a, b) => Number(a.dataset.num) - Number(b.dataset.num));
 
 gallery.innerHTML = "";
 items.forEach(el => gallery.appendChild(el));
 
+
 requestAnimationFrame(() => {
   gallery.style.opacity = "1";
 });
+
+
 // 🎵 MUSIC PREVIEW (STEP 3)
 const musicInput = document.getElementById("musicInput");
 const musicPreview = document.getElementById("musicPreview");
