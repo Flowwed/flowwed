@@ -487,13 +487,15 @@
     inset 0 3px 4px rgba(255,255,255,0.2);
 }
 
-/* Верхний хедер: заголовок слева, пара справа */
+/* ============================= */
+/* HEADER LAYOUT                 */
+/* ============================= */
+
 .top-logo-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 18px 6px 18px;
-  margin: 0;
+  padding: 10px 18px 6px;
 }
 
 .top-titles {
@@ -502,52 +504,40 @@
   align-items: center;
 }
 
-/* Header layout: Guest List + inline bubble */
 .guestlist-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 16px;
   margin-bottom: 14px;
 }
 
-.guestlist-header {
-  justify-content: flex-start; /* ← КЛЮЧ */
-}
-
 .guestlist-header h2 {
+  margin: 0;
+  font-size: 19px;
+  color: #9c1818;
   white-space: nowrap;
 }
 
+/* ============================= */
+/* INFO BUBBLE                   */
+/* ============================= */
+
 .info-bubble-inline {
-  flex: 1;          /* ← вот ЭТО и есть «растянуть влево» */
-  margin-left: 16px;
-}
-
-
-/* Align <h2> nicely */
-.guestlist-header h2 {
-  margin: 0;
-  padding: 0;
-  font-size: 19px;
-  color: #9c1818;
-}
-
-/* Inline bubble */
-.info-bubble-inline {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 12px;
 
+  width: max-content;      /* размер по тексту */
+  
   background: #fff7f7;
   border: 2px solid #ffcccc;
   padding: 10px 14px;
   border-radius: 12px;
 
   box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-  max-width: 100%;
 }
 
-/* Ruby “i” icon */
+/* ICON */
 .info-icon-inline {
   min-width: 24px;
   height: 24px;
@@ -557,6 +547,7 @@
   color: white;
   font-size: 13px;
   font-weight: 700;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -566,87 +557,47 @@
     inset 0 2px 3px rgba(255,255,255,0.25);
 }
 
-/* Main text */
+/* TEXT */
 .info-text-inline {
   font-size: 13px;
   color: #7e2a2a;
   font-weight: 600;
-  max-width: 260px;
-  line-height: 1.28;
+  line-height: 1.3;
+
+  white-space: nowrap; /* ← ОДНА СТРОКА */
 }
 
-/* Icons inline block */
+/* OPTIONAL ICONS (если используешь) */
 .info-icons-inline {
   display: flex;
   align-items: center;
   gap: 10px;
 
-  font-size: 13px;
-  color: #7e2a2a;
-  font-weight: 600;
-}
-
-
-.info-bubble-inline {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-/* ТЕКСТ */
-.info-text-inline {
-  white-space: normal;
-  line-height: 1.3;
-}
-
-/* WARNING ICONS — В КРАЙ ВПРАВО */
-.info-icons-inline {
-  margin-left: auto;   /* ← ВОТ КЛЮЧ */
+  margin-left: auto;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
+/* ICON COLORS */
+.icon-yes   { color: green; }
+.icon-no    { color: red; }
+.icon-maybe { color: #d4a300; }
+.icon-none  { color: #ff9800; }
 
+/* ============================= */
+/* RESPONSIVE                    */
+/* ============================= */
 
-/* Colors for icons */
-.icon-yes   { color: green; font-size: 18px; }
-.icon-no    { color: red; font-size: 18px; }
-.icon-maybe { color: #d4a300; font-size: 18px; }
-.icon-none  { color: #ff9800; font-size: 18px; }
-
-/* On smaller screens — bubble goes below */
-@media(max-width: 900px) {
+@media (max-width: 900px) {
   .guestlist-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
 
-  .info-bubble-inline {
-    max-width: 100%;
+  .info-text-inline {
+    white-space: normal; /* перенос на мобиле */
   }
-
-.addGuestHeader h2 {
-  font-size: 15px;   /* любой размер */
-  font-weight: 700;  /* по желанию */
- }
-
-.field input, 
-.field select {
-  border: 1px solid rgba(160,0,40,0.25);
-  transition: 0.25s ease;
-}
-
-.scroll-container table thead th {
-  position: sticky;
-  top: 0;
-  background: #fff6f8; /* или твой ruby-белый фон */
-  z-index: 5;
-}
-
-}
-
- </style>
+} 
 
  <style>
 
@@ -733,76 +684,6 @@
   box-shadow: 0 0 6px rgba(255, 0, 50, 0.4);
 }
 
-/* Menu View*/
-.top-nav-wrapper {
-  position: relative;
-  width: 100%;
-  padding-top: 0 !important;
-  margin-bottom: 6px !important;
-}
-
-.top-nav {
-  display: flex;
-  justify-content: center;
-  gap: 36px;
-  padding: 14px 0 10px !important; 
-  font-size: 16px;
-  font-weight: 500;
-  color: #7a6772;
-}
-
-.top-nav a {
-  text-decoration: none;
-  color: #7a6772;
-  transition: 0.2s;
-}
-
-
-.top-nav a.active {
-  color: #7a6772 !important;  /* ruby */
-  font-weight: 550 !important;
-  text-shadow: 0 0 4px rgba(180,17,17,0.25);
-}
-
-
-.top-nav a:hover {
-  color: #d6003d;
-}
-
-/* Back Button */
-.back-btn {
-  position: absolute;
-  left: -90px;            /* ↓↓↓ больше пространства справа */
-  top: 12px;
-
-  padding: 3px 10px;     /* уменьшили кнопку */
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 8px;
-
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(196, 0, 55, 0.25);
-
-  color: #b1162a;
-
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  backdrop-filter: blur(6px);
-
-  transition: 0.25s ease;
-}
-
-.back-btn:hover {
-  background: rgba(255,255,255,0.45);
-  border-color: rgba(196,0,55,0.45);
-  box-shadow: 0 4px 12px rgba(196,0,55,0.15);
-  transform: translateY(-1px);
-}
-
 #sendTestEmailFooter {
   margin-left: auto !important;
 }
@@ -840,414 +721,25 @@
     inset 0 2px 6px rgba(255,255,255,0.25);
 }
 
-/* ============================= */
-/* AI ASSISTANT — UI ONLY        */
-/* ============================= */
-
-.ai-assistant-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  margin-left: 24px;
-  padding: 16px;
-
-  border-radius: 18px;
-}
-
-/* =========================
-   AI CHAT — MESSAGES
-========================= */
-
-.ai-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ffd6e2;
-}
-
-/* LEFT PART grouped properly */
-.ai-header-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;   /* ← контролируем расстояние между кругом и текстом */
-}
-
-.ai-header-text strong,
-.ai-header-text span {
-  line-height: 1.14;   /* уменьшает вертикальный воздух */
-}
-
-/* RIGHT PART stays the same */
-.ai-voice-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.ai-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-image: url("/images/emily.jpeg"); /* ← ВОТ */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.ai-messages {
-  height: 180px;
-  overflow-y: auto;
-  padding: 6px 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.ai-msg {
-  max-width: 80%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.35;
-}
-
-/* Bot (Emily) */
-.ai-msg-bot {
-  background: #fff3f6;
-  border: 1px solid #ffd6e2;
-  align-self: flex-start;
-}
-
-/* User (later) */
-.ai-msg-user {
-  background: #b41111;
-  color: white;
-  align-self: flex-end;
-}
-
-
-.ai-header-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-
-  background-image: url("images/emily.jpeg"); /* ← ВАЖНО */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  box-shadow:
-    0 4px 12px rgba(180, 17, 17, 0.35),
-    inset 0 0 0 2px rgba(255,255,255,0.85);
-}
-
-.ai-header-avatar {
-  animation: emilyBreath 4.6s ease-in-out infinite;
-  transform-origin: center;
-}
-
-@keyframes emilyBreath {
-  0%   { transform: scale(1);     box-shadow: 0 0 10px rgba(180,0,40,0.25); }
-  50%  { transform: scale(1.06);  box-shadow: 0 0 20px rgba(180,0,40,0.45); }
-  100% { transform: scale(1);     box-shadow: 0 0 10px rgba(180,0,40,0.25); }
-}
-
-
-/* =========================
-   INPUT ROW
-========================= */
-
-.ai-input-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.ai-input-row input {
-  flex: 1;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(160,0,40,0.25);
-  font-size: 14px;
-}
-
-.ai-input-row button {
-  padding: 10px 18px;
-  border-radius: 12px;
-  font-size: 14px;
-}
-
-/* =============================
-   AI VOICE EQUALIZER
-============================= */
-
-.ai-equalizer {
-  width: 26px;
-
-  margin-left: 14px;
-  margin-bottom: 26px; /* ← чтобы совпал низ */
-
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-
-  padding: 10px 6px;
-
-  background: rgba(255,255,255,0.6);
-  border-radius: 16px;
-
-  box-shadow:
-    0 14px 32px rgba(0,0,0,0.18),
-    inset 0 0 8px rgba(255,255,255,0.55);
-
-  backdrop-filter: blur(14px) saturate(160%);
-}
-
-/* bars */
-.ai-equalizer span {
-  display: block;
-  width: 3px;
-  height: 20%;
-  border-radius: 3px;
-
-  background: linear-gradient(
-    to top,
-    #6a0f0f,
-    #b41111,
-    #ffb3b3
-  );
-
-  box-shadow:
-    0 0 6px rgba(180,17,17,0.6),
-    inset 0 0 4px rgba(255,255,255,0.35);
-
-  transform-origin: bottom;
-  animation: eqIdle 8.2s ease-in-out infinite;
-}
-
-/* offsets */
-.ai-equalizer span:nth-child(2) { animation-delay: .2s }
-.ai-equalizer span:nth-child(3) { animation-delay: .4s }
-.ai-equalizer span:nth-child(4) { animation-delay: .1s }
-.ai-equalizer span:nth-child(5) { animation-delay: .3s }
-.ai-equalizer span:nth-child(6) { animation-delay: .5s }
-
-/* bars — visual style only */
-.ai-equalizer span {
-  display: block;
-  width: 3px;
-  height: 20%;
-  border-radius: 3px;
-
-  background: linear-gradient(
-    to top,
-    #6a0f0f,
-    #b41111,
-    #ffb3b3
-  );
-
-  box-shadow:
-    0 0 6px rgba(180,17,17,0.6),
-    inset 0 0 4px rgba(255,255,255,0.35);
-}
-
-/* =============================
-   AI EQUALIZER — SMOOTH & RANDOM
-============================= */
-
-:root {
-  --eq-speed: 3;
-}
-
-.ai-equalizer span {
-  transform-origin: bottom;
-  animation-name: eqFloat;
-  animation-timing-function: cubic-bezier(.4,0,.2,1);
-  animation-iteration-count: infinite;
-}
-
-/* individual timing (asynchronous) */
-.ai-equalizer span:nth-child(1) {
-  animation-duration: calc(3.6s * var(--eq-speed));
-  animation-delay: -0.8s;
-}
-
-.ai-equalizer span:nth-child(2) {
-  animation-duration: calc(4.2s * var(--eq-speed));
-  animation-delay: -1.4s;
-}
-
-.ai-equalizer span:nth-child(3) {
-  animation-duration: calc(3.1s * var(--eq-speed));
-  animation-delay: -2.2s;
-}
-
-.ai-equalizer span:nth-child(4) {
-  animation-duration: calc(4.8s * var(--eq-speed));
-  animation-delay: -0.6s;
-}
-
-.ai-equalizer span:nth-child(5) {
-  animation-duration: calc(3.9s * var(--eq-speed));
-  animation-delay: -1.9s;
-}
-
-.ai-equalizer span:nth-child(6) {
-  animation-duration: calc(4.5s * var(--eq-speed));
-  animation-delay: -2.7s;
-}
-/* idle — slow breathing */
-@keyframes eqFloat {
-  0%   { transform: scaleY(0.25); opacity: 0.6; }
-  20%  { transform: scaleY(0.55); opacity: 0.8; }
-  40%  { transform: scaleY(0.35); opacity: 0.7; }
-  60%  { transform: scaleY(0.75); opacity: 0.9; }
-  80%  { transform: scaleY(0.45); opacity: 0.75; }
-  100% { transform: scaleY(0.3);  opacity: 0.6; }
-}
-
-/* speaking — stronger but calm */
-.ai-equalizer.active span {
-  animation-name: eqSpeakSoft;
-  opacity: 1;
-}
-
-@keyframes eqSpeakSoft {
-  0%   { transform: scaleY(0.4); }
-  30%  { transform: scaleY(1.1); }
-  55%  { transform: scaleY(0.6); }
-  75%  { transform: scaleY(0.95); }
-  100% { transform: scaleY(0.45); }
-}
-/* === FINAL AI AVATAR FIX === */
-
-.ai-voice-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-
-  background: transparent;
-  border: 1.5px solid rgba(180, 17, 17, 0.35); /* контур */
-
-  color: #8b1a1a;
-  font-size: 14px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 2px 6px rgba(180, 17, 17, 0.15);
-
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.ai-voice-btn:hover {
-  background: rgba(180, 17, 17, 0.06);
-  box-shadow:
-    0 4px 10px rgba(180, 17, 17, 0.25);
-}
-
-.ai-voice-btn:active {
-  transform: scale(0.95);
-}
-
-.ai-voice-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* =========================
-   MIC BUTTON STATES
-========================= */
-
-/* БАЗА */
-.ai-voice-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-/* ===== MIC ON — green glow ===== */
-.ai-voice-btn.mic-on {
-  animation: micGlow 2.4s ease-in-out infinite;
-}
-
-@keyframes micGlow {
-  0%   { box-shadow: 0 0 0 2px rgba(90,170,130,0.25), 0 0 10px rgba(90,170,130,0.35); }
-  50%  { box-shadow: 0 0 0 2px rgba(90,170,130,0.45), 0 0 18px rgba(90,170,130,0.45); }
-  100% { box-shadow: 0 0 0 2px rgba(90,170,130,0.25), 0 0 10px rgba(90,170,130,0.35); }
-}
-/* ===== MIC OFF — crossed circle ===== */
-.ai-voice-btn.mic-off {
-  opacity: 0.45;
-  border-color: rgba(140, 0, 0, 0.45);
-}
-
-.ai-voice-btn.mic-off::before,
-.ai-voice-btn.mic-off::after {
-  display: none;
-}
-
-
-/* текст слева */
-.listening-text {
+.info-text-inline {
   font-size: 13px;
+  color: #7e2a2a;
   font-weight: 600;
-  color: #8b1a1a;
-  opacity: 0;
-  transform: translateX(6px);
-  transition: 0.25s ease;
-  white-space: nowrap;
+  line-height: 1.28;
+
+white-space: nowrap;
+
 }
 
-/* когда слушает */
-.listening-text.active {
-  opacity: 1;
-  transform: translateX(0);
+.info-bubble-inline{
+  display: inline-flex;
+  width: max-content;   /* 🔥 КЛЮЧ */
 }
-
-
 </style>
 
 </head>
 
 <body>
-
-
-
-<!-- ======= TOP NAV + BACK BUTTON (COPY FROM PREVIEW PAGE) ======= -->
-
-<div class="top-nav-wrapper">
-
-  <button id="backBtn" class="back-btn">
-    <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="#6d6d6d" fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    Back
-  </button>
-
-  <div class="top-nav">
-    <a href="#">Guest Manager</a>
-    <a href="#">Save The Date</a>
-    <a href="#">RSVP</a>
-    <a href="#">Seating Chart</a>
-    <a href="#">Registry</a>
-    <a href="#">Budget</a>
-    <a href="#">Web Manager</a>
-    <a href="#">Wed Reports</a>
-  </div>
-
-
-</div>
 
 <div class="top-logo-title">
   <h1 id="topMainTitle">Send Email & SMS</h1>
@@ -1257,21 +749,23 @@
 <div class="top-divider-line"></div>
 
 
-<!--
-<div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
-  <div class="info-icon-inline">i</div>
+<div style="margin: 0 18px 16px 18px;">
 
-  <div class="info-text-inline" style="
-    max-width: none;
-    white-space: normal;
-    flex: 1;
+  <div class="info-bubble-inline" style="
+    display: inline-flex;
+    width: fit-content;
+    max-width: 360px;
   ">
-    The wedding may be over, but the fun isn’t.
-    Invite your guests to leave a few words and upload their favorite photos —
-    and watch those moments come alive on your website. See the form your guests will fill — and preview a sample of how your “Just Married” page can come to life.
+
+    <div class="info-icon-inline">i</div>
+
+    <div class="info-text-inline">
+      Choose your guests and send them a quick update.
+    </div>
+
   </div>
+
 </div>
--->
 
     <div class="ruby-frame-outer">
       <div class="ruby-frame-inner">
@@ -2093,17 +1587,6 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
     </button>
   </div>
 </div>
-
-<script>
-
-document.getElementById("backBtn").onclick = () => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get("t") || localStorage.getItem("verified_token") || "";
-
-    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
-};
-
-</script>
 
 <!-- TEST EMAIL MODAL -->
 <div id="testEmailOverlay" style="
