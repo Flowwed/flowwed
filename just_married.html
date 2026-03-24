@@ -884,16 +884,15 @@ fetch("/navbar.html")
 
     <div class="text-editor-box" style="margin-top:16px">
 <h3 style="margin:0 0 10px; font-size:15px; color:#a52126;">
-  Background music for this page
+  Upload your background music for this page - MP3 files only.
 </h3>
 
-      <input
-        type="file"
-        id="musicInput"
-        accept="audio/*"
-        style="width:100%"
-      >
-
+<input
+  type="file"
+  id="musicInput"
+  accept=".mp3,audio/mpeg"
+  style="width:100%"
+>
       <audio
         id="musicPreview"
         controls
@@ -1631,13 +1630,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // preview
-  musicInput.addEventListener("change", () => {
-    const file = musicInput.files[0];
-    if (!file) return;
+musicInput.addEventListener("change", async () => {
+  const file = musicInput.files[0];
+  if (!file) return;
 
-    musicPreview.src = URL.createObjectURL(file);
-    musicPreview.style.display = "block";
-  });
+  const isMp3 =
+    file.type === "audio/mpeg" ||
+    file.name.toLowerCase().endsWith(".mp3");
+
+  if (!isMp3) {
+    await showAlertBox("MP3 files only");
+
+    // ❌ ЖЁСТКО УДАЛЯЕМ ВЫБОР
+    musicInput.value = "";
+    musicPreview.style.display = "none";
+    musicPreview.src = "";
+
+    return;
+  }
+
+  // ✅ только MP3 сюда попадает
+  musicPreview.src = URL.createObjectURL(file);
+  musicPreview.style.display = "block";
+});
 
   // upload
   musicUploadBtn.addEventListener("click", async () => {
@@ -1656,6 +1671,15 @@ musicUploadBtn.innerHTML =
 
 
     const file = musicInput.files[0];
+
+const isMp3 =
+  file.type === "audio/mpeg" ||
+  file.name.toLowerCase().endsWith(".mp3");
+
+if (!isMp3) {
+  await showAlertBox("MP3 files only");
+  return; // ⛔ стоп
+}
 
     try {
       // 1️⃣ signed upload url
