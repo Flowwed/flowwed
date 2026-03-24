@@ -1432,7 +1432,7 @@ const musicPreview = document.getElementById("musicPreview");
 </div>
 
 <script>
-  let lastUploadedCaption = null;
+let lastUploadedCaption = null;
   let lastUploadedFile = null;
 
   function openCaptionModal() {
@@ -1462,39 +1462,18 @@ document.addEventListener("keydown", (e) => {
 });
 
 
-let toastTimer = null
-let toastHideTimer = null
-
-function showToast(text, duration = 2200) {
+function showToast(text) {
   const t = document.getElementById("toast");
+  t.innerText = text;
+  t.classList.add("show");
 
-  // ❗ сброс если уже показывается
-  t.classList.remove("show")
-
-  if (toastTimer) clearTimeout(toastTimer)
-  if (toastHideTimer) clearTimeout(toastHideTimer)
-
-  // ❗ обновляем текст
-  t.innerText = text
-
-  // ❗ форсируем reflow (ВАЖНО для плавности)
-  void t.offsetWidth
-
-  // ❗ плавное появление
-  requestAnimationFrame(() => {
-    t.classList.add("show")
-  })
-
-  // ❗ скрытие
-  toastTimer = setTimeout(() => {
-    t.classList.remove("show")
-
-    toastHideTimer = setTimeout(() => {
-      // ничего не удаляем — как в первом коде (reuse)
-    }, 300)
-
-  }, duration)
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => {
+    t.classList.remove("show");
+  }, 2200);
 }
+
+
 function showConfirm(text) {
   return new Promise(resolve => {
     const wrap = document.getElementById("confirmToast");
