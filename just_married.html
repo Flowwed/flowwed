@@ -1463,39 +1463,47 @@ document.addEventListener("keydown", (e) => {
 });
 
 
-let lastToastTime = 0;
-let toastTimer = null;
-let toastHideTimer = null;
+let toastQueue = [];
+let isShowingToast = false;
 
-function showToast(text, duration = 3500) {
+function showToast(text, duration = 3000) {
+  toastQueue.push({ text, duration });
+  processToastQueue();
+}
 
-  // ✅ ПАУЗА МЕЖДУ БАЛЛОНАМИ (ПРАВИЛЬНОЕ МЕСТО)
-  const now = Date.now();
-  if (now - lastToastTime < 800) return;
-  lastToastTime = now;
+function processToastQueue() {
+  if (isShowingToast) return;
+  if (toastQueue.length === 0) return;
 
+  isShowingToast = true;
+
+  const { text, duration } = toastQueue.shift();
   const t = document.getElementById("toast");
 
+  t.innerText = text;
   t.classList.remove("show");
 
-  if (toastTimer) clearTimeout(toastTimer);
-  if (toastHideTimer) clearTimeout(toastHideTimer);
-
-  t.innerText = text;
-
+  // reset анимации
   void t.offsetWidth;
 
   requestAnimationFrame(() => {
     t.classList.add("show");
   });
 
-  toastTimer = setTimeout(() => {
+  setTimeout(() => {
     t.classList.remove("show");
 
-    toastHideTimer = setTimeout(() => {}, 400);
+    setTimeout(() => {
+      isShowingToast = false;
+
+      // ❗ вот это даёт ПЛАВНЫЙ интервал как в первом коде
+      setTimeout(processToastQueue, 400);
+
+    }, 400);
 
   }, duration);
 }
+
 function showConfirm(text) {
   return new Promise(resolve => {
     const wrap = document.getElementById("confirmToast");
