@@ -544,6 +544,9 @@ input[type=file] {
   padding: 14px;
 
   align-content: start;       /* ❗ ВАЖНО: старые фото не “прыгают” */
+
+contain: content; /* 🔥 ВОТ ЭТО */
+
 }
 
 .caption-item {
@@ -551,15 +554,16 @@ input[type=file] {
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+aspect-ratio: 1 / 1; /* 🔥 ВАЖНО */
 }
 
 .caption-item img {
   width: 100%;
-  height: 90px;               /* ❗ ФИКСИРОВАННЫЙ РАЗМЕР */
+  height: 100%;
   object-fit: cover;
   border-radius: 10px;
 }
-
 .caption-text {
   font-size: 13px;
   line-height: 1.2;
