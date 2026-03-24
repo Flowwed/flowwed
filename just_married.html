@@ -1356,14 +1356,8 @@ const fragment = document.createDocumentFragment();
 items.forEach(el => fragment.appendChild(el));
 
 gallery.innerHTML = "";
+gallery.appendChild(fragment);
 
-items.forEach((el, i) => {
-  gallery.appendChild(el);
-
-  setTimeout(() => {
-    el.classList.add("show");
-  }, i * 80); // 🔥 скорость появления (можешь 60–120)
-});
 requestAnimationFrame(() => {
   gallery.style.opacity = "1";
 });
