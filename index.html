@@ -86,6 +86,62 @@ color:#ffe6ec;
 transform:translateY(-4px) scale(1.015);
 }
 
+.big-btn{
+  position:relative;
+}
+
+/* BUBBLE */
+.big-btn .bubble{
+  position:absolute;
+  bottom:120px;
+  left:50%;
+  transform:translateX(-50%) scale(.98);
+
+  background:#e5e5ea;
+  color:#1a1a1a;
+
+  padding:14px 16px;
+  border-radius:18px;
+
+  font-size:14px;
+  line-height:1.4;
+
+  width:260px;
+  max-width:90vw;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,.15),
+    0 2px 4px rgba(0,0,0,.08);
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+
+  z-index:20;
+}
+
+/* хвостик */
+.big-btn .bubble::after{
+  content:"";
+  position:absolute;
+  bottom:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:8px solid #e5e5ea;
+}
+
+/* ПОЯВЛЕНИЕ */
+.big-btn:hover .bubble{
+  opacity:1;
+  transform:translateX(-50%) translateY(-6px) scale(1);
+}
+
+
 </style>
 </head>
 
@@ -97,21 +153,35 @@ transform:translateY(-4px) scale(1.015);
 <div class="button-row">
 
 <button class="big-btn" id="site">
-<i class="fa-solid fa-heart"></i>
-Wedding Website
+  <i class="fa-solid fa-heart"></i>
+  Wedding Website
+
+  <div class="bubble">
+    View your <b>wedding website</b><br>
+    See how guests see it ✨
+  </div>
 </button>
 
 
 <button class="big-btn" id="web">
-<i class="fa-solid fa-globe"></i>
-Website Manager
+  <i class="fa-solid fa-globe"></i>
+  Website Manager
+
+  <div class="bubble">
+    Edit your site content<br>
+    Photos, story, pages ⚙️
+  </div>
 </button>
 
 <button class="big-btn" id="guest">
-<i class="fa-solid fa-users"></i>
-Wedding Manager
-</button>
+  <i class="fa-solid fa-users"></i>
+  Wed Manager
 
+  <div class="bubble">
+    Manage guests, RSVP<br>
+    Seating & planning 🪑
+  </div>
+</button>
 
 </div>
 
