@@ -1675,7 +1675,7 @@ musicUploadBtn.disabled = true;
 musicUploadBtn.innerHTML =
   '<span class="btn-spinner"></span> Uploading...';
 
-
+await new Promise(r => setTimeout(r, 0)); // 🔥 ВОТ ЭТО
     const file = musicInput.files[0];
 
 const isMp3 =
