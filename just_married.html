@@ -383,15 +383,18 @@ input[type=file] {
   position: fixed;
   top: 20px;
   right: 20px;
+
   background: #28a745;
   color: white;
   padding: 14px 22px;
   border-radius: 10px;
   font-size: 18px;
+
   width: auto;
   max-width: 320px;
   box-sizing: border-box;
   white-space: normal;
+
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
@@ -401,6 +404,7 @@ input[type=file] {
 .toast.show {
   opacity: 1;
 }
+
 .apple-pill {
   font-size: 14px;          /* было больше — уменьшаем */
   padding: 6px 20px;        /* уже и ниже */
@@ -1191,9 +1195,12 @@ uploadBtn.innerHTML = originalUploadText;
 status.innerText = "✅ Uploaded!";
 showPreview(file, true);
 
+setTimeout(async () => {
+  await loadCaptionsFromSupabase();
+}, 500);
 
 
-openCaptionModal();
+setTimeout(openCaptionModal, 300);
 
   setTimeout(() => {
     progressContainer.style.display = "none";
@@ -1243,35 +1250,9 @@ function resetUploaderForm() {
     });
   }
 
-let isLoadingCaptions = false;
-let renderVersion = 0;
-
 async function loadCaptionsFromSupabase() {
   if (!token) return;
 
-  const currentVersion = ++renderVersion;
-
-  if (isLoadingCaptions) return;
-  isLoadingCaptions = true;
-
-  try {
-
-    // fetch captions
-    // fetch images
-
-    if (currentVersion !== renderVersion) return;
-
-    const gallery = document.getElementById("captionGallery");
-
-    if (currentVersion !== renderVersion) return;
-
-    gallery.innerHTML = "";
-    items.forEach(el => gallery.appendChild(el));
-
-  } finally {
-    isLoadingCaptions = false;
-  }
-}
   // 1️⃣ captions
   const capRes = await fetch(
     `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&order=created_at.asc`,
@@ -1402,26 +1383,14 @@ captions.forEach(row => {
 // гарантируем правильный порядок
 items.sort((a, b) => Number(a.dataset.num) - Number(b.dataset.num));
 
-
-gallery.style.opacity = "0.4";
-
-setTimeout(() => {
-  gallery.innerHTML = "";
-  items.forEach(el => gallery.appendChild(el));
-  gallery.style.opacity = "1";
-}, 50);
-
+gallery.innerHTML = "";
+items.forEach(el => gallery.appendChild(el));
 
 // 🎵 MUSIC PREVIEW (STEP 3)
 const musicInput = document.getElementById("musicInput");
 const musicPreview = document.getElementById("musicPreview");
 
- } finally {
-    isLoadingCaptions = false;
-  }
 }
-
-
 </script>
 
 
@@ -1600,11 +1569,9 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
     }
   );
 
-closeCaptionModal();
-
-await loadCaptionsFromSupabase();
-
-resetUploaderForm();
+  await loadCaptionsFromSupabase();
+  closeCaptionModal();
+  resetUploaderForm();
 
   lastUploadedFile = null;
   lastUploadedCaption = null;
