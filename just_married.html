@@ -547,6 +547,8 @@ input[type=file] {
 
 contain: content; /* 🔥 ВОТ ЭТО */
 
+transform: translateZ(0);
+  will-change: transform;
 }
 
 .caption-item {
@@ -556,6 +558,8 @@ contain: content; /* 🔥 ВОТ ЭТО */
   gap: 6px;
 
 aspect-ratio: 1 / 1; /* 🔥 ВАЖНО */
+  transform: translateZ(0);
+
 }
 
 .caption-item img {
