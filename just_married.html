@@ -739,20 +739,26 @@ contain: content; /* 🔥 ВОТ ЭТО */
 
 .btn-spinner{
   display:inline-block;
-  width:16px;
-  height:16px;
-  margin-right:8px;
+  width:18px;
+  height:18px;
+  margin-right:10px;
 
-  border:2px solid rgba(255,255,255,0.35);
-  border-top:2px solid white;
+  border:3px solid rgba(255,255,255,0.25);
+  border-top:3px solid #ffffff;
+
   border-radius:50%;
 
-  animation:spinBtn .7s linear infinite;
-  vertical-align:middle;
+  animation:spinBtn .8s linear infinite;
 }
 
 @keyframes spinBtn{
   to{ transform:rotate(360deg); }
+}
+
+#musicUploadBtn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 </style>
