@@ -1244,15 +1244,34 @@ function resetUploaderForm() {
   }
 
 let isLoadingCaptions = false;
+let renderVersion = 0;
 
 async function loadCaptionsFromSupabase() {
   if (!token) return;
+
+  const currentVersion = ++renderVersion;
 
   if (isLoadingCaptions) return;
   isLoadingCaptions = true;
 
   try {
 
+    // fetch captions
+    // fetch images
+
+    if (currentVersion !== renderVersion) return;
+
+    const gallery = document.getElementById("captionGallery");
+
+    if (currentVersion !== renderVersion) return;
+
+    gallery.innerHTML = "";
+    items.forEach(el => gallery.appendChild(el));
+
+  } finally {
+    isLoadingCaptions = false;
+  }
+}
   // 1️⃣ captions
   const capRes = await fetch(
     `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&order=created_at.asc`,
@@ -1296,6 +1315,7 @@ images.forEach(img => {
 
 // 3️⃣ render
 const gallery = document.getElementById("captionGallery");
+gallery.innerHTML = "";
 
 const items = [];
 
