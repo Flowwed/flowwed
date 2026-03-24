@@ -1196,6 +1196,9 @@ status.innerText = "✅ Uploaded!";
 showPreview(file, true);
 
 
+setTimeout(async () => {
+  await loadCaptionsFromSupabase();
+}, 500);
 
 setTimeout(openCaptionModal, 300);
 
