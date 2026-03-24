@@ -786,8 +786,7 @@ cursor: pointer;
 </div>
 
 
-<script>
-
+<script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabase = createClient(
@@ -858,6 +857,15 @@ loadCouple();
 
 
 function openPage(page) {
+
+  const params = new URLSearchParams(window.location.search);
+
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T");
+
   let file = "";
 
   switch (page) {
@@ -924,7 +932,6 @@ function openPage(page) {
 
   window.open(`${file}?t=${token}`, "_blank");
 }
-
 </script>
 
 <script>
@@ -984,16 +991,6 @@ function visitSite() {
   </div>
 </div>
 
-
-<script>
-document.getElementById("openGuide").addEventListener("click", () => {
-  document.getElementById("guideModal").style.display = "flex";
-});
-
-document.getElementById("closeGuide").addEventListener("click", () => {
-  document.getElementById("guideModal").style.display = "none";
-});
-</script>
 
 
 </body>
