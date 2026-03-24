@@ -576,6 +576,17 @@ aspect-ratio: 1 / 1; /* 🔥 ВАЖНО */
   word-break: break-word;
 }
 
+.caption-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.caption-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .photo-label {
   font-size: 12px;
   font-weight: 600;
@@ -1345,8 +1356,14 @@ const fragment = document.createDocumentFragment();
 items.forEach(el => fragment.appendChild(el));
 
 gallery.innerHTML = "";
-gallery.appendChild(fragment);
 
+items.forEach((el, i) => {
+  gallery.appendChild(el);
+
+  setTimeout(() => {
+    el.classList.add("show");
+  }, i * 80); // 🔥 скорость появления (можешь 60–120)
+});
 requestAnimationFrame(() => {
   gallery.style.opacity = "1";
 });
