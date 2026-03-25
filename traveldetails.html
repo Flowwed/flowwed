@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Travel & Details Admin</title>
 
+<script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+  window.supabase = createClient(
+    "https://octwwpatppbenqwkcqaw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+  );
+</script>
+
   <style>
     body{
       margin:0;
@@ -457,11 +466,13 @@
       });
     });
 
-    document.getElementById("saveDraftBtn").addEventListener("click", () => {
-      saveDraft();
-      alert("Draft saved in this browser.");
-    });
+document.getElementById("saveDraftBtn").addEventListener("click", async () => {
+  const data = getFormData();
 
+  await saveToSupabase(data);
+
+  alert("Saved to Supabase ✅");
+});
     document.getElementById("resetBtn").addEventListener("click", () => {
       if (!confirm("Reset all fields?")) return;
       localStorage.removeItem(storageKey);
@@ -473,8 +484,107 @@
       window.open(`/venue_map.html?t=${encodeURIComponent(token)}`, "_blank");
     });
 
-    loadDraft();
-    updatePreview();
+(async () => {
+  const data = await loadFromSupabase();
+
+  if (data) {
+    // преобразуем под твою форму
+    const mapped = {
+      coupleName: data.couple_name,
+      weddingDate: data.wedding_date,
+      heroSubtitle: data.hero_subtitle,
+
+      scheduleTime1: data.schedule_time_1,
+      scheduleText1: data.schedule_text_1,
+      scheduleTime2: data.schedule_time_2,
+      scheduleText2: data.schedule_text_2,
+      scheduleTime3: data.schedule_time_3,
+      scheduleText3: data.schedule_text_3,
+      scheduleTime4: data.schedule_time_4,
+      scheduleText4: data.schedule_text_4,
+
+      airport: data.airport,
+      transferTime: data.transfer_time,
+      flightsText: data.flights_text,
+
+      hotel1: data.hotel_1,
+      hotel2: data.hotel_2,
+      hotel3: data.hotel_3,
+
+      venueName: data.venue_name,
+      mapLink: data.map_link,
+      venueAddress: data.venue_address,
+      venueNote: data.venue_note,
+
+      gettingAround: data.getting_around,
+      dressCode: data.dress_code,
+      weather: data.weather,
+      weatherNote: data.weather_note,
+
+      trip1: data.trip_1,
+      trip2: data.trip_2,
+      trip3: data.trip_3,
+
+      faqQ1: data.faq_q1,
+      faqA1: data.faq_a1,
+      faqQ2: data.faq_q2,
+      faqA2: data.faq_a2,
+      faqQ3: data.faq_q3,
+      faqA3: data.faq_a3,
+      faqQ4: data.faq_q4,
+      faqA4: data.faq_a4
+    };
+
+    setFormData(mapped);
+  }
+
+  updatePreview();
+})();
+
+async function saveToSupabase(data) {
+  const params = new URLSearchParams(window.location.search);
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T");
+
+  const { error } = await window.supabase
+    .from("wedding_info")
+    .upsert(
+      [{ site_edit_token: token, ...data }],
+      { onConflict: "site_edit_token" }
+    );
+
+  if (error) {
+    console.error("SAVE ERROR:", error);
+    alert("Ошибка сохранения");
+  }
+}
+
+async function loadFromSupabase() {
+  const params = new URLSearchParams(window.location.search);
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T");
+
+  const { data, error } = await window.supabase
+    .from("wedding_info")
+    .select("*")
+    .eq("site_edit_token", token)
+    .maybeSingle();
+
+  if (error) {
+    console.error("LOAD ERROR:", error);
+    return null;
+  }
+
+  return data;
+}
+
+
   </script>
 </body>
 </html>
