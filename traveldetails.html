@@ -5,14 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Travel & Details Admin</title>
 
-<script type="module">
-  import { createClient } from "https://esm.sh/@supabase/supabase-js";
-
-  window.supabase = createClient(
-    "https://octwwpatppbenqwkcqaw.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
-  );
-</script>
 
   <style>
     body{
@@ -195,6 +187,9 @@
       }
     }
   </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 <body>
   <div class="page">
@@ -348,6 +343,11 @@
   </div>
 
   <script>
+
+const supabase = supabase.createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
     const params = new URLSearchParams(location.search);
     const token = params.get("t") || params.get("token") || "demo-token";
     const storageKey = `venueMapDraft:${token}`;
@@ -549,7 +549,7 @@ async function saveToSupabase(data) {
     params.get("TOKEN") ||
     params.get("T");
 
-  const { error } = await window.supabase
+  const { error } = await supabase
     .from("wedding_info")
     .upsert(
       [{ site_edit_token: token, ...data }],
@@ -570,7 +570,7 @@ async function loadFromSupabase() {
     params.get("TOKEN") ||
     params.get("T");
 
-  const { data, error } = await window.supabase
+  const { data, error } = await supabase
     .from("wedding_info")
     .select("*")
     .eq("site_edit_token", token)
