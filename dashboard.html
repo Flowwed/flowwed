@@ -580,10 +580,14 @@ cursor: pointer;
 }
 
 .page-title {
-  font-size: 32px;
+  font-size: 20px;
   font-weight: 740;
   margin-bottom: 6px;
   color: #a02449;
+font-style: italic;
+text-shadow:
+    0 1px 2px rgba(0,0,0,0.08),
+    0 0 6px rgba(160,36,73,0.15);
 }
 
 .page-title {
@@ -647,14 +651,16 @@ cursor: pointer;
 <div class="page-title" style="display:none;">Dashboard</div>
 
 <div class="header-row">
-  <button class="back-btn" onclick="goBack()">← Back</button>
+  <!-- 
+<button class="back-btn" onclick="goBack()">← Back</button>
+-->
 
   <!-- меняем класс -->
-  <div class="page-title">Wedding Manager</div>
+  <div class="page-title">FloWWed Studio</div>
 
 
   <button class="visit-btn" onclick="visitSite()">
-    <i class="fa-solid fa-globe"></i> My Web →
+    <i class="fa-solid fa-globe"></i> Your Web →
   </button>
 </div>
 
@@ -731,7 +737,7 @@ cursor: pointer;
   </button>
 
   <button class="big-btn" id="reports" onclick="openPage('reports')">
-    <i class="fa-solid fa-map-location-dot"></i>Event Details
+    <i class="fa-solid fa-map-location-dot"></i>Travel & Event
     <div class="bubble">
       Planning made <b>easy!</b>
     </div>
@@ -898,7 +904,7 @@ function openPage(page) {
       break;
 
     case "reports":
-      file = "reports.html";
+       file = "traveldetails.html";
       break;
 
     case "memories":
@@ -918,7 +924,7 @@ function openPage(page) {
       break;
 
     case "party":
-      file = "party.html";
+     file = "wedparty.html";
       break;
 
     case "yourweb":
