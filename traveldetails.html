@@ -470,9 +470,6 @@ document.getElementById("saveDraftBtn").addEventListener("click", async () => {
   const f = getFormData();
 
   const data = {
-    couple_name: f.coupleName,
-    wedding_date: f.weddingDate,
-    hero_subtitle: f.heroSubtitle,
 
     schedule_time_1: f.scheduleTime1,
     schedule_text_1: f.scheduleText1,
@@ -539,9 +536,6 @@ document.getElementById("openPreviewBtn").addEventListener("click", () => {
 
   if (data) {
     const mapped = {
-      coupleName: data.couple_name,
-      weddingDate: data.wedding_date,
-      heroSubtitle: data.hero_subtitle,
 
       scheduleTime1: data.schedule_time_1,
       scheduleText1: data.schedule_text_1,
