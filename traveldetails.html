@@ -404,8 +404,14 @@ const sb = window.supabase.createClient(
 
 el.addEventListener("input", () => {
   saveDraft();
-});
 
+  const iframe = document.getElementById("previewFrame");
+
+  iframe.contentWindow.postMessage({
+    type: "LIVE_UPDATE",
+    data: getFormData()
+  }, "*");
+});
     });
 
 document.getElementById("saveDraftBtn").addEventListener("click", async () => {
