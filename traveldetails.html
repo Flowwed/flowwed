@@ -314,7 +314,7 @@ const params = new URLSearchParams(location.search);
 const token = params.get("t") || params.get("token") || "demo-token";
 
 document.getElementById("previewFrame").src =
-  `/venue_map.html?t=${encodeURIComponent(token)}`;
+  `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
 
 const steps=document.querySelectorAll(".step");
 const sections=document.querySelectorAll(".section");
@@ -519,7 +519,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
 
 document.getElementById("openPreviewBtn").addEventListener("click", () => {
   saveDraft();
-  window.open(`/venue_map.html?t=${encodeURIComponent(token)}`, "_blank");
+  window.open(`https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`, "_blank");
 });
 
 
