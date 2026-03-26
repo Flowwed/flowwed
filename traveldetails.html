@@ -1,353 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Travel & Details Admin</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Travel & Details Admin</title>
 
+<style>
+body{
+  margin:0;
+  font-family:"Segoe UI", Arial, sans-serif;
+  background:linear-gradient(180deg,#fff1f4,#ffffff);
+  color:#6a2a2a;
+}
 
-  <style>
-    body{
-      margin:0;
-      font-family:"Segoe UI", Arial, sans-serif;
-      background:linear-gradient(180deg,#fff1f4,#ffffff);
-      color:#6a2a2a;
-    }
+.page{
+  max-width:1280px;
+  margin:28px auto 60px;
+  padding:0 20px;
+}
 
-    .page{
-      max-width:1280px;
-      margin:28px auto 60px;
-      padding:0 20px;
-    }
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      margin-bottom:20px;
-    }
+h1{
+  margin:0;
+  font-size:32px;
+  color:#9c1818;
+}
 
-    h1{
-      margin:0;
-      font-size:32px;
-      color:#9c1818;
-    }
+.layout{
+  display:grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap:22px;
+}
 
-    .token-pill{
-      padding:10px 16px;
-      border-radius:999px;
-      background:#fff7f8;
-      border:1px solid #ffd5dc;
-      font-size:14px;
-      font-weight:600;
-    }
+.panel{
+  background:rgba(255,255,255,0.82);
+  border-radius:22px;
+  padding:22px;
+  box-shadow:0 18px 40px rgba(0,0,0,0.14);
+}
 
-    .layout{
-      display:grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap:22px;
-      align-items:start;
-    }
+.steps{
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
+}
 
-    .panel{
-      background:rgba(255,255,255,0.82);
-      border-radius:22px;
-      padding:22px;
-      box-shadow:
-        0 18px 40px rgba(0,0,0,0.14),
-        0 8px 18px rgba(0,0,0,0.08);
-    }
+.step{
+  flex:1;
+  text-align:center;
+  padding:10px;
+  border-radius:12px;
+  background:#ffe5ea;
+  font-weight:600;
+}
 
-    .section{
-      margin-bottom:18px;
-      padding:16px;
-      border-radius:16px;
-      background:#fff9fa;
-      border:1px solid #f3d8de;
-    }
+.step.active{
+  background:#b41111;
+  color:#fff;
+}
 
-    .section h2{
-      margin:0 0 12px;
-      font-size:18px;
-      color:#a52126;
-    }
+.section{
+  display:none;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px 14px;
-    }
+.section.active{
+  display:block;
+}
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
+.section-box{
+  margin-bottom:18px;
+  padding:16px;
+  border-radius:16px;
+  background:#fff9fa;
+  border:1px solid #f3d8de;
+}
 
-    .field.full{
-      grid-column:1 / -1;
-    }
+.section-box h2{
+  margin:0 0 12px;
+  font-size:18px;
+  color:#a52126;
+}
 
-    label{
-      font-size:13px;
-      font-weight:700;
-      color:#7e2a2a;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px 14px;
+}
 
-    input, textarea{
-      width:100%;
-      box-sizing:border-box;
-      border:1px solid #e9c8d0;
-      border-radius:12px;
-      padding:11px 12px;
-      font-size:14px;
-      background:#fff;
-      color:#5d2222;
-    }
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
 
-    textarea{
-      min-height:84px;
-      resize:vertical;
-      line-height:1.45;
-    }
+.field.full{
+  grid-column:1 / -1;
+}
 
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:14px;
-    }
+label{
+  font-size:13px;
+  font-weight:700;
+  color:#7e2a2a;
+}
 
-    button{
-      border:none;
-      cursor:pointer;
-      padding:12px 18px;
-      border-radius:14px;
-      font-size:14px;
-      font-weight:700;
-      color:#fff;
-      background:linear-gradient(135deg,#b41111,#8e1515);
-      box-shadow:0 8px 20px rgba(0,0,0,0.18);
-    }
+input, textarea{
+  border:1px solid #e9c8d0;
+  border-radius:12px;
+  padding:11px 12px;
+}
 
-    button.secondary{
-      background:linear-gradient(135deg,#8f7f7f,#6d6161);
-    }
+textarea{
+  min-height:80px;
+}
 
-    button.light{
-      background:linear-gradient(135deg,#ffffff,#f4ecec);
-      color:#8b1a1a;
-      border:1px solid #e5d3d3;
-    }
+.actions{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
 
-    .hint{
-      margin-top:10px;
-      font-size:13px;
-      color:#8a6666;
-    }
+button{
+  padding:12px 18px;
+  border:none;
+  border-radius:14px;
+  font-weight:700;
+  cursor:pointer;
+  background:linear-gradient(135deg,#b41111,#8e1515);
+  color:white;
+}
 
-    .preview-card{
-      background:linear-gradient(180deg,#ffffff 0%,#fff6f7 100%);
-      border-radius:24px;
-      padding:24px;
-      box-shadow:
-        0 20px 44px rgba(0,0,0,0.12),
-        0 10px 24px rgba(0,0,0,0.06);
-    }
-
-    .preview-card h3{
-      margin:0 0 10px;
-      color:#a52126;
-      font-size:26px;
-    }
-
-    .preview-block{
-      margin-top:16px;
-      padding:14px 16px;
-      border-radius:16px;
-      background:#fff;
-      border:1px solid #f0d9de;
-    }
-
-    .preview-block strong{
-      color:#a52126;
-      display:block;
-      margin-bottom:6px;
-    }
-
-    .small{
-      font-size:13px;
-      color:#8b6666;
-    }
-
-    @media (max-width: 980px){
-      .layout{
-        grid-template-columns:1fr;
-      }
-    }
-  </style>
+.preview{
+  position:sticky;
+  top:20px;
+}
+</style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 </head>
+
 <body>
-  <div class="page">
+<div class="page">
 
-    <div class="topbar">
-      <h1>Travel & Details Admin</h1>
-      <div class="token-pill" id="tokenPill">Token: —</div>
-    </div>
+<div class="topbar">
+<h1>Travel & Details Admin</h1>
+<div id="tokenPill"></div>
+</div>
 
-    <div class="layout">
+<div class="layout">
 
-      <div class="panel">
-        <div class="section">
-          <h2>Basic</h2>
-          <div class="grid">
-            <div class="field">
-              <label>Couple Names</label>
-              <input id="coupleName" placeholder="Jessica & John">
-            </div>
-            <div class="field">
-              <label>Wedding Date</label>
-              <input id="weddingDate" type="date">
-            </div>
-            <div class="field full">
-              <label>Hero Subtitle</label>
-              <input id="heroSubtitle" placeholder="Everything you need to know for the big day.">
-            </div>
-          </div>
-        </div>
+<div class="panel">
 
-        <div class="section">
-          <h2>Schedule</h2>
-          <div class="grid">
-            <div class="field"><label>Time 1</label><input id="scheduleTime1" placeholder="3:00 PM"></div>
-            <div class="field"><label>Event 1</label><input id="scheduleText1" placeholder="Ceremony begins"></div>
+<!-- STEPS -->
+<div class="steps">
+<div class="step active">Basic</div>
+<div class="step">Schedule</div>
+<div class="step">Travel</div>
+<div class="step">Venue</div>
+<div class="step">Details</div>
+</div>
 
-            <div class="field"><label>Time 2</label><input id="scheduleTime2" placeholder="4:30 PM"></div>
-            <div class="field"><label>Event 2</label><input id="scheduleText2" placeholder="Cocktail hour"></div>
+<!-- STEP 1 -->
+<div class="section active">
+<div class="section-box">
+<h2>Basic</h2>
+<div class="grid">
+<div class="field">
+<label>Couple Names</label>
+<input id="coupleName" placeholder="Jessica & John">
+</div>
+<div class="field">
+<label>Wedding Date</label>
+<input id="weddingDate" type="date">
+</div>
+<div class="field full">
+<label>Hero Subtitle</label>
+<input id="heroSubtitle" placeholder="Everything you need to know for the big day.">
+</div>
+</div>
+</div>
+</div>
 
-            <div class="field"><label>Time 3</label><input id="scheduleTime3" placeholder="6:00 PM"></div>
-            <div class="field"><label>Event 3</label><input id="scheduleText3" placeholder="Dinner & celebration"></div>
+<!-- STEP 2 -->
+<div class="section">
+<div class="section-box">
+<h2>Schedule</h2>
+<div class="grid">
 
-            <div class="field"><label>Time 4</label><input id="scheduleTime4" placeholder="10:00 PM"></div>
-            <div class="field"><label>Event 4</label><input id="scheduleText4" placeholder="Dancing continues"></div>
-          </div>
-        </div>
+<div class="field"><label>Time 1</label><input id="scheduleTime1" placeholder="3:00 PM"></div>
+<div class="field"><label>Event 1</label><input id="scheduleText1" placeholder="Ceremony begins"></div>
 
-        <div class="section">
-          <h2>Flights & Stay</h2>
-          <div class="grid">
-            <div class="field"><label>Airport</label><input id="airport" placeholder="JFK"></div>
-            <div class="field"><label>Transfer Time</label><input id="transferTime" placeholder="45 minutes"></div>
-            <div class="field full"><label>Flights Description</label><textarea id="flightsText" placeholder="Fly into..."></textarea></div>
+<div class="field"><label>Time 2</label><input id="scheduleTime2" placeholder="4:30 PM"></div>
+<div class="field"><label>Event 2</label><input id="scheduleText2" placeholder="Cocktail hour"></div>
 
-            <div class="field"><label>Hotel 1</label><input id="hotel1" placeholder="Hotel Option 1 — 10 min from venue"></div>
-            <div class="field"><label>Hotel 2</label><input id="hotel2" placeholder="Hotel Option 2 — city center"></div>
-            <div class="field full"><label>Hotel 3</label><input id="hotel3" placeholder="Hotel Option 3 — budget friendly"></div>
-          </div>
-        </div>
+<div class="field"><label>Time 3</label><input id="scheduleTime3" placeholder="6:00 PM"></div>
+<div class="field"><label>Event 3</label><input id="scheduleText3" placeholder="Dinner & celebration"></div>
 
-        <div class="section">
-          <h2>Venue</h2>
-          <div class="grid">
-            <div class="field"><label>Venue Name</label><input id="venueName" placeholder="The Grand Garden"></div>
-            <div class="field"><label>Map Link</label><input id="mapLink" placeholder="https://maps.google.com/..."></div>
-            <div class="field full"><label>Venue Address</label><textarea id="venueAddress" placeholder="Full address line"></textarea></div>
-            <div class="field full"><label>Venue Note</label><input id="venueNote" placeholder="Please use the main entrance."></div>
-          </div>
-        </div>
+<div class="field"><label>Time 4</label><input id="scheduleTime4" placeholder="10:00 PM"></div>
+<div class="field"><label>Event 4</label><input id="scheduleText4" placeholder="Dancing continues"></div>
 
-        <div class="section">
-          <h2>Details</h2>
-          <div class="grid">
-            <div class="field full"><label>Getting Around</label><textarea id="gettingAround" placeholder="Uber, Bolt, local taxis..."></textarea></div>
-            <div class="field full"><label>Dress Code</label><textarea id="dressCode" placeholder="Formal / Semi-formal attire..."></textarea></div>
-            <div class="field"><label>Weather</label><input id="weather" placeholder="24°C / 75°F"></div>
-            <div class="field"><label>Weather Note</label><input id="weatherNote" placeholder="Light layer for the evening"></div>
-          </div>
-        </div>
+</div>
+</div>
+</div>
 
-        <div class="section">
-          <h2>Trip Ideas</h2>
-          <div class="grid">
-            <div class="field"><label>Place 1</label><input id="trip1" placeholder="Old Town"></div>
-            <div class="field"><label>Place 2</label><input id="trip2" placeholder="Sea View Point"></div>
-            <div class="field full"><label>Place 3</label><input id="trip3" placeholder="Favorite Café"></div>
-          </div>
-        </div>
+<!-- STEP 3 -->
+<div class="section">
+<div class="section-box">
+<h2>Flights & Stay</h2>
+<div class="grid">
 
-        <div class="section">
-          <h2>Helpful Info / FAQ</h2>
-          <div class="grid">
-            <div class="field"><label>Question 1</label><input id="faqQ1" placeholder="When should I arrive?"></div>
-            <div class="field"><label>Answer 1</label><input id="faqA1" placeholder="20–30 minutes before the ceremony."></div>
+<div class="field"><label>Airport</label><input id="airport" placeholder="JFK"></div>
+<div class="field"><label>Transfer Time</label><input id="transferTime" placeholder="45 minutes"></div>
 
-            <div class="field"><label>Question 2</label><input id="faqQ2" placeholder="Is parking available?"></div>
-            <div class="field"><label>Answer 2</label><input id="faqA2" placeholder="Yes, at or near the venue."></div>
+<div class="field full"><label>Flights Description</label>
+<textarea id="flightsText" placeholder="Fly into..."></textarea></div>
 
-            <div class="field"><label>Question 3</label><input id="faqQ3" placeholder="Indoor or outdoor?"></div>
-            <div class="field"><label>Answer 3</label><input id="faqA3" placeholder="Partly outdoors."></div>
+<div class="field"><label>Hotel 1</label><input id="hotel1" placeholder="Hotel Option 1"></div>
+<div class="field"><label>Hotel 2</label><input id="hotel2" placeholder="Hotel Option 2"></div>
+<div class="field full"><label>Hotel 3</label><input id="hotel3" placeholder="Hotel Option 3"></div>
 
-            <div class="field"><label>Question 4</label><input id="faqQ4" placeholder="Will this page be updated?"></div>
-            <div class="field"><label>Answer 4</label><input id="faqA4" placeholder="Yes, if anything changes."></div>
-          </div>
-        </div>
+</div>
+</div>
+</div>
 
-        <div class="actions">
-          <button id="saveDraftBtn">Save Draft</button>
-          <button id="resetBtn" class="secondary">Reset Form</button>
-          <button id="openPreviewBtn" class="light">Open Frontend Preview</button>
-        </div>
+<!-- STEP 4 -->
+<div class="section">
+<div class="section-box">
+<h2>Venue</h2>
+<div class="grid">
 
-        <div class="hint">
-          Temporary mode: saved only in this browser via localStorage.
-        </div>
-      </div>
+<div class="field"><label>Venue Name</label><input id="venueName" placeholder="The Grand Garden"></div>
+<div class="field"><label>Map Link</label><input id="mapLink" placeholder="https://maps.google.com/..."></div>
 
-      <div class="panel">
-        <div class="preview-card">
-          <h3 id="previewCouple">Couple Name</h3>
-          <div class="small" id="previewSubtitle">Everything you need to know for the big day.</div>
+<div class="field full"><label>Venue Address</label>
+<textarea id="venueAddress"></textarea></div>
 
-          <div class="preview-block">
-            <strong>Schedule</strong>
-            <div id="previewSchedule"></div>
-          </div>
+<div class="field full"><label>Venue Note</label>
+<input id="venueNote" placeholder="Please use the main entrance."></div>
 
-          <div class="preview-block">
-            <strong>Flights & Arrival</strong>
-            <div id="previewFlights"></div>
-          </div>
+</div>
+</div>
+</div>
 
-          <div class="preview-block">
-            <strong>Venue</strong>
-            <div id="previewVenue"></div>
-          </div>
+<!-- STEP 5 -->
+<div class="section">
+<div class="section-box">
+<h2>Details</h2>
+<div class="grid">
 
-          <div class="preview-block">
-            <strong>Dress Code</strong>
-            <div id="previewDress"></div>
-          </div>
+<div class="field full"><label>Getting Around</label>
+<textarea id="gettingAround"></textarea></div>
 
-          <div class="preview-block">
-            <strong>Helpful Info</strong>
-            <div id="previewFaq"></div>
-          </div>
-        </div>
-      </div>
+<div class="field full"><label>Dress Code</label>
+<textarea id="dressCode"></textarea></div>
 
-    </div>
-  </div>
+<div class="field"><label>Weather</label><input id="weather"></div>
+<div class="field"><label>Weather Note</label><input id="weatherNote"></div>
 
-  <script>
+</div>
+</div>
 
+<div class="section-box">
+<h2>FAQ</h2>
+<div class="grid">
+
+<div class="field"><label>Question 1</label><input id="faqQ1"></div>
+<div class="field"><label>Answer 1</label><input id="faqA1"></div>
+
+<div class="field"><label>Question 2</label><input id="faqQ2"></div>
+<div class="field"><label>Answer 2</label><input id="faqA2"></div>
+
+<div class="field"><label>Question 3</label><input id="faqQ3"></div>
+<div class="field"><label>Answer 3</label><input id="faqA3"></div>
+
+<div class="field"><label>Question 4</label><input id="faqQ4"></div>
+<div class="field"><label>Answer 4</label><input id="faqA4"></div>
+
+</div>
+</div>
+</div>
+
+<div class="actions">
+<button onclick="prevStep()">← Back</button>
+<button onclick="nextStep()">Next →</button>
+</div>
+
+<button id="saveDraftBtn">Save Draft</button>
+
+</div>
+
+<!-- PREVIEW -->
+<div class="panel preview">
+  <iframe
+    id="previewFrame"
+    style="width:100%; height:900px; border:none; border-radius:20px;"
+  ></iframe>
+</div>
+
+</div>
+</div>
+
+<script>
+
+// WIZARD
+let currentStep=0;
+
+const params = new URLSearchParams(location.search);
+const token = params.get("t") || params.get("token") || "demo-token";
+
+document.getElementById("previewFrame").src =
+  `/venue_map.html?t=${encodeURIComponent(token)}`;
+
+const steps=document.querySelectorAll(".step");
+const sections=document.querySelectorAll(".section");
+
+function showStep(i){
+sections.forEach(s=>s.classList.remove("active"));
+steps.forEach(s=>s.classList.remove("active"));
+sections[i].classList.add("active");
+steps[i].classList.add("active");
+}
+
+function nextStep(){
+if(currentStep<sections.length-1){currentStep++;showStep(currentStep);}
+}
+
+function prevStep(){
+if(currentStep>0){currentStep--;showStep(currentStep);}
+}
+
+// ТВОЙ SUPABASE 1:1
 const sb = window.supabase.createClient(
-  "https://octwwpatppbenqwkcqaw.supabase.co",
+"https://octwwpatppbenqwkcqaw.supabase.co",
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
+
     const params = new URLSearchParams(location.search);
     const token = params.get("t") || params.get("token") || "demo-token";
     const storageKey = `venueMapDraft:${token}`;
