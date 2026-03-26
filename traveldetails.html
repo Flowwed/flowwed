@@ -397,63 +397,15 @@ const sb = window.supabase.createClient(
       return `${parseInt(d,10)} ${months[parseInt(m,10)-1]} ${y}`;
     }
 
-    function updatePreview(){
-      const data = getFormData();
-
-      document.getElementById("previewCouple").textContent =
-        data.coupleName || "Couple Name";
-
-      document.getElementById("previewSubtitle").textContent =
-        data.heroSubtitle || "Everything you need to know for the big day.";
-
-      const schedule = [
-        [data.scheduleTime1, data.scheduleText1],
-        [data.scheduleTime2, data.scheduleText2],
-        [data.scheduleTime3, data.scheduleText3],
-        [data.scheduleTime4, data.scheduleText4]
-      ]
-      .filter(([t,txt]) => t || txt)
-      .map(([t,txt]) => `<div><b>${t || ""}</b> ${txt || ""}</div>`)
-      .join("");
-
-      document.getElementById("previewSchedule").innerHTML =
-        schedule || "<div>—</div>";
-
-      document.getElementById("previewFlights").innerHTML = `
-        <div>${data.flightsText || "—"}</div>
-        <div style="margin-top:8px;"><b>Airport:</b> ${data.airport || "—"}</div>
-        <div><b>Transfer:</b> ${data.transferTime || "—"}</div>
-      `;
-
-      document.getElementById("previewVenue").innerHTML = `
-        <div><b>${data.venueName || "Venue Name"}</b></div>
-        <div style="white-space:pre-line;">${data.venueAddress || "—"}</div>
-        <div style="margin-top:8px;">${data.venueNote || ""}</div>
-      `;
-
-      document.getElementById("previewDress").innerHTML =
-        `<div>${data.dressCode || "—"}</div>`;
-
-      const faq = [
-        [data.faqQ1, data.faqA1],
-        [data.faqQ2, data.faqA2],
-        [data.faqQ3, data.faqA3],
-        [data.faqQ4, data.faqA4]
-      ]
-      .filter(([q,a]) => q || a)
-      .map(([q,a]) => `<div style="margin-bottom:8px;"><b>${q || ""}</b><br>${a || ""}</div>`)
-      .join("");
-
-      document.getElementById("previewFaq").innerHTML = faq || "<div>—</div>";
-    }
 
     fieldIds.forEach(id => {
       const el = document.getElementById(id);
       if (!el) return;
-      el.addEventListener("input", () => {
-        saveDraft();
-        updatePreview();
-      });
+
+el.addEventListener("input", () => {
+  saveDraft();
+});
+
     });
 
 document.getElementById("saveDraftBtn").addEventListener("click", async () => {
@@ -580,8 +532,8 @@ if(openPreviewBtn){
     setFormData(mapped);
   }
 
-  updatePreview();
 })();
+
 async function saveToSupabase(data) {
   const params = new URLSearchParams(window.location.search);
   const token =
