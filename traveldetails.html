@@ -409,6 +409,7 @@ el.addEventListener("input", () => {
 
   iframe.contentWindow.postMessage({
     type: "LIVE_UPDATE",
+field: id,   // 👈 ВОТ ЭТУ СТРОКУ ДОБАВЬ
     data: getFormData()
   }, "*");
 });
