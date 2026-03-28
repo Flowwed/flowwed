@@ -841,6 +841,19 @@ input[type=file] {
         <button class="ql-align"></button>
       </div>
 
+
+<input 
+  type="date" 
+  id="updateDate" 
+  style="
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  "
+>
+
       <div id="editor"></div>
 
       <div class="editor-actions">
@@ -936,6 +949,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // SAVE BUTTON
   // ===============================
   document.querySelector(".save-btn").addEventListener("click", async () => {
+
+const dateInput = document.getElementById("updateDate");
+
+if (!dateInput.value) {
+  showToast("Please select a date before writing your update.");
+  return;
+}
+
 
     if (!token) {
       alert("Missing token");
@@ -1215,13 +1236,23 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  window.quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-      toolbar: '#toolbar-container'
-    }
-  });
+window.quill = new Quill('#editor', {
+  theme: 'snow',
+  modules: {
+    toolbar: '#toolbar-container'
+  }
+});
 
+// ⬇️ ВОТ ТУТ
+const dateInput = document.getElementById("updateDate");
+
+window.quill.enable(false);
+
+dateInput.addEventListener("change", () => {
+  if (dateInput.value) {
+    window.quill.enable(true);
+  }
+});
 // ✅ ВОТ ТУТ
 loadStoryText();
 
