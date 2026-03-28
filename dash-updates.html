@@ -1153,12 +1153,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
+const closeBtn = document.getElementById("closeModal");
 
-  // КРЕСТИК ЗАКРЫТИЯ — ТЕПЕРЬ РАБОТАЕТ ВСЕГДА
-  document.getElementById("closeModal").addEventListener("click", () => {
+if (closeBtn) {
+  closeBtn.addEventListener("click", () => {
     document.getElementById("storyModal").style.display = "none";
   });
-
+}
 });
 </script>
 
