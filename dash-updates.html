@@ -968,23 +968,48 @@ const formattedDate = now.toLocaleDateString("en-US", {
   day: "numeric"
 });
 
-// 🧠 финальный текст (дата + текст)
-const finalText = `<p><strong>${formattedDate}</strong></p>${text}`;
+// создаём новый update
+const newUpdate = {
+  content: window.quill.root.innerHTML,
+  created_at: new Date().toISOString()
+};
 
 try {
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+  // 1. получаем текущие updates
+  const resGet = await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
     {
-      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
+    }
+  );
+
+  const data = await resGet.json();
+
+  let updates = [];
+
+  // если уже есть данные — берём их
+  if (data.length && data[0].wed_updates) {
+    updates = data[0].wed_updates;
+  }
+
+  // 2. добавляем новый update В НАЧАЛО
+  updates.unshift(newUpdate);
+
+  // 3. сохраняем обратно
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
       headers: {
         apikey: SUPABASE_KEY,
         Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        Prefer: "resolution=merge-duplicates"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        edit_token: token,
-        wed_updates: finalText   // ✅ ВОТ ЭТО ГЛАВНОЕ
+        wed_updates: updates
       })
     }
   );
@@ -996,18 +1021,16 @@ try {
   console.error("SAVE ERROR:", e);
   showToast("Save error");
 }
-  // ❗ ВАЖНО: ЖДЁМ Quill
-  const waitForQuill = setInterval(() => {
-    if (window.quill) {
-      clearInterval(waitForQuill);
-      loadStoryText();
-    }
-  }, 100);
 
+// ❗ ВАЖНО: ЖДЁМ Quill
+const waitForQuill = setInterval(() => {
+  if (window.quill) {
+    clearInterval(waitForQuill);
+    loadStoryText();
+  }
+}, 100);
 
 });
-
-
 });
 </script>
 <script>
