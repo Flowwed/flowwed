@@ -880,7 +880,12 @@ input[type=file] {
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // TOAST HELPER
+
+  // ✅ TOKEN СРАЗУ НАВЕРХУ
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  // TOAST
   function showToast(msg) {
     const t = document.getElementById("toast");
     if (!t) return;
@@ -893,37 +898,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 
-
   // ===============================
-  // 1) AUTO-LOAD STORY TEXT FROM SUPABASE
+  // LOAD TEXT
   // ===============================
-  
-async function loadStoryText() {
-  if (!token) return;
+  async function loadStoryText() {
+    if (!token || !window.quill) return;
 
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
-    {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
+        {
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: "Bearer " + SUPABASE_KEY
+          }
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.length && data[0].wed_updates) {
+        window.quill.root.innerHTML = data[0].wed_updates;
       }
+
+    } catch (e) {
+      console.error("LOAD ERROR:", e);
     }
-  );
-
-  const data = await res.json();
-
-  if (data.length && data[0].wed_updates) {
-    window.quill.root.innerHTML = data[0].wed_updates;
   }
-}
-  // ВАЖНО — вызываем!
-  loadStoryText();
-
-
 
   // ===============================
-  // 2) SAVE BUTTON — SAVE TEXT ONLY
+  // SAVE BUTTON
   // ===============================
   document.querySelector(".save-btn").addEventListener("click", async () => {
 
@@ -932,32 +936,51 @@ async function loadStoryText() {
       return;
     }
 
+    if (!window.quill) {
+      alert("Editor not ready");
+      return;
+    }
+
     const text = window.quill.root.innerHTML;
 
-const res = await fetch(
-  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-  {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates"
-    },
-    body: JSON.stringify({
-      edit_token: token,
-      wed_updates: text
-    })
-  }
-);
-    if (res.ok) showToast("Message saved!");
-    else showToast("Save failed");
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+        {
+          method: "POST",
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: "Bearer " + SUPABASE_KEY,
+            "Content-Type": "application/json",
+            Prefer: "resolution=merge-duplicates"
+          },
+          body: JSON.stringify({
+            edit_token: token,
+            wed_updates: text
+          })
+        }
+      );
+
+      if (res.ok) showToast("Message saved!");
+      else showToast("Save failed");
+
+    } catch (e) {
+      console.error("SAVE ERROR:", e);
+      showToast("Save error");
+    }
 
   });
 
+  // ❗ ВАЖНО: ЖДЁМ Quill
+  const waitForQuill = setInterval(() => {
+    if (window.quill) {
+      clearInterval(waitForQuill);
+      loadStoryText();
+    }
+  }, 100);
+
 });
 </script>
-
 <script>
 
 // отправлять текст при открытии модалки
@@ -985,9 +1008,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sendEmailBtn || !modal || !iframe) return;
 
-  // берём ТОТ ЖЕ token, что используется везде
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("t") || params.get("token");
 
   sendEmailBtn.addEventListener("click", () => {
     if (!token) {
@@ -1079,135 +1099,16 @@ document.addEventListener("DOMContentLoaded", () => {
     loadSlugFromGallery(token);
   }
 
-/* ===== PHOTO UPLOAD DISABLED =====
-
-  uploadBtn.onclick = async () => {
-
-const originalUploadText = uploadBtn.innerHTML;
-
-  const fileInput = document.getElementById("fileInput");
-
-  if (!fileInput.files.length) {
-    status.innerText = "❌ Choose a file first.";
-    return;
-  }
-
-  if (!token) {
-    status.innerText = "❌ Missing token.";
-    return;
-  }
-
-  if (!slug) {
-    status.innerText = "⚠️ Slug not loaded. Trying upload anyway...";
-  }
-
-uploadBtn.disabled = true;
-uploadBtn.innerHTML = "Uploading...";
-
-  const file = fileInput.files[0];
-  const slot = slotSelect.value;
-
-  status.innerText = "Requesting upload URL...";
-  progressContainer.style.display = "none";
-  preview.style.display = "none";
-
-  try {
-  const res = await fetch("/.netlify/functions/mint-upload-url-2", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      slug: slug || "fallback",
-      token,
-      slot,
-      filename: file.name
-    })
-  });
-
-  if (!res.ok) {
-    throw new Error("Upload URL request failed");
-  }
-
-  const data = await res.json();
-  const uploadURL = data.url || data.signedUrl || data.uploadURL;
-
-  if (!uploadURL) {
-    throw new Error("No upload URL returned");
-  }
-
-  progressBar.style.width = "0%";
-  progressContainer.style.display = "block";
-  status.innerText = "";
-
-  await uploadFileWithProgress(uploadURL, file, (p) => {
-    progressBar.style.width = p + "%";
-  });
-*/
-
-  // ----------------------------------------
-  // 🔥 ДОБАВЛЕНО: обновляем path в записи галереи
-  // ----------------------------------------
-  await fetch(
-    `${SUPABASE_URL}/rest/v1/site_gallery?slot=eq.${slot}`,
-    {
-      method:"PATCH",
-      headers:{
-        apikey: SUPABASE_KEY,
-        Authorization:"Bearer " + SUPABASE_KEY,
-        "Content-Type":"application/json",
-        Prefer:"return=minimal"
-      },
-      body: JSON.stringify({
-        path:`${slug}/${slot}/${file.name}`
-      })
-    }
-  );
-
-uploadBtn.disabled = false;
-uploadBtn.innerHTML = originalUploadText;
-
-  status.innerText = "✅ Uploaded!";
-  showPreview(file);
-
-  setTimeout(() => {
-    progressContainer.style.display = "none";
-    progressBar.style.width = "0%";
-  }, 800);
-
-} catch (err) {
-  console.error(err);
-  status.innerText = "❌ Upload failed: " + err.message;
-}
-
-};
-
-
-  function uploadFileWithProgress(url, file, onProgress) {
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("PUT", url, true);
-
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) {
-          const percent = Math.round((e.loaded / e.total) * 100);
-          onProgress(percent);
-        }
-      };
-
-      xhr.onload = () =>
-        xhr.status === 200 ? resolve() : reject("Error " + xhr.status);
-
-      xhr.onerror = () => reject("Upload failed");
-
-      xhr.send(file);
-    });
-  }
 </script>
 
 <!-- OPEN + SAVE + MODAL -->
 
 <script>
+
 document.addEventListener("DOMContentLoaded", () => {
 
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
 
   // кнопка UPDATE
   document.querySelector(".update-btn").addEventListener("click", async () => {
@@ -1217,25 +1118,24 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-  const text = window.quill.root.innerHTML;
+    const text = window.quill.root.innerHTML;
 
-await fetch(
-  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-  {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates"
-    },
-    body: JSON.stringify({
-      edit_token: token,
-      wed_updates: text
-    })
-  }
-);
-
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+      {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates"
+        },
+        body: JSON.stringify({
+          edit_token: token,
+          wed_updates: text
+        })
+      }
+    );
     const modal = document.getElementById("storyModal");
     const iframe = document.getElementById("storyIframe");
 
@@ -1292,6 +1192,9 @@ document.addEventListener("DOMContentLoaded", () => {
       toolbar: '#toolbar-container'
     }
   });
+
+// ✅ ВОТ ТУТ
+loadStoryText();
 
   /* ====== ВОТ ИМЕННО СЮДА ====== */
   /* 🔥 НЕ ДАЁМ toolbar воровать фокус */
