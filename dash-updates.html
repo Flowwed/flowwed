@@ -1053,14 +1053,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let slug = null;
 
+if (slotSelect) {
   slotSelect.addEventListener("change", () => {
     const fileInput = document.getElementById("fileInput");
+    if (!fileInput) return;
+
     fileInput.value = "";
     preview.style.display = "none";
     previewBox.classList.add("placeholder");
     status.innerText = "";
   });
-
+}
   function showPreview(file) {
     preview.src = URL.createObjectURL(file);
     preview.style.display = "block";
