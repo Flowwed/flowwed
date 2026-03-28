@@ -304,10 +304,9 @@ input[type=file] {
 
 /* кнопки одной высоты и нормальной ширины */
 .editor-btn {
-  flex: unset;
-  padding: 10px 16px;
-  height: auto;
-}
+  flex: 1;
+  padding: 14px 0;        /* ← ВОТ ЭТО КЛЮЧ */
+  height: 48px;           /* ← И ЭТО */
   border-radius: 12px;
   font-size: 16px;
   font-weight: bold;
@@ -826,7 +825,7 @@ input[type=file] {
   <div class="editor-column">
 
     <!-- WHITE EDITOR CONTAINER -->
-    <div class="text-editor-box" style="position:relative;">
+    <div class="text-editor-box">
 
       <div id="toolbar-container">
         <select class="ql-font"></select>
@@ -842,22 +841,6 @@ input[type=file] {
         <button class="ql-align"></button>
       </div>
 
-<div style="
-  position:absolute;
-  right:28px;
-  top:28px;
-  display:flex;
-  gap:10px;
-  z-index:10;
-">
-
-
-
-  <button class="editor-btn save-btn">Save</button>
-  <button class="editor-btn update-btn">Preview</button>
-</div>
-
-
 <div id="updateDateDisplay" style="
   font-size: 15px;
   font-weight: 600;
@@ -869,12 +852,10 @@ input[type=file] {
 
       <div id="editor"></div>
 
-<div id="updatesFeed" style="
-  margin-top:20px;
-  max-height:300px;
-  overflow-y:auto;
-  padding-right:8px;
-"></div>
+      <div class="editor-actions">
+        <button class="editor-btn save-btn">Save Text Changes</button>
+        <button class="editor-btn update-btn">  👁Preview Your Updates</button>
+      </div>
 
     </div>
 
@@ -914,49 +895,31 @@ input[type=file] {
 
 let token = null; // ✅ ДОБАВЬ ЭТО
 
-async function loadStoryText() {
-  if (!token || !window.quill) return;
+  async function loadStoryText() {
+    if (!token || !window.quill) return;
 
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY
+    try {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
+        {
+          headers: {
+            apikey: SUPABASE_KEY,
+            Authorization: "Bearer " + SUPABASE_KEY
+          }
         }
+      );
+
+      const data = await res.json();
+
+      if (data.length && data[0].wed_updates) {
+        window.quill.root.innerHTML = data[0].wed_updates;
       }
-    );
 
-    const data = await res.json();
-
-    if (!data.length || !data[0].wed_updates) return;
-
-    const updates = data[0].wed_updates;
-
-    let html = "";
-
-    updates.forEach(u => {
-      const date = new Date(u.created_at).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      });
-
-      html += `
-        <div style="margin-bottom:20px;">
-          <p><strong>${date}</strong></p>
-          ${u.content}
-        </div>
-      `;
-    });
-
-document.getElementById("updatesFeed").innerHTML = html;
-
-  } catch (e) {
-    console.error("LOAD ERROR:", e);
+    } catch (e) {
+      console.error("LOAD ERROR:", e);
+    }
   }
-}
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
