@@ -929,7 +929,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // SAVE BUTTON
   // ===============================
-  document.querySelector(".save-btn").addEventListener("click", async () => {
+  
+const saveBtn = document.querySelector(".save-btn");
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", async () => {
 
     if (!token) {
       alert("Missing token");
@@ -970,6 +974,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
   });
+} else {
+  console.error("❌ save-btn not found");
+}
+  });
 
   // ❗ ВАЖНО: ЖДЁМ Quill
   const waitForQuill = setInterval(() => {
@@ -979,8 +987,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 100);
 
-});
+
 </script>
+
 <script>
 
 // отправлять текст при открытии модалки
