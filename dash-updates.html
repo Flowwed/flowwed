@@ -1059,7 +1059,19 @@ if (data.length && Array.isArray(data[0].wed_updates)) {
     }
   );
 
-  if (res.ok) showToast("Update saved!");
+  if (res.ok) {
+  showToast("Update saved!");
+
+  // ✅ 1. СНАЧАЛА обновляем ленту
+  await loadStoryText();
+
+  // ✅ 2. ПОТОМ очищаем редактор (важно после!)
+  window.quill.root.innerHTML = "";
+
+}
+
+
+
   else showToast("Save failed");
 
 } catch (e) {
