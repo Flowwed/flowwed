@@ -3,786 +3,526 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modify Your 'Our Story' Page</title>
+  <title>Modify Your "Updates" Page</title>
+
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
   <style>
+    :root {
+      --ruby: #b40012;
+      --ruby-dark: #9c1818;
+      --ruby-soft: #c30c1e;
+      --blue: #0075ff;
+      --blue-dark: #005bd1;
+      --text: #444;
+      --muted: #7a6772;
+      --white: #fff;
+      --bg-soft: #fafafa;
+      --border: #bbb;
+      --border-soft: #d2d2d2;
+      --shadow-soft: 0 3px 12px rgba(0,0,0,0.10);
+      --shadow-card:
+        0 10px 24px rgba(0,0,0,0.22),
+        0 3px 6px rgba(0,0,0,0.14);
+      --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: "Inter", -apple-system, BlinkMacSystemFont,
-             "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
-     background: linear-gradient(
-  180deg,
-  #f8d9dc 0%,
-  #f6e2e5 30%,
-  #f9edef 80%,
-  #fff5f6 100%
-);
       margin: 0;
-      padding: 40px 40px 80px 40px; /* top / left-right / bottom (bottom = 2x sides) */
+      padding: 40px 40px 80px;
+      font-family: "Inter", var(--font-system);
+      background: linear-gradient(
+        180deg,
+        #f8d9dc 0%,
+        #f6e2e5 30%,
+        #f9edef 80%,
+        #fff5f6 100%
+      );
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* HEADER: TITLE + INFO BUBBLE */
-    .page-header {
-  display: flex;
-  justify-content: center;   /* ← ЦЕНТР */
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 28px;
-}
+    /* ================= TOP NAV ================= */
 
-
-    .page-title {
-      font-size: 32px;
-      font-weight: bold;
-      color: white;
-      text-shadow: 0px 2px 4px rgba(0,0,0,0.25);
-      margin: 0;
-      white-space: nowrap;
-    }
-
-    /* INFO BUBBLE — FIXED VERSION */
-.info-bubble {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 14px 20px;
-  box-shadow:
-    0 10px 24px rgba(0,0,0,0.22),
-    0 3px 6px rgba(0,0,0,0.14);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  /* ← УВЕЛИЧИЛ В 2 РАЗА */
-  min-width: 620px;
-
-  /* ← ПОНИЗИЛ ВЫСОТУ */
-  height: 12px;
-
-  transform: translateY(2px);
-}
-
-.info-text {
-  font-size: 15px;
-  white-space: nowrap;  /* ← одна строка, не переносится */
-  color: #444;
-}
-
-.info-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #1f8bff;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 15px;
-  flex-shrink: 0;
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.25),
-    0 0 0 2px rgba(255,255,255,0.9);
-}
-
-.editor-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* нижняя плашка */
-.info-bubble--bottom {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-
-  align-self: center;      /* чтобы ты мог управлять шириной */
-  width: 70%;              /* ← РЕГУЛИРУЕШЬ САМ */
-  max-width: 900px;        /* ← РЕГУЛИРУЕШЬ САМ */
-  margin-top: 40px;
-}
-
-/* текстовый блок */
-.bottom-info-content {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-}
-
-/* стрелка */
-.bottom-info-arrow {
-  font-size: 20px;
-  font-weight: 600;
-  color: #b40012;
-}
-
-/* кнопка */
-.bottom-info-btn {
-  padding: 10px 18px;
-  border-radius: 999px;
-  border: none;
-  background: #0075ff;
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.bottom-info-btn:hover {
-  background: #005bd1;
-}
-
-.info-bubble--bottom,
-.info-bubble--bottom * {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Helvetica, Arial, sans-serif !important;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.45;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-
-    /* MAIN 2-COLUMN LAYOUT */
-.page-wrapper {
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
-
-  max-width: 1100px;   /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
-  margin: 40px auto;   /* центрируем */
-  padding: 0 20px;
-}
-    /* LEFT UPLOADER BOX */
-    .uploader-container {
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-      width: 420px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #previewBox {
-      width: 100%;
-      height: 300px;
-      border: 1.5px solid #d2d2d2;
-      border-radius: 14px;
-      background: #fafafa;
+    .top-nav-wrapper {
+      position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
-      margin-bottom: 18px;
+      height: auto;
+      margin-bottom: 5px;
     }
 
-    #previewBox.placeholder::before {
-      content: "";
-      width: 70px;
-      height: 70px;
-      opacity: 0.30;
-      background-image: url('https://cdn-icons-png.flaticon.com/512/685/685655.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-
-    #preview {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .top-nav {
       display: none;
-      border-radius: 14px;
-    }
-
-    select,
-input[type=file] {
-  padding: 10px;
-  height: 38px;      
-  margin-top: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-}
-
-
-    button {
-      background: #0075ff;
-      color: white;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-#uploadBtn {
-  margin-top: 10px;        /* отступ от file input */
-  height: 42px;            /* нормальная высота */
-  border-radius: 14px;     /* 🔵 скруглённые края */
-  font-size: 17px;         /* 🔤 крупнее текст */
-  font-weight: 600;
-  background: #c30c1e;
-  color: white;
-  cursor: pointer;
-}
-
-
-    button:hover {
-      background: #d0404d;
-    }
-
-
-
-    .progress-container {
-      margin-top: 15px;
-      background: #ddd;
-      border-radius: 10px;
-      overflow: hidden;
-      height: 12px;
-      width: 100%;
-      display: none;
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: #d0404d;
-      transition: width 0.3s;
-    }
-
-    #status {
-      margin-top: 12px;
+      gap: 36px;
       font-size: 15px;
+      font-weight: 500;
+      color: var(--muted);
     }
 
-    #tokenDisplay, #slugDisplay {
-      display: none;
+    .top-nav a {
+      text-decoration: none;
+      color: var(--muted);
+      transition: color 0.2s ease;
     }
 
-    /* RIGHT TEXT EDITOR — FULL WIDTH */
-    .text-editor-box {
-      background: white;
-      padding: 25px;
+    .top-nav a:hover {
+      color: var(--ruby);
+    }
+
+    .top-nav a.active {
+      font-weight: 700;
+      text-shadow: 0 0 4px rgba(180,17,17,0.25);
+    }
+
+    .back-btn {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border: none;
+      background: transparent;
+      color: var(--ruby);
+      font-family: var(--font-system);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      outline: none !important;
+      box-shadow: none !important;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .back-btn:focus,
+    .back-btn:focus-visible,
+    .back-btn:active {
+      outline: none;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .back-btn:active {
+      transform: translateY(1px);
+      opacity: 0.5;
+    }
+
+    .back-btn::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 1px;
+      background: var(--ruby);
+      transition: width 0.2s ease;
+    }
+
+    .back-arrow {
+      font-size: 22px;
+      line-height: 1;
+      margin-right: 2px;
+      transform: translateY(-1px);
+    }
+
+    /* ================= HEADER ================= */
+
+    .page-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .apple-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 26px;
+      border-radius: 999px;
+      background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.95) 0%,
+        rgba(245,245,245,0.92) 45%,
+        rgba(230,230,230,0.9) 100%
+      );
+      backdrop-filter: blur(6px);
+      color: var(--ruby);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow:
+        0 12px 28px rgba(0,0,0,0.22),
+        inset 0 1px 0 rgba(255,255,255,0.95),
+        inset 0 -1px 0 rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+
+    .info-bubble {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--white);
       border-radius: 16px;
-      flex: 1; /* takes remaining width */
-      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      box-shadow: var(--shadow-card);
+      font-family: var(--font-system);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .info-bubble--top {
+      min-width: 620px;
+      height: 56px;
+      padding: 14px 20px;
+      transform: translateY(2px);
+      border-radius: 999px;
+    }
+
+    .info-bubble--bottom {
+      align-self: center;
+      width: 70%;
+      max-width: 900px;
+      margin-top: 40px;
+      padding: 20px 40px;
+      gap: 16px;
+      border-radius: 999px;
+    }
+
+    .info-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #1f8bff;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 15px;
+      flex-shrink: 0;
+      box-shadow:
+        0 4px 10px rgba(0,0,0,0.25),
+        0 0 0 2px rgba(255,255,255,0.9);
+    }
+
+    .info-text {
+      font-size: 15px;
+      white-space: nowrap;
+      color: var(--text);
+    }
+
+    .info-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .info-action-btn {
+      all: unset;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 14px;
+      margin-left: 20px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ruby);
+      font-family: var(--font-system);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow:
+        0 6px 14px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+      transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .info-action-btn:hover {
+      background: rgba(180, 0, 18, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .info-action-btn:active {
+      transform: translateY(0);
+      box-shadow:
+        0 3px 8px rgba(0,0,0,0.18),
+        inset 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .info-action-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* ================= LAYOUT ================= */
+
+    .page-wrapper {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .editor-column {
+      flex: 1;
       display: flex;
       flex-direction: column;
     }
 
-    .save-btn {
-      background: #c00111;
-      color: white;
+    .text-editor-box {
+      position: relative;
+      background: var(--white);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
     }
 
-    .update-btn {
-      background: #6f685e;
-      color: white;
+    .editor-top-actions {
+      position: absolute;
+      right: 28px;
+      top: 28px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .editor-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 14px;
+      align-items: stretch;
+    }
+
+    .editor-btn {
+      flex: unset;
+      padding: 10px 16px;
+      height: auto;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      color: var(--white);
+      transition: 0.2s ease;
     }
 
     .editor-btn:hover {
       opacity: 0.82;
     }
-.update-btn:hover {
-  background: #827b6f; /* темнее */
-  opacity: 1;          /* убираем общее затемнение */
-}
-
-
-.editor-actions {
-  display: flex;
-  gap: 16px;          /* расстояние между кнопками */
-  margin-top: 14px;
- align-items: stretch;   
-}
-
-/* кнопки одной высоты и нормальной ширины */
-.editor-btn {
-  flex: unset;
-  padding: 10px 16px;
-  height: auto;
-}
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-
-/* ============================= */
-/* QUILL EDITOR — FIXED SCROLL  */
-/* ============================= */
-
-/* ВНЕШНИЙ КОНТЕЙНЕР */
-#editor {
-  border: 1.5px dashed #bbb;
-  border-radius: 12px;
-  background: #fafafa;
-  height: 260px;
-  box-sizing: border-box;
-  padding: 0;               /* padding ТОЛЬКО у ql-editor */
-  overflow: hidden;         /* ❗ важно */
-}
-
-/* ВНУТРЕННИЙ СКРОЛЛИМЫЙ БЛОК */
-#editor .ql-editor {
-  height: 100%;
-  padding: 18px;
-  font-size: 17px;
-  line-height: 1.6;
-  color: #444;
-
-  overflow-y: auto;         /* ✅ СКРОЛЛ ТУТ */
-  overflow-x: hidden;
-
-  white-space: normal;
-  word-break: break-word;
-}
-
-/* ============================= */
-/* RUBY SCROLLBAR (WEBKIT)       */
-/* ============================= */
-
-#editor .ql-editor::-webkit-scrollbar {
-  width: 9px;
-}
-
-#editor .ql-editor::-webkit-scrollbar-track {
-  background: #ffe6eb;
-  border-radius: 10px;
-}
-
-#editor .ql-editor::-webkit-scrollbar-thumb {
-  background: #b41111;
-  border-radius: 10px;
-  border: 2px solid #ffe6eb;
-}
-
-#editor .ql-editor::-webkit-scrollbar-thumb:hover {
-  background: #9c1818;
-}
-
-
-/* ============================= */
-/* QUILL — РЕАЛЬНЫЙ FIX SCROLL  */
-/* ============================= */
-
-/* Quill container */
-#editor.ql-container {
-  border: 1.5px dashed #bbb;
-  border-radius: 14px;
-  background: #fafafa;
-  margin-bottom: 12px;
-
-  height: 260px;        /* 🔒 ФИКС ВЫСОТЫ */
-  overflow: hidden;     /* ❗ обязательно */
-}
-
-/* ТЕКСТОВОЕ ПОЛЕ */
-#editor .ql-editor {
-  height: 260px;        /* 🔥 НЕ 100%, А ТОЧНО */
-  padding: 18px;
-
-  font-size: 17px;
-  line-height: 1.6;
-  color: #444;
-
-  overflow-y: auto;     /* ✅ СКРОЛЛ */
-  overflow-x: hidden;
-
-  white-space: normal;
-  word-break: break-word;
-}
-
-/* ============================= */
-/* RUBY SCROLLBAR               */
-/* ============================= */
-
-#editor .ql-editor::-webkit-scrollbar {
-  width: 9px;
-}
-
-#editor .ql-editor::-webkit-scrollbar-track {
-  background: #ffe6eb;
-  border-radius: 10px;
-}
-
-#editor .ql-editor::-webkit-scrollbar-thumb {
-  background: #b41111;
-  border-radius: 10px;
-  border: 2px solid #ffe6eb;
-}
-
-#editor .ql-editor::-webkit-scrollbar-thumb:hover {
-  background: #9c1818;
-}
-
-#editor .ql-editor {
-  overflow-y: scroll;        /* всегда */
-  scrollbar-gutter: stable;  /* не прыгает */
-}
-
-
-/* MODAL BACKDROP — MUST cover ENTIRE SCREEN */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;                    /* ← заменяет top:0; left:0; width:100vw; height:100vh */
-  background: rgba(0,0,0,0.55);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
-}
-
-/* MODAL WINDOW */
-.modal-window {
-  position: relative;
-  background: white;
-  width: 75vw;
-  height: 75vh;
-  border-radius: 18px;
-  overflow: hidden;
-  z-index: 9999999;           /* ← поверх backdrop */
-  display: flex;
-  flex-direction: column;
-}
-
-
-/* iframe must NEVER sit above X */
-.modal-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  position: relative;
-  z-index: 1;                  /* lower than button */
-}
-
-/* TOAST STYLES */
-.toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-
-  background: #28a745;
-  color: white;
-  padding: 14px 22px;
-  border-radius: 10px;
-  font-size: 18px;
-
-  width: auto;
-  max-width: 320px;
-  box-sizing: border-box;
-  white-space: normal;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 999999999;
-}
-
-.toast.show {
-  opacity: 1;
-}
-
-.apple-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 8px 26px;
-  border-radius: 999px;
-
-  /* Apple-like glass */
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.95) 0%,
-    rgba(245,245,245,0.92) 45%,
-    rgba(230,230,230,0.9) 100%
-  );
-
-  backdrop-filter: blur(6px);
-
-  color: #b40012;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-
-  /* Real Apple depth */
-  box-shadow:
-    0 12px 28px rgba(0,0,0,0.22),   /* outer soft depth */
-    inset 0 1px 0 rgba(255,255,255,0.95), /* top highlight */
-    inset 0 -1px 0 rgba(0,0,0,0.08);      /* bottom edge */
-
-  /* subtle lift */
-  transform: translateY(-1px);
-}
-
-/* Send Email — прозрачная кнопка с hover */
-.info-action-btn {
-  all: unset;
-  box-sizing: border-box;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 6px 14px;
-  border-radius: 999px;
-
-  background: transparent;              /* ← ПРОЗРАЧНАЯ */
-  color: #b40012;
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1;
-
-  white-space: nowrap;
-  cursor: pointer;
-
-  box-shadow:
-    0 6px 14px rgba(0,0,0,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.35);
-
-  transition:
-    background-color 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
-/* hover — появляется цвет */
-.info-action-btn:hover {
-  background: rgba(180, 0, 18, 0.12);   /* мягкий ruby-hover */
-  transform: translateY(-1px);
-}
-
-/* active */
-.info-action-btn:active {
-  transform: translateY(0);
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.18),
-    inset 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* disabled */
-.info-action-btn:disabled {
-  opacity: 0.45;
-  cursor: default;
-  transform: none;
-  box-shadow: none;
-}
-
-.info-action-btn {
-  margin-left: 20px; /* подбери значение: 8px, 12px, 20px и т.д. */
-}
-
-
-.info-bubble--bottom {
-  display: flex;
-  align-items: center;
-
-  padding: 20px 40px;   /* 🔥 ВОТ ОНО */
-  background: #fff;
-  border-radius: 999px;
-}
-
-.info-bubble--top {
-  display: flex;
-  align-items: center;
-
-  padding: 20px 40px;   /* 🔥 ВОТ ОНО */
-  background: #fff;
-  border-radius: 999px;
-
-}
-
-.info-bubble {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-               Roboto, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.4;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ================= TOP NAV ================= */
-
-.top-nav-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center; /* центрируем navbar */
-  align-items: center;
-  height: 52px;            /* фикс высоты */
-  margin-bottom: 32px;     /* отступ от заголовка */
-}
-
-.top-nav {
-  display: flex;
-  gap: 36px;
-  font-size: 15px;
-  font-weight: 500;
-  color: #7a6772;
-}
-
-.top-nav a {
-  text-decoration: none;
-  color: #7a6772;
-  transition: 0.2s;
-}
-
-.top-nav a:hover {
-  color: #b40012;
-}
-
-.top-nav a.active {
-  font-weight: 700;
-  text-shadow: 0 0 4px rgba(180,17,17,0.25);
-}
-
-/* ================= BACK BUTTON ================= */
-
-.back-btn {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 4px 10px;
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-  font-size: 15px;
-  font-weight: 500;
-
-  color: #b40012; /* 🔥 твой ruby */
-
-  background: transparent;
-  border: none;
-
-  cursor: pointer;
-
-  transition: all 0.18s ease;
-}  
-
-.back-arrow {
-  font-size: 22px;
-  line-height: 1;
-  margin-right: 2px;
-
-  transform: translateY(-1px);
-}
-
-
-
-.back-btn:active {
-  transform: translateY(1px);
-  opacity: 0.5;
-}
-
-.back-btn:focus,
-.back-btn:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-
-.back-btn {
-  -webkit-tap-highlight-color: transparent; /* 🔥 убирает прямоугольник */
-}
-
-.back-btn:focus,
-.back-btn:focus-visible,
-.back-btn:active {
-  outline: none;
-  box-shadow: none;
-  background: transparent;
-}
-
-.back-btn {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.back-btn {
-  position: relative;
-}
-
-.back-btn::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0%;
-  height: 1px;
-  background: #b40012;
-  transition: width 0.2s ease;
-}
-
-
-.top-nav { display: none; }
-
-.top-nav-wrapper {
-  height: auto;
-  margin-bottom: 5;
-}
-
-
-
-</style>
-
-<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
-<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 
+    .save-btn {
+      background: #c00111;
+    }
+
+    .update-btn {
+      background: #6f685e;
+    }
+
+    .update-btn:hover {
+      background: #827b6f;
+      opacity: 1;
+    }
+
+    #toolbar-container {
+      margin-bottom: 12px;
+      padding-right: 180px;
+    }
+
+    #updateDateDisplay {
+      margin-top: 6px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #7a1c1c;
+    }
+
+    /* ================= QUILL ================= */
+
+    #editor.ql-container {
+      height: 260px;
+      margin-bottom: 12px;
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+      background: var(--bg-soft);
+      overflow: hidden;
+    }
+
+    #editor .ql-editor {
+      height: 260px;
+      padding: 18px;
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--text);
+      overflow-y: scroll;
+      overflow-x: hidden;
+      white-space: normal;
+      word-break: break-word;
+      scrollbar-gutter: stable;
+    }
+
+    #editor .ql-editor::-webkit-scrollbar {
+      width: 9px;
+    }
+
+    #editor .ql-editor::-webkit-scrollbar-track {
+      background: #ffe6eb;
+      border-radius: 10px;
+    }
+
+    #editor .ql-editor::-webkit-scrollbar-thumb {
+      background: #b41111;
+      border-radius: 10px;
+      border: 2px solid #ffe6eb;
+    }
+
+    #editor .ql-editor::-webkit-scrollbar-thumb:hover {
+      background: var(--ruby-dark);
+    }
+
+    #updatesFeed {
+      margin-top: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .update-item {
+      margin-bottom: 20px;
+    }
+
+    .update-item-date {
+      margin: 0 0 8px;
+    }
+
+    /* ================= MODAL ================= */
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999999;
+    }
+
+    .modal-backdrop.is-open {
+      display: flex;
+    }
+
+    .modal-window {
+      position: relative;
+      width: 75vw;
+      height: 75vh;
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      z-index: 9999999;
+    }
+
+    .modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 9999999;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* ================= TOAST ================= */
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      background: #28a745;
+      color: var(--white);
+      font-size: 18px;
+      width: auto;
+      max-width: 320px;
+      white-space: normal;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 999999999;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* ================= OPTIONAL HIDDEN LEGACY ================= */
+
+    #tokenDisplay,
+    #slugDisplay {
+      display: none;
+    }
+  </style>
 </head>
 
 <body data-page="updates">
+  <div class="top-nav-wrapper">
+    <button id="backBtn" class="back-btn" type="button">
+      <span class="back-arrow">‹</span>
+      Back to Dash
+    </button>
 
+    <div class="top-nav">
+      <a href="/photo-gallery.html">Photo Gallery</a>
+      <a href="/gift-registry.html">Gift Registry</a>
+      <a href="/our-story.html">Our Story</a>
+      <a href="/wedding-party.html">Wedding Party</a>
+      <a href="/wedding-info.html">Wedding Info</a>
+      <a href="/venue-map.html">Venue &amp; Map</a>
+      <a href="/travel-info.html">Travel Info</a>
+      <a href="/updates.html">Updates</a>
+      <a href="/faq.html">FAQ</a>
+    </div>
+  </div>
 
-<!-- ======= TOP NAV + BACK BUTTON ======= -->
-<div class="top-nav-wrapper">
-
-<button id="backBtn" class="back-btn">
-  <span class="back-arrow">‹</span>
-  Back to Dash
-</button>
-
- <div class="top-nav">
-  <a href="/photo-gallery.html">Photo Gallery</a>
-  <a href="/gift-registry.html">Gift Registry</a>
-  <a href="/our-story.html">Our Story</a>
-  <a href="/wedding-party.html">Wedding Party</a>
-  <a href="/wedding-info.html">Wedding Info</a>
-  <a href="/venue-map.html">Venue & Map</a>
-  <a href="/travel-info.html">Travel Info</a>
-  <a href="/updates.html">Updates</a>
-  <a href="/faq.html">FAQ</a>
-</div>
-
-
-</div>
-
-
-  <!-- HEADER: TITLE + INFO BUBBLE -->
   <div class="page-header">
-    <div class="apple-pill">
-  'UPDATES' 
- </div>
-
+    <div class="apple-pill">'UPDATES'</div>
 
     <div class="info-bubble info-bubble--top">
-
       <div class="info-icon">i</div>
       <div class="info-text">
         Customize your “Updates” page and keep your guests informed about your wedding plans.
@@ -790,566 +530,388 @@ input[type=file] {
     </div>
   </div>
 
- <div class="page-wrapper">
+  <div class="page-wrapper">
+    <div class="editor-column">
+      <div class="text-editor-box">
+        <div id="toolbar-container">
+          <select class="ql-font"></select>
+          <select class="ql-size"></select>
+          <button class="ql-bold" type="button"></button>
+          <button class="ql-italic" type="button"></button>
+          <button class="ql-underline" type="button"></button>
+          <button class="ql-strike" type="button"></button>
+          <select class="ql-color"></select>
+          <select class="ql-background"></select>
+          <button class="ql-list" value="ordered" type="button"></button>
+          <button class="ql-list" value="bullet" type="button"></button>
+          <button class="ql-align" type="button"></button>
+        </div>
 
-  <!-- 🔥 PHOTO UPLOADER DISABLED
+        <div class="editor-top-actions">
+          <button class="editor-btn save-btn" type="button">Save</button>
+          <button class="editor-btn update-btn" type="button">Preview</button>
+        </div>
 
-  <div class="uploader-container">
-
-    <div id="tokenDisplay"></div>
-    <div id="slugDisplay"></div>
-
-    <div id="previewBox" class="placeholder">
-      <img id="preview">
-    </div>
-
-    <select id="slotSelect">
-  <option value="img1">Photo 1</option>
-</select>
-
-
-    <input type="file" id="fileInput" accept="image/*">
-
-    <button id="uploadBtn">Upload Photo to Your Page</button>
-
-
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <div id="status"></div>
-
-  </div>
--->
-
-  <!-- RIGHT SIDE — COLUMN -->
-  <div class="editor-column">
-
-    <!-- WHITE EDITOR CONTAINER -->
-    <div class="text-editor-box" style="position:relative;">
-
-      <div id="toolbar-container">
-        <select class="ql-font"></select>
-        <select class="ql-size"></select>
-        <button class="ql-bold"></button>
-        <button class="ql-italic"></button>
-        <button class="ql-underline"></button>
-        <button class="ql-strike"></button>
-        <select class="ql-color"></select>
-        <select class="ql-background"></select>
-        <button class="ql-list" value="ordered"></button>
-        <button class="ql-list" value="bullet"></button>
-        <button class="ql-align"></button>
+        <div id="updateDateDisplay"></div>
+        <div id="editor"></div>
+        <div id="updatesFeed"></div>
       </div>
 
-<div style="
-  position:absolute;
-  right:28px;
-  top:28px;
-  display:flex;
-  gap:10px;
-  z-index:10;
-">
+      <div class="info-bubble info-bubble--bottom">
+        <div class="info-icon">i</div>
 
+        <div class="info-content">
+          <span class="info-text">
+            You can notify your guests about your updates via email &amp; SMS here
+          </span>
+        </div>
 
-
-  <button class="editor-btn save-btn">Save</button>
-  <button class="editor-btn update-btn">Preview</button>
-</div>
-
-
-<div id="updateDateDisplay" style="
-  font-size: 15px;
-  font-weight: 600;
-  color: #7a1c1c;
-  margin-bottom: 10px;
-  margin-top: 6px;
-">
-</div>
-
-      <div id="editor"></div>
-
-<div id="updatesFeed" style="
-  margin-top:20px;
-  max-height:300px;
-  overflow-y:auto;
-  padding-right:8px;
-"></div>
-
+        <button class="info-action-btn" type="button">
+          Send Email &amp; SMS
+        </button>
+      </div>
     </div>
-
-    <!-- INFO BUBBLE — UNDER EDITOR, SAME COLUMN -->
-    <div class="info-bubble info-bubble--bottom">
-
-  <div class="info-icon">i</div>
-
-  <div class="info-content">
-    <span class="info-text">
-      You can notify your guests about your updates via email & SMS here
-
-    </span>
-
-
   </div>
 
-  <button class="info-action-btn">
-    Send Email & SMS
-  </button>
-
-</div>
-
+  <div class="modal-backdrop" id="storyModal">
+    <div class="modal-window">
+      <div id="closeModal" class="modal-close">×</div>
+      <iframe id="storyIframe" class="modal-iframe"></iframe>
     </div>
-
   </div>
 
-</div>
+  <div id="toast" class="toast">Message saved!</div>
 
+  <div id="tokenDisplay"></div>
+  <div id="slugDisplay"></div>
 
+  <script>
+    const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
-<script>
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("t") || params.get("token") || "";
 
-  // ===============================
-  // LOAD TEXT
-  // ===============================
+    let quill = null;
+    let slug = null;
 
-let token = null; // ✅ ДОБАВЬ ЭТО
+    function $(selector) {
+      return document.querySelector(selector);
+    }
 
-async function loadStoryText() {
-  if (!token || !window.quill) return;
+    function showToast(message) {
+      const toast = $("#toast");
+      if (!toast) return;
 
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
-      {
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY
-        }
-      }
-    );
+      toast.innerText = message;
+      toast.classList.add("show");
 
-    const data = await res.json();
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2000);
+    }
 
-    if (!data.length || !data[0].wed_updates) return;
-
-    let updates = data[0].wed_updates;
-
-// 🔥 если это строка → превращаем в массив
-if (typeof updates === "string") {
-  updates = [];
-}
-
-// если вообще не массив → тоже фиксим
-if (!Array.isArray(updates)) {
-  updates = [];
-}
-
-    let html = "";
-
-    updates.forEach(u => {
-      const date = new Date(u.created_at).toLocaleDateString("en-US", {
+    function formatReadableDate(dateValue) {
+      return new Date(dateValue).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric"
       });
-
-      html += `
-        <div style="margin-bottom:20px;">
-          <p><strong>${date}</strong></p>
-          ${u.content}
-        </div>
-      `;
-    });
-
-document.getElementById("updatesFeed").innerHTML = html;
-
-  } catch (e) {
-    console.error("LOAD ERROR:", e);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  // ✅ TOKEN СРАЗУ НАВЕРХУ
-  const params = new URLSearchParams(window.location.search);
-  token = params.get("t") || params.get("token");
-
-  // TOAST
-  function showToast(msg) {
-    const t = document.getElementById("toast");
-    if (!t) return;
-
-    t.innerText = msg;
-    t.classList.add("show");
-
-    setTimeout(() => {
-      t.classList.remove("show");
-    }, 2000);
-  }
-
-
-  // ===============================
-  // SAVE BUTTON
-  // ===============================
-document.querySelector(".save-btn").addEventListener("click", async () => {
-
-const btn = document.querySelector(".save-btn");
-btn.disabled = true;
-
-if (!token) {
-alert("Missing token");
-btn.disabled = false;
-return;
-}
-
-if (!window.quill) {
-alert("Editor not ready");
-btn.disabled = false;
-return;
-}
-
-const newUpdate = {
-content: window.quill.root.innerHTML,
-created_at: new Date().toISOString()
-};
-
-try {
-const resGet = await fetch(
-`${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
-{
-headers: {
-apikey: SUPABASE_KEY,
-Authorization: "Bearer " + SUPABASE_KEY
-}
-}
-);
-
-```
-const data = await resGet.json();
-
-let updates = [];
-
-if (data.length && Array.isArray(data[0].wed_updates)) {
-  updates = data[0].wed_updates;
-}
-
-updates.unshift(newUpdate);
-
-const res = await fetch(
-  `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
-  {
-    method: "PATCH",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      wed_updates: updates
-    })
-  }
-);
-
-if (res.ok) {
-  showToast("Update saved!");
-  await loadStoryText();
-  window.quill.root.innerHTML = "";
-} else {
-  showToast("Save failed");
-}
-```
-
-} catch (e) {
-console.error("SAVE ERROR:", e);
-showToast("Save error");
-}
-
-btn.disabled = false;
-});
-</script>
-
-
-<script>
-
-// отправлять текст при открытии модалки
-function sendTextToIframe() {
-  const iframe = document.getElementById("storyIframe");
-  if (!iframe) return;
-
-  const text = window.quill.root.innerHTML;
-
-  iframe.contentWindow.postMessage(
-    { type: "setWixText", text },
-    "*"
-  );
-}
-
-</script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const sendEmailBtn = document.querySelector(".info-action-btn");
-  const modal = document.getElementById("storyModal");
-  const iframe = document.getElementById("storyIframe");
-
-  if (!sendEmailBtn || !modal || !iframe) return;
-
-
-  sendEmailBtn.addEventListener("click", () => {
-    if (!token) {
-      alert("Missing token");
-      return;
     }
 
-    // 👇 ВАЖНО: МЕНЯЕМ ТОЛЬКО URL iframe
-    iframe.src =
-      `https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`;
+    function setTodayDate() {
+      const dateEl = $("#updateDateDisplay");
+      if (!dateEl) return;
+      dateEl.innerText = formatReadableDate(new Date());
+    }
 
-    modal.style.display = "flex";
-  });
+    function getAuthHeaders(extra = {}) {
+      return {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        ...extra
+      };
+    }
 
-});
-</script>
+    function ensureToken() {
+      if (!token) {
+        alert("Missing token");
+        return false;
+      }
+      return true;
+    }
 
+    function ensureEditor() {
+      if (!quill) {
+        alert("Editor not ready");
+        return false;
+      }
+      return true;
+    }
 
+    function renderUpdates(updates) {
+      const feed = $("#updatesFeed");
+      if (!feed) return;
 
-<script>
-  const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-  const SUPABASE_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+      if (!Array.isArray(updates) || !updates.length) {
+        feed.innerHTML = "";
+        return;
+      }
 
-  const params = new URLSearchParams(window.location.search);
-  token = params.get("t") || params.get("token");
+      const html = updates
+        .map((item) => {
+          const date = item?.created_at ? formatReadableDate(item.created_at) : "";
+          const content = item?.content || "";
+          return `
+            <div class="update-item">
+              <p class="update-item-date"><strong>${date}</strong></p>
+              ${content}
+            </div>
+          `;
+        })
+        .join("");
 
-  const tokenDisplay = document.getElementById("tokenDisplay");
-  const slugDisplay = document.getElementById("slugDisplay");
-  const uploadBtn = document.getElementById("uploadBtn");
-  const preview = document.getElementById("preview");
-  const previewBox = document.getElementById("previewBox");
-  const status = document.getElementById("status");
-  const slotSelect = document.getElementById("slotSelect");
-  const progressContainer = document.getElementById("progressContainer");
-  const progressBar = document.getElementById("progressBar");
+      feed.innerHTML = html;
+    }
 
-  let slug = null;
-
-if (slotSelect) {
-  slotSelect.addEventListener("change", () => {
-    const fileInput = document.getElementById("fileInput");
-    if (!fileInput) return;
-
-    fileInput.value = "";
-    preview.style.display = "none";
-    previewBox.classList.add("placeholder");
-    status.innerText = "";
-  });
-}
-  function showPreview(file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = "block";
-    previewBox.classList.remove("placeholder");
-  }
-
-  async function loadSlugFromGallery(token) {
-    try {
+    async function fetchUpdates() {
       const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/rpc/get_site_gallery`,
+        `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
         {
-          method: "POST",
-          headers: {
-            apikey: SUPABASE_KEY,
-            Authorization: "Bearer " + SUPABASE_KEY,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ p_token: token })
+          headers: getAuthHeaders()
         }
       );
 
-const rows = await res.json();
-console.log(rows);
+      const data = await res.json();
 
-if (Array.isArray(rows) && rows.length > 0) {
-  slug = rows[0].slug;
+      if (!Array.isArray(data) || !data.length) {
+        return [];
+      }
 
-  if (slugDisplay) {
-    slugDisplay.innerText = "Slug: " + slug;
-  }
+      const rawUpdates = data[0]?.wed_updates;
 
-} else {
-  if (slugDisplay) {
-    slugDisplay.innerText = "❌ No rows returned for token";
-  }
-}
+      if (Array.isArray(rawUpdates)) {
+        return rawUpdates;
+      }
 
-} catch (err) {
-  if (slugDisplay) {
-    slugDisplay.innerText = "Error loading slug: " + err.message;
-  }
-}
-
-}
-
-if (tokenDisplay) {
-  if (!token) {
-    tokenDisplay.innerText = "❌ No token";
-  } else {
-    tokenDisplay.innerText = "Token: ";
-  }
-}
-
-if (token) {
-  loadSlugFromGallery(token);
-}
-
-
-</script>
-
-<!-- OPEN + SAVE + MODAL -->
-
-<script>
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  const params = new URLSearchParams(window.location.search);
-  token = params.get("t") || params.get("token");
-
-  // кнопка UPDATE
-document.querySelector(".update-btn").addEventListener("click", async () => {
-
-  if (!window.quill) {
-    alert("Editor not ready yet");
-    return;
-  }
-
-  if (!token) {
-    alert("Missing token in URL");
-    return;
-  }
-
-  const modal = document.getElementById("storyModal");
-  const iframe = document.getElementById("storyIframe");
-
-  if (!modal || !iframe) {
-    console.error("Modal or iframe not found");
-    return;
-  }
-
-  const text = window.quill.root.innerHTML;
-
-
-  iframe.src = `https://flowwed.netlify.app/web-updates?token=${token}`;
-  modal.style.display = "flex";
-
-  setTimeout(sendTextToIframe, 500);
-});
-const closeBtn = document.getElementById("closeModal");
-
-if (closeBtn) {
-  closeBtn.addEventListener("click", () => {
-    document.getElementById("storyModal").style.display = "none";
-  });
-}
-});
-</script>
-
-<!-- MODAL STRUCTURE -->
-<div class="modal-backdrop" id="storyModal">
-  <div class="modal-window">
-
-    <!-- ОДИН ЕДИНСТВЕННЫЙ closeModal -->
-    <div id="closeModal" style="
-      position:absolute;
-      top:10px;
-      right:16px;
-      font-size:32px;
-      font-weight:bold;
-      cursor:pointer;
-      z-index:9999999;
-    ">×</div>
-
-    <iframe id="storyIframe" class="modal-iframe"></iframe>
-
-  </div>
-</div>
-
-<div id="toast" class="toast">Message saved!</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  if (!window.Quill) {
-    console.error("Quill NOT loaded");
-    return;
-  }
-
-  // ✅ INIT QUILL
-  window.quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-      toolbar: '#toolbar-container'
+      return [];
     }
-  });
 
-const now = new Date();
-const formattedDate = now.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric"
-});
+    async function loadStoryText() {
+      if (!token || !quill) return;
 
-const dateEl = document.getElementById("updateDateDisplay");
-if (dateEl) {
-  dateEl.innerText = formattedDate;
-}
-  // ✅ грузим текст
-  loadStoryText();
-
-  // 🔥 фикс toolbar
-  const toolbarEl = document.querySelector('#toolbar-container');
-  if (toolbarEl) {
-    toolbarEl.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-    });
-  }
-
-});
-</script>
-
-
-<script>
-/* ===============================
-   TOP NAV — TOKEN + BACK
-================================ */
-
-const tokenNav = new URLSearchParams(location.search).get("t") || "";
-
-/* прокинуть token во все ссылки меню */
-document.querySelectorAll(".top-nav a").forEach(a => {
-  if (tokenNav) {
-    a.href = a.href + "?t=" + tokenNav;
-  }
-});
-
-/* back button */
-document.getElementById("backBtn")?.addEventListener("click", () => {
-  window.location.href = "/dashboard.html?t=" + tokenNav;
-});
-
-/* active nav link */
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body.dataset.page || "photo-gallery";
-
-  document.querySelectorAll(".top-nav a").forEach(link => {
-    if (link.getAttribute("href").includes(page)) {
-      link.classList.add("active");
+      try {
+        const updates = await fetchUpdates();
+        renderUpdates(updates);
+      } catch (error) {
+        console.error("LOAD ERROR:", error);
+      }
     }
-  });
-});
-</script>
 
+    async function saveUpdate() {
+      if (!ensureToken() || !ensureEditor()) return;
 
+      const content = quill.root.innerHTML;
+      const newUpdate = {
+        content,
+        created_at: new Date().toISOString()
+      };
 
+      try {
+        const updates = await fetchUpdates();
+        updates.unshift(newUpdate);
+
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
+          {
+            method: "PATCH",
+            headers: getAuthHeaders({
+              "Content-Type": "application/json"
+            }),
+            body: JSON.stringify({
+              wed_updates: updates
+            })
+          }
+        );
+
+        if (!res.ok) {
+          showToast("Save failed");
+          return;
+        }
+
+        showToast("Update saved!");
+        await loadStoryText();
+        quill.root.innerHTML = "";
+      } catch (error) {
+        console.error("SAVE ERROR:", error);
+        showToast("Save error");
+      }
+    }
+
+    function openModal(url) {
+      const modal = $("#storyModal");
+      const iframe = $("#storyIframe");
+
+      if (!modal || !iframe) {
+        console.error("Modal or iframe not found");
+        return;
+      }
+
+      iframe.src = url;
+      modal.classList.add("is-open");
+    }
+
+    function closeModal() {
+      const modal = $("#storyModal");
+      if (!modal) return;
+      modal.classList.remove("is-open");
+    }
+
+    function sendTextToIframe() {
+      const iframe = $("#storyIframe");
+      if (!iframe || !quill) return;
+
+      iframe.contentWindow.postMessage(
+        {
+          type: "setWixText",
+          text: quill.root.innerHTML
+        },
+        "*"
+      );
+    }
+
+    async function loadSlugFromGallery() {
+      if (!token) return;
+
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_site_gallery`, {
+          method: "POST",
+          headers: getAuthHeaders({
+            "Content-Type": "application/json"
+          }),
+          body: JSON.stringify({ p_token: token })
+        });
+
+        const rows = await res.json();
+        console.log(rows);
+
+        if (Array.isArray(rows) && rows.length > 0) {
+          slug = rows[0].slug || null;
+          const slugDisplay = $("#slugDisplay");
+          if (slugDisplay) {
+            slugDisplay.innerText = "Slug: " + slug;
+          }
+        } else {
+          const slugDisplay = $("#slugDisplay");
+          if (slugDisplay) {
+            slugDisplay.innerText = "❌ No rows returned for token";
+          }
+        }
+      } catch (error) {
+        const slugDisplay = $("#slugDisplay");
+        if (slugDisplay) {
+          slugDisplay.innerText = "Error loading slug: " + error.message;
+        }
+      }
+    }
+
+    function initQuill() {
+      if (!window.Quill) {
+        console.error("Quill NOT loaded");
+        return;
+      }
+
+      quill = new Quill("#editor", {
+        theme: "snow",
+        modules: {
+          toolbar: "#toolbar-container"
+        }
+      });
+
+      const toolbarEl = $("#toolbar-container");
+      if (toolbarEl) {
+        toolbarEl.addEventListener("mousedown", (event) => {
+          event.preventDefault();
+        });
+      }
+    }
+
+    function initButtons() {
+      const saveBtn = $(".save-btn");
+      const previewBtn = $(".update-btn");
+      const sendEmailBtn = $(".info-action-btn");
+      const closeBtn = $("#closeModal");
+
+      saveBtn?.addEventListener("click", saveUpdate);
+
+      previewBtn?.addEventListener("click", () => {
+        if (!ensureEditor()) return;
+        if (!ensureToken()) {
+          alert("Missing token in URL");
+          return;
+        }
+
+        openModal(`https://flowwed.netlify.app/web-updates?token=${token}`);
+        setTimeout(sendTextToIframe, 500);
+      });
+
+      sendEmailBtn?.addEventListener("click", () => {
+        if (!ensureToken()) return;
+        openModal(`https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`);
+      });
+
+      closeBtn?.addEventListener("click", closeModal);
+    }
+
+    function initNav() {
+      const tokenNav = token;
+
+      document.querySelectorAll(".top-nav a").forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        if (tokenNav && !href.includes("?t=")) {
+          link.href = `${href}?t=${tokenNav}`;
+        }
+      });
+
+      $("#backBtn")?.addEventListener("click", () => {
+        window.location.href = `/dashboard.html?t=${tokenNav}`;
+      });
+
+      const page = document.body.dataset.page || "photo-gallery";
+      document.querySelectorAll(".top-nav a").forEach((link) => {
+        const href = link.getAttribute("href") || "";
+        if (href.includes(page)) {
+          link.classList.add("active");
+        }
+      });
+    }
+
+    function initLegacyDisplays() {
+      const tokenDisplay = $("#tokenDisplay");
+      if (!tokenDisplay) return;
+
+      if (!token) {
+        tokenDisplay.innerText = "❌ No token";
+      } else {
+        tokenDisplay.innerText = "Token: ";
+      }
+    }
+
+    async function initPage() {
+      initQuill();
+      setTodayDate();
+      initButtons();
+      initNav();
+      initLegacyDisplays();
+
+      if (token) {
+        await loadSlugFromGallery();
+      }
+
+      await loadStoryText();
+    }
+
+    document.addEventListener("DOMContentLoaded", initPage);
+  </script>
 </body>
 </html>
