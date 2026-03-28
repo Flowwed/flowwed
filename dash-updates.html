@@ -12,15 +12,11 @@
     :root {
       --ruby: #b40012;
       --ruby-dark: #9c1818;
-      --ruby-soft: #c30c1e;
-      --blue: #0075ff;
-      --blue-dark: #005bd1;
       --text: #444;
       --muted: #7a6772;
       --white: #fff;
       --bg-soft: #fafafa;
       --border: #bbb;
-      --border-soft: #d2d2d2;
       --shadow-soft: 0 3px 12px rgba(0,0,0,0.10);
       --shadow-card:
         0 10px 24px rgba(0,0,0,0.22),
@@ -490,12 +486,7 @@
       opacity: 1;
     }
 
-    /* ================= OPTIONAL HIDDEN LEGACY ================= */
 
-    #tokenDisplay,
-    #slugDisplay {
-      display: none;
-    }
   </style>
 </head>
 
@@ -582,8 +573,6 @@
 
   <div id="toast" class="toast">Message saved!</div>
 
-  <div id="tokenDisplay"></div>
-  <div id="slugDisplay"></div>
 
   <script>
     const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
@@ -593,7 +582,6 @@
     const token = params.get("t") || params.get("token") || "";
 
     let quill = null;
-    let slug = null;
 
     function $(selector) {
       return document.querySelector(selector);
@@ -780,40 +768,6 @@
       );
     }
 
-    async function loadSlugFromGallery() {
-      if (!token) return;
-
-      try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_site_gallery`, {
-          method: "POST",
-          headers: getAuthHeaders({
-            "Content-Type": "application/json"
-          }),
-          body: JSON.stringify({ p_token: token })
-        });
-
-        const rows = await res.json();
-        console.log(rows);
-
-        if (Array.isArray(rows) && rows.length > 0) {
-          slug = rows[0].slug || null;
-          const slugDisplay = $("#slugDisplay");
-          if (slugDisplay) {
-            slugDisplay.innerText = "Slug: " + slug;
-          }
-        } else {
-          const slugDisplay = $("#slugDisplay");
-          if (slugDisplay) {
-            slugDisplay.innerText = "❌ No rows returned for token";
-          }
-        }
-      } catch (error) {
-        const slugDisplay = $("#slugDisplay");
-        if (slugDisplay) {
-          slugDisplay.innerText = "Error loading slug: " + error.message;
-        }
-      }
-    }
 
     function initQuill() {
       if (!window.Quill) {
@@ -852,7 +806,8 @@
         }
 
         openModal(`https://flowwed.netlify.app/web-updates?token=${token}`);
-        setTimeout(sendTextToIframe, 500);
+        const iframe = document.getElementById("storyIframe");
+iframe.onload = sendTextToIframe;
       });
 
       sendEmailBtn?.addEventListener("click", () => {
@@ -864,7 +819,7 @@
     }
 
     function initNav() {
-      const tokenNav = token;
+      const tokenNav = token || "";
 
       document.querySelectorAll(".top-nav a").forEach((link) => {
         const href = link.getAttribute("href") || "";
@@ -886,27 +841,12 @@
       });
     }
 
-    function initLegacyDisplays() {
-      const tokenDisplay = $("#tokenDisplay");
-      if (!tokenDisplay) return;
-
-      if (!token) {
-        tokenDisplay.innerText = "❌ No token";
-      } else {
-        tokenDisplay.innerText = "Token: ";
-      }
-    }
 
     async function initPage() {
       initQuill();
       setTodayDate();
       initButtons();
       initNav();
-      initLegacyDisplays();
-
-      if (token) {
-        await loadSlugFromGallery();
-      }
 
       await loadStoryText();
     }
