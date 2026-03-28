@@ -1035,13 +1035,11 @@ try {
 
   const data = await resGet.json();
 
-  let updates = [];
+let updates = [];
 
-  // если уже есть данные — берём их
-  if (data.length && data[0].wed_updates) {
-    updates = data[0].wed_updates;
-  }
-
+if (data.length && Array.isArray(data[0].wed_updates)) {
+  updates = data[0].wed_updates;
+}
   // 2. добавляем новый update В НАЧАЛО
   updates.unshift(newUpdate);
 
