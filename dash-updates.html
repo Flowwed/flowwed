@@ -989,20 +989,27 @@ try {
     }
   );
 
-if (res.ok) showToast("Update saved!");
-else showToast("Save failed");
+  if (res.ok) showToast("Update saved!");
+  else showToast("Save failed");
 
 } catch (e) {
   console.error("SAVE ERROR:", e);
   showToast("Save error");
 }
+  // ❗ ВАЖНО: ЖДЁМ Quill
+  const waitForQuill = setInterval(() => {
+    if (window.quill) {
+      clearInterval(waitForQuill);
+      loadStoryText();
+    }
+  }, 100);
+
 
 });
 
 
+});
 </script>
-
-
 <script>
 
 // отправлять текст при открытии модалки
