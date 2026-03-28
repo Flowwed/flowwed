@@ -1134,42 +1134,47 @@ document.addEventListener("DOMContentLoaded", () => {
   token = params.get("t") || params.get("token");
 
   // кнопка UPDATE
-  document.querySelector(".update-btn").addEventListener("click", async () => {
+document.querySelector(".update-btn").addEventListener("click", async () => {
 
-    if (!token) {
-      alert("Missing token in URL");
-      return;
-    }
+  if (!window.quill) {
+    alert("Editor not ready yet");
+    return;
+  }
 
-    const text = window.quill.root.innerHTML;
+  if (!token) {
+    alert("Missing token in URL");
+    return;
+  }
 
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-      {
-        method: "POST",
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY,
-          "Content-Type": "application/json",
-          Prefer: "resolution=merge-duplicates"
-        },
-        body: JSON.stringify({
-          edit_token: token,
-          wed_updates: text
-        })
-      }
-    );
-    const modal = document.getElementById("storyModal");
-    const iframe = document.getElementById("storyIframe");
+  const modal = document.getElementById("storyModal");
+  const iframe = document.getElementById("storyIframe");
 
-    iframe.src = `https://flowwed.netlify.app/web-updates?token=${token}`;
+  if (!modal || !iframe) {
+    console.error("Modal or iframe not found");
+    return;
+  }
 
-    modal.style.display = "flex";
+  const text = window.quill.root.innerHTML;
 
-    setTimeout(sendTextToIframe, 500);
-
+  await fetch(`${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates"
+    },
+    body: JSON.stringify({
+      edit_token: token,
+      wed_updates: text
+    })
   });
 
+  iframe.src = `https://flowwed.netlify.app/web-updates?token=${token}`;
+  modal.style.display = "flex";
+
+  setTimeout(sendTextToIframe, 500);
+});
 const closeBtn = document.getElementById("closeModal");
 
 if (closeBtn) {
