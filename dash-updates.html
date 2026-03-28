@@ -895,31 +895,49 @@ input[type=file] {
 
 let token = null; // ✅ ДОБАВЬ ЭТО
 
-  async function loadStoryText() {
-    if (!token || !window.quill) return;
+async function loadStoryText() {
+  if (!token || !window.quill) return;
 
-    try {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
-        {
-          headers: {
-            apikey: SUPABASE_KEY,
-            Authorization: "Bearer " + SUPABASE_KEY
-          }
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
         }
-      );
-
-      const data = await res.json();
-
-      if (data.length && data[0].wed_updates) {
-        window.quill.root.innerHTML = data[0].wed_updates;
       }
+    );
 
-    } catch (e) {
-      console.error("LOAD ERROR:", e);
-    }
+    const data = await res.json();
+
+    if (!data.length || !data[0].wed_updates) return;
+
+    const updates = data[0].wed_updates;
+
+    let html = "";
+
+    updates.forEach(u => {
+      const date = new Date(u.created_at).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+
+      html += `
+        <div style="margin-bottom:20px;">
+          <p><strong>${date}</strong></p>
+          ${u.content}
+        </div>
+      `;
+    });
+
+    window.quill.root.innerHTML = html;
+
+  } catch (e) {
+    console.error("LOAD ERROR:", e);
   }
-
+}
 
 document.addEventListener("DOMContentLoaded", () => {
 
