@@ -852,6 +852,8 @@ input[type=file] {
 
       <div id="editor"></div>
 
+<div id="updatesFeed" style="margin-top:20px;"></div>
+
       <div class="editor-actions">
         <button class="editor-btn save-btn">Save Text Changes</button>
         <button class="editor-btn update-btn">  👁Preview Your Updates</button>
@@ -932,7 +934,7 @@ async function loadStoryText() {
       `;
     });
 
-    window.quill.root.innerHTML = html;
+document.getElementById("updatesFeed").innerHTML = html;
 
   } catch (e) {
     console.error("LOAD ERROR:", e);
