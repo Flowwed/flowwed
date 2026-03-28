@@ -951,18 +951,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const text = window.quill.root.innerHTML;
 
-const now = new Date();
-const formattedDate = now.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric"
-});
-
-body: JSON.stringify({
-  edit_token: token,
-  wed_updates: `<p><strong>${formattedDate}</strong></p>${text}`
-})
-
     try {
       const res = await fetch(
         `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
@@ -1229,19 +1217,32 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-window.quill = new Quill('#editor', {
-  theme: 'snow',
-  modules: {
-    toolbar: '#toolbar-container'
-  }
-});
+  // ✅ INIT QUILL
+  window.quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+      toolbar: '#toolbar-container'
+    }
+  });
 
-// ✅ ВОТ ТУТ
-loadStoryText();
+  // 📅 текущая дата
+  const now = new Date();
+  const formattedDate = now.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
 
-  /* ====== ВОТ ИМЕННО СЮДА ====== */
-  /* 🔥 НЕ ДАЁМ toolbar воровать фокус */
+  // ✅ вставляем дату
+  window.quill.setContents([]);
+  window.quill.clipboard.dangerouslyPasteHTML(
+    `<p><strong>${formattedDate}</strong></p><p><br></p>`
+  );
 
+  // ✅ грузим текст
+  loadStoryText();
+
+  // 🔥 фикс toolbar
   const toolbarEl = document.querySelector('#toolbar-container');
   if (toolbarEl) {
     toolbarEl.addEventListener('mousedown', (e) => {
@@ -1251,6 +1252,7 @@ loadStoryText();
 
 });
 </script>
+
 
 <script>
 /* ===============================
