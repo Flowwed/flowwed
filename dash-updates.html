@@ -879,28 +879,13 @@ input[type=file] {
 
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  // ✅ TOKEN СРАЗУ НАВЕРХУ
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("t") || params.get("token");
-
-  // TOAST
-  function showToast(msg) {
-    const t = document.getElementById("toast");
-    if (!t) return;
-
-    t.innerText = msg;
-    t.classList.add("show");
-
-    setTimeout(() => {
-      t.classList.remove("show");
-    }, 2000);
-  }
 
   // ===============================
   // LOAD TEXT
   // ===============================
+
+let token = null; // ✅ ДОБАВЬ ЭТО
+
   async function loadStoryText() {
     if (!token || !window.quill) return;
 
@@ -926,14 +911,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ✅ TOKEN СРАЗУ НАВЕРХУ
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  // TOAST
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    if (!t) return;
+
+    t.innerText = msg;
+    t.classList.add("show");
+
+    setTimeout(() => {
+      t.classList.remove("show");
+    }, 2000);
+  }
+
+
   // ===============================
   // SAVE BUTTON
   // ===============================
-  
-const saveBtn = document.querySelector(".save-btn");
-
-if (saveBtn) {
-  saveBtn.addEventListener("click", async () => {
+  document.querySelector(".save-btn").addEventListener("click", async () => {
 
     if (!token) {
       alert("Missing token");
@@ -974,10 +976,6 @@ if (saveBtn) {
     }
 
   });
-} else {
-  console.error("❌ save-btn not found");
-}
-  });
 
   // ❗ ВАЖНО: ЖДЁМ Quill
   const waitForQuill = setInterval(() => {
@@ -987,9 +985,8 @@ if (saveBtn) {
     }
   }, 100);
 
-
+});
 </script>
-
 <script>
 
 // отправлять текст при открытии модалки
