@@ -841,19 +841,6 @@ input[type=file] {
         <button class="ql-align"></button>
       </div>
 
-
-<input 
-  type="date" 
-  id="updateDate" 
-  style="
-    margin-bottom: 12px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  "
->
-
       <div id="editor"></div>
 
       <div class="editor-actions">
@@ -950,13 +937,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   document.querySelector(".save-btn").addEventListener("click", async () => {
 
-const dateInput = document.getElementById("updateDate");
-
-if (!dateInput.value) {
-  showToast("Please select a date before writing your update.");
-  return;
-}
-
 
     if (!token) {
       alert("Missing token");
@@ -968,7 +948,20 @@ if (!dateInput.value) {
       return;
     }
 
-    const text = window.quill.root.innerHTML;
+
+const text = window.quill.root.innerHTML;
+
+const now = new Date();
+const formattedDate = now.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric"
+});
+
+body: JSON.stringify({
+  edit_token: token,
+  wed_updates: `<p><strong>${formattedDate}</strong></p>${text}`
+})
 
     try {
       const res = await fetch(
@@ -1243,16 +1236,6 @@ window.quill = new Quill('#editor', {
   }
 });
 
-// ⬇️ ВОТ ТУТ
-const dateInput = document.getElementById("updateDate");
-
-window.quill.enable(false);
-
-dateInput.addEventListener("change", () => {
-  if (dateInput.value) {
-    window.quill.enable(true);
-  }
-});
 // ✅ ВОТ ТУТ
 loadStoryText();
 
