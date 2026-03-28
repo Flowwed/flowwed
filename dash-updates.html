@@ -1088,36 +1088,32 @@ if (slotSelect) {
       const rows = await res.json();
       console.log(rows);
 
-if (Array.isArray(rows) && rows.length > 0) {
-  slug = rows[0].slug;
+      if (Array.isArray(rows) && rows.length > 0) {
+        slug = rows[0].slug;
+        slugDisplay.innerText = "Slug: " + slug;
+     
+      } else {
+        slugDisplay.innerText = "❌ No rows returned for token";
+      }
 
-  if (slugDisplay) {
-    slugDisplay.innerText = "Slug: " + slug;
+    } catch (err) {
+      slugDisplay.innerText = "Error loading slug: " + err.message;
+    }
   }
-
-} else {
-  if (slugDisplay) {
-    slugDisplay.innerText = "❌ No rows returned for token";
-  }
-}
-
-} catch (err) {
-  if (slugDisplay) {
-    slugDisplay.innerText = "Error loading slug: " + err.message;
-  }
-}
 
 if (tokenDisplay) {
   if (!token) {
-    tokenDisplay.innerText = "❌ No token in URL";
+    tokenDisplay.innerText = "❌ No token";
   } else {
-    tokenDisplay.innerText = "Token: " + token;
+    tokenDisplay.innerText = "Token: ";
   }
 }
 
 if (token) {
   loadSlugFromGallery(token);
 }
+
+
 </script>
 
 <!-- OPEN + SAVE + MODAL -->
