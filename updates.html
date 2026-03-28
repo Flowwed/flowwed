@@ -585,11 +585,11 @@ section {
 
   <!-- CONTENT -->
 
+<!--
 <div class="story-hero">
   <img id="storyHeroImg" loading="eager">
-
 </div>
-
+-->
 <section>
   <div class="story-card">
     <h2>Updates</h2>
@@ -692,7 +692,7 @@ document.title = `Our Story — ${fullName}`;
   </script>
 
   <script>
-async function loadStoryHeroImage() {
+/*async function loadStoryHeroImage() {
   const params = new URLSearchParams(location.search);
   const token =
     params.get("t") ||
@@ -729,6 +729,7 @@ async function loadStoryHeroImage() {
 }
 
 loadStoryHeroImage();
+*/
 </script>
 
 
@@ -745,7 +746,7 @@ async function loadStoryContent() {
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/wed_updates?select=how_we_met&edit_token=eq.${token}`,
+      `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -760,14 +761,16 @@ async function loadStoryContent() {
     const row = data[0];
 
     const el = document.getElementById("how_we_met");
-    if (el && row.how_we_met && row.how_we_met !== "<p><br></p>") {
-      el.innerHTML = row.how_we_met; // HTML из Quill
-    }
 
+if (el && row.wed_updates && row.wed_updates.replace(/\s/g, "") !== "<p><br></p>") {
+  el.innerHTML = row.wed_updates;
+}
   } catch (e) {
     console.error("loadStoryContent error", e);
   }
 }
+
+
 
 loadStoryContent();
 </script>

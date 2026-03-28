@@ -53,7 +53,7 @@
   gap: 12px;
 
   /* ← УВЕЛИЧИЛ В 2 РАЗА */
-  min-width: 920px;
+  min-width: 720px;
 
   /* ← ПОНИЗИЛ ВЫСОТУ */
   height: 12px;
@@ -708,41 +708,90 @@ input[type=file] {
 
 .back-btn {
   position: absolute;
-  left: 40px;              /* ← под твой layout */
-  top: 50%;
-  transform: translateY(-50%);
+  left: 20px;
+  top: 20px;
 
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 12px;
-  font-size: 12px;
+  padding: 4px 10px;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 1;
 
-  border-radius: 8px;
-  background: rgba(255,255,255,0.35);
-  border: 1px solid rgba(180,17,17,0.25);
-  color: #b40012;
+  color: #b40012; /* 🔥 твой ruby */
 
-  backdrop-filter: blur(6px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  background: transparent;
+  border: none;
 
   cursor: pointer;
-  transition: background .2s ease, box-shadow .2s ease;
+
+  transition: all 0.18s ease;
+}  
+
+.back-arrow {
+  font-size: 22px;
+  line-height: 1;
+  margin-right: 2px;
+
+  transform: translateY(-1px);
 }
 
-.back-btn svg {
-  display: block;     /* убираем baseline-сдвиг */
-  flex-shrink: 0;
+
+
+.back-btn:active {
+  transform: translateY(1px);
+  opacity: 0.5;
 }
 
-.back-btn:hover {
-  background: rgba(255,255,255,0.6);
-  box-shadow: 0 4px 12px rgba(180,17,17,0.18);
+.back-btn:focus,
+.back-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
+
+.back-btn {
+  -webkit-tap-highlight-color: transparent; /* 🔥 убирает прямоугольник */
+}
+
+.back-btn:focus,
+.back-btn:focus-visible,
+.back-btn:active {
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.back-btn {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.back-btn {
+  position: relative;
+}
+
+.back-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background: #b40012;
+  transition: width 0.2s ease;
+}
+
+
+.top-nav { display: none; }
+
+.top-nav-wrapper {
+  height: auto;
+  margin-bottom: 5;
+}
 
   </style>
 
@@ -757,14 +806,10 @@ input[type=file] {
 <!-- ======= TOP NAV + BACK BUTTON ======= -->
 <div class="top-nav-wrapper">
 
-  <button id="backBtn" class="back-btn">
-    <svg width="18" height="18" viewBox="0 0 24 24"
-         stroke-width="2" stroke="#6d6d6d"
-         fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    Back
-  </button>
+<button id="backBtn" class="back-btn">
+  <span class="back-arrow">‹</span>
+  Back to Dash
+</button>
 
   <div class="top-nav">
   <a href="/photo-gallery.html">Photo Gallery</a>
@@ -793,7 +838,7 @@ input[type=file] {
 
       <div class="info-icon">i</div>
       <div class="info-text">
-        Here you can customize the <strong>“Our Story”</strong> page of your website.
+        Customize your <strong>“Our Story”</strong> page.
         Update the photos and rewrite your story anytime you wish.
       </div>
     </div>
@@ -905,7 +950,7 @@ input[type=file] {
 
   <div class="info-content">
     <span class="info-text">
-      Want to inform your guests? You can notify them about your update via email & SMS here
+      You can notify your guests about your updates via email & SMS here
 
     </span>
 
