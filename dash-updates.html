@@ -932,7 +932,17 @@ async function loadStoryText() {
 
     if (!data.length || !data[0].wed_updates) return;
 
-    const updates = data[0].wed_updates;
+    let updates = data[0].wed_updates;
+
+// 🔥 если это строка → превращаем в массив
+if (typeof updates === "string") {
+  updates = [];
+}
+
+// если вообще не массив → тоже фиксим
+if (!Array.isArray(updates)) {
+  updates = [];
+}
 
     let html = "";
 
