@@ -1486,7 +1486,45 @@ background:#ffe6ec !important;
 box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
 }
 
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
 
+.back-btn {
+  position: fixed;   /* ← вместо absolute */
+  left: 20px;
+  top: 20px;
+  z-index: 1000;     /* чтобы всегда сверху */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 4px 10px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  color: #b40012;
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+
+  outline: none;
+  box-shadow: none;
+}
+
+.back-btn:active {
+  transform: translateY(1px);
+  opacity: 0.5;
+}
+
+.back-arrow {
+  font-size: 26px;
+  transform: translateY(-1px);
+}
 
 
 </style>
@@ -1494,6 +1532,14 @@ box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
 
 <body>
 
+<div class="top-nav-wrapper">
+  <button id="backBtn" class="back-btn" type="button">
+    <span class="back-arrow">‹</span>
+    Back to Dash
+  </button>
+</div>
+
+<!--
 <div id="navbar-container"></div>
 
 <script>
@@ -1554,7 +1600,7 @@ fetch("/navbar.html")
     });
   });
 </script>
-
+-->
 
 
 </div>
