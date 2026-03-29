@@ -89,7 +89,7 @@
       background: transparent;
       color: var(--ruby);
       font-family: var(--font-system);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.18s ease;
@@ -123,7 +123,7 @@
     }
 
     .back-arrow {
-      font-size: 22px;
+      font-size: 27px;
       line-height: 1;
       margin-right: 2px;
       transform: translateY(-1px);
@@ -179,21 +179,12 @@
 
     .info-bubble--top {
       min-width: 620px;
-      height: 56px;
+      height: 50px;
       padding: 14px 20px;
       transform: translateY(2px);
       border-radius: 999px;
     }
 
-    .info-bubble--bottom {
-      align-self: center;
-      width: 70%;
-      max-width: 900px;
-      margin-top: 40px;
-      padding: 20px 40px;
-      gap: 16px;
-      border-radius: 999px;
-    }
 
     .info-icon {
       width: 26px;
@@ -222,7 +213,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex: 1;
+      flex: unset;
     }
 
     .info-action-btn {
@@ -486,6 +477,17 @@
       opacity: 1;
     }
 
+.info-bubble--bottom {
+  align-self: center;
+
+  width: 85%;
+  max-width: 750px;
+  margin-top: 40px;
+
+  padding: 10px 20px;  /* ↓ тоньше */
+  border-radius: 999px;
+}
+
 
   </style>
 </head>
@@ -539,8 +541,8 @@
         </div>
 
         <div class="editor-top-actions">
-          <button class="editor-btn save-btn" type="button">Save</button>
-          <button class="editor-btn update-btn" type="button">Preview</button>
+          <button class="editor-btn save-btn" type="button">Save Text Changes</button>
+          <button class="editor-btn update-btn" type="button">👁 Preview Your Page Updates</button>
         </div>
 
         <div id="updateDateDisplay"></div>
