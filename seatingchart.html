@@ -1527,6 +1527,16 @@ document.getElementById("closeGuide")?.addEventListener("click", () => {
 });
 </script>
 
+<script>
+
+document.getElementById("backBtn").onclick = () => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("t") || localStorage.getItem("verified_token") || "";
+
+    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
+};
+
+</script>
 
 
 
