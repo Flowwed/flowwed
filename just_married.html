@@ -39,7 +39,8 @@ body {
     /* HEADER: TITLE + INFO BUBBLE */
     .page-header {
   display: flex;
-  justify-content: center;   /* ← ЦЕНТР */
+  justify-content: flex-start;
+  position: relative;
   align-items: center;
   gap: 24px;
   margin-bottom: 28px;
@@ -406,6 +407,7 @@ input[type=file] {
 }
 
 .apple-pill {
+margin-left: 20px;
   font-size: 14px;          /* было больше — уменьшаем */
   padding: 6px 20px;        /* уже и ниже */
   letter-spacing: 0.04em;   /* чуть компактнее */
@@ -517,7 +519,7 @@ input[type=file] {
 
   background: #fff;
   border-radius: 999px;
- margin-left: 270px;   /* ← СДВИГ ВПРАВО */
+  margin-left: auto;   /* ← СДВИГ ВПРАВО */
 
 }
 
@@ -769,7 +771,8 @@ contain: content; /* 🔥 ВОТ ЭТО */
 }
 
 .back-btn {
-  position: fixed;   /* ← вместо absolute */
+ margin-top: 18px;
+  margin-right: 100px; /* отступ от пилюли */
   left: 20px;
   top: 20px;
   z-index: 1000;     /* чтобы всегда сверху */
@@ -801,6 +804,53 @@ contain: content; /* 🔥 ВОТ ЭТО */
   font-size: 26px;
   transform: translateY(-1px);
 }
+
+
+    /* ============================= */
+    /* RUBY GLASS BUTTON STYLE       */
+    /* ============================= */
+
+    button,
+    .footer-btn {
+      padding: 14px 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.35);
+
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+
+      cursor: pointer;
+      transition: 0.28s ease;
+
+      background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.18),
+          rgba(255,255,255,0.05)
+        ),
+        #9c1818;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.38),
+        0 3px 8px rgba(0,0,0,0.25),
+        inset 0 3px 6px rgba(255,255,255,0.22),
+        inset 0 -6px 14px rgba(70,0,20,0.35);
+
+      backdrop-filter: blur(14px) saturate(160%);
+    }
+
+    button:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,0.48),
+        0 6px 14px rgba(0,0,0,0.32),
+        inset 0 4px 10px rgba(255,255,255,0.28),
+        inset 0 -10px 18px rgba(60,0,20,0.38);
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
 
 
 </style>
