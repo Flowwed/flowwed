@@ -499,8 +499,8 @@ h1 {
 
 h1 {
   text-align: center;
-  font-size: 44px;
-  font-weight: 800;
+  font-size: 36px;
+  font-weight: 600;
   background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
   -webkit-background-clip: text;
   color: transparent;
@@ -1319,9 +1319,11 @@ h1 {
 
 .export-btn:hover {
   background: rgba(255,255,255,0.85);
-  box-shadow:
-    0 8px 22px rgba(180,17,17,0.18),
-    inset 0 1px 0 rgba(255,255,255,0.75);
+}
+
+.export-btn:hover {
+  transform: translateY(-3px);
+
 }
 
 /* ================= BANNER ROW ================= */
@@ -1360,12 +1362,113 @@ h1 {
 }
 
 
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  position: fixed;   /* ← вместо absolute */
+  left: 20px;
+  top: 20px;
+  z-index: 1000;     /* чтобы всегда сверху */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 4px 10px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  color: #b40012;
+  background: transparent;
+  border: none;
+
+  cursor: pointer;
+
+  outline: none;
+  box-shadow: none;
+}
+
+.back-btn:active {
+  transform: translateY(1px);
+  opacity: 0.5;
+}
+
+.back-arrow {
+  font-size: 26px;
+  transform: translateY(-1px);
+}
+
+
+    /* ============================= */
+    /* RUBY GLASS BUTTON STYLE       */
+    /* ============================= */
+
+    button,
+    .footer-btn {
+      padding: 14px 22px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.35);
+
+      font-size: 16px;
+      font-weight: 700;
+      color: white;
+
+      cursor: pointer;
+      transition: 0.28s ease;
+
+      background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.18),
+          rgba(255,255,255,0.05)
+        ),
+        #9c1818;
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,0.38),
+        0 3px 8px rgba(0,0,0,0.25),
+        inset 0 3px 6px rgba(255,255,255,0.22),
+        inset 0 -6px 14px rgba(70,0,20,0.35);
+
+      backdrop-filter: blur(14px) saturate(160%);
+    }
+
+    button:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,0.48),
+        0 6px 14px rgba(0,0,0,0.32),
+        inset 0 4px 10px rgba(255,255,255,0.28),
+        inset 0 -10px 18px rgba(60,0,20,0.38);
+    }
+
+    button:active {
+      transform: scale(0.96);
+    }
+
+
+
+#coupleSmallName {
+  display: none;
+}
+
 </style>
 </head>
 
 
 <body>
 
+<div class="top-nav-wrapper">
+  <button id="backBtn" class="back-btn" type="button">
+    <span class="back-arrow">‹</span>
+    Back to Dash
+  </button>
+</div>
+
+<!--
 <div id="navbar-container"></div>
 
 <script>
@@ -1426,7 +1529,7 @@ fetch("/navbar.html")
     });
   });
 </script>
-
+-->
 
 
 
@@ -3483,6 +3586,15 @@ document.getElementById("openGuide")?.addEventListener("click", () => {
 document.getElementById("closeGuide")?.addEventListener("click", () => {
   document.getElementById("guideModal").style.display = "none";
 });
+</script>
+
+<script>
+document.getElementById("backBtn").onclick = () => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("t") || localStorage.getItem("verified_token") || "";
+
+    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
+};
 </script>
 
 
