@@ -1979,6 +1979,24 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("backBtn");
+
+  if (!btn) {
+    console.log("❌ backBtn not found");
+    return;
+  }
+
+  btn.onclick = () => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("t") || localStorage.getItem("verified_token") || "";
+
+    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
+  };
+});
+</script>
+
 
 </body>
 </html>
