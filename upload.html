@@ -539,15 +539,17 @@ input[type=file] {
 
 .back-btn {
   position: absolute;
-  left: 0;
-  top: 0;
-  margin: 20px;
 
-  display: inline-flex;
+  top: -15px;     /* 🔼 выше */
+  left: 14px;    /* 🔼 ближе к краю */
+
+  margin: 0;     /* ❌ убираем общий margin */
+
+display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 12px;
+  padding: 6px 14px;   /* 🔥 больше воздуха */
   border-radius: 999px;
 
   background: transparent;
@@ -557,7 +559,6 @@ input[type=file] {
   font-weight: 500;
 
   cursor: pointer;
-
   transition: all 0.18s ease;
 }
 
@@ -565,13 +566,13 @@ input[type=file] {
   background: rgba(180, 0, 18, 0.12);
   transform: translateY(-1px);
 }
-
 .top-nav { display: none; }
 
 .top-nav-wrapper {
   height: auto;
   margin-bottom: 5;
 }
+
 
 .caption-gallery {
   height: 260px;              /* поле фиксированное */
