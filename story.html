@@ -1497,87 +1497,86 @@ window.syncCurrentBlock = function () {
   });
 });
 
+
 async function loadMiniGallery() {
   if (!token) return;
 
-const res = await fetch(
-  `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path`,
-  {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY
-    }
-  }
-);
-
-const data = await res.json();
-
-if (!Array.isArray(data)) {
-  console.error("NOT ARRAY:", data);
-  return;
-}
-
-const container = document.getElementById("miniGallery");
-container.innerHTML = "";
-
-data.forEach(item => {
-  if (!item.path) return;
-
-const wrapper = document.createElement("div");
-wrapper.style.position = "relative";
-
-const img = document.createElement("img");
-img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}?t=${Date.now()}`;
-
-const removeBtn = document.createElement("div");
-removeBtn.innerText = "×";
-
-removeBtn.style.position = "absolute";
-removeBtn.style.top = "4px";
-removeBtn.style.right = "6px";
-removeBtn.style.cursor = "pointer";
-removeBtn.style.background = "rgba(0,0,0,0.6)";
-removeBtn.style.color = "white";
-removeBtn.style.borderRadius = "50%";
-removeBtn.style.width = "18px";
-removeBtn.style.height = "18px";
-removeBtn.style.display = "flex";
-removeBtn.style.alignItems = "center";
-removeBtn.style.justifyContent = "center";
-removeBtn.style.fontSize = "14px";
-
-wrapper.appendChild(img);
-wrapper.appendChild(removeBtn);
-
-removeBtn.onclick = async () => {
-  if (!confirm("Delete this photo?")) return;
-
-  try {
-    // 1. удалить из базы
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&slot=eq.${item.slot}`,
-      {
-        method: "DELETE",
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY
-        }
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
       }
-    );
+    }
+  );
 
-    // 2. удалить из UI
-    wrapper.remove();
+  const data = await res.json();
 
-  } catch (err) {
-    console.error(err);
-    alert("Delete failed");
+  if (!Array.isArray(data)) {
+    console.error("NOT ARRAY:", data);
+    return;
   }
-};
 
+  const container = document.getElementById("miniGallery");
+  container.innerHTML = "";
 
-container.appendChild(wrapper);
+  data.forEach(item => {
+    if (!item.path) return;
 
-});
+    const wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+
+    const img = document.createElement("img");
+    img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}?t=${Date.now()}`;
+
+    const removeBtn = document.createElement("div");
+    removeBtn.innerText = "×";
+
+    removeBtn.style.position = "absolute";
+    removeBtn.style.top = "4px";
+    removeBtn.style.right = "6px";
+    removeBtn.style.cursor = "pointer";
+    removeBtn.style.background = "rgba(0,0,0,0.6)";
+    removeBtn.style.color = "white";
+    removeBtn.style.borderRadius = "50%";
+    removeBtn.style.width = "18px";
+    removeBtn.style.height = "18px";
+    removeBtn.style.display = "flex";
+    removeBtn.style.alignItems = "center";
+    removeBtn.style.justifyContent = "center";
+    removeBtn.style.fontSize = "14px";
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(removeBtn);
+
+    // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
+    removeBtn.onclick = async () => {
+      if (!confirm("Delete this photo?")) return;
+
+      try {
+        await fetch("/.netlify/functions/delete-photo", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            token,
+            slot: item.slot,
+            path: item.path
+          })
+        });
+
+        wrapper.remove();
+
+      } catch (err) {
+        console.error(err);
+        alert("Delete failed");
+      }
+    };
+
+    container.appendChild(wrapper);
+  });
 }
 
 </script>
