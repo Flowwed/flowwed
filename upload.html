@@ -506,12 +506,11 @@ input[type=file] {
 .top-nav-wrapper {
   position: relative;
   display: flex;
-  justify-content: center; /* центрируем navbar */
+  justify-content: center;
   align-items: center;
-  height: 52px;            /* фикс высоты */
-  margin-bottom: 32px;     /* отступ от заголовка */
+  height: 52px;
+  margin-bottom: 32px;
 }
-
 .top-nav {
   display: flex;
   gap: 36px;
@@ -540,21 +539,19 @@ input[type=file] {
 .back-btn {
   position: absolute;
 
-  top: -15px;     /* 🔼 выше */
-  left: 14px;    /* 🔼 ближе к краю */
+  top: -15px;
+  left: 14px;
 
-  margin: 0;     /* ❌ убираем общий margin */
-
-display: inline-flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 14px;   /* 🔥 больше воздуха */
-  border-radius: 999px;
+  padding: 6px 10px;
 
+  border-radius: 8px;   /* ← НЕ пилюля */
   background: transparent;
-  color: #b40012;
 
+  color: #b40012;
   font-size: 15px;
   font-weight: 500;
 
@@ -562,15 +559,18 @@ display: inline-flex;
   transition: all 0.18s ease;
 }
 
+
 .back-btn:hover {
   background: rgba(180, 0, 18, 0.12);
+  border-radius: 8px;   /* ← появляется только при hover */
   transform: translateY(-1px);
 }
+
 .top-nav { display: none; }
 
 .top-nav-wrapper {
   height: auto;
-  margin-bottom: 5;
+  margin-bottom: 5px;
 }
 
 
