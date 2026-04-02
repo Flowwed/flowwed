@@ -1494,6 +1494,12 @@ async function loadMiniGallery() {
 
     img.src = `${SUPABASE_URL}/storage/v1/object/public/photos/${item.path}`;
 
+    // 🔥 fallback
+    img.onerror = () => {
+      img.style.opacity = "0.3";
+      img.title = "Broken image";
+    };
+
     img.style.width = "70px";
     img.style.height = "70px";
     img.style.objectFit = "cover";
@@ -1503,7 +1509,6 @@ async function loadMiniGallery() {
     container.appendChild(img);
   });
 }
-
 </script>
 
 
