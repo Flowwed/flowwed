@@ -1488,28 +1488,28 @@ async function loadMiniGallery() {
   const container = document.getElementById("miniGallery");
   container.innerHTML = "";
 
-  data.forEach(item => {
-    if (!item.path) return;
+data.forEach(item => {
+  if (!item.path) return;
 
-const BUCKET = "6VYW75N5KM";
+  const img = document.createElement("img"); // ← ВАЖНО
 
-img.src = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${item.path}`;
+  img.src = `${SUPABASE_URL}/storage/v1/object/public/${item.path}`;
 
-    // 🔥 fallback
-    img.onerror = () => {
-      img.style.opacity = "0.3";
-      img.title = "Broken image";
-    };
+  img.onerror = () => {
+    img.style.opacity = "0.3";
+    img.title = "Broken image";
+  };
 
-    img.style.width = "70px";
-    img.style.height = "70px";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "10px";
-    img.style.cursor = "pointer";
+  img.style.width = "70px";
+  img.style.height = "70px";
+  img.style.objectFit = "cover";
+  img.style.borderRadius = "10px";
+  img.style.cursor = "pointer";
 
-    container.appendChild(img);
-  });
-}
+  container.appendChild(img);
+});
+
+
 </script>
 
 
