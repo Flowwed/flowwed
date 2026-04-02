@@ -38,12 +38,6 @@ header {
   margin-bottom: 30px;
 }
 
-header h1 {
-  font-size: 34px;
-  font-weight: 800;
-  color: #a52126;
-  margin: 0;
-}
 
 h2 {
   color: #a52126;
@@ -196,13 +190,6 @@ tr:nth-child(even) {
   margin-bottom: 34px;
 }
 
-.page-header h1 {
-  font-size: 36px;
-  font-weight: 700;
-  color: #a52126;
-  margin: 0;
-  line-height: 1.2;
-}
 
 .page-header .subtitle {
   margin-top: 16px;
@@ -364,6 +351,18 @@ select {
   transform: translateY(-1px);
 }
 
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 600;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 36px;
+  letter-spacing: -1px;
+}
+
 </style>
 </head>
 
@@ -440,13 +439,9 @@ fetch("/navbar.html")
 </script>
 -->
 
-
 <header class="page-header">
-  <h1 id="coupleName">Loading...</h1>
-  <div class="subtitle">
-    <span class="gift-icon">🎁</span>
-    Gift Registry
-  </div>
+  <h1>Gift Registry</h1>
+</header>
 
   <div class="info-banner">
     Control your gift registry in one place.
@@ -820,6 +815,20 @@ document.getElementById("closeGuide").addEventListener("click", () => {
 });
 </script>
 
+<script>
+
+document.getElementById("backBtn").onclick = () => {
+  const params = new URLSearchParams(window.location.search);
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T");
+
+  window.location.href = `dashboard.html?t=${token}`;
+};
+
+</script>
 
 
 </body>

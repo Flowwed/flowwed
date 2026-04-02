@@ -650,16 +650,6 @@ body.fade-out {
 }
 
 
-body {
-  opacity: 0;
-  transform: scale(1.02);
-  transition: all 0.35s ease;
-}
-
-body.fade-in {
-  opacity: 1;
-  transform: scale(1);
-}
 
 </style>
 </head>
@@ -987,11 +977,6 @@ function visitSite() {
   window.open(`https://flowwed.netlify.app/index.html?t=${token}`, "_blank");
 }
 
-
-/* 👉 ВСТАВЬ ВОТ СЮДА */
-window.addEventListener("load", () => {
-  document.body.classList.add("fade-in");
-});
 
 </script>
 
