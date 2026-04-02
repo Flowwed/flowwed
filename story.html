@@ -1246,20 +1246,18 @@ await fetch(
       apikey: SUPABASE_KEY,
       Authorization: "Bearer " + SUPABASE_KEY,
       "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates"
+      Prefer: "resolution=merge-duplicates,return=representation"
     },
     body: JSON.stringify({
       edit_token: token,
       slug: slug,
-      page_key: pageKey,
+      page_key: "story",
       slot: slot,
       path: serverPath,
-
       caption: ""
     })
   }
 );
-
     setTimeout(() => {
       progressContainer.style.display = "none";
       progressBar.style.width = "0%";
