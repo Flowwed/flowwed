@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 355px;
+  gap: 370px;
 
   max-width: 1500px;
   margin: 0 auto 28px;
@@ -1108,11 +1108,13 @@ const originalUploadText = uploadBtn.innerHTML;
   }
 
 
-
 const file = fileInput.files[0];
 const slot = slotSelect.value;
 
-// 🔎 ПРОВЕРКА: есть ли уже фото в этом слоте
+// 👉 блокируем от двойного клика (НО текст не меняем)
+uploadBtn.disabled = true;
+
+// 🔎 ПРОВЕРКА
 const checkRes = await fetch(
   `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}&select=slot`,
   {
@@ -1130,11 +1132,14 @@ if (Array.isArray(exists) && exists.length > 0) {
   const num = real - start + 1;
 
   await showAlertBox(`Delete Photo ${num} from the gallery first, then try again.`);
-  return; // ❗ выходим ДО Uploading
+
+  // ❗ возвращаем кнопку обратно
+  uploadBtn.disabled = false;
+
+  return;
 }
 
-// ✅ ТОЛЬКО ТУТ включаем загрузку
-uploadBtn.disabled = true;
+// ✅ ТОЛЬКО ТЕПЕРЬ показываем загрузку
 uploadBtn.innerHTML = "Uploading...";
 
 status.innerText = "Requesting upload URL...";
