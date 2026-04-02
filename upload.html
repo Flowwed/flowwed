@@ -28,9 +28,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 40px;
+  gap: 355px;
 
-  max-width: 1100px;
+  max-width: 1500px;
   margin: 0 auto 28px;
   width: 100%;
 }
@@ -156,7 +156,7 @@
   gap: 40px;
   align-items: flex-start;
 
-  max-width: 1100px;   /* ← ВОТ КЛЮЧ */
+  max-width: 1500px;   /* ← ВОТ КЛЮЧ */
   margin: 0 auto;      /* ← центр */
   width: 100%;
 }
@@ -488,7 +488,6 @@ input[type=file] {
 
   background: #fff;
   border-radius: 999px;
- margin-left: 150px;   /* ← СДВИГ ВПРАВО */
 
 }
 
@@ -1108,8 +1107,7 @@ const originalUploadText = uploadBtn.innerHTML;
     return;
   }
 
-uploadBtn.disabled = true;
-uploadBtn.innerHTML = "Uploading...";
+
 
 const file = fileInput.files[0];
 const slot = slotSelect.value;
@@ -1132,8 +1130,12 @@ if (Array.isArray(exists) && exists.length > 0) {
   const num = real - start + 1;
 
   await showAlertBox(`Delete Photo ${num} from the gallery first, then try again.`);
-  return;
+  return; // ❗ выходим ДО Uploading
 }
+
+// ✅ ТОЛЬКО ТУТ включаем загрузку
+uploadBtn.disabled = true;
+uploadBtn.innerHTML = "Uploading...";
 
 status.innerText = "Requesting upload URL...";
 progressContainer.style.display = "none";
@@ -1148,9 +1150,11 @@ try {
       token,
       slot,
       filename: file.name,
- page_key: "photo_gallery"   // 🔥 ДОБАВИТЬ ЭТО
+      page_key: "photo_gallery"
     })
   });
+
+
 
   if (!res.ok) {
     throw new Error("Upload URL request failed");
