@@ -848,17 +848,23 @@ input[type=file] {
       <img id="preview">
     </div>
 
-    <select id="slotSelect">
-      <option value="img2">Photo 1</option>
-      <option value="img3">Photo 2</option>
-      <option value="img4">Photo 3</option>
-      <option value="img5">Photo 4</option>
-      <option value="img13">Photo 5</option>
-      <option value="img14">Photo 6</option>
-      <option value="img15">Photo 7</option>
-      <option value="img16">Photo 8</option>
-      <option value="img50">Photo 9</option>
-    </select>
+
+<select id="slotSelect"></select>
+
+<script>
+  const select = document.getElementById("slotSelect");
+
+  for (let i = 0; i < 20; i++) {
+    const slotNum = i + 2; // img2 → img21
+    const option = document.createElement("option");
+
+    option.value = "img" + slotNum;
+    option.textContent = "Photo " + (i + 1);
+
+    select.appendChild(option);
+  }
+</script>
+
 
     <input type="file" id="fileInput" accept="image/*">
 
