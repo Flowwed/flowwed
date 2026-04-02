@@ -1523,11 +1523,34 @@ container.innerHTML = "";
 data.forEach(item => {
   if (!item.path) return;
 
-  const img = document.createElement("img");
+const wrapper = document.createElement("div");
+wrapper.style.position = "relative";
 
-  img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}`;
+const img = document.createElement("img");
+img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}?t=${Date.now()}`;
 
-  container.appendChild(img);
+const removeBtn = document.createElement("div");
+removeBtn.innerText = "×";
+
+removeBtn.style.position = "absolute";
+removeBtn.style.top = "4px";
+removeBtn.style.right = "6px";
+removeBtn.style.cursor = "pointer";
+removeBtn.style.background = "rgba(0,0,0,0.6)";
+removeBtn.style.color = "white";
+removeBtn.style.borderRadius = "50%";
+removeBtn.style.width = "18px";
+removeBtn.style.height = "18px";
+removeBtn.style.display = "flex";
+removeBtn.style.alignItems = "center";
+removeBtn.style.justifyContent = "center";
+removeBtn.style.fontSize = "14px";
+
+wrapper.appendChild(img);
+wrapper.appendChild(removeBtn);
+
+container.appendChild(wrapper);
+
 });
 }
 
