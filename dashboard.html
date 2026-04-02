@@ -936,8 +936,15 @@ function openPage(page) {
       return;
   }
 
+if (page === "yourweb") {
   window.open(`${file}?t=${token}`, "_blank");
+} else {
+  window.location.href = `${file}?t=${token}`;
 }
+
+}
+
+
 </script>
 
 <script>
