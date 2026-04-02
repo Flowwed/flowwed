@@ -1491,9 +1491,9 @@ async function loadMiniGallery() {
   data.forEach(item => {
     if (!item.path) return;
 
-    const img = document.createElement("img");
+const BUCKET = "6VYW75N5KM";
 
-    img.src = `${SUPABASE_URL}/storage/v1/object/public/${item.path}`;
+img.src = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${item.path}`;
 
     // 🔥 fallback
     img.onerror = () => {
