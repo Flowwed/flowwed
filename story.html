@@ -1241,8 +1241,6 @@ const container = document.getElementById("miniGallery");
 container.style.transition = "opacity 0.2s";
 container.style.opacity = "0.5";
 
-await new Promise(r => setTimeout(r, 300)); // ← ВОТ ЭТО
-
 await loadMiniGallery();
 
 container.style.opacity = "1";
@@ -1250,7 +1248,7 @@ container.style.opacity = "1";
 const pageKey = "story";
 
 
-await fetch(
+const saveRes = await fetch(
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,page_key,slot`,
   {
     method: "POST",
@@ -1270,6 +1268,12 @@ await fetch(
     })
   }
 );
+
+const savedData = await saveRes.json();
+console.log("SAVED ROW:", savedData);
+
+
+
     setTimeout(() => {
       progressContainer.style.display = "none";
       progressBar.style.width = "0%";
