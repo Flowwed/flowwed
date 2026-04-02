@@ -1492,7 +1492,7 @@ async function loadMiniGallery() {
 
     const img = document.createElement("img");
 
-    img.src = `${SUPABASE_URL}/storage/v1/object/public/photos/${item.path}`;
+    img.src = `${SUPABASE_URL}/storage/v1/object/public/${item.path}`;
 
     // 🔥 fallback
     img.onerror = () => {
