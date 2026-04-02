@@ -1132,6 +1132,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Array.isArray(rows) && rows.length > 0) {
         slug = rows[0].slug;
         slugDisplay.innerText = "Slug: " + slug;
+ loadMiniGallery(); // ✅ ВОТ СЮДА
      
       } else {
         slugDisplay.innerText = "❌ No rows returned for token";
@@ -1147,8 +1148,6 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     tokenDisplay.innerText = "Token: " + token;
     loadSlugFromGallery(token);
-loadMiniGallery();
-
   }
 
   uploadBtn.onclick = async () => {
