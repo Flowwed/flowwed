@@ -1474,7 +1474,7 @@ async function loadMiniGallery() {
   if (!token) return;
 
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path`,
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,publicUrl`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -1493,7 +1493,7 @@ data.forEach(item => {
 
   const img = document.createElement("img"); // ← ВАЖНО
 
-  img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}`;
+  img.src = item.publicUrl;
 
   img.onerror = () => {
     img.style.opacity = "0.3";
