@@ -1233,10 +1233,19 @@ console.log("SERVER PATH:", serverPath);
 uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalUploadText;
 
-    status.innerText = "✅ Uploaded!";
-    showPreview(file);
+status.innerText = "✅ Uploaded!";
+showPreview(file);
+
+const container = document.getElementById("miniGallery");
+
+container.style.transition = "opacity 0.2s"; // ← СНАЧАЛА
+
+container.style.opacity = "0.5";
+await loadMiniGallery();
+container.style.opacity = "1";
 
 const pageKey = "story";
+
 
 await fetch(
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,page_key,slot`,
