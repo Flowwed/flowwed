@@ -1238,10 +1238,13 @@ showPreview(file);
 
 const container = document.getElementById("miniGallery");
 
-container.style.transition = "opacity 0.2s"; // ← СНАЧАЛА
-
+container.style.transition = "opacity 0.2s";
 container.style.opacity = "0.5";
+
+await new Promise(r => setTimeout(r, 300)); // ← ВОТ ЭТО
+
 await loadMiniGallery();
+
 container.style.opacity = "1";
 
 const pageKey = "story";
