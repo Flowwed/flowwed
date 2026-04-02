@@ -1241,7 +1241,7 @@ const container = document.getElementById("miniGallery");
 container.style.transition = "opacity 0.2s";
 container.style.opacity = "0.5";
 
-await loadMiniGallery();
+
 
 container.style.opacity = "1";
 
@@ -1272,6 +1272,7 @@ const saveRes = await fetch(
 const savedData = await saveRes.json();
 console.log("SAVED ROW:", savedData);
 
+await loadMiniGallery();
 
 
     setTimeout(() => {
