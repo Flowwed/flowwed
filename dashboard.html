@@ -643,6 +643,24 @@ text-shadow:
   padding-left: 0;
 }
 
+body.fade-out {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.35s ease;
+}
+
+
+body {
+  opacity: 0;
+  transform: scale(1.02);
+  transition: all 0.35s ease;
+}
+
+body.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
 </style>
 </head>
 
@@ -939,9 +957,14 @@ function openPage(page) {
 if (page === "yourweb") {
   window.open(`${file}?t=${token}`, "_blank");
 } else {
-  window.location.href = `${file}?t=${token}`;
-}
 
+  document.body.classList.add("fade-out");
+
+  setTimeout(() => {
+    window.location.href = `${file}?t=${token}`;
+  }, 300);
+
+}
 }
 
 
@@ -963,6 +986,12 @@ function visitSite() {
 
   window.open(`https://flowwed.netlify.app/index.html?t=${token}`, "_blank");
 }
+
+
+/* 👉 ВСТАВЬ ВОТ СЮДА */
+window.addEventListener("load", () => {
+  document.body.classList.add("fade-in");
+});
 
 </script>
 
