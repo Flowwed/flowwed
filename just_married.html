@@ -968,7 +968,10 @@ fetch("/navbar.html")
           const slot = 51 + i;
           document.write(`<option value="img${slot}">Photo ${i + 1}</option>`);
         }
-      </script>
+      
+
+    </script>
+
     </select>
 
     <input type="file" id="fileInput" accept="image/*" />
@@ -1432,39 +1435,25 @@ const renderPromises = captions.map(async (row) => {
     const ok = await showConfirm("Delete this photo?");
     if (!ok) return;
 
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}`,
-      {
-        method: "DELETE",
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY,
-          Prefer: "return=minimal"
-        }
-      }
-    );
+del.onclick = async () => {
+  const ok = await showConfirm("Delete this photo?");
+  if (!ok) return;
 
-    const imgDel = await fetch(
-      `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${row.slot}`,
-      {
-        method: "DELETE",
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY,
-          Prefer: "return=minimal"
-        }
-      }
-    );
+  // 🔥 ВОТ ЭТО ВСТАВЛЯЕШЬ
+  await fetch("/.netlify/functions/delete-photo", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      token,
+      slot: row.slot,
+      path: path
+    })
+  });
 
-    if (!imgDel.ok) {
-      const t = await imgDel.text();
-      console.error("IMAGE DELETE FAILED:", t);
-      alert("Image was not deleted (RLS or token mismatch)");
-      return;
-    }
-
-    await loadCaptionsFromSupabase();
-  };
+  await loadCaptionsFromSupabase();
+};
 
   const photoNumber = Number(row.slot.replace("img", "")) - 50;
   item.dataset.num = photoNumber;
