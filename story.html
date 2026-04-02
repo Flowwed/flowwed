@@ -1493,7 +1493,7 @@ data.forEach(item => {
 
   const img = document.createElement("img"); // ← ВАЖНО
 
-  img.src = `${SUPABASE_URL}/storage/v1/object/public/${item.path}`;
+  img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}`;
 
   img.onerror = () => {
     img.style.opacity = "0.3";
