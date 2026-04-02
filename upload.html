@@ -812,11 +812,10 @@ input[type=file] {
       transform: scale(0.96);
     }
 
-
-
-
-
-
+.fade-out-preview {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
 
 </style>
 
@@ -1232,10 +1231,23 @@ setTimeout(async () => {
 }, 500);
 
 setTimeout(() => {
-  resetUploaderForm();
-}, 2000);
 
-// setTimeout(openCaptionModal, 300);
+  // плавно скрываем превью
+  preview.classList.add("fade-out-preview");
+
+  setTimeout(() => {
+    resetUploaderForm();
+
+    // вернуть обратно (чтобы при следующей загрузке не было скрыто)
+    preview.classList.remove("fade-out-preview");
+
+  }, 500); // время анимации
+
+}, 2000); // сколько показывать фото
+
+
+
+// setTimeout(openCaptionModal, 300);i
 
 
   setTimeout(() => {
