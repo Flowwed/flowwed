@@ -1121,34 +1121,37 @@ document.addEventListener("DOMContentLoaded", () => {
  console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
   if (!token) return alert("Missing token");
 
-  // 🔥 фиксируем активный блок
- window.syncCurrentBlock();
+// 🔥 фиксируем активный блок
+window.syncCurrentBlock();
 
+// 🔥 берём header + текст
+const headerEl = document.getElementById("fakeHeader");
 
-
-const header = document.getElementById("fakeHeader");
-
-let headerText = header.innerText.trim();
-
-if (headerText === "Enter a header here...") {
-  headerText = "";
-}
-
-// объединяем header + текст
-const fullHTML =
-  (headerText ? `<h2>${headerText}</h2>` : "") +
-  window.storyData[window.currentKey];
-
-const payload = {
-  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
-
-  how_we_met: window.storyData.how_we_met || "",
-  growing_together: window.storyData.growing_together || "",
-  proposal: window.storyData.proposal || "",
-  new_chapter: window.storyData.new_chapter || "",
-  custom: window.storyData.custom || ""
+window.storyData[window.currentKey] = {
+  header:
+    headerEl.innerText === "Enter a header here..."
+      ? ""
+      : headerEl.innerText.trim(),
+  body: quill.root.innerHTML
 };
 
+// 🔥 собираем HTML для каждого блока
+function buildHTML(block) {
+  if (!block) return "";
+
+  return (block.header ? `<h2>${block.header}</h2>` : "") + (block.body || "");
+}
+
+// 🔥 payload
+const payload = {
+  edit_token: token,
+
+  how_we_met: buildHTML(window.storyData.how_we_met),
+  growing_together: buildHTML(window.storyData.growing_together),
+  proposal: buildHTML(window.storyData.proposal),
+  new_chapter: buildHTML(window.storyData.new_chapter),
+  custom: buildHTML(window.storyData.custom)
+};
 console.log("PAYLOAD SENT:", payload);
 
 const res = await fetch(
@@ -1458,34 +1461,34 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 1️⃣ фиксируем активный блок
-  window.syncCurrentBlock();
+window.syncCurrentBlock();
 
-const header = document.getElementById("fakeHeader");
+// 🔥 берём header + текст
+const headerEl = document.getElementById("fakeHeader");
 
-let headerText = header.innerText.trim();
-
-if (headerText === "Enter a header here...") {
-  headerText = "";
-}
-
-const fullHTML =
-  (headerText ? `<h2>${headerText}</h2>` : "") +
-  (window.storyData[window.currentKey] || "");
-
-window.storyData[window.currentKey] = fullHTML;
-
-// 2️⃣ сохраняем ВСЕ блоки (как Save)
-const payload = {
-  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
-
-  how_we_met: window.storyData.how_we_met || "",
-  growing_together: window.storyData.growing_together || "",
-  proposal: window.storyData.proposal || "",
-  new_chapter: window.storyData.new_chapter || "",
-  custom: window.storyData.custom || ""
+window.storyData[window.currentKey] = {
+  header:
+    headerEl.innerText === "Enter a header here..."
+      ? ""
+      : headerEl.innerText.trim(),
+  body: quill.root.innerHTML
 };
 
+
+function buildHTML(block) {
+  if (!block) return "";
+  return (block.header ? `<h2>${block.header}</h2>` : "") + (block.body || "");
+}
+
+const payload = {
+  edit_token: token,
+
+  how_we_met: buildHTML(window.storyData.how_we_met),
+  growing_together: buildHTML(window.storyData.growing_together),
+  proposal: buildHTML(window.storyData.proposal),
+  new_chapter: buildHTML(window.storyData.new_chapter),
+  custom: buildHTML(window.storyData.custom)
+};
 const res = await fetch(
   `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
   {
@@ -1555,7 +1558,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const editorEl = document.getElementById("editor");
 
   window.currentKey = null;
-  window.storyData = {};
+window.storyData = {
+  how_we_met: { header: "", body: "" },
+  growing_together: { header: "", body: "" },
+  proposal: { header: "", body: "" },
+  new_chapter: { header: "", body: "" },
+  custom: { header: "", body: "" }
+};
+
+
 
   const placeholders = {
     how_we_met: "Tell the story of how you first met. Where were you? What happened?",
