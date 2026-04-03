@@ -1382,7 +1382,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const editorEl = document.getElementById("editor");
 
   window.currentKey = null;
-  window.storyData = {};
+
+window.storyData = {
+  how_we_met: { title: "", body: "" },
+  growing_together: { title: "", body: "" },
+  proposal: { title: "", body: "" },
+  new_chapter: { title: "", body: "" },
+  custom: { title: "", body: "" }
+};
+
 
   const placeholders = {
     how_we_met: "Tell the story of how you first met. Where were you? What happened?",
@@ -1472,9 +1480,13 @@ window.syncCurrentBlock = function () {
   function openBlock(block) {
     const key = block.dataset.key;
 
-    if (window.currentKey) {
-      window.storyData[window.currentKey] = quill.root.innerHTML;
-    }
+if (window.currentKey) {
+  window.storyData[window.currentKey] = {
+    body: quill.root.innerHTML,
+    title: document.getElementById("blockTitleInput").value
+  };
+}
+
 
     blocks.forEach(b => b.classList.remove("active"));
 
@@ -1484,10 +1496,10 @@ window.syncCurrentBlock = function () {
     editorEl.style.display = "block";
 
 
-const fullHTML = window.storyData[key] || "";
+const data = window.storyData[key] || { title: "", body: "" };
 
-quill.root.innerHTML = fullHTML;
-
+quill.root.innerHTML = data.body || "";
+document.getElementById("blockTitleInput").value = data.title || "";
     quill.root.dataset.placeholder =
       (placeholders[key] || "") +
       "\n\nThis section will not appear on your website until you add some content.";
