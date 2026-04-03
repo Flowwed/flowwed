@@ -1133,45 +1133,67 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // 2) SAVE BUTTON — SAVE TEXT ONLY
   // ===============================
- document.querySelector(".save-btn").addEventListener("click", async () => {
- console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
-  if (!token) return alert("Missing token");
 
+document.querySelector(".save-btn").addEventListener("click", async () => {
+console.log("SAVE CLICKED");
+
+if (!token) {
+alert("Missing token");
+return;
+}
+
+if (!window.currentKey) {
+alert("Choose a section first");
+return;
+}
+
+if (!window.quill) {
+alert("Editor not ready");
+return;
+}
 
 const title = document.getElementById("blockTitleInput").value.trim();
-const body = quill.root.innerHTML;
+const body = window.quill.root.innerHTML;
 
 let finalHTML = body;
 
 if (title) {
-  finalHTML = `<h2>${title}</h2>` + body;
+finalHTML = `<h2>${title}</h2>` + body;
 }
 
+try {
 const res = await fetch(
-  `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
-  {
-    method: "PATCH",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      [window.currentKey]: finalHTML
-    })
-  }
+`${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
+{
+method: "PATCH",
+headers: {
+apikey: SUPABASE_KEY,
+Authorization: "Bearer " + SUPABASE_KEY,
+"Content-Type": "application/json"
+},
+body: JSON.stringify({
+[window.currentKey]: finalHTML
+})
+}
 );
 
-
+```
 if (!res.ok) {
   const errorText = await res.text();
   console.error("SUPABASE ERROR:", errorText);
+  showToast("Save failed");
+  return;
 }
 
-showToast(res.ok ? "Text saved" : "Save failed");
+showToast("Text saved");
+```
+
+} catch (err) {
+console.error("SAVE ERROR:", err);
+showToast("Save crashed");
+}
 });
 
-}); // ← ВОТ ЭТОГО НЕ ХВАТАЛО
 
 </script>
 
@@ -1448,55 +1470,25 @@ await loadMiniGallery();
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
+  document.querySelector(".update-btn").addEventListener("click", () => {
+    if (!token) {
+      alert("Missing token");
+      return;
+    }
 
-  // кнопка SEE MODAL WINDOW
-  document.querySelector(".update-btn").addEventListener("click", async () => {
-  if (!token) {
-    alert("Missing token");
-    return;
-  }
+    const modal = document.getElementById("storyModal");
+    const iframe = document.getElementById("storyIframe");
 
-  // 1️⃣ фиксируем активный блок
-  window.syncCurrentBlock();
-
-
-const res = await fetch(
-  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-  {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
-    },
-    body: JSON.stringify(payload)
-  }
-);
-
-if (!res.ok) {
-  const errorText = await res.text();
-  console.error("SUPABASE ERROR:", errorText);
-  alert("Save failed. Check console.");
-  return; // ❗ не открываем модалку если не сохранилось
-}
-
-// 3️⃣ открываем модалку ТОЛЬКО если сохранение успешно
-const modal = document.getElementById("storyModal");
-const iframe = document.getElementById("storyIframe");
-
-iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
-modal.style.display = "flex";
-
+    iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
+    modal.style.display = "flex";
   });
 
-
-  // КРЕСТИК ЗАКРЫТИЯ — ТЕПЕРЬ РАБОТАЕТ ВСЕГДА
   document.getElementById("closeModal").addEventListener("click", () => {
     document.getElementById("storyModal").style.display = "none";
   });
 
 });
+
 </script>
 
 <!-- MODAL STRUCTURE -->
@@ -1566,14 +1558,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 🔥 INIT QUILL
   // =========================
 
-  const quill = new Quill(editorEl, { theme: "snow" });
+  window.quill = new Quill(editorEl, { theme: "snow" });
 
 const titleInput = document.getElementById("blockTitleInput");
 
   editorEl.style.display = "none";
 
 // ❌ УБИРАЕМ АВТО-СОХРАНЕНИЕ ИЗ text-change
-quill.on("text-change", () => {
+window.quill.on("text-change", () => {
   // ничего не делаем
 });
 
@@ -1592,10 +1584,13 @@ function openBlock(block) {
 
   editorEl.style.display = "block";
 
-  quill.setText("");
+  window.quill.setText("");
 
 
 const temp = document.createElement("div");
+
+const fullHTML = "";
+
 temp.innerHTML = fullHTML;
 
 const firstH2 = temp.querySelector("h2");
@@ -1612,9 +1607,9 @@ const bodyHTML = firstH2
 
 document.getElementById("blockTitleInput").value = title;
 
-quill.root.innerHTML = bodyHTML;
+window.quill.root.innerHTML = bodyHTML;
 
-    quill.root.dataset.placeholder =
+    window.quill.root.dataset.placeholder =
       (placeholders[key] || "") +
       "\n\nThis section will not appear on your website until you add some content.";
   }
