@@ -667,8 +667,7 @@ input[type=file] {
   display: flex;
   flex-wrap: nowrap;     /* ❗ в одну линию */
   gap: 8px;
- margin-bottom: 10px;
-
+  margin-bottom: 10px;
   overflow-x: auto;      /* если не помещается — скролл */
   padding-bottom: 4px;
 
@@ -895,13 +894,6 @@ width: 100%;
   display: block;
 }
 
-#editor .ql-editor h2 {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0 0 10px 0;
-}
-
-
 </style>
 
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
@@ -1056,21 +1048,6 @@ width: 100%;
 
     </div> <!-- story-tabs -->
 
-<input 
-  id="blockTitleInput"
-  type="text"
-  placeholder="Enter a heading for this section (e.g. 'How We Met')"
-  style="
-    width: 97%;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-  "
->
-
-
     <!-- 🔥 EDITOR -->
     <div id="editor"></div>
 
@@ -1114,6 +1091,71 @@ width: 100%;
 
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+  // TOAST HELPER
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    if (!t) return;
+
+    t.innerText = msg;
+    t.classList.add("show");
+
+    setTimeout(() => {
+      t.classList.remove("show");
+    }, 2000);
+  }
+
+
+ 
+  // ===============================
+  // 2) SAVE BUTTON — SAVE TEXT ONLY
+  // ===============================
+ document.querySelector(".save-btn").addEventListener("click", async () => {
+ console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
+  if (!token) return alert("Missing token");
+
+  // 🔥 фиксируем активный блок
+ window.syncCurrentBlock();
+
+const payload = {
+  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
+
+  how_we_met: window.storyData.how_we_met || "",
+  growing_together: window.storyData.growing_together || "",
+  proposal: window.storyData.proposal || "",
+  new_chapter: window.storyData.new_chapter || "",
+  custom: window.storyData.custom || ""
+};
+
+console.log("PAYLOAD SENT:", payload);
+
+const res = await fetch(
+  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
+    },
+    body: JSON.stringify(payload)
+  }
+);
+
+if (!res.ok) {
+  const errorText = await res.text();
+  console.error("SUPABASE ERROR:", errorText);
+}
+
+showToast(res.ok ? "Text saved" : "Save failed");
+});
+
+}); // ← ВОТ ЭТОГО НЕ ХВАТАЛО
+
+</script>
+
+<script>
 
 // отправлять текст при открытии модалки
 function sendTextToIframe() {
@@ -1128,6 +1170,36 @@ function sendTextToIframe() {
   );
 }
 
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const sendEmailBtn = document.querySelector(".info-action-btn");
+  const modal = document.getElementById("storyModal");
+  const iframe = document.getElementById("storyIframe");
+
+  if (!sendEmailBtn || !modal || !iframe) return;
+
+  // берём ТОТ ЖЕ token, что используется везде
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  sendEmailBtn.addEventListener("click", () => {
+    if (!token) {
+      alert("Missing token");
+      return;
+    }
+
+    // 👇 ВАЖНО: МЕНЯЕМ ТОЛЬКО URL iframe
+    iframe.src =
+      `https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`;
+
+    modal.style.display = "flex";
+  });
+
+});
 </script>
 
 
@@ -1351,6 +1423,72 @@ await loadMiniGallery();
   }
 </script>
 
+<!-- OPEN + SAVE + MODAL -->
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+
+  // кнопка SEE MODAL WINDOW
+  document.querySelector(".update-btn").addEventListener("click", async () => {
+  if (!token) {
+    alert("Missing token");
+    return;
+  }
+
+  // 1️⃣ фиксируем активный блок
+  window.syncCurrentBlock();
+
+// 2️⃣ сохраняем ВСЕ блоки (как Save)
+const payload = {
+  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
+
+  how_we_met: window.storyData.how_we_met || "",
+  growing_together: window.storyData.growing_together || "",
+  proposal: window.storyData.proposal || "",
+  new_chapter: window.storyData.new_chapter || "",
+  custom: window.storyData.custom || ""
+};
+
+const res = await fetch(
+  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
+    },
+    body: JSON.stringify(payload)
+  }
+);
+
+if (!res.ok) {
+  const errorText = await res.text();
+  console.error("SUPABASE ERROR:", errorText);
+  alert("Save failed. Check console.");
+  return; // ❗ не открываем модалку если не сохранилось
+}
+
+// 3️⃣ открываем модалку ТОЛЬКО если сохранение успешно
+const modal = document.getElementById("storyModal");
+const iframe = document.getElementById("storyIframe");
+
+iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
+modal.style.display = "flex";
+
+  });
+
+
+  // КРЕСТИК ЗАКРЫТИЯ — ТЕПЕРЬ РАБОТАЕТ ВСЕГДА
+  document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("storyModal").style.display = "none";
+  });
+
+});
+</script>
+
 <!-- MODAL STRUCTURE -->
 <div class="modal-backdrop" id="storyModal">
   <div class="modal-window">
@@ -1376,20 +1514,12 @@ await loadMiniGallery();
 
 <script>
 
-document.addEventListener("DOMContentLoaded", async () => {
-
+document.addEventListener("DOMContentLoaded", () => {
   const blocks = document.querySelectorAll(".story-block");
   const editorEl = document.getElementById("editor");
 
   window.currentKey = null;
-
-window.storyData = {
-  how_we_met: "",
-  growing_together: "",
-  proposal: "",
-  new_chapter: "",
-  custom: ""
-};
+  window.storyData = {};
 
   const placeholders = {
     how_we_met: "Tell the story of how you first met. Where were you? What happened?",
@@ -1400,7 +1530,7 @@ window.storyData = {
   };
 
   // =========================
-  // 🔥 LOAD FROM SUPABASE
+  // 🔥 1. LOAD DATA FIRST
   // =========================
   async function loadStoryFromSupabase() {
     if (!token) return;
@@ -1415,23 +1545,8 @@ window.storyData = {
       }
     );
 
-const data = await res.json();
-
-if (!Array.isArray(data) || data.length === 0) {
-  console.warn("NO DATA FROM SUPABASE", data);
-
-  // 🔥 ВАЖНО — НЕ ВЫХОДИ, А СОХРАНИ СТРУКТУРУ
-  window.storyData = {
-    how_we_met: { title: "", body: "" },
-    growing_together: { title: "", body: "" },
-    proposal: { title: "", body: "" },
-    new_chapter: { title: "", body: "" },
-    custom: { title: "", body: "" }
-  };
-
-  return;
-}
-    // ✅ ВСЕГДА берем с сервера
+    const data = await res.json();
+    if (!data || !data.length) return;
 
     window.storyData = {
       how_we_met: data[0].how_we_met || "",
@@ -1440,67 +1555,38 @@ if (!Array.isArray(data) || data.length === 0) {
       new_chapter: data[0].new_chapter || "",
       custom: data[0].custom || ""
     };
-
-
-
-// 🔥 обновляем текст в уже открытой вкладке
-if (window.currentKey) {
-  quill.root.innerHTML = window.storyData[window.currentKey] || "";
-}
-
   }
 
-  // =========================
-  // 🔥 INIT QUILL
-  // =========================
-
-const quill = new Quill(editorEl, {
-  theme: "snow",
-  modules: {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link"]
-    ]
-  }
-});
-
-editorEl.style.display = "none";
-
-// ❌ НИКАКОГО АВТО-СЕЙВА
-quill.on("text-change", () => {
-  // intentionally empty
-});
-
-// =========================
-// 🔥 SAVE CURRENT BLOCK
-// =========================
-window.syncCurrentBlock = function () {
-  if (!window.currentKey) return;
-
-  const body = quill.root.innerHTML;
-
-  window.storyData[window.currentKey] = body;
-
-  console.log("SAVED HTML:", body);
-};
+  loadStoryFromSupabase();
 
   // =========================
-  // 🔥 OPEN TAB
+  // 🔥 2. INIT EDITOR
+  // =========================
+  const quill = new Quill(editorEl, { theme: "snow" });
+  editorEl.style.display = "none";
+
+  quill.on("text-change", () => {
+    if (window.currentKey) {
+      window.storyData[window.currentKey] = quill.root.innerHTML;
+    }
+  });
+
+
+  window.syncCurrentBlock = function () {
+    if (window.currentKey) {
+      window.storyData[window.currentKey] = quill.root.innerHTML;
+    }
+  };
+
+  // =========================
+  // 🔥 3. TAB LOGIC
   // =========================
   function openBlock(block) {
     const key = block.dataset.key;
 
-if (window.currentKey) {
-const title = document.getElementById("blockTitleInput").value.trim();
-const body = quill.root.innerHTML;
-
-window.storyData[window.currentKey] = title
-  ? `<h2>${title}</h2>${body}`
-  : body;
-}
-
+    if (window.currentKey) {
+      window.storyData[window.currentKey] = quill.root.innerHTML;
+    }
 
     blocks.forEach(b => b.classList.remove("active"));
 
@@ -1509,31 +1595,18 @@ window.storyData[window.currentKey] = title
 
     editorEl.style.display = "block";
 
+// 🔥 очищаем редактор перед загрузкой
+quill.setText("");
 
-const fullHTML = window.storyData[key] || "";
+quill.root.innerHTML = window.storyData[key] || "";
 
-const temp = document.createElement("div");
-temp.innerHTML = fullHTML;
 
-const firstH2 = temp.querySelector("h2");
+quill.root.dataset.placeholder =
+  (placeholders[key] || "") +
+  "\n\nThis section will not appear on your website until you add some content.";
 
-let title = "";
-
-if (firstH2 && firstH2.innerText) {
-  title = firstH2.innerText;
-  firstH2.remove();
-}
-document.getElementById("blockTitleInput").value = title;
-
-quill.root.innerHTML = temp.innerHTML;
-    quill.root.dataset.placeholder =
-      (placeholders[key] || "") +
-      "\n\nThis section will not appear on your website until you add some content.";
   }
 
-  // =========================
-  // 🔥 TAB EVENTS
-  // =========================
   blocks.forEach(block => {
     const header = block.querySelector(".story-header");
     const closeBtn = block.querySelector(".close-btn");
@@ -1553,152 +1626,13 @@ quill.root.innerHTML = temp.innerHTML;
     });
   });
 
-// 🔥 ОТКРЫВАЕМ ПЕРВУЮ ВКЛАДКУ СРАЗУ
-const firstBlock = document.querySelector('[data-key="how_we_met"]');
-if (firstBlock) {
-  openBlock(firstBlock);
-}
-
-
   // =========================
-  // 🔥 СНАЧАЛА ГРУЗИМ ДАННЫЕ
+  // 🔥 4. AUTO OPEN FIRST TAB
   // =========================
-  await loadStoryFromSupabase();
-
-
-// =========================
-// 🔥 TOAST
-// =========================
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  if (!t) return;
-
-  t.innerText = msg;
-  t.classList.add("show");
-
-  setTimeout(() => {
-    t.classList.remove("show");
-  }, 2000);
-}
-
-// =========================
-// 🔥 SAVE BUTTON
-// =========================
-document.querySelector(".save-btn").addEventListener("click", async () => {
-  console.log("SAVE CLICKED");
-
-  if (!token) return alert("Missing token");
-
-  // 🔥 СОХРАНЯЕМ ТЕКУЩИЙ БЛОК КАК STRING
-  if (window.currentKey) {
-    const title = document.getElementById("blockTitleInput").value.trim();
-    const body = document.querySelector(".ql-editor").innerHTML;
-
-    window.storyData[window.currentKey] = title
-      ? `<h2>${title}</h2>${body}`
-      : body;
+  const firstBlock = document.querySelector('[data-key="how_we_met"]');
+  if (firstBlock) {
+    openBlock(firstBlock);
   }
-
-  // 🔥 ВСЕ ПОЛЯ = STRING
-  const payload = {
-    edit_token: token,
-    how_we_met: window.storyData.how_we_met || "",
-    growing_together: window.storyData.growing_together || "",
-    proposal: window.storyData.proposal || "",
-    new_chapter: window.storyData.new_chapter || "",
-    custom: window.storyData.custom || ""
-  };
-
-  console.log("PAYLOAD:", payload); // 👈 ПРОВЕРКА
-
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-    {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        Prefer: "resolution=merge-duplicates"
-      },
-      body: JSON.stringify(payload)
-    }
-  );
-
-  showToast(res.ok ? "Saved" : "Save failed");
-});
-// =========================
-// 🔥 PREVIEW BUTTON
-// =========================
-document.querySelector(".update-btn").addEventListener("click", async () => {
-  if (!token) return alert("Missing token");
-
-  if (window.currentKey) {
-    window.storyData[window.currentKey] =
-      document.querySelector(".ql-editor").innerHTML;
-  }
-
-  const payload = { edit_token: token };
-
-if (window.currentKey) {
-
-const title = window.storyData[window.currentKey].title || "";
-const body = window.storyData[window.currentKey].body || "";
-
-payload[window.currentKey] = `
-<h2>${title}</h2>
-${body}
-`;
-
-  payload[window.currentKey + "_title"] = window.storyData[window.currentKey].title;
-}
-
-
-  await fetch(
-    `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-    {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json",
-        Prefer: "resolution=merge-duplicates"
-      },
-      body: JSON.stringify(payload)
-    }
-  );
-
-  const modal = document.getElementById("storyModal");
-  const iframe = document.getElementById("storyIframe");
-
-  iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
-  modal.style.display = "flex";
-});
-
-// =========================
-// 🔥 EMAIL BUTTON
-// =========================
-const sendEmailBtn = document.querySelector(".info-action-btn");
-const modal = document.getElementById("storyModal");
-const iframe = document.getElementById("storyIframe");
-
-sendEmailBtn?.addEventListener("click", () => {
-  if (!token) return alert("Missing token");
-
-  iframe.src = `https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`;
-  modal.style.display = "flex";
-});
-
-// =========================
-// 🔥 CLOSE MODAL
-// =========================
-document.getElementById("closeModal")?.addEventListener("click", () => {
-  document.getElementById("storyModal").style.display = "none";
-});
-
-
-
-
 
 });
 
@@ -1805,6 +1739,16 @@ document.getElementById("backBtn")?.addEventListener("click", () => {
   window.location.href = "/dashboard.html?t=" + tokenNav;
 });
 
+/* active nav link */
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page || "photo-gallery";
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    if (link.getAttribute("href").includes(page)) {
+      link.classList.add("active");
+    }
+  });
+});
 </script>
 
 
