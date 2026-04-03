@@ -1384,13 +1384,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.currentKey = null;
 
 window.storyData = {
-  how_we_met: { title: "", body: data[0].how_we_met || "" },
-  growing_together: { title: "", body: data[0].growing_together || "" },
-  proposal: { title: "", body: data[0].proposal || "" },
-  new_chapter: { title: "", body: data[0].new_chapter || "" },
-  custom: { title: "", body: data[0].custom || "" }
+  how_we_met: { title: "", body: "" },
+  growing_together: { title: "", body: "" },
+  proposal: { title: "", body: "" },
+  new_chapter: { title: "", body: "" },
+  custom: { title: "", body: "" }
 };
-
   const placeholders = {
     how_we_met: "Tell the story of how you first met. Where were you? What happened?",
     growing_together: "Share how your relationship grew. Key moments, memories, milestones.",
@@ -1415,9 +1414,22 @@ window.storyData = {
       }
     );
 
-    const data = await res.json();
-    if (!data || !data.length) return;
+const data = await res.json();
 
+if (!Array.isArray(data) || data.length === 0) {
+  console.warn("NO DATA FROM SUPABASE", data);
+
+  // 🔥 ВАЖНО — НЕ ВЫХОДИ, А СОХРАНИ СТРУКТУРУ
+  window.storyData = {
+    how_we_met: { title: "", body: "" },
+    growing_together: { title: "", body: "" },
+    proposal: { title: "", body: "" },
+    new_chapter: { title: "", body: "" },
+    custom: { title: "", body: "" }
+  };
+
+  return;
+}
     // ✅ ВСЕГДА берем с сервера
 
     window.storyData = {
@@ -1596,6 +1608,7 @@ document.querySelector(".save-btn").addEventListener("click", async () => {
 
   showToast(res.ok ? "Saved" : "Save failed");
 });
+
 // =========================
 // 🔥 PREVIEW BUTTON
 // =========================
