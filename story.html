@@ -1633,25 +1633,12 @@ quill.on("text-change", () => {
 window.syncCurrentBlock = function () {
   if (!window.currentKey) return;
 
-  const title = document.getElementById("blockTitleInput").value.trim();
   const body = quill.root.innerHTML;
 
-  // 🔥 СОБИРАЕМ В ОДИН HTML
-  let finalHTML = "";
+  window.storyData[window.currentKey] = body;
 
-  if (title) {
-    finalHTML += `<h2>${title}</h2>`;
-  }
-
-  if (body && body !== "<p><br></p>") {
-    finalHTML += body;
-  }
-
-  window.storyData[window.currentKey] = finalHTML;
-
-  console.log("SAVED HTML:", finalHTML); // 👈 ПРОВЕРКА
+  console.log("SAVED HTML:", body);
 };
-
   // =========================
   // 🔥 OPEN TAB
   // =========================
