@@ -1048,6 +1048,21 @@ width: 100%;
 
     </div> <!-- story-tabs -->
 
+<input 
+  id="blockTitleInput"
+  type="text"
+  placeholder="Enter a heading for this section (e.g. 'How We Met')"
+  style="
+    width: 97%;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  "
+>
+
+
     <!-- 🔥 EDITOR -->
     <div id="editor"></div>
 
@@ -1577,7 +1592,19 @@ if (window.currentKey) {
     }
   });
 
-  window.syncCurrentBlock = function () {
+window.syncCurrentBlock = function () {
+  if (window.currentKey) {
+
+    const title = document.getElementById("blockTitleInput").value.trim();
+    const body = quill.root.innerHTML;
+
+    // 🔥 собираем обратно
+    window.storyData[window.currentKey] =
+      (title ? `<p><strong>${title}</strong></p>` : "") + body;
+  }
+};
+
+
     if (window.currentKey) {
       window.storyData[window.currentKey] = quill.root.innerHTML;
     }
@@ -1601,7 +1628,24 @@ if (window.currentKey) {
     editorEl.style.display = "block";
 
     quill.setText("");
-    quill.root.innerHTML = window.storyData[key] || "";
+
+    const fullText = window.storyData[key] || "";
+
+// 🔥 достаём первую строку как title
+const temp = document.createElement("div");
+temp.innerHTML = fullText;
+
+const firstLine = temp.innerText.split("\n")[0] || "";
+
+// 🔥 вставляем в input
+document.getElementById("blockTitleInput").value = firstLine;
+
+// 🔥 убираем первую строку из editor
+const rest = fullText.replace(firstLine, "").trim();
+
+quill.root.innerHTML = rest;
+
+    
 
     quill.root.dataset.placeholder =
       (placeholders[key] || "") +
