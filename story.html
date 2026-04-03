@@ -666,8 +666,7 @@ input[type=file] {
 .story-tabs {
   display: flex;
   flex-wrap: nowrap;     /* ❗ в одну линию */
-  gap: 16px;
-  margin-bottom:12px;
+  gap: 8px;
 
   overflow-x: auto;      /* если не помещается — скролл */
   padding-bottom: 4px;
@@ -677,8 +676,8 @@ input[type=file] {
 
 .story-tabs::-webkit-scrollbar {
   display: none;
-
 }
+
 
 .story-block {
   flex: 0 0 auto;
@@ -755,25 +754,7 @@ width: 100%;
   opacity: 1;
 }
 
-.input-error {
-  border: 1.5px solid #ff3b30 !important; /* iOS red */
-  box-shadow:
-    0 0 0 2px rgba(255, 59, 48, 0.15),
-    0 4px 10px rgba(255, 59, 48, 0.12);
-  transition: all 0.2s ease;
-}
 
-@keyframes shakeX {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-4px); }
-  50% { transform: translateX(4px); }
-  75% { transform: translateX(-3px); }
-  100% { transform: translateX(0); }
-}
-
-.input-shake {
-  animation: shakeX 0.25s ease;
-}
 
 /* ================= TOP NAV ================= */
 
@@ -1034,7 +1015,7 @@ width: 100%;
 
       <div class="story-block" data-key="how_we_met">
         <div class="story-header">
-          <span>Part 1</span>
+          <span>How we met</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1042,7 +1023,7 @@ width: 100%;
 
       <div class="story-block" data-key="growing_together">
         <div class="story-header">
-          <span>Part 2</span>
+          <span>Growing together</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1050,7 +1031,7 @@ width: 100%;
 
       <div class="story-block" data-key="proposal">
         <div class="story-header">
-          <span>Part 3</span>
+          <span>The Proposal</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1058,7 +1039,7 @@ width: 100%;
 
       <div class="story-block" data-key="new_chapter">
         <div class="story-header">
-          <span>Part 4</span>
+          <span>A new chapter begins</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1066,7 +1047,7 @@ width: 100%;
 
       <div class="story-block" data-key="custom">
         <div class="story-header">
-          <span>Part 5</span>
+          <span>Your own version</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1077,7 +1058,7 @@ width: 100%;
 <input 
   id="blockTitleInput"
   type="text"
-  placeholder="Enter a heading for this part (e.g. 'How We Met' - 'Growing Together' - 'The Proposal' - 'A New Chapter Begins', etc.)"
+  placeholder="Enter a heading for this section (e.g. 'How We Met')"
   style="
     width: 97%;
     padding: 12px 14px;
@@ -1612,25 +1593,6 @@ if (window.currentKey) {
 
   const quill = new Quill(editorEl, { theme: "snow" });
 
-function validateTitle() {
-  const title = titleInput.value.trim();
-
-  if (!title) {
-    titleInput.classList.add("input-error");
-
-    // reset + shake
-    titleInput.classList.remove("input-shake");
-    void titleInput.offsetWidth;
-    titleInput.classList.add("input-shake");
-
-    return false;
-  }
-
-  titleInput.classList.remove("input-error");
-  return true;
-}
-
-
 const titleInput = document.getElementById("blockTitleInput");
 
 titleInput.addEventListener("input", () => {
@@ -1664,32 +1626,16 @@ if (firstH2) {
   editorEl.style.display = "none";
 
 // ❌ УБИРАЕМ АВТО-СОХРАНЕНИЕ ИЗ text-change
-
 quill.on("text-change", () => {
-  if (!validateTitle()) {
-    quill.setText(""); // ❌ очищаем если начали писать без title
-  }
+  // ничего не делаем
 });
-
-
-quill.root.addEventListener("click", () => {
-  if (!validateTitle()) return;
-});
-
 
 window.syncCurrentBlock = function () {
   if (!window.currentKey) return;
 
-  const title = titleInput.value.trim();
   const body = quill.root.innerHTML;
 
-  let finalHTML = body;
-
-  if (title) {
-    finalHTML = `<h2>${title}</h2>` + body;
-  }
-
-  window.storyData[window.currentKey] = finalHTML;
+  window.storyData[window.currentKey] = body;
 
   console.log("SAVED HTML:", body);
 };
@@ -1714,24 +1660,26 @@ window.syncCurrentBlock = function () {
 
 const fullHTML = window.storyData[key] || "";
 
+// создаём временный контейнер
 const temp = document.createElement("div");
 temp.innerHTML = fullHTML;
 
-const firstH2 = temp.querySelector("h2");
+// берём первый <p> как header
+const firstP = temp.querySelector("h2");
 
 let title = "";
 
-if (firstH2) {
-  title = firstH2.innerText;
+if (firstP) {
+  title = firstP.innerText;
+  firstP.remove(); // удаляем header из текста
 }
 
-const bodyHTML = firstH2
-  ? fullHTML.replace(firstH2.outerHTML, "")
-  : fullHTML;
-
+// вставляем header в input
 document.getElementById("blockTitleInput").value = title;
 
-quill.root.innerHTML = bodyHTML;
+// остальной HTML в редактор
+quill.root.innerHTML = temp.innerHTML;    
+
     quill.root.dataset.placeholder =
       (placeholders[key] || "") +
       "\n\nThis section will not appear on your website until you add some content.";
