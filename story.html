@@ -1114,75 +1114,6 @@ width: 100%;
 
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // TOAST HELPER
-  function showToast(msg) {
-    const t = document.getElementById("toast");
-    if (!t) return;
-
-    t.innerText = msg;
-    t.classList.add("show");
-
-    setTimeout(() => {
-      t.classList.remove("show");
-    }, 2000);
-  }
-
-
- 
-  // ===============================
-  // 2) SAVE BUTTON — SAVE TEXT ONLY
-  // ===============================
- document.querySelector(".save-btn").addEventListener("click", async () => {
- console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
-  if (!token) return alert("Missing token");
-
-  // 🔥 фиксируем активный блок
- 
-if (window.currentKey) {
-  window.storyData[window.currentKey] =
-    document.querySelector(".ql-editor").innerHTML;
-}
-
-const payload = {
-  edit_token: token
-};
-
-if (window.currentKey) {
-  payload[window.currentKey] = window.storyData[window.currentKey];
-}
-
-
-console.log("PAYLOAD >>>", payload);
-console.log("PAYLOAD SENT:", payload);
-
-const res = await fetch(
-  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-  {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
-    },
-    body: JSON.stringify(payload)
-  }
-);
-
-if (!res.ok) {
-  const errorText = await res.text();
-  console.error("SUPABASE ERROR:", errorText);
-}
-
-showToast(res.ok ? "Text saved" : "Save failed");
-});
-
-}); // ← ВОТ ЭТОГО НЕ ХВАТАЛО
-
-</script>
-
-<script>
 
 // отправлять текст при открытии модалки
 function sendTextToIframe() {
@@ -1197,36 +1128,6 @@ function sendTextToIframe() {
   );
 }
 
-</script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const sendEmailBtn = document.querySelector(".info-action-btn");
-  const modal = document.getElementById("storyModal");
-  const iframe = document.getElementById("storyIframe");
-
-  if (!sendEmailBtn || !modal || !iframe) return;
-
-  // берём ТОТ ЖЕ token, что используется везде
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("t") || params.get("token");
-
-  sendEmailBtn.addEventListener("click", () => {
-    if (!token) {
-      alert("Missing token");
-      return;
-    }
-
-    // 👇 ВАЖНО: МЕНЯЕМ ТОЛЬКО URL iframe
-    iframe.src =
-      `https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`;
-
-    modal.style.display = "flex";
-  });
-
-});
 </script>
 
 
@@ -1450,78 +1351,6 @@ await loadMiniGallery();
   }
 </script>
 
-<!-- OPEN + SAVE + MODAL -->
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-
-  // кнопка SEE MODAL WINDOW
-  document.querySelector(".update-btn").addEventListener("click", async () => {
-  if (!token) {
-    alert("Missing token");
-    return;
-  }
-
-  // 1️⃣ фиксируем активный блок
-  //window.syncCurrentBlock();
-
-if (window.currentKey) {
-  window.storyData[window.currentKey] = document.querySelector(".ql-editor").innerHTML;
-}
-
-// 2️⃣ сохраняем ВСЕ блоки (как Save)
-
-const payload = {
-  edit_token: token
-};
-
-if (window.currentKey) {
-  payload[window.currentKey] = window.storyData[window.currentKey];
-}
-console.log("PAYLOAD >>>", payload);
-
-
-
-const res = await fetch(
-  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
-  {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
-    },
-    body: JSON.stringify(payload)
-  }
-);
-
-if (!res.ok) {
-  const errorText = await res.text();
-  console.error("SUPABASE ERROR:", errorText);
-  alert("Save failed. Check console.");
-  return; // ❗ не открываем модалку если не сохранилось
-}
-
-// 3️⃣ открываем модалку ТОЛЬКО если сохранение успешно
-const modal = document.getElementById("storyModal");
-const iframe = document.getElementById("storyIframe");
-
-iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
-modal.style.display = "flex";
-
-  });
-
-
-  // КРЕСТИК ЗАКРЫТИЯ — ТЕПЕРЬ РАБОТАЕТ ВСЕГДА
-  document.getElementById("closeModal").addEventListener("click", () => {
-    document.getElementById("storyModal").style.display = "none";
-  });
-
-});
-</script>
-
 <!-- MODAL STRUCTURE -->
 <div class="modal-backdrop" id="storyModal">
   <div class="modal-window">
@@ -1733,6 +1562,121 @@ if (firstBlock) {
   // =========================
   await loadStoryFromSupabase();
 
+
+// =========================
+// 🔥 TOAST
+// =========================
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+
+  t.innerText = msg;
+  t.classList.add("show");
+
+  setTimeout(() => {
+    t.classList.remove("show");
+  }, 2000);
+}
+
+// =========================
+// 🔥 SAVE BUTTON
+// =========================
+document.querySelector(".save-btn").addEventListener("click", async () => {
+  console.log("SAVE CLICKED");
+
+  if (!token) return alert("Missing token");
+
+  if (window.currentKey) {
+    window.storyData[window.currentKey] =
+      document.querySelector(".ql-editor").innerHTML;
+  }
+
+  const payload = { edit_token: token };
+
+  if (window.currentKey) {
+    payload[window.currentKey] = window.storyData[window.currentKey];
+  }
+
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+    {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates"
+      },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  showToast(res.ok ? "Saved" : "Save failed");
+});
+
+// =========================
+// 🔥 PREVIEW BUTTON
+// =========================
+document.querySelector(".update-btn").addEventListener("click", async () => {
+  if (!token) return alert("Missing token");
+
+  if (window.currentKey) {
+    window.storyData[window.currentKey] =
+      document.querySelector(".ql-editor").innerHTML;
+  }
+
+  const payload = { edit_token: token };
+
+  if (window.currentKey) {
+    payload[window.currentKey] = window.storyData[window.currentKey];
+  }
+
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+    {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates"
+      },
+      body: JSON.stringify(payload)
+    }
+  );
+
+  const modal = document.getElementById("storyModal");
+  const iframe = document.getElementById("storyIframe");
+
+  iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
+  modal.style.display = "flex";
+});
+
+// =========================
+// 🔥 EMAIL BUTTON
+// =========================
+const sendEmailBtn = document.querySelector(".info-action-btn");
+const modal = document.getElementById("storyModal");
+const iframe = document.getElementById("storyIframe");
+
+sendEmailBtn?.addEventListener("click", () => {
+  if (!token) return alert("Missing token");
+
+  iframe.src = `https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`;
+  modal.style.display = "flex";
+});
+
+// =========================
+// 🔥 CLOSE MODAL
+// =========================
+document.getElementById("closeModal")?.addEventListener("click", () => {
+  document.getElementById("storyModal").style.display = "none";
+});
+
+
+
+
+
 });
 
 async function loadMiniGallery() {
@@ -1838,16 +1782,6 @@ document.getElementById("backBtn")?.addEventListener("click", () => {
   window.location.href = "/dashboard.html?t=" + tokenNav;
 });
 
-/* active nav link */
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body.dataset.page || "photo-gallery";
-
-  document.querySelectorAll(".top-nav a").forEach(link => {
-    if (link.getAttribute("href").includes(page)) {
-      link.classList.add("active");
-    }
-  });
-});
 </script>
 
 
