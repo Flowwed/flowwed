@@ -894,6 +894,13 @@ width: 100%;
   display: block;
 }
 
+#editor .ql-editor h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+
 </style>
 
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
@@ -1585,6 +1592,37 @@ if (window.currentKey) {
   // =========================
 
   const quill = new Quill(editorEl, { theme: "snow" });
+
+const titleInput = document.getElementById("blockTitleInput");
+
+titleInput.addEventListener("input", () => {
+  if (!window.currentKey) return;
+
+  const title = titleInput.value.trim();
+
+  const temp = document.createElement("div");
+  temp.innerHTML = quill.root.innerHTML;
+
+  // 🔥 удаляем старый header (первый <p>)
+const firstH2 = temp.querySelector("h2");
+if (firstH2) {
+  firstH2.remove();
+}
+
+
+  // 🔥 вставляем новый header
+  if (title) {
+    const header = document.createElement("h2");
+    header.innerText = title;
+    temp.insertBefore(header, temp.firstChild);
+  }
+
+
+  // 🔥 обновляем editor
+  quill.root.innerHTML = temp.innerHTML;
+});
+
+
   editorEl.style.display = "none";
 
 // ❌ УБИРАЕМ АВТО-СОХРАНЕНИЕ ИЗ text-change
@@ -1602,7 +1640,7 @@ window.syncCurrentBlock = function () {
   let finalHTML = "";
 
   if (title) {
-    finalHTML += `<p>${title}</p>`;
+    finalHTML += `<h2>${title}</h2>`;
   }
 
   if (body && body !== "<p><br></p>") {
@@ -1640,7 +1678,7 @@ const temp = document.createElement("div");
 temp.innerHTML = fullHTML;
 
 // берём первый <p> как header
-const firstP = temp.querySelector("p");
+const firstP = temp.querySelector("h2");
 
 let title = "";
 
