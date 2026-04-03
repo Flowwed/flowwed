@@ -1605,7 +1605,15 @@ document.querySelector(".update-btn").addEventListener("click", async () => {
   const payload = { edit_token: token };
 
 if (window.currentKey) {
-  payload[window.currentKey] = window.storyData[window.currentKey].body;
+
+const title = window.storyData[window.currentKey].title || "";
+const body = window.storyData[window.currentKey].body || "";
+
+payload[window.currentKey] = `
+<h2>${title}</h2>
+${body}
+`;
+
   payload[window.currentKey + "_title"] = window.storyData[window.currentKey].title;
 }
 
