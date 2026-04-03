@@ -1471,6 +1471,10 @@ await loadMiniGallery();
 document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelector(".update-btn").addEventListener("click", () => {
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("t") || params.get("token");
+
     if (!token) {
       alert("Missing token");
       return;
@@ -1488,9 +1492,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
-
 </script>
-
 <!-- MODAL STRUCTURE -->
 <div class="modal-backdrop" id="storyModal">
   <div class="modal-window">
