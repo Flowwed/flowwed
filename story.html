@@ -1634,19 +1634,30 @@ window.storyData = {
   window.quill = new Quill(editorEl, { theme: "snow" });
   editorEl.style.display = "none";
 
-  quill.on("text-change", () => {
-    if (window.currentKey) {
-      window.storyData[window.currentKey] = window.quill.root.innerHTML;
-    }
-  });
+window.quill.on("text-change", () => {
+  if (window.currentKey) {
+    const current = window.storyData[window.currentKey] || {};
 
+    window.storyData[window.currentKey] = {
+      header: current.header || "",
+      body: window.quill.root.innerHTML
+    };
+  }
+});
 
-  window.syncCurrentBlock = function () {
-    if (window.currentKey) {
-      window.storyData[window.currentKey] = window.quill.root.innerHTML;
-    }
-  };
+window.syncCurrentBlock = function () {
+  if (window.currentKey) {
+    const headerEl = document.getElementById("fakeHeader");
 
+    window.storyData[window.currentKey] = {
+      header:
+        headerEl.innerText === "Enter a header here..."
+          ? ""
+          : headerEl.innerText.trim(),
+      body: window.quill.root.innerHTML
+    };
+  }
+};
   // =========================
   // 🔥 3. TAB LOGIC
   // =========================
