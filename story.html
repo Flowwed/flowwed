@@ -1434,45 +1434,46 @@ if (window.currentKey) {
   // 🔥 INIT QUILL
   // =========================
 
-  const quill = new Quill(editorEl, { theme: "snow" });
+const quill = new Quill(editorEl, { theme: "snow" });
 
 const titleInput = document.getElementById("blockTitleInput");
 
+// =========================
+// 🔥 FIXED HEADER LOGIC
+// =========================
 titleInput.addEventListener("input", () => {
   if (!window.currentKey) return;
 
   const title = titleInput.value.trim();
+  const editor = quill.root;
 
-  const temp = document.createElement("div");
-  temp.innerHTML = quill.root.innerHTML;
+  let first = editor.firstElementChild;
 
-  // 🔥 удаляем старый header (первый <p>)
-const firstH2 = temp.querySelector("h2");
-if (firstH2) {
-  firstH2.remove();
-}
-
-
-  // 🔥 вставляем новый header
-  if (title) {
-    const header = document.createElement("h2");
-    header.innerText = title;
-    temp.insertBefore(header, temp.firstChild);
+  // ✅ если уже есть <h2> → просто обновляем
+  if (first && first.tagName === "H2") {
+    first.innerText = title;
+    return;
   }
 
+  // ✅ если нет → создаём и вставляем сверху
+  if (title) {
+    const h2 = document.createElement("h2");
+    h2.innerText = title;
 
-  // 🔥 обновляем editor
-  quill.root.innerHTML = temp.innerHTML;
+    editor.insertBefore(h2, editor.firstChild);
+  }
 });
 
+editorEl.style.display = "none";
 
-  editorEl.style.display = "none";
-
-// ❌ УБИРАЕМ АВТО-СОХРАНЕНИЕ ИЗ text-change
+// ❌ НИКАКОГО АВТО-СЕЙВА
 quill.on("text-change", () => {
-  // ничего не делаем
+  // intentionally empty
 });
 
+// =========================
+// 🔥 SAVE CURRENT BLOCK
+// =========================
 window.syncCurrentBlock = function () {
   if (!window.currentKey) return;
 
@@ -1482,6 +1483,7 @@ window.syncCurrentBlock = function () {
 
   console.log("SAVED HTML:", body);
 };
+
   // =========================
   // 🔥 OPEN TAB
   // =========================
