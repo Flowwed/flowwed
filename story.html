@@ -1587,26 +1587,25 @@ if (window.currentKey) {
   const quill = new Quill(editorEl, { theme: "snow" });
   editorEl.style.display = "none";
 
-  quill.on("text-change", () => {
-    if (window.currentKey) {
-      window.storyData[window.currentKey] = quill.root.innerHTML;
-    }
-  });
+quill.on("text-change", () => {
+  if (window.currentKey) {
+    // сохраняем ТОЛЬКО body (без header)
+    window.storyData[window.currentKey] = quill.root.innerHTML;
+  }
+});
 
 window.syncCurrentBlock = function () {
-  if (window.currentKey) {
+  if (!window.currentKey) return;
 
-    const title = document.getElementById("blockTitleInput").value.trim();
-    const body = quill.root.innerHTML;
+  const title = document.getElementById("blockTitleInput").value.trim();
+  const body = quill.root.innerHTML;
 
-    // 🔥 собираем обратно
-    window.storyData[window.currentKey] =
-      (title ? `<p><strong>${title}</strong></p>` : "") + body;
-  }
-    if (window.currentKey) {
-      window.storyData[window.currentKey] = quill.root.innerHTML;
-    }
-  };
+  // 🔥 header как первый <p>
+  const headerHTML = title ? `<p>${title}</p>` : "";
+
+  // 🔥 сохраняем вместе
+  window.storyData[window.currentKey] = headerHTML + body;
+};
 
   // =========================
   // 🔥 OPEN TAB
@@ -1627,23 +1626,27 @@ window.syncCurrentBlock = function () {
 
     quill.setText("");
 
-    const fullText = window.storyData[key] || "";
+const fullHTML = window.storyData[key] || "";
 
-// 🔥 достаём первую строку как title
+// создаём временный контейнер
 const temp = document.createElement("div");
-temp.innerHTML = fullText;
+temp.innerHTML = fullHTML;
 
-const firstLine = temp.innerText.split("\n")[0] || "";
+// берём первый <p> как header
+const firstP = temp.querySelector("p");
 
-// 🔥 вставляем в input
-document.getElementById("blockTitleInput").value = firstLine;
+let title = "";
 
-// 🔥 убираем первую строку из editor
-const rest = fullText.replace(firstLine, "").trim();
+if (firstP) {
+  title = firstP.innerText;
+  firstP.remove(); // удаляем header из текста
+}
 
-quill.root.innerHTML = rest;
+// вставляем header в input
+document.getElementById("blockTitleInput").value = title;
 
-    
+// остальной HTML в редактор
+quill.root.innerHTML = temp.innerHTML;    
 
     quill.root.dataset.placeholder =
       (placeholders[key] || "") +
