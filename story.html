@@ -265,6 +265,7 @@ input[type=file] {
 
     /* RIGHT TEXT EDITOR — FULL WIDTH */
     .text-editor-box {
+      position: relative;
       background: white;
       padding: 25px;
       border-radius: 16px;
@@ -293,24 +294,30 @@ input[type=file] {
 }
 
 
-.editor-actions {
-  display: flex;
-  gap: 16px;          /* расстояние между кнопками */
-  margin-top: 14px;
- align-items: stretch;   
-}
 
 /* кнопки одной высоты и нормальной ширины */
 .editor-btn {
-  flex: 1;
-  padding: 14px 0;        /* ← ВОТ ЭТО КЛЮЧ */
-  height: 48px;           /* ← И ЭТО */
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 8px 14px;        /* было слишком большое */
+  height: auto;
+
+  border-radius: 10px;      /* чуть мягче */
+  font-size: 14px;          /* ↓ меньше текст */
+  font-weight: 600;         /* ↓ легче чем bold */
+
   cursor: pointer;
+  color: white;
+
+  white-space: nowrap;
 }
 
+.update-btn {
+  background: #6f685e;
+  font-size: 14px;          /* чтобы точно совпадало */
+}
+
+.editor-top-actions {
+  gap: 8px;   /* меньше расстояние между кнопками */
+}
 
 /* ============================= */
 /* QUILL EDITOR — FIXED SCROLL  */
@@ -624,31 +631,78 @@ input[type=file] {
 }
 
 .story-block {
-  border: 1.5px solid #e3b6bb;
-  border-radius: 14px;
-  margin-bottom: 14px;
-  overflow: hidden;
-  background: #fff;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
 }
 
 .story-header {
-  padding: 14px 18px;
-  display: flex;
-  justify-content: space-between;
+  padding: 6px 12px;          /* ↓ меньше */
+  border-radius: 999px;
+
+  background: #f1f1f1;
+  font-size: 13px;            /* 🔥 меньше текст */
+  font-weight: 500;
+
+  display: inline-flex;
   align-items: center;
-  font-weight: 700;
+  gap: 6px;
+
   cursor: pointer;
-  background: #fff5f7;
+  transition: all 0.15s ease;
 }
 
-.story-body {
+
+.story-header:hover {
+  background: #ddd;
+}
+
+.story-block.active .story-header {
+  background: #c00111;
+  color: white;
+}
+
+.story-tabs {
+  display: flex;
+  flex-wrap: nowrap;     /* ❗ в одну линию */
+  gap: 8px;
+
+  overflow-x: auto;      /* если не помещается — скролл */
+  padding-bottom: 4px;
+
+  scrollbar-width: none;
+}
+
+.story-tabs::-webkit-scrollbar {
   display: none;
-  padding: 16px 18px;
+}
+
+
+.story-block {
+  flex: 0 0 auto;
+}
+
+
+.story-body {
+display: none !important;  
+width: 100%;
+  margin-top: 16px;
 }
 
 .story-block.active .story-body {
   display: block;
 }
+
+.story-block.active .story-header {
+  background: #c00111;
+  color: white;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
 
 .story-body textarea {
   width: 100%;
@@ -663,12 +717,15 @@ input[type=file] {
 }
 
 .close-btn {
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #b40012;
+  font-size: 14px;
+  opacity: 0.6;
 }
+
+.story-header:hover .close-btn {
+  opacity: 1;
+}
+
+
 
 /* ================= TOP NAV ================= */
 
@@ -785,6 +842,18 @@ input[type=file] {
   border-radius: 10px;
 }
 
+
+.editor-top-actions {
+  position: static;
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.editor-top-actions {
+  justify-content: flex-end;
+}
+
 </style>
 
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
@@ -889,63 +958,68 @@ input[type=file] {
   <!-- RIGHT SIDE — COLUMN -->
   <div class="editor-column">
 
-    <!-- WHITE EDITOR CONTAINER -->
+<!-- WHITE EDITOR CONTAINER -->
 <div class="text-editor-box">
 
+  <div class="tab-content active" id="editorTab">
 
-<!-- 🔥 КНОПКИ ТЕПЕРЬ ЗДЕСЬ -->
-  <div class="editor-actions">
-    <button class="editor-btn save-btn">Save Text Changes</button>
-    <button class="editor-btn update-btn">  👁 Preview Your Page Photo & Text Updates</button>
-  </div>
+    <!-- 🔥 ПЛАШКИ -->
+    <div class="story-tabs">
 
- <!-- ONE SHARED QUILL EDITOR -->
-  <div id="editor"></div>
+      <div class="story-block" data-key="how_we_met">
+        <div class="story-header">
+          <span>How we met</span>
+          <button class="close-btn">×</button>
+        </div>
+        <div class="story-body"></div>
+      </div>
 
-  <div class="story-block" data-key="how_we_met">
-    <div class="story-header">
-      <span>How we met</span>
-      <button class="close-btn">×</button>
+      <div class="story-block" data-key="growing_together">
+        <div class="story-header">
+          <span>Growing together</span>
+          <button class="close-btn">×</button>
+        </div>
+        <div class="story-body"></div>
+      </div>
+
+      <div class="story-block" data-key="proposal">
+        <div class="story-header">
+          <span>The Proposal</span>
+          <button class="close-btn">×</button>
+        </div>
+        <div class="story-body"></div>
+      </div>
+
+      <div class="story-block" data-key="new_chapter">
+        <div class="story-header">
+          <span>A new chapter begins</span>
+          <button class="close-btn">×</button>
+        </div>
+        <div class="story-body"></div>
+      </div>
+
+      <div class="story-block" data-key="custom">
+        <div class="story-header">
+          <span>Your own version</span>
+          <button class="close-btn">×</button>
+        </div>
+        <div class="story-body"></div>
+      </div>
+
+    </div> <!-- story-tabs -->
+
+    <!-- 🔥 EDITOR -->
+    <div id="editor"></div>
+
+    <!-- 🔥 КНОПКИ (ПОД EDITOR) -->
+    <div class="editor-top-actions">
+      <button class="editor-btn save-btn">Save Text Changes</button>
+      <button class="editor-btn update-btn">👁 Preview Your Page Updates</button>
     </div>
-    <div class="story-body"></div>
-  </div>
 
-  <div class="story-block" data-key="growing_together">
-    <div class="story-header">
-      <span>Growing together</span>
-      <button class="close-btn">×</button>
-    </div>
-    <div class="story-body"></div>
-  </div>
+  </div> <!-- editorTab -->
 
-  <div class="story-block" data-key="proposal">
-    <div class="story-header">
-      <span>The Proposal</span>
-      <button class="close-btn">×</button>
-    </div>
-    <div class="story-body"></div>
-  </div>
-
-  <div class="story-block" data-key="new_chapter">
-    <div class="story-header">
-      <span>A new chapter begins</span>
-      <button class="close-btn">×</button>
-    </div>
-    <div class="story-body"></div>
-  </div>
-
-  <div class="story-block" data-key="custom">
-    <div class="story-header">
-      <span>Your own version</span>
-      <button class="close-btn">×</button>
-    </div>
-    <div class="story-body"></div>
-  </div>
-
- 
-</div>
-
-
+</div> <!-- text-editor-box -->
 
 
     <!-- INFO BUBBLE — UNDER EDITOR, SAME COLUMN -->
@@ -1476,7 +1550,7 @@ window.syncCurrentBlock = function () {
       currentKey = key;
 
       // переносим editor под этот блок
-      body.appendChild(editorEl);
+
       editorEl.style.display = "block";
 
       // загружаем текст

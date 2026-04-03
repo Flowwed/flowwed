@@ -286,6 +286,8 @@
       box-shadow: var(--shadow-soft);
       display: flex;
       flex-direction: column;
+      gap: 10px;
+
     }
 
     .editor-top-actions {
@@ -304,18 +306,27 @@
       align-items: stretch;
     }
 
-    .editor-btn {
-      flex: unset;
-      padding: 10px 16px;
-      height: auto;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      color: var(--white);
-      transition: 0.2s ease;
-    }
+.editor-btn {
+  padding: 8px 14px;        /* было слишком большое */
+  height: auto;
+
+  border-radius: 10px;      /* чуть мягче */
+  font-size: 14px;          /* ↓ меньше текст */
+  font-weight: 600;         /* ↓ легче чем bold */
+
+  cursor: pointer;
+  color: white;
+
+  white-space: nowrap;
+
+  border: none;              /* 🔥 иногда браузер добавляет дефолт */
+  display: inline-flex;      /* 🔥 центрирование текста */
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.15s ease;    /* 🔥 плавный hover */
+}
+
 
     .editor-btn:hover {
       opacity: 0.82;
@@ -338,6 +349,8 @@
       margin-bottom: 12px;
       padding-right: 180px;
     }
+
+
 
     #updateDateDisplay {
       margin-top: 6px;
@@ -392,7 +405,7 @@
 
     #updatesFeed {
       margin-top: 20px;
-      max-height: 300px;
+      max-height: 180px;
       overflow-y: auto;
       padding-right: 8px;
     }
@@ -515,7 +528,7 @@
   </div>
 
   <div class="page-header">
-    <div class="apple-pill">'UPDATES'</div>
+    <div class="apple-pill">UPDATES</div>
 
     <div class="info-bubble info-bubble--top">
       <div class="info-icon">i</div>
@@ -528,6 +541,9 @@
   <div class="page-wrapper">
     <div class="editor-column">
       <div class="text-editor-box">
+
+
+
         <div id="toolbar-container">
           <select class="ql-font"></select>
           <select class="ql-size"></select>
@@ -550,6 +566,8 @@
         <div id="updateDateDisplay"></div>
         <div id="editor"></div>
         <div id="updatesFeed"></div>
+
+
       </div>
 
       <div class="info-bubble info-bubble--bottom">
