@@ -1137,18 +1137,6 @@ document.addEventListener("DOMContentLoaded", () => {
  console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
   if (!token) return alert("Missing token");
 
-  // 🔥 фиксируем активный блок
- window.syncCurrentBlock();
-
-const payload = {
-  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
-
-  how_we_met: window.storyData.how_we_met || "",
-  growing_together: window.storyData.growing_together || "",
-  proposal: window.storyData.proposal || "",
-  new_chapter: window.storyData.new_chapter || "",
-  custom: window.storyData.custom || ""
-};
 
 console.log("PAYLOAD SENT:", payload);
 
@@ -1462,16 +1450,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1️⃣ фиксируем активный блок
   window.syncCurrentBlock();
 
-// 2️⃣ сохраняем ВСЕ блоки (как Save)
-const payload = {
-  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
-
-  how_we_met: window.storyData.how_we_met || "",
-  growing_together: window.storyData.growing_together || "",
-  proposal: window.storyData.proposal || "",
-  new_chapter: window.storyData.new_chapter || "",
-  custom: window.storyData.custom || ""
-};
 
 const res = await fetch(
   `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
@@ -1543,7 +1521,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const editorEl = document.getElementById("editor");
 
   window.currentKey = null;
-  window.storyData = {};
 
   const placeholders = {
     how_we_met: "Tell the story of how you first met. Where were you? What happened?",
@@ -1572,19 +1549,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await res.json();
     if (!data || !data.length) return;
 
-    // ✅ ВСЕГДА берем с сервера
-    window.storyData = {
-      how_we_met: data[0].how_we_met || "",
-      growing_together: data[0].growing_together || "",
-      proposal: data[0].proposal || "",
-      new_chapter: data[0].new_chapter || "",
-      custom: data[0].custom || ""
-    };
 
-// 🔥 обновляем текст в уже открытой вкладке
-if (window.currentKey) {
-  quill.root.innerHTML = window.storyData[window.currentKey] || "";
-}
 
   }
 
@@ -1603,43 +1568,24 @@ quill.on("text-change", () => {
   // ничего не делаем
 });
 
-window.syncCurrentBlock = function () {
-  if (!window.currentKey) return;
-
-  const title = titleInput.value.trim();
-  const body = quill.root.innerHTML;
-
-  let finalHTML = body;
-
-  if (title) {
-    finalHTML = `<h2>${title}</h2>` + body;
-  }
-
-  window.storyData[window.currentKey] = finalHTML;
-};
-
-
 
   // =========================
   // 🔥 OPEN TAB
   // =========================
-  function openBlock(block) {
-    const key = block.dataset.key;
+  
+function openBlock(block) {
+  const key = block.dataset.key;
 
-    if (window.currentKey) {
-      window.storyData[window.currentKey] = quill.root.innerHTML;
-    }
+  blocks.forEach(b => b.classList.remove("active"));
 
-    blocks.forEach(b => b.classList.remove("active"));
+  block.classList.add("active");
+  window.currentKey = key;
 
-    block.classList.add("active");
-    window.currentKey = key;
+  editorEl.style.display = "block";
 
-    editorEl.style.display = "block";
+  quill.setText("");
 
-    quill.setText("");
-
-const fullHTML = window.storyData[key] || "";
+  const fullHTML = window.storyData[key] || "";
 
 const temp = document.createElement("div");
 temp.innerHTML = fullHTML;
