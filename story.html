@@ -1142,7 +1142,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const payload = {
   edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
-console.log("PAYLOAD >>>", payload);
 
   how_we_met: window.storyData.how_we_met || "",
   growing_together: window.storyData.growing_together || "",
@@ -1151,6 +1150,8 @@ console.log("PAYLOAD >>>", payload);
   custom: window.storyData.custom || ""
 };
 
+
+console.log("PAYLOAD >>>", payload);
 console.log("PAYLOAD SENT:", payload);
 
 const res = await fetch(
@@ -1466,7 +1467,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // 2️⃣ сохраняем ВСЕ блоки (как Save)
 const payload = {
   edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
-console.log("PAYLOAD >>>", payload);
 
   how_we_met: window.storyData.how_we_met || "",
   growing_together: window.storyData.growing_together || "",
@@ -1474,6 +1474,10 @@ console.log("PAYLOAD >>>", payload);
   new_chapter: window.storyData.new_chapter || "",
   custom: window.storyData.custom || ""
 };
+
+console.log("PAYLOAD >>>", payload);
+
+
 
 const res = await fetch(
   `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
