@@ -883,16 +883,16 @@ width: 100%;
   justify-content: flex-end;
 }
 
-
-#editor .ql-editor:empty::before {
+#editor .ql-editor:empty::before,
+#editor .ql-editor.ql-blank::before {
   content: attr(data-placeholder);
   color: #999;
   font-style: italic;
   line-height: 1.6;
 
-  white-space: pre-line;  /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
+  white-space: pre-line;
+  display: block;
 }
-
 
 </style>
 
@@ -1514,7 +1514,7 @@ modal.style.display = "flex";
 
 <script>
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const blocks = document.querySelectorAll(".story-block");
   const editorEl = document.getElementById("editor");
 
@@ -1557,7 +1557,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
   }
 
-  await loadStoryFromSupabase();
+  loadStoryFromSupabase();
 
   // =========================
   // 🔥 2. INIT EDITOR
@@ -1570,6 +1570,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       window.storyData[window.currentKey] = quill.root.innerHTML;
     }
   });
+
 
   window.syncCurrentBlock = function () {
     if (window.currentKey) {
@@ -1594,20 +1595,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     editorEl.style.display = "block";
 
-    if (!window.storyData[key]) {
-      quill.root.innerHTML = `
-        <p style="color:#888; font-style:italic;">
-          ${placeholders[key]}
-        </p>
-        <p style="color:#aaa; font-size:14px; margin-top:8px;">
-          This section will not appear on your website until you add some content.
-        </p>
-      `;
-    } else {
-      quill.root.innerHTML = window.storyData[key];
-    }
 
-    quill.root.dataset.placeholder = placeholders[key] || "";
+quill.root.dataset.placeholder =
+  (placeholders[key] || "") +
+  "\n\nThis section will not appear on your website until you add some content.";
+
   }
 
   blocks.forEach(block => {
