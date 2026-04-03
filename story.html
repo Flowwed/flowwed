@@ -717,9 +717,38 @@ width: 100%;
 }
 
 .close-btn {
-  font-size: 14px;
-  opacity: 0.6;
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;              /* 🔥 круг */
+  background: #5a5a5a;             /* тёмно-серый */
+  color: white;
+
+  font-size: 12px;
+  line-height: 1;
+
+  border: none;
+  cursor: pointer;
+
+  opacity: 0.8;
+  transition: all 0.15s ease;
 }
+
+.close-btn:hover {
+  background: #3f3f3f;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.story-block.active .close-btn {
+  background: rgba(255,255,255,0.25);
+  color: white;
+}
+
 
 .story-header:hover .close-btn {
   opacity: 1;
@@ -853,6 +882,17 @@ width: 100%;
 .editor-top-actions {
   justify-content: flex-end;
 }
+
+
+#editor .ql-editor:empty::before {
+  content: attr(data-placeholder);
+  color: #999;
+  font-style: italic;
+  line-height: 1.6;
+
+  white-space: pre-line;  /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
+}
+
 
 </style>
 
@@ -1473,104 +1513,119 @@ modal.style.display = "flex";
 
 
 <script>
+
 document.addEventListener("DOMContentLoaded", () => {
   const blocks = document.querySelectorAll(".story-block");
   const editorEl = document.getElementById("editor");
 
-window.currentKey = null;
-window.storyData = {};
+  window.currentKey = null;
+  window.storyData = {};
 
-/* ====== 🔥 ВСТАВЛЯЕШЬ ВОТ СЮДА ====== */
-async function loadStoryFromSupabase() {
-  if (!token) return;
+  async function loadStoryFromSupabase() {
+    if (!token) return;
 
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/our_story_page?select=how_we_met,growing_together,proposal,new_chapter,custom&edit_token=eq.${token}`,
-    {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/our_story_page?select=how_we_met,growing_together,proposal,new_chapter,custom&edit_token=eq.${token}`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
+        }
       }
+    );
+
+    const data = await res.json();
+    if (!data || !data.length) return;
+
+    window.storyData.how_we_met = data[0].how_we_met || "";
+    window.storyData.growing_together = data[0].growing_together || "";
+    window.storyData.proposal = data[0].proposal || "";
+    window.storyData.new_chapter = data[0].new_chapter || "";
+    window.storyData.custom = data[0].custom || "";
+  }
+
+  loadStoryFromSupabase();
+
+  const quill = new Quill(editorEl, {
+    theme: "snow"
+  });
+
+  editorEl.style.display = "none";
+
+  quill.on("text-change", () => {
+    if (window.currentKey) {
+      window.storyData[window.currentKey] = quill.root.innerHTML;
     }
-  );
+  });
 
-  const data = await res.json();
-  if (!data || !data.length) return;
-
-
-
-  window.storyData.how_we_met = data[0].how_we_met || "";
-  window.storyData.growing_together = data[0].growing_together || "";
-  window.storyData.proposal = data[0].proposal || "";
-  window.storyData.new_chapter = data[0].new_chapter || "";
-  window.storyData.custom = data[0].custom || "";
-}
-
-loadStoryFromSupabase();
-/* ====== 🔥 ДО ЭТОГО МЕСТА ====== */
-
-const quill = new Quill(editorEl, {
-  theme: "snow"
-});
-
-// скрыт по умолчанию
-editorEl.style.display = "none";
-
-// сохраняем текст при наборе
-quill.on("text-change", () => {
-  if (window.currentKey) {
-    window.storyData[window.currentKey] = quill.root.innerHTML;
-  }
-});
-
-window.syncCurrentBlock = function () {
-  if (window.currentKey) {
-    window.storyData[window.currentKey] = quill.root.innerHTML;
-  }
-};
-
+  window.syncCurrentBlock = function () {
+    if (window.currentKey) {
+      window.storyData[window.currentKey] = quill.root.innerHTML;
+    }
+  };
 
   blocks.forEach(block => {
     const header = block.querySelector(".story-header");
     const closeBtn = block.querySelector(".close-btn");
-    const body = block.querySelector(".story-body");
+
+    const placeholders = {
+      how_we_met: "Tell the story of how you first met. Where were you? What happened?",
+      growing_together: "Share how your relationship grew. Key moments, memories, milestones.",
+      proposal: "Describe the proposal. How did it happen? What did it feel like?",
+      new_chapter: "Talk about your future together. What are you excited about?",
+      custom: "Write anything you’d like to share with your guests."
+    };
+
     const key = block.dataset.key;
 
     header.addEventListener("click", () => {
-      // сохраняем предыдущий
-      if (currentKey) {
-        storyData[currentKey] = quill.root.innerHTML;
+      if (window.currentKey) {
+        window.storyData[window.currentKey] = quill.root.innerHTML;
       }
 
-      // закрываем все
       blocks.forEach(b => b.classList.remove("active"));
 
-      // активируем текущий
       block.classList.add("active");
-      currentKey = key;
-
-      // переносим editor под этот блок
+      window.currentKey = key;
 
       editorEl.style.display = "block";
 
-      // загружаем текст
-      quill.root.innerHTML = storyData[key] || "";
+      if (!window.storyData[key]) {
+        quill.root.innerHTML = `
+          <p style="color:#888; font-style:italic;">
+            ${placeholders[key]}
+          </p>
+          <p style="color:#aaa; font-size:14px; margin-top:8px;">
+            This section will not appear on your website until you add some content.
+          </p>
+        `;
+      } else {
+        quill.root.innerHTML = window.storyData[key];
+      }
+
+      quill.root.dataset.placeholder = placeholders[key] || "";
     });
 
     closeBtn.addEventListener("click", (e) => {
       e.stopPropagation();
 
-      if (currentKey === key) {
-        storyData[key] = quill.root.innerHTML;
-        currentKey = null;
+      if (window.currentKey === key) {
+        window.storyData[key] = quill.root.innerHTML;
+        window.currentKey = null;
       }
 
       block.classList.remove("active");
       editorEl.style.display = "none";
     });
   });
-});
 
+  setTimeout(() => {
+    const firstBlock = document.querySelector('[data-key="how_we_met"]');
+    if (firstBlock) {
+      firstBlock.querySelector(".story-header").click();
+    }
+  }, 200);
+});
 
 async function loadMiniGallery() {
   if (!token) return;
