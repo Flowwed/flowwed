@@ -1384,12 +1384,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   window.currentKey = null;
 
 window.storyData = {
-  how_we_met: { title: "", body: "" },
-  growing_together: { title: "", body: "" },
-  proposal: { title: "", body: "" },
-  new_chapter: { title: "", body: "" },
-  custom: { title: "", body: "" }
+  how_we_met: "",
+  growing_together: "",
+  proposal: "",
+  new_chapter: "",
+  custom: ""
 };
+
   const placeholders = {
     how_we_met: "Tell the story of how you first met. Where were you? What happened?",
     growing_together: "Share how your relationship grew. Key moments, memories, milestones.",
@@ -1492,10 +1493,12 @@ window.syncCurrentBlock = function () {
     const key = block.dataset.key;
 
 if (window.currentKey) {
-  window.storyData[window.currentKey] = {
-    body: quill.root.innerHTML,
-    title: document.getElementById("blockTitleInput").value
-  };
+const title = document.getElementById("blockTitleInput").value.trim();
+const body = quill.root.innerHTML;
+
+window.storyData[window.currentKey] = title
+  ? `<h2>${title}</h2>${body}`
+  : body;
 }
 
 
@@ -1507,10 +1510,22 @@ if (window.currentKey) {
     editorEl.style.display = "block";
 
 
-const data = window.storyData[key] || { title: "", body: "" };
+const fullHTML = window.storyData[key] || "";
 
-quill.root.innerHTML = data.body || "";
-document.getElementById("blockTitleInput").value = data.title || "";
+const temp = document.createElement("div");
+temp.innerHTML = fullHTML;
+
+const firstH2 = temp.querySelector("h2");
+
+let title = "";
+
+if (firstH2 && firstH2.innerText) {
+  title = firstH2.innerText;
+  firstH2.remove();
+}
+document.getElementById("blockTitleInput").value = title;
+
+quill.root.innerHTML = temp.innerHTML;
     quill.root.dataset.placeholder =
       (placeholders[key] || "") +
       "\n\nThis section will not appear on your website until you add some content.";
@@ -1574,23 +1589,27 @@ document.querySelector(".save-btn").addEventListener("click", async () => {
 
   if (!token) return alert("Missing token");
 
+  // 🔥 СОХРАНЯЕМ ТЕКУЩИЙ БЛОК КАК STRING
   if (window.currentKey) {
-    window.storyData[window.currentKey] = {
-      body: document.querySelector(".ql-editor").innerHTML,
-      title: document.getElementById("blockTitleInput").value
-    };
-  }
+    const title = document.getElementById("blockTitleInput").value.trim();
+    const body = document.querySelector(".ql-editor").innerHTML;
 
-  const payload = { edit_token: token };
-
-  if (window.currentKey) {
-    const title = window.storyData[window.currentKey].title || "";
-    const body = window.storyData[window.currentKey].body || "";
-
-    payload[window.currentKey] = title
+    window.storyData[window.currentKey] = title
       ? `<h2>${title}</h2>${body}`
       : body;
   }
+
+  // 🔥 ВСЕ ПОЛЯ = STRING
+  const payload = {
+    edit_token: token,
+    how_we_met: window.storyData.how_we_met || "",
+    growing_together: window.storyData.growing_together || "",
+    proposal: window.storyData.proposal || "",
+    new_chapter: window.storyData.new_chapter || "",
+    custom: window.storyData.custom || ""
+  };
+
+  console.log("PAYLOAD:", payload); // 👈 ПРОВЕРКА
 
   const res = await fetch(
     `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
@@ -1608,7 +1627,6 @@ document.querySelector(".save-btn").addEventListener("click", async () => {
 
   showToast(res.ok ? "Saved" : "Save failed");
 });
-
 // =========================
 // 🔥 PREVIEW BUTTON
 // =========================
