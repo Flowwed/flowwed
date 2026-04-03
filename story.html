@@ -1587,11 +1587,9 @@ if (window.currentKey) {
   const quill = new Quill(editorEl, { theme: "snow" });
   editorEl.style.display = "none";
 
+// ❌ УБИРАЕМ АВТО-СОХРАНЕНИЕ ИЗ text-change
 quill.on("text-change", () => {
-  if (window.currentKey) {
-    // сохраняем ТОЛЬКО body (без header)
-    window.storyData[window.currentKey] = quill.root.innerHTML;
-  }
+  // ничего не делаем
 });
 
 window.syncCurrentBlock = function () {
@@ -1600,11 +1598,20 @@ window.syncCurrentBlock = function () {
   const title = document.getElementById("blockTitleInput").value.trim();
   const body = quill.root.innerHTML;
 
-  // 🔥 header как первый <p>
-  const headerHTML = title ? `<p>${title}</p>` : "";
+  // 🔥 СОБИРАЕМ В ОДИН HTML
+  let finalHTML = "";
 
-  // 🔥 сохраняем вместе
-  window.storyData[window.currentKey] = headerHTML + body;
+  if (title) {
+    finalHTML += `<p>${title}</p>`;
+  }
+
+  if (body && body !== "<p><br></p>") {
+    finalHTML += body;
+  }
+
+  window.storyData[window.currentKey] = finalHTML;
+
+  console.log("SAVED HTML:", finalHTML); // 👈 ПРОВЕРКА
 };
 
   // =========================
