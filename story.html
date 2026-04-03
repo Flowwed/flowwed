@@ -1132,7 +1132,7 @@ window.storyData[window.currentKey] = {
     headerEl.innerText === "Enter a header here..."
       ? ""
       : headerEl.innerText.trim(),
-  body: quill.root.innerHTML
+  body: window.quill.root.innerHTML
 };
 
 // 🔥 собираем HTML для каждого блока
@@ -1466,14 +1466,15 @@ window.syncCurrentBlock();
 // 🔥 берём header + текст
 const headerEl = document.getElementById("fakeHeader");
 
-window.storyData[window.currentKey] = {
-  header:
-    headerEl.innerText === "Enter a header here..."
-      ? ""
-      : headerEl.innerText.trim(),
-  body: quill.root.innerHTML
-};
-
+if (window.currentKey) {
+  window.storyData[window.currentKey] = {
+    header:
+      headerEl.innerText === "Enter a header here..."
+        ? ""
+        : headerEl.innerText.trim(),
+    body: window.quill.root.innerHTML
+  };
+}
 
 function buildHTML(block) {
   if (!block) return "";
@@ -1609,19 +1610,19 @@ window.storyData = {
   // =========================
   // 🔥 2. INIT EDITOR
   // =========================
-  const quill = new Quill(editorEl, { theme: "snow" });
+  window.quill = new Quill(editorEl, { theme: "snow" });
   editorEl.style.display = "none";
 
   quill.on("text-change", () => {
     if (window.currentKey) {
-      window.storyData[window.currentKey] = quill.root.innerHTML;
+      window.storyData[window.currentKey] = window.quill.root.innerHTML;
     }
   });
 
 
   window.syncCurrentBlock = function () {
     if (window.currentKey) {
-      window.storyData[window.currentKey] = quill.root.innerHTML;
+      window.storyData[window.currentKey] = window.quill.root.innerHTML;
     }
   };
 
@@ -1634,7 +1635,7 @@ window.storyData = {
 if (window.currentKey) {
   window.storyData[window.currentKey] = {
     header: document.getElementById("fakeHeader").innerText,
-    body: quill.root.innerHTML
+    body: window.quill.root.innerHTML
   };
 }
     blocks.forEach(b => b.classList.remove("active"));
@@ -1645,7 +1646,7 @@ if (window.currentKey) {
     editorEl.style.display = "block";
 
 // 🔥 очищаем редактор перед загрузкой
-quill.setText("");
+window.quill.setText("");
 
 const data = window.storyData[key] || { header: "", body: "" };
 
@@ -1656,7 +1657,7 @@ headerEl.innerText = data.header || "Enter a header here...";
 headerEl.style.color = data.header ? "#000" : "#aaa";
 
 // 👉 ставим текст
-quill.root.innerHTML = data.body || "";
+window.quill.root.innerHTML = data.body || "";
 
 
 quill.root.dataset.placeholder =
@@ -1675,7 +1676,7 @@ quill.root.dataset.placeholder =
       e.stopPropagation();
 
       if (window.currentKey === block.dataset.key) {
-        window.storyData[block.dataset.key] = quill.root.innerHTML;
+        window.storyData[block.dataset.key] = window.quill.root.innerHTML;
         window.currentKey = null;
       }
 
