@@ -1138,7 +1138,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!token) return alert("Missing token");
 
   // 🔥 фиксируем активный блок
- window.syncCurrentBlock();
+ 
+if (window.currentKey) {
+  window.storyData[window.currentKey] =
+    document.querySelector(".ql-editor").innerHTML;
+}
 
 const payload = {
   edit_token: token
