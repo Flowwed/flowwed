@@ -1514,7 +1514,8 @@ modal.style.display = "flex";
 
 <script>
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
   const blocks = document.querySelectorAll(".story-block");
   const editorEl = document.getElementById("editor");
 
@@ -1530,7 +1531,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // =========================
-  // 🔥 1. LOAD DATA FIRST
+  // 🔥 LOAD FROM SUPABASE
   // =========================
   async function loadStoryFromSupabase() {
     if (!token) return;
@@ -1548,19 +1549,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = await res.json();
     if (!data || !data.length) return;
 
-// 🔥 НЕ ПЕРЕЗАТИРАЕМ, А ЗАПОЛНЯЕМ ТОЛЬКО ЕСЛИ ПУСТО
-window.storyData.how_we_met = window.storyData.how_we_met || data[0].how_we_met || "";
-window.storyData.growing_together = window.storyData.growing_together || data[0].growing_together || "";
-window.storyData.proposal = window.storyData.proposal || data[0].proposal || "";
-window.storyData.new_chapter = window.storyData.new_chapter || data[0].new_chapter || "";
-window.storyData.custom = window.storyData.custom || data[0].custom || "";
+    // ✅ ВСЕГДА берем с сервера
+    window.storyData = {
+      how_we_met: data[0].how_we_met || "",
+      growing_together: data[0].growing_together || "",
+      proposal: data[0].proposal || "",
+      new_chapter: data[0].new_chapter || "",
+      custom: data[0].custom || ""
+    };
+
+// 🔥 обновляем текст в уже открытой вкладке
+if (window.currentKey) {
+  quill.root.innerHTML = window.storyData[window.currentKey] || "";
+}
 
   }
 
-  await loadStoryFromSupabase();
-
   // =========================
-  // 🔥 2. INIT EDITOR
+  // 🔥 INIT QUILL
   // =========================
   const quill = new Quill(editorEl, { theme: "snow" });
   editorEl.style.display = "none";
@@ -1571,7 +1577,6 @@ window.storyData.custom = window.storyData.custom || data[0].custom || "";
     }
   });
 
-
   window.syncCurrentBlock = function () {
     if (window.currentKey) {
       window.storyData[window.currentKey] = quill.root.innerHTML;
@@ -1579,7 +1584,7 @@ window.storyData.custom = window.storyData.custom || data[0].custom || "";
   };
 
   // =========================
-  // 🔥 3. TAB LOGIC
+  // 🔥 OPEN TAB
   // =========================
   function openBlock(block) {
     const key = block.dataset.key;
@@ -1595,18 +1600,17 @@ window.storyData.custom = window.storyData.custom || data[0].custom || "";
 
     editorEl.style.display = "block";
 
-// 🔥 очищаем редактор перед загрузкой
-quill.setText("");
+    quill.setText("");
+    quill.root.innerHTML = window.storyData[key] || "";
 
-quill.root.innerHTML = window.storyData[key] || "";
-
-
-quill.root.dataset.placeholder =
-  (placeholders[key] || "") +
-  "\n\nThis section will not appear on your website until you add some content.";
-
+    quill.root.dataset.placeholder =
+      (placeholders[key] || "") +
+      "\n\nThis section will not appear on your website until you add some content.";
   }
 
+  // =========================
+  // 🔥 TAB EVENTS
+  // =========================
   blocks.forEach(block => {
     const header = block.querySelector(".story-header");
     const closeBtn = block.querySelector(".close-btn");
@@ -1626,13 +1630,17 @@ quill.root.dataset.placeholder =
     });
   });
 
+// 🔥 ОТКРЫВАЕМ ПЕРВУЮ ВКЛАДКУ СРАЗУ
+const firstBlock = document.querySelector('[data-key="how_we_met"]');
+if (firstBlock) {
+  openBlock(firstBlock);
+}
+
+
   // =========================
-  // 🔥 4. AUTO OPEN FIRST TAB
+  // 🔥 СНАЧАЛА ГРУЗИМ ДАННЫЕ
   // =========================
-  const firstBlock = document.querySelector('[data-key="how_we_met"]');
-  if (firstBlock) {
-    openBlock(firstBlock);
-  }
+  await loadStoryFromSupabase();
 
 });
 
