@@ -1048,6 +1048,15 @@ width: 100%;
 
     </div> <!-- story-tabs -->
 
+<div id="fakeHeader" contenteditable="true" style="
+  font-size: 18px;
+  font-weight: 600;
+  color: #aaa;
+  margin-bottom: 10px;
+  outline: none;
+">
+  Enter a header here...
+</div>
     <!-- 🔥 EDITOR -->
     <div id="editor"></div>
 
@@ -1105,8 +1114,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 
-
- 
   // ===============================
   // 2) SAVE BUTTON — SAVE TEXT ONLY
   // ===============================
@@ -1116,6 +1123,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔥 фиксируем активный блок
  window.syncCurrentBlock();
+
+
+
+const header = document.getElementById("fakeHeader");
+
+let headerText = header.innerText.trim();
+
+if (headerText === "Enter a header here...") {
+  headerText = "";
+}
+
+// объединяем header + текст
+const fullHTML =
+  (headerText ? `<h2>${headerText}</h2>` : "") +
+  window.storyData[window.currentKey];
 
 const payload = {
   edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
@@ -1439,6 +1461,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1️⃣ фиксируем активный блок
   window.syncCurrentBlock();
 
+const header = document.getElementById("fakeHeader");
+
+let headerText = header.innerText.trim();
+
+if (headerText === "Enter a header here...") {
+  headerText = "";
+}
+
+const fullHTML =
+  (headerText ? `<h2>${headerText}</h2>` : "") +
+  (window.storyData[window.currentKey] || "");
+
+window.storyData[window.currentKey] = fullHTML;
+
 // 2️⃣ сохраняем ВСЕ блоки (как Save)
 const payload = {
   edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
@@ -1601,6 +1637,7 @@ quill.setText("");
 quill.root.innerHTML = window.storyData[key] || "";
 
 
+
 quill.root.dataset.placeholder =
   (placeholders[key] || "") +
   "\n\nThis section will not appear on your website until you add some content.";
@@ -1748,6 +1785,24 @@ document.addEventListener("DOMContentLoaded", () => {
       link.classList.add("active");
     }
   });
+});
+</script>
+
+<script>
+const header = document.getElementById("fakeHeader");
+
+header.addEventListener("focus", () => {
+  if (header.innerText.trim() === "Enter a header here...") {
+    header.innerText = "";
+    header.style.color = "#000";
+  }
+});
+
+header.addEventListener("blur", () => {
+  if (!header.innerText.trim()) {
+    header.innerText = "Enter a header here...";
+    header.style.color = "#aaa";
+  }
 });
 </script>
 
