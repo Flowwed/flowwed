@@ -1460,7 +1460,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 1️⃣ фиксируем активный блок
-  window.syncCurrentBlock();
+  //window.syncCurrentBlock();
+
+if (window.currentKey) {
+  window.storyData[window.currentKey] = document.querySelector(".ql-editor").innerHTML;
+}
 
 // 2️⃣ сохраняем ВСЕ блоки (как Save)
 
