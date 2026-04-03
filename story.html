@@ -1514,13 +1514,24 @@ modal.style.display = "flex";
 
 <script>
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const blocks = document.querySelectorAll(".story-block");
   const editorEl = document.getElementById("editor");
 
   window.currentKey = null;
   window.storyData = {};
 
+  const placeholders = {
+    how_we_met: "Tell the story of how you first met. Where were you? What happened?",
+    growing_together: "Share how your relationship grew. Key moments, memories, milestones.",
+    proposal: "Describe the proposal. How did it happen? What did it feel like?",
+    new_chapter: "Talk about your future together. What are you excited about?",
+    custom: "Write anything you’d like to share with your guests."
+  };
+
+  // =========================
+  // 🔥 1. LOAD DATA FIRST
+  // =========================
   async function loadStoryFromSupabase() {
     if (!token) return;
 
@@ -1537,19 +1548,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = await res.json();
     if (!data || !data.length) return;
 
-    window.storyData.how_we_met = data[0].how_we_met || "";
-    window.storyData.growing_together = data[0].growing_together || "";
-    window.storyData.proposal = data[0].proposal || "";
-    window.storyData.new_chapter = data[0].new_chapter || "";
-    window.storyData.custom = data[0].custom || "";
+    window.storyData = {
+      how_we_met: data[0].how_we_met || "",
+      growing_together: data[0].growing_together || "",
+      proposal: data[0].proposal || "",
+      new_chapter: data[0].new_chapter || "",
+      custom: data[0].custom || ""
+    };
   }
 
-  loadStoryFromSupabase();
+  await loadStoryFromSupabase();
 
-  const quill = new Quill(editorEl, {
-    theme: "snow"
-  });
-
+  // =========================
+  // 🔥 2. INIT EDITOR
+  // =========================
+  const quill = new Quill(editorEl, { theme: "snow" });
   editorEl.style.display = "none";
 
   quill.on("text-change", () => {
@@ -1564,53 +1577,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // =========================
+  // 🔥 3. TAB LOGIC
+  // =========================
+  function openBlock(block) {
+    const key = block.dataset.key;
+
+    if (window.currentKey) {
+      window.storyData[window.currentKey] = quill.root.innerHTML;
+    }
+
+    blocks.forEach(b => b.classList.remove("active"));
+
+    block.classList.add("active");
+    window.currentKey = key;
+
+    editorEl.style.display = "block";
+
+    if (!window.storyData[key]) {
+      quill.root.innerHTML = `
+        <p style="color:#888; font-style:italic;">
+          ${placeholders[key]}
+        </p>
+        <p style="color:#aaa; font-size:14px; margin-top:8px;">
+          This section will not appear on your website until you add some content.
+        </p>
+      `;
+    } else {
+      quill.root.innerHTML = window.storyData[key];
+    }
+
+    quill.root.dataset.placeholder = placeholders[key] || "";
+  }
+
   blocks.forEach(block => {
     const header = block.querySelector(".story-header");
     const closeBtn = block.querySelector(".close-btn");
 
-    const placeholders = {
-      how_we_met: "Tell the story of how you first met. Where were you? What happened?",
-      growing_together: "Share how your relationship grew. Key moments, memories, milestones.",
-      proposal: "Describe the proposal. How did it happen? What did it feel like?",
-      new_chapter: "Talk about your future together. What are you excited about?",
-      custom: "Write anything you’d like to share with your guests."
-    };
-
-    const key = block.dataset.key;
-
-    header.addEventListener("click", () => {
-      if (window.currentKey) {
-        window.storyData[window.currentKey] = quill.root.innerHTML;
-      }
-
-      blocks.forEach(b => b.classList.remove("active"));
-
-      block.classList.add("active");
-      window.currentKey = key;
-
-      editorEl.style.display = "block";
-
-      if (!window.storyData[key]) {
-        quill.root.innerHTML = `
-          <p style="color:#888; font-style:italic;">
-            ${placeholders[key]}
-          </p>
-          <p style="color:#aaa; font-size:14px; margin-top:8px;">
-            This section will not appear on your website until you add some content.
-          </p>
-        `;
-      } else {
-        quill.root.innerHTML = window.storyData[key];
-      }
-
-      quill.root.dataset.placeholder = placeholders[key] || "";
-    });
+    header.addEventListener("click", () => openBlock(block));
 
     closeBtn.addEventListener("click", (e) => {
       e.stopPropagation();
 
-      if (window.currentKey === key) {
-        window.storyData[key] = quill.root.innerHTML;
+      if (window.currentKey === block.dataset.key) {
+        window.storyData[block.dataset.key] = quill.root.innerHTML;
         window.currentKey = null;
       }
 
@@ -1619,12 +1629,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  setTimeout(() => {
-    const firstBlock = document.querySelector('[data-key="how_we_met"]');
-    if (firstBlock) {
-      firstBlock.querySelector(".story-header").click();
-    }
-  }, 200);
+  // =========================
+  // 🔥 4. AUTO OPEN FIRST TAB
+  // =========================
+  const firstBlock = document.querySelector('[data-key="how_we_met"]');
+  if (firstBlock) {
+    openBlock(firstBlock);
+  }
+
 });
 
 async function loadMiniGallery() {
