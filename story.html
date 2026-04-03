@@ -1548,13 +1548,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const data = await res.json();
     if (!data || !data.length) return;
 
-    window.storyData = {
-      how_we_met: data[0].how_we_met || "",
-      growing_together: data[0].growing_together || "",
-      proposal: data[0].proposal || "",
-      new_chapter: data[0].new_chapter || "",
-      custom: data[0].custom || ""
-    };
+// 🔥 НЕ ПЕРЕЗАТИРАЕМ, А ЗАПОЛНЯЕМ ТОЛЬКО ЕСЛИ ПУСТО
+window.storyData.how_we_met = window.storyData.how_we_met || data[0].how_we_met || "";
+window.storyData.growing_together = window.storyData.growing_together || data[0].growing_together || "";
+window.storyData.proposal = window.storyData.proposal || data[0].proposal || "";
+window.storyData.new_chapter = window.storyData.new_chapter || data[0].new_chapter || "";
+window.storyData.custom = window.storyData.custom || data[0].custom || "";
+
   }
 
   loadStoryFromSupabase();
