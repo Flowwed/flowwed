@@ -1680,9 +1680,16 @@ quill.root.addEventListener("click", () => {
 window.syncCurrentBlock = function () {
   if (!window.currentKey) return;
 
+  const title = titleInput.value.trim();
   const body = quill.root.innerHTML;
 
-  window.storyData[window.currentKey] = body;
+  let finalHTML = body;
+
+  if (title) {
+    finalHTML = `<h2>${title}</h2>` + body;
+  }
+
+  window.storyData[window.currentKey] = finalHTML;
 
   console.log("SAVED HTML:", body);
 };
@@ -1707,26 +1714,24 @@ window.syncCurrentBlock = function () {
 
 const fullHTML = window.storyData[key] || "";
 
-// создаём временный контейнер
 const temp = document.createElement("div");
 temp.innerHTML = fullHTML;
 
-// берём первый <p> как header
-const firstP = temp.querySelector("h2");
+const firstH2 = temp.querySelector("h2");
 
 let title = "";
 
-if (firstP) {
-  title = firstP.innerText;
-  firstP.remove(); // удаляем header из текста
+if (firstH2) {
+  title = firstH2.innerText;
 }
 
-// вставляем header в input
+const bodyHTML = firstH2
+  ? fullHTML.replace(firstH2.outerHTML, "")
+  : fullHTML;
+
 document.getElementById("blockTitleInput").value = title;
 
-// остальной HTML в редактор
-quill.root.innerHTML = temp.innerHTML;    
-
+quill.root.innerHTML = bodyHTML;
     quill.root.dataset.placeholder =
       (placeholders[key] || "") +
       "\n\nThis section will not appear on your website until you add some content.";
