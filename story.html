@@ -1141,14 +1141,12 @@ document.addEventListener("DOMContentLoaded", () => {
  window.syncCurrentBlock();
 
 const payload = {
-  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
-
-  how_we_met: window.storyData.how_we_met || "",
-  growing_together: window.storyData.growing_together || "",
-  proposal: window.storyData.proposal || "",
-  new_chapter: window.storyData.new_chapter || "",
-  custom: window.storyData.custom || ""
+  edit_token: token
 };
+
+if (window.currentKey) {
+  payload[window.currentKey] = window.storyData[window.currentKey];
+}
 
 
 console.log("PAYLOAD >>>", payload);
@@ -1577,6 +1575,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!data || !data.length) return;
 
     // ✅ ВСЕГДА берем с сервера
+
     window.storyData = {
       how_we_met: data[0].how_we_met || "",
       growing_together: data[0].growing_together || "",
@@ -1584,6 +1583,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       new_chapter: data[0].new_chapter || "",
       custom: data[0].custom || ""
     };
+
+
 
 // 🔥 обновляем текст в уже открытой вкладке
 if (window.currentKey) {
