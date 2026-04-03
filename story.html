@@ -1133,67 +1133,49 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // 2) SAVE BUTTON — SAVE TEXT ONLY
   // ===============================
+ document.querySelector(".save-btn").addEventListener("click", async () => {
+ console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
+  if (!token) return alert("Missing token");
 
-document.querySelector(".save-btn").addEventListener("click", async () => {
-console.log("SAVE CLICKED");
+  // 🔥 фиксируем активный блок
+ window.syncCurrentBlock();
 
-if (!token) {
-alert("Missing token");
-return;
-}
+const payload = {
+  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
+console.log("PAYLOAD >>>", payload);
 
-if (!window.currentKey) {
-alert("Choose a section first");
-return;
-}
+  how_we_met: window.storyData.how_we_met || "",
+  growing_together: window.storyData.growing_together || "",
+  proposal: window.storyData.proposal || "",
+  new_chapter: window.storyData.new_chapter || "",
+  custom: window.storyData.custom || ""
+};
 
-if (!window.quill) {
-alert("Editor not ready");
-return;
-}
+console.log("PAYLOAD SENT:", payload);
 
-const title = document.getElementById("blockTitleInput").value.trim();
-const body = window.quill.root.innerHTML;
-
-let finalHTML = body;
-
-if (title) {
-finalHTML = `<h2>${title}</h2>` + body;
-}
-
-try {
 const res = await fetch(
-`${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
-{
-method: "PATCH",
-headers: {
-apikey: SUPABASE_KEY,
-Authorization: "Bearer " + SUPABASE_KEY,
-"Content-Type": "application/json"
-},
-body: JSON.stringify({
-[window.currentKey]: finalHTML
-})
-}
+  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
+    },
+    body: JSON.stringify(payload)
+  }
 );
 
-```
 if (!res.ok) {
   const errorText = await res.text();
   console.error("SUPABASE ERROR:", errorText);
-  showToast("Save failed");
-  return;
 }
 
-showToast("Text saved");
-```
-
-} catch (err) {
-console.error("SAVE ERROR:", err);
-showToast("Save crashed");
-}
+showToast(res.ok ? "Text saved" : "Save failed");
 });
 
+}); // ← ВОТ ЭТОГО НЕ ХВАТАЛО
 
 </script>
 
@@ -1470,29 +1452,68 @@ await loadMiniGallery();
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  document.querySelector(".update-btn").addEventListener("click", () => {
 
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("t") || params.get("token");
+  // кнопка SEE MODAL WINDOW
+  document.querySelector(".update-btn").addEventListener("click", async () => {
+  if (!token) {
+    alert("Missing token");
+    return;
+  }
 
-    if (!token) {
-      alert("Missing token");
-      return;
-    }
+  // 1️⃣ фиксируем активный блок
+  window.syncCurrentBlock();
 
-    const modal = document.getElementById("storyModal");
-    const iframe = document.getElementById("storyIframe");
+// 2️⃣ сохраняем ВСЕ блоки (как Save)
+const payload = {
+  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
+console.log("PAYLOAD >>>", payload);
 
-    iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
-    modal.style.display = "flex";
+  how_we_met: window.storyData.how_we_met || "",
+  growing_together: window.storyData.growing_together || "",
+  proposal: window.storyData.proposal || "",
+  new_chapter: window.storyData.new_chapter || "",
+  custom: window.storyData.custom || ""
+};
+
+const res = await fetch(
+  `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
+    },
+    body: JSON.stringify(payload)
+  }
+);
+
+if (!res.ok) {
+  const errorText = await res.text();
+  console.error("SUPABASE ERROR:", errorText);
+  alert("Save failed. Check console.");
+  return; // ❗ не открываем модалку если не сохранилось
+}
+
+// 3️⃣ открываем модалку ТОЛЬКО если сохранение успешно
+const modal = document.getElementById("storyModal");
+const iframe = document.getElementById("storyIframe");
+
+iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
+modal.style.display = "flex";
+
   });
 
+
+  // КРЕСТИК ЗАКРЫТИЯ — ТЕПЕРЬ РАБОТАЕТ ВСЕГДА
   document.getElementById("closeModal").addEventListener("click", () => {
     document.getElementById("storyModal").style.display = "none";
   });
 
 });
 </script>
+
 <!-- MODAL STRUCTURE -->
 <div class="modal-backdrop" id="storyModal">
   <div class="modal-window">
@@ -1524,6 +1545,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const editorEl = document.getElementById("editor");
 
   window.currentKey = null;
+  window.storyData = {};
 
   const placeholders = {
     how_we_met: "Tell the story of how you first met. Where were you? What happened?",
@@ -1552,7 +1574,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await res.json();
     if (!data || !data.length) return;
 
+    // ✅ ВСЕГДА берем с сервера
+    window.storyData = {
+      how_we_met: data[0].how_we_met || "",
+      growing_together: data[0].growing_together || "",
+      proposal: data[0].proposal || "",
+      new_chapter: data[0].new_chapter || "",
+      custom: data[0].custom || ""
+    };
 
+// 🔥 обновляем текст в уже открытой вкладке
+if (window.currentKey) {
+  quill.root.innerHTML = window.storyData[window.currentKey] || "";
+}
 
   }
 
@@ -1560,58 +1594,96 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 🔥 INIT QUILL
   // =========================
 
-  window.quill = new Quill(editorEl, { theme: "snow" });
+  const quill = new Quill(editorEl, { theme: "snow" });
 
 const titleInput = document.getElementById("blockTitleInput");
+
+titleInput.addEventListener("input", () => {
+  if (!window.currentKey) return;
+
+  const title = titleInput.value.trim();
+
+  const temp = document.createElement("div");
+  temp.innerHTML = quill.root.innerHTML;
+
+  // 🔥 удаляем старый header (первый <p>)
+const firstH2 = temp.querySelector("h2");
+if (firstH2) {
+  firstH2.remove();
+}
+
+
+  // 🔥 вставляем новый header
+  if (title) {
+    const header = document.createElement("h2");
+    header.innerText = title;
+    temp.insertBefore(header, temp.firstChild);
+  }
+
+
+  // 🔥 обновляем editor
+  quill.root.innerHTML = temp.innerHTML;
+});
+
 
   editorEl.style.display = "none";
 
 // ❌ УБИРАЕМ АВТО-СОХРАНЕНИЕ ИЗ text-change
-window.quill.on("text-change", () => {
+quill.on("text-change", () => {
   // ничего не делаем
 });
 
+window.syncCurrentBlock = function () {
+  if (!window.currentKey) return;
 
+  const body = quill.root.innerHTML;
+
+  window.storyData[window.currentKey] = body;
+
+  console.log("SAVED HTML:", body);
+};
   // =========================
   // 🔥 OPEN TAB
   // =========================
-  
-function openBlock(block) {
-  const key = block.dataset.key;
+  function openBlock(block) {
+    const key = block.dataset.key;
 
-  blocks.forEach(b => b.classList.remove("active"));
+    if (window.currentKey) {
+      window.storyData[window.currentKey] = quill.root.innerHTML;
+    }
 
-  block.classList.add("active");
-  window.currentKey = key;
+    blocks.forEach(b => b.classList.remove("active"));
 
-  editorEl.style.display = "block";
+    block.classList.add("active");
+    window.currentKey = key;
 
-  window.quill.setText("");
+    editorEl.style.display = "block";
 
+    quill.setText("");
 
+const fullHTML = window.storyData[key] || "";
+
+// создаём временный контейнер
 const temp = document.createElement("div");
-
-const fullHTML = "";
-
 temp.innerHTML = fullHTML;
 
-const firstH2 = temp.querySelector("h2");
+// берём первый <p> как header
+const firstP = temp.querySelector("h2");
 
 let title = "";
 
-if (firstH2) {
-  title = firstH2.innerText;
+if (firstP) {
+  title = firstP.innerText;
+  firstP.remove(); // удаляем header из текста
 }
 
-const bodyHTML = firstH2
-  ? fullHTML.replace(firstH2.outerHTML, "")
-  : fullHTML;
-
+// вставляем header в input
 document.getElementById("blockTitleInput").value = title;
 
-window.quill.root.innerHTML = bodyHTML;
+// остальной HTML в редактор
+quill.root.innerHTML = temp.innerHTML;    
 
-    window.quill.root.dataset.placeholder =
+    quill.root.dataset.placeholder =
       (placeholders[key] || "") +
       "\n\nThis section will not appear on your website until you add some content.";
   }
@@ -1629,6 +1701,7 @@ window.quill.root.innerHTML = bodyHTML;
       e.stopPropagation();
 
       if (window.currentKey === block.dataset.key) {
+        window.storyData[block.dataset.key] = quill.root.innerHTML;
         window.currentKey = null;
       }
 
