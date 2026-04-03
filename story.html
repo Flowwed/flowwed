@@ -1620,10 +1620,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function openBlock(block) {
     const key = block.dataset.key;
 
-    if (window.currentKey) {
-      window.storyData[window.currentKey] = quill.root.innerHTML;
-    }
-
+if (window.currentKey) {
+  window.storyData[window.currentKey] = {
+    header: document.getElementById("fakeHeader").innerText,
+    body: quill.root.innerHTML
+  };
+}
     blocks.forEach(b => b.classList.remove("active"));
 
     block.classList.add("active");
@@ -1634,8 +1636,16 @@ document.addEventListener("DOMContentLoaded", () => {
 // 🔥 очищаем редактор перед загрузкой
 quill.setText("");
 
-quill.root.innerHTML = window.storyData[key] || "";
+const data = window.storyData[key] || { header: "", body: "" };
 
+// 👉 ставим header
+const headerEl = document.getElementById("fakeHeader");
+
+headerEl.innerText = data.header || "Enter a header here...";
+headerEl.style.color = data.header ? "#000" : "#aaa";
+
+// 👉 ставим текст
+quill.root.innerHTML = data.body || "";
 
 
 quill.root.dataset.placeholder =
