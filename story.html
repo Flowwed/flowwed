@@ -1465,16 +1465,14 @@ document.addEventListener("DOMContentLoaded", () => {
   window.syncCurrentBlock();
 
 // 2️⃣ сохраняем ВСЕ блоки (как Save)
-const payload = {
-  edit_token: token, // 🔥 ОБЯЗАТЕЛЬНО
 
-  how_we_met: window.storyData.how_we_met || "",
-  growing_together: window.storyData.growing_together || "",
-  proposal: window.storyData.proposal || "",
-  new_chapter: window.storyData.new_chapter || "",
-  custom: window.storyData.custom || ""
+const payload = {
+  edit_token: token
 };
 
+if (window.currentKey) {
+  payload[window.currentKey] = window.storyData[window.currentKey];
+}
 console.log("PAYLOAD >>>", payload);
 
 
