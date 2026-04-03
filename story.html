@@ -1434,33 +1434,15 @@ if (window.currentKey) {
   // 🔥 INIT QUILL
   // =========================
 
-const quill = new Quill(editorEl, { theme: "snow" });
-
-const titleInput = document.getElementById("blockTitleInput");
-
-// =========================
-// 🔥 FIXED HEADER LOGIC
-// =========================
-titleInput.addEventListener("input", () => {
-  if (!window.currentKey) return;
-
-  const title = titleInput.value.trim();
-  const editor = quill.root;
-
-  let first = editor.firstElementChild;
-
-  // ✅ если уже есть <h2> → просто обновляем
-  if (first && first.tagName === "H2") {
-    first.innerText = title;
-    return;
-  }
-
-  // ✅ если нет → создаём и вставляем сверху
-  if (title) {
-    const h2 = document.createElement("h2");
-    h2.innerText = title;
-
-    editor.insertBefore(h2, editor.firstChild);
+const quill = new Quill(editorEl, {
+  theme: "snow",
+  modules: {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link"]
+    ]
   }
 });
 
@@ -1505,25 +1487,7 @@ window.syncCurrentBlock = function () {
 
 const fullHTML = window.storyData[key] || "";
 
-// создаём временный контейнер
-const temp = document.createElement("div");
-temp.innerHTML = fullHTML;
-
-// берём первый <p> как header
-const firstP = temp.querySelector("h2");
-
-let title = "";
-
-if (firstP) {
-  title = firstP.innerText;
-  firstP.remove(); // удаляем header из текста
-}
-
-// вставляем header в input
-document.getElementById("blockTitleInput").value = title;
-
-// остальной HTML в редактор
-quill.root.innerHTML = temp.innerHTML;    
+quill.root.innerHTML = fullHTML;
 
     quill.root.dataset.placeholder =
       (placeholders[key] || "") +
