@@ -1595,6 +1595,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     editorEl.style.display = "block";
 
+// 🔥 очищаем редактор перед загрузкой
+quill.setText("");
+
+quill.root.innerHTML = window.storyData[key] || "";
+
 
 quill.root.dataset.placeholder =
   (placeholders[key] || "") +
