@@ -1604,9 +1604,11 @@ document.querySelector(".update-btn").addEventListener("click", async () => {
 
   const payload = { edit_token: token };
 
-  if (window.currentKey) {
-    payload[window.currentKey] = window.storyData[window.currentKey];
-  }
+if (window.currentKey) {
+  payload[window.currentKey] = window.storyData[window.currentKey].body;
+  payload[window.currentKey + "_title"] = window.storyData[window.currentKey].title;
+}
+
 
   await fetch(
     `${SUPABASE_URL}/rest/v1/our_story_page?on_conflict=edit_token`,
