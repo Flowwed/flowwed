@@ -666,7 +666,8 @@ input[type=file] {
 .story-tabs {
   display: flex;
   flex-wrap: nowrap;     /* ❗ в одну линию */
-  gap: 8px;
+  gap: 16px;
+  margin-bottom:12px;
 
   overflow-x: auto;      /* если не помещается — скролл */
   padding-bottom: 4px;
@@ -676,8 +677,8 @@ input[type=file] {
 
 .story-tabs::-webkit-scrollbar {
   display: none;
-}
 
+}
 
 .story-block {
   flex: 0 0 auto;
@@ -754,7 +755,25 @@ width: 100%;
   opacity: 1;
 }
 
+.input-error {
+  border: 1.5px solid #ff3b30 !important; /* iOS red */
+  box-shadow:
+    0 0 0 2px rgba(255, 59, 48, 0.15),
+    0 4px 10px rgba(255, 59, 48, 0.12);
+  transition: all 0.2s ease;
+}
 
+@keyframes shakeX {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
+}
+
+.input-shake {
+  animation: shakeX 0.25s ease;
+}
 
 /* ================= TOP NAV ================= */
 
@@ -1015,7 +1034,7 @@ width: 100%;
 
       <div class="story-block" data-key="how_we_met">
         <div class="story-header">
-          <span>How we met</span>
+          <span>Part 1</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1023,7 +1042,7 @@ width: 100%;
 
       <div class="story-block" data-key="growing_together">
         <div class="story-header">
-          <span>Growing together</span>
+          <span>Part 2</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1031,7 +1050,7 @@ width: 100%;
 
       <div class="story-block" data-key="proposal">
         <div class="story-header">
-          <span>The Proposal</span>
+          <span>Part 3</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1039,7 +1058,7 @@ width: 100%;
 
       <div class="story-block" data-key="new_chapter">
         <div class="story-header">
-          <span>A new chapter begins</span>
+          <span>Part 4</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1047,7 +1066,7 @@ width: 100%;
 
       <div class="story-block" data-key="custom">
         <div class="story-header">
-          <span>Your own version</span>
+          <span>Part 5</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1058,7 +1077,7 @@ width: 100%;
 <input 
   id="blockTitleInput"
   type="text"
-  placeholder="Enter a heading for this section (e.g. 'How We Met')"
+  placeholder="Enter a heading for this part (e.g. 'How We Met' - 'Growing Together' - 'The Proposal' - 'A New Chapter Begins', etc.)"
   style="
     width: 97%;
     padding: 12px 14px;
@@ -1593,6 +1612,25 @@ if (window.currentKey) {
 
   const quill = new Quill(editorEl, { theme: "snow" });
 
+function validateTitle() {
+  const title = titleInput.value.trim();
+
+  if (!title) {
+    titleInput.classList.add("input-error");
+
+    // reset + shake
+    titleInput.classList.remove("input-shake");
+    void titleInput.offsetWidth;
+    titleInput.classList.add("input-shake");
+
+    return false;
+  }
+
+  titleInput.classList.remove("input-error");
+  return true;
+}
+
+
 const titleInput = document.getElementById("blockTitleInput");
 
 titleInput.addEventListener("input", () => {
@@ -1626,9 +1664,18 @@ if (firstH2) {
   editorEl.style.display = "none";
 
 // ❌ УБИРАЕМ АВТО-СОХРАНЕНИЕ ИЗ text-change
+
 quill.on("text-change", () => {
-  // ничего не делаем
+  if (!validateTitle()) {
+    quill.setText(""); // ❌ очищаем если начали писать без title
+  }
 });
+
+
+quill.root.addEventListener("click", () => {
+  if (!validateTitle()) return;
+});
+
 
 window.syncCurrentBlock = function () {
   if (!window.currentKey) return;
