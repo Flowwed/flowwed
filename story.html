@@ -1631,10 +1631,16 @@ window.storyData = {
   // =========================
   // 🔥 2. INIT EDITOR
   // =========================
-  window.quill = new Quill(editorEl, { theme: "snow" });
-  editorEl.style.display = "none";
+window.quill = new Quill(editorEl, { theme: "snow" });
+editorEl.style.display = "none";
+
+// 🔥 флаг переключения (если ещё нет — оставь)
+window.isSwitching = false;
 
 window.quill.on("text-change", () => {
+  // 🚫 НЕ сохраняем во время переключения вкладок
+  if (window.isSwitching) return;
+
   if (window.currentKey) {
     const current = window.storyData[window.currentKey] || {};
 
@@ -1644,7 +1650,6 @@ window.quill.on("text-change", () => {
     };
   }
 });
-
 window.syncCurrentBlock = function () {
   if (window.currentKey) {
     const headerEl = document.getElementById("fakeHeader");
@@ -1661,10 +1666,13 @@ window.syncCurrentBlock = function () {
   // =========================
   // 🔥 3. TAB LOGIC
   // =========================
+
 function openBlock(block) {
   const newKey = block.dataset.key;
 
-  // ✅ 1. сначала сохраняем старую вкладку
+  window.isSwitching = true; // 🔥 включили режим
+
+  // ✅ сохранить старую вкладку
   if (window.currentKey) {
     const headerEl = document.getElementById("fakeHeader");
 
@@ -1677,15 +1685,16 @@ function openBlock(block) {
     };
   }
 
-  // ✅ 2. теперь переключаемся
+  // 👉 дальше твой код (НЕ ТРОГАЙ)
   blocks.forEach(b => b.classList.remove("active"));
-  block.classList.add("active");
 
+  block.classList.add("active");
   window.currentKey = newKey;
 
   editorEl.style.display = "block";
 
-  // ✅ 3. загружаем данные НОВОЙ вкладки
+  window.quill.setText("");
+
   const data = window.storyData[newKey] || { header: "", body: "" };
 
   const headerEl = document.getElementById("fakeHeader");
@@ -1698,8 +1707,12 @@ function openBlock(block) {
   window.quill.root.dataset.placeholder =
     (placeholders[newKey] || "") +
     "\n\nThis section will not appear on your website until you add some content.";
-}
-  
+
+  // 🔥 ВОТ ЗДЕСЬ (в самом конце, НЕ внутри if)
+  setTimeout(() => {
+    window.isSwitching = false;
+  }, 0);
+}  
 
   blocks.forEach(block => {
     const header = block.querySelector(".story-header");
@@ -1708,9 +1721,6 @@ function openBlock(block) {
     header.addEventListener("click", () => openBlock(block));
 
     closeBtn.addEventListener("click", (e) => {
-
-
-
 
       e.stopPropagation();
 
@@ -1725,9 +1735,8 @@ window.storyData[window.currentKey] = {
   body: window.quill.root.innerHTML
 };
 
-
-
         window.currentKey = null;
+        window.isSwitching = false;
       }
 
       block.classList.remove("active");
