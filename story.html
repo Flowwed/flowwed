@@ -937,6 +937,29 @@ width: 100%;
 }
 
 
+.editor-guide-bubble {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+
+  padding: 8px 14px;
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(6px);
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #7e2a2a;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 3px rgba(255,255,255,0.6);
+
+  z-index: 10;
+}
+
+
 </style>
 
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
@@ -1043,6 +1066,11 @@ width: 100%;
 
 <!-- WHITE EDITOR CONTAINER -->
 <div class="text-editor-box">
+
+<div class="editor-guide-bubble">
+  View Page User Quick Guide <span>here</span>
+</div>
+
 
   <div class="tab-content active" id="editorTab">
 
