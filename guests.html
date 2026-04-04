@@ -14,7 +14,7 @@
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(180deg, #fff1f4, #ffffff);
       color: #6a2a2a;
-      margin: 40px auto;
+      margin: 20px auto;
       max-width: 1020px;
     }
 
@@ -22,25 +22,24 @@
     /*  RUBY 3D TITLE                */
     /* ============================= */
 
-    h1 {
-      text-align: center;
-      font-size: 38px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: #9c1818;
+h1 {
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
 
-      background: linear-gradient(
-        to bottom,
-        #c02828 0%,
-        #9c1818 45%,
-        #6a0f0f 100%
-      );
-      -webkit-background-clip: text;
-      color: transparent;
+  margin: 0 0 6px;   /* 🔥 убрали верхний отступ */
 
-      text-shadow: none;
-    }
+  background: linear-gradient(
+    to bottom,
+    #c02828 0%,
+    #9c1818 45%,
+    #6a0f0f 100%
+  );
+  -webkit-background-clip: text;
+  color: transparent;
 
+  text-shadow: none;
+}
     /* Small couple name */
     #coupleSmallName {
   font-size: 21px;
@@ -64,51 +63,6 @@
   border-radius: 2px;
 }
 
-    /* ============================= */
-    /* RUBY GLASS BUTTON STYLE       */
-    /* ============================= */
-
-    button,
-    .footer-btn {
-      padding: 14px 22px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.35);
-
-      font-size: 16px;
-      font-weight: 700;
-      color: white;
-
-      cursor: pointer;
-      transition: 0.28s ease;
-
-      background: linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.18),
-          rgba(255,255,255,0.05)
-        ),
-        #9c1818;
-
-      box-shadow:
-        0 8px 20px rgba(0,0,0,0.38),
-        0 3px 8px rgba(0,0,0,0.25),
-        inset 0 3px 6px rgba(255,255,255,0.22),
-        inset 0 -6px 14px rgba(70,0,20,0.35);
-
-      backdrop-filter: blur(14px) saturate(160%);
-    }
-
-    button:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow:
-        0 14px 28px rgba(0,0,0,0.48),
-        0 6px 14px rgba(0,0,0,0.32),
-        inset 0 4px 10px rgba(255,255,255,0.28),
-        inset 0 -10px 18px rgba(60,0,20,0.38);
-    }
-
-    button:active {
-      transform: scale(0.96);
-    }
 
     /* ============================= */
     /* FORM + TABLE SECTIONS         */
@@ -484,6 +438,7 @@
 }
 
 /* Верхний хедер: заголовок слева, пара справа */
+
 .top-logo-title {
   display: flex;
   justify-content: space-between;
@@ -1142,14 +1097,14 @@
   transform: translateX(0);
 }
 
-
 .top-logo-title {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 16px;
-}
+  align-items: center;
 
+  padding: 4px 18px;   /* 🔥 компактнее */
+  margin: 0;
+}
 .top-info-bubble {
   flex: 1;
   max-width: 520px;
@@ -1180,42 +1135,58 @@
 
 .top-nav-wrapper {
   position: relative;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   width: 100%;
-  margin-bottom: 10px;
+
+  margin-bottom: 8px;   /* 🔥 вместо 100px */
 }
 
+
 .back-btn {
-  position: fixed;   /* ← вместо absolute */
-  left: 20px;
-  top: 20px;
-  z-index: 1000;     /* чтобы всегда сверху */
+  position: absolute;
+  left: -200px;
+  top: 5px;
+
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 4px 10px;
+  padding: 6px 14px;
 
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: 999px;
+
+  background: #f5f5f5;   /* 🔥 чистый светло-серый */
+  border: none;
 
   color: #b40012;
-  background: transparent;
-  border: none;
+
+  font-size: 14px;
+  font-weight: 600;
 
   cursor: pointer;
 
   outline: none;
   box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition: background 0.15s ease;
+}
+.back-btn:hover {
+  opacity: 0.65;
 }
 
 .back-btn:active {
-  transform: translateY(1px);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .back-arrow {
-  font-size: 26px;
-  transform: translateY(-1px);
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
 }
 
 
