@@ -771,38 +771,46 @@ contain: content; /* 🔥 ВОТ ЭТО */
 }
 
 .back-btn {
- margin-top: 18px;
-  margin-right: 100px; /* отступ от пилюли */
+  position: absolute;
   left: 20px;
   top: 20px;
-  z-index: 1000;     /* чтобы всегда сверху */
+
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 4px 10px;
+  padding: 6px 14px;
 
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: 999px;
+
+  background: #fef2f4;   /* 🔥 чистый светло-серый */
+  border: none;
 
   color: #b40012;
-  background: transparent;
-  border: none;
+
+  font-size: 13px;
+  font-weight: 600;
 
   cursor: pointer;
 
   outline: none;
   box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition: background 0.15s ease;
+}
+.back-btn:hover {
+  opacity: 0.65;
 }
 
 .back-btn:active {
-  transform: translateY(1px);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .back-arrow {
-  font-size: 26px;
-  transform: translateY(-1px);
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
 }
 
 

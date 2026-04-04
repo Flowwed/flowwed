@@ -807,45 +807,38 @@ width: 100%;
   align-items: center;
   gap: 6px;
 
-  padding: 4px 10px;
+  padding: 6px 14px;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: 999px;
 
-  color: #b40012;
-  background: transparent;
+  background: #fef2f4;   /* 🔥 чистый светло-серый */
   border: none;
 
+  color: #b40012;
+
+  font-size: 13px;
+  font-weight: 600;
+
   cursor: pointer;
-  transition: 0.18s ease;
 
   outline: none;
   box-shadow: none;
   -webkit-tap-highlight-color: transparent;
+
+  transition: background 0.15s ease;
+}
+.back-btn:hover {
+  opacity: 0.65;
 }
 
 .back-btn:active {
-  transform: translateY(1px);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 .back-arrow {
-  font-size: 27px;
-  line-height: 1;
-  transform: translateY(-1px);
-}
-
-/* underline эффект */
-.back-btn::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0%;
-  height: 1px;
-  background: #b40012;
-  transition: width 0.2s ease;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .top-nav { display: none; }
