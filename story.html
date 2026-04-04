@@ -1916,6 +1916,19 @@ const HEADER_PLACEHOLDER = "Add a section header (e.g. “How We Met”, “Grow
 
 const header = document.getElementById("fakeHeader");
 
+header.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault(); // ❗ не даём создать новую строку в header
+
+    // 👉 переносим фокус в редактор
+    window.quill.focus();
+
+    // 👉 ставим курсор в конец текста
+    const length = window.quill.getLength();
+    window.quill.setSelection(length, 0);
+  }
+});
+
 // FOCUS
 header.addEventListener("focus", () => {
   if (header.innerText.trim() === HEADER_PLACEHOLDER) {
