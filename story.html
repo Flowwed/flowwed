@@ -1110,14 +1110,6 @@ width: 100%;
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
-// 🔥 ВСТАВЬ ВОТ СЮДА
-function isHeaderValid() {
-  const headerEl = document.getElementById("fakeHeader");
-  const text = headerEl.innerText.trim();
-
-  return text.length > 0 && !text.toLowerCase().includes("add a section header");
-}
   // TOAST HELPER
   function showToast(msg) {
     const t = document.getElementById("toast");
@@ -1135,13 +1127,6 @@ function isHeaderValid() {
   // 2) SAVE BUTTON — SAVE TEXT ONLY
   // ===============================
  document.querySelector(".save-btn").addEventListener("click", async () => {
-
-  // 🔥 ВОТ СЮДА ВСТАВЛЯЕШЬ
-  if (!isHeaderValid()) {
-    showHeaderError();
-    return;
-  }
-
  console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
   if (!token) return alert("Missing token");
 
@@ -1480,13 +1465,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // кнопка SEE MODAL WINDOW
   document.querySelector(".update-btn").addEventListener("click", async () => {
-
-// 🔥 ВСТАВЬ СЮДА
-  if (!isHeaderValid()) {
-    showHeaderError();
-    return;
-  }
-
   if (!token) {
     alert("Missing token");
     return;
