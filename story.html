@@ -955,6 +955,27 @@ width: 100%;
 }
 
 
+.mini-pill {
+  display: inline-block;
+  padding: 5px 12px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.9),
+    rgba(245,245,245,0.85)
+  );
+
+  color: #b40012;
+  font-weight: 700;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+
 </style>
 
 <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
@@ -991,16 +1012,12 @@ width: 100%;
 
   <!-- HEADER: TITLE + INFO BUBBLE -->
   <div class="page-header">
-    <div class="apple-pill">
-  OUR STORY 
- </div>
-
 
     <div class="info-bubble info-bubble--top">
 
       <div class="info-icon">i</div>
       <div class="info-text">
-        Customize your <strong>“Our Story”</strong> page.
+        Customize your <span class="mini-pill">Our Story</span> page.
         Update the photos and rewrite your story anytime you wish.
       </div>
     </div>
