@@ -348,7 +348,6 @@
 #toolbar-container {
   margin-top: 46px;
   margin-bottom: 12px;
-  padding-right: 180px;
 }
     #updateDateDisplay {
       margin-top: 6px;
@@ -418,40 +417,39 @@
 
     /* ================= MODAL ================= */
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.55);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 999999;
-    }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;                    /* ← заменяет top:0; left:0; width:100vw; height:100vh */
+  background: rgba(0,0,0,0.55);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
+}
 
-    .modal-backdrop.is-open {
-      display: flex;
-    }
+/* MODAL WINDOW */
+.modal-window {
+  position: relative;
+  background: white;
 
-    .modal-window {
-      position: relative;
-      width: 75vw;
-      height: 75vh;
-      background: var(--white);
-      border-radius: 18px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      z-index: 9999999;
-    }
+  width: 560px;   /* вместо 75vw */
+  height: 65vh;
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 9999999;           /* ← поверх backdrop */
+  display: flex;
+  flex-direction: column;
+}
 
-    .modal-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      position: relative;
-      z-index: 1;
-    }
 
+/* iframe must NEVER sit above X */
+.modal-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: relative;
+  z-index: 1;                  /* lower than button */
+}
     .modal-close {
       position: absolute;
       top: 10px;
@@ -463,6 +461,14 @@
       line-height: 1;
       user-select: none;
     }
+
+.modal-backdrop.is-open {
+  display: flex;
+  justify-content: flex-end;   /* 👉 вправо */
+  align-items: flex-start;     /* 👉 вверх */
+  padding-right: 4vw;
+  padding-top: 8vh;
+}
 
     /* ================= TOAST ================= */
 
@@ -538,6 +544,19 @@
   margin-top: 10px;     /* расстояние от toolbar */
 }
 
+.guide-link {
+  color: #1e63ff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
 
   </style>
 </head>
@@ -578,8 +597,10 @@
       <div class="text-editor-box">
 
 <div class="editor-guide-bubble">
-  Quick Guide <span>here</span>
+  View the Quick User Guide for this page <span id="openGuide" class="guide-link">here</span>
 </div>
+
+<div class="toolbar-row">
 
         <div id="toolbar-container">
           <select class="ql-font"></select>
@@ -599,6 +620,8 @@
           <button class="editor-btn save-btn" type="button">Save Text Changes</button>
           <button class="editor-btn update-btn" type="button">👁 Preview Your Page Updates</button>
         </div>
+
+           </div>
 
         <div id="updateDateDisplay"></div>
         <div id="editor"></div>
@@ -912,5 +935,16 @@ iframe.onload = sendTextToIframe;
 
     document.addEventListener("DOMContentLoaded", initPage);
   </script>
+
+  <script>
+
+document.getElementById("openGuide")?.addEventListener("click", () => {
+  openModal("tttupdates.html");
+});
+
+
+  </script>
+
+
 </body>
 </html>
