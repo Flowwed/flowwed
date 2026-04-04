@@ -1912,20 +1912,25 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 <script>
+
 const HEADER_PLACEHOLDER = "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”)";
 
 const header = document.getElementById("fakeHeader");
 
-header.addEventListener("keydown", (e) => {
+// ENTER → в редактор
+header.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
-    e.preventDefault(); // ❗ не даём создать новую строку в header
+    e.preventDefault();
+    e.stopPropagation();
 
-    // 👉 переносим фокус в редактор
-    window.quill.focus();
+    setTimeout(() => {
+      if (window.quill) {
+        window.quill.focus();
 
-    // 👉 ставим курсор в конец текста
-    const length = window.quill.getLength();
-    window.quill.setSelection(length, 0);
+        const length = window.quill.getLength();
+        window.quill.setSelection(length, 0);
+      }
+    }, 0);
   }
 });
 
@@ -1945,11 +1950,12 @@ header.addEventListener("blur", () => {
   }
 });
 
-// INIT (очень важно)
+// INIT
 if (!header.innerText.trim()) {
   header.innerText = HEADER_PLACEHOLDER;
   header.style.color = "#aaa";
 }
+
 </script>
 
 </body>
