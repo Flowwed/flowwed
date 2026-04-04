@@ -1008,7 +1008,7 @@ width: 100%;
 
       <div class="story-block" data-key="how_we_met">
         <div class="story-header">
-          <span>Part 1</span>
+          <span>Section 1</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1016,7 +1016,7 @@ width: 100%;
 
       <div class="story-block" data-key="growing_together">
         <div class="story-header">
-          <span>Part 2</span>
+          <span>Section 2</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1024,7 +1024,7 @@ width: 100%;
 
       <div class="story-block" data-key="proposal">
         <div class="story-header">
-          <span>Part 3</span>
+          <span>Section 3</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1032,7 +1032,7 @@ width: 100%;
 
       <div class="story-block" data-key="new_chapter">
         <div class="story-header">
-          <span>Part 4</span>
+          <span>Section 4</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1040,7 +1040,7 @@ width: 100%;
 
       <div class="story-block" data-key="custom">
         <div class="story-header">
-          <span>Part 5</span>
+          <span>Section 5</span>
           <button class="close-btn">×</button>
         </div>
         <div class="story-body"></div>
@@ -1049,14 +1049,23 @@ width: 100%;
     </div> <!-- story-tabs -->
 
 <div id="fakeHeader" contenteditable="true" style="
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
-  color: #aaa;
+
   margin-bottom: 10px;
   outline: none;
+
+  padding: 10px 14px;
+  border-radius: 12px;
+
+  background: #fff7f9;       /* 👈 ОЧЕНЬ ЛЁГКИЙ */
+  border: 1px solid #f2d6db; /* 👈 почти невидимый */
+
+  color: #aaa;
 ">
-  Enter a header here...
+  Add a section header (e.g. “How we met”, “Growing together”, “The proposal”)
 </div>
+
     <!-- 🔥 EDITOR -->
     <div id="editor"></div>
 
@@ -1101,6 +1110,15 @@ width: 100%;
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+// 🔥 ВСТАВЬ ВОТ СЮДА
+  function isHeaderValid() {
+    const headerEl = document.getElementById("fakeHeader");
+    const text = headerEl.innerText.trim();
+
+    return text && text !== "Enter a header here...";
+  }
+
   // TOAST HELPER
   function showToast(msg) {
     const t = document.getElementById("toast");
@@ -1118,6 +1136,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // 2) SAVE BUTTON — SAVE TEXT ONLY
   // ===============================
  document.querySelector(".save-btn").addEventListener("click", async () => {
+
+  // 🔥 ВОТ СЮДА ВСТАВЛЯЕШЬ
+  if (!isHeaderValid()) {
+    showHeaderError();
+    return;
+  }
+
  console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
   if (!token) return alert("Missing token");
 
@@ -1456,6 +1481,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // кнопка SEE MODAL WINDOW
   document.querySelector(".update-btn").addEventListener("click", async () => {
+
+// 🔥 ВСТАВЬ СЮДА
+  if (!isHeaderValid()) {
+    showHeaderError();
+    return;
+  }
+
   if (!token) {
     alert("Missing token");
     return;
