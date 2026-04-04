@@ -856,6 +856,26 @@ contain: content; /* 🔥 ВОТ ЭТО */
       transform: scale(0.96);
     }
 
+.mini-pill {
+  display: inline-block;
+  padding: 5px 12px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.9),
+    rgba(245,245,245,0.85)
+  );
+
+  color: #b40012;
+  font-weight: 700;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
 
 </style>
 
@@ -943,7 +963,7 @@ fetch("/navbar.html")
   <div class="info-bubble info-bubble--top">
   <div class="info-icon">i</div>
   <div class="info-text">
-   Your wedding memories, all in one place. Share with friends, update anytime. View the Quick User Guide for this page
+   Customize your <span class="mini-pill">Just Married Album</span> page. Share with friends, update anytime. View the Quick User Guide for this page
     <span id="openGuide" class="guide-link">here</span>
   </div>
 </div>
