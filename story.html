@@ -1664,15 +1664,6 @@ window.syncCurrentBlock = function () {
   function openBlock(block) {
     const key = block.dataset.key;
 
-let headerEl = document.getElementById("fakeHeader");
-
-window.storyData[window.currentKey] = {
-  header:
-    headerEl.innerText === "Enter a header here..."
-      ? ""
-      : headerEl.innerText.trim(),
-  body: window.quill.root.innerHTML
-};
 
     blocks.forEach(b => b.classList.remove("active"));
 
