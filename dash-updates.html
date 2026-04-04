@@ -345,13 +345,11 @@
       opacity: 1;
     }
 
-    #toolbar-container {
-      margin-bottom: 12px;
-      padding-right: 180px;
-    }
-
-
-
+#toolbar-container {
+  margin-top: 46px;
+  margin-bottom: 12px;
+  padding-right: 180px;
+}
     #updateDateDisplay {
       margin-top: 6px;
       margin-bottom: 10px;
@@ -501,8 +499,44 @@
   border-radius: 999px;
 }
 
+.editor-guide-bubble {
+  position: absolute;
+  top: 16px;
+  right: 24px;
 
+  padding: 10px 18px;
+  border-radius: 14px;
 
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(10px);
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #7e2a2a;
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 3px rgba(255,255,255,0.6);
+
+  z-index: 20;
+}
+
+.editor-guide-bubble span {
+  color: #1e63ff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: default;
+}
+
+.editor-top-actions {
+  position: absolute;
+  right: 28px;
+  top: 64px;
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
 
   </style>
 </head>
@@ -542,7 +576,9 @@
     <div class="editor-column">
       <div class="text-editor-box">
 
-
+<div class="editor-guide-bubble">
+  Quick Guide <span>here</span>
+</div>
 
         <div id="toolbar-container">
           <select class="ql-font"></select>

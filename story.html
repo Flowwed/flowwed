@@ -959,6 +959,13 @@ width: 100%;
   z-index: 10;
 }
 
+.guide-link {
+  color: #1e63ff;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 
 </style>
 
@@ -1068,7 +1075,7 @@ width: 100%;
 <div class="text-editor-box">
 
 <div class="editor-guide-bubble">
-  View Page User Quick Guide <span>here</span>
+  View the Quick User Guide for this page <span id="openGuide" class="guide-link">here</span>
 </div>
 
 
@@ -1990,6 +1997,56 @@ if (!header.innerText.trim()) {
 }
 
 </script>
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttourstory.html" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+
+<script>
+document.getElementById("openGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide")?.addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+</script>
+
 
 </body>
 </html>
