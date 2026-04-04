@@ -509,45 +509,18 @@ input[type=file] {
 }
 
 
-/* ================= TOP NAV ================= */
-
-.top-nav-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 52px;
-  margin-bottom: 27px;
-}
-
-.top-nav {
-  display: flex;
-  gap: 36px;
-  font-size: 15px;
-  font-weight: 500;
-  color: #7a6772;
-}
-
-.top-nav a {
-  text-decoration: none;
-  color: #7a6772;
-  transition: 0.2s;
-}
-
-.top-nav a:hover {
-  color: #b40012;
-}
-
-.top-nav a.active {
-  font-weight: 700;
-  text-shadow: 0 0 4px rgba(180,17,17,0.25);
-}
 
 /* ================= BACK BUTTON ================= */
 
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
 .back-btn {
   position: absolute;
-  left: -270px;
+  left: 20px;
   top: 20px;
 
   display: inline-flex;
@@ -558,31 +531,22 @@ input[type=file] {
 
   border-radius: 999px;
 
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
-    #9c1818;
+  background: #fef2f4;   /* 🔥 чистый светло-серый */
+  border: none;
 
-  color: white;
+  color: #b40012;
 
   font-size: 13px;
   font-weight: 600;
 
   cursor: pointer;
 
-  border: 1px solid rgba(255,255,255,0.35);
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
 
-  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.38),
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 3px 6px rgba(255,255,255,0.22),
-    inset 0 -6px 14px rgba(70,0,20,0.35);
+  transition: background 0.15s ease;
 }
-
 .back-btn:hover {
   opacity: 0.65;
 }
@@ -596,6 +560,8 @@ input[type=file] {
   display: inline-flex;
   align-items: center;
 }
+
+
 
 .top-nav { display: none; }
 
