@@ -540,32 +540,45 @@ input[type=file] {
 
 .back-btn {
   position: absolute;
-
-  top: -15px;
-  left: 14px;
+  left: 20px;
+  top: 20px;
 
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 10px;
+  padding: 6px 14px;
 
-  border-radius: 8px;   /* ← НЕ пилюля */
-  background: transparent;
+  border-radius: 999px;
+
+  background: #fef2f4;   /* 🔥 чистый светло-серый */
+  border: none;
 
   color: #b40012;
-  font-size: 15px;
-  font-weight: 500;
+
+  font-size: 13px;
+  font-weight: 600;
 
   cursor: pointer;
-  transition: all 0.18s ease;
+
+  outline: none;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition: background 0.15s ease;
+}
+.back-btn:hover {
+  opacity: 0.65;
 }
 
+.back-btn:active {
+  opacity: 0.4;
+}
 
-.back-btn:hover {
-  background: rgba(180, 0, 18, 0.12);
-  border-radius: 8px;   /* ← появляется только при hover */
-  transform: translateY(-1px);
+.back-arrow {
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .top-nav { display: none; }
