@@ -1664,7 +1664,7 @@ window.syncCurrentBlock = function () {
   function openBlock(block) {
     const key = block.dataset.key;
 
-const headerEl = document.getElementById("fakeHeader");
+let headerEl = document.getElementById("fakeHeader");
 
 window.storyData[window.currentKey] = {
   header:
