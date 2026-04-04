@@ -988,6 +988,29 @@ flex-wrap:wrap;
   align-items: center;
 }
 
+
+.ios-banner-inline {
+  padding: 10px 18px;
+  background: rgba(255,255,255,0.75);
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7e2a2a;
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 3px rgba(255,255,255,0.6);
+}
+
+.guide-link {
+  color: #1e63ff;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
 </style>
 
 </head>
@@ -1073,7 +1096,7 @@ fetch("/navbar.html")
   <!-- mini info bubble -->
   <div class="ios-banner-inline">
     View the Quick User Guide for this page
-    <span id="openGuide" class="guide-link">here</span>.
+    <span id="openGuide" class="guide-link">here</span>
   </div>
 
   <div id="coupleSmallName"></div>
