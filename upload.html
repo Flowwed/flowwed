@@ -976,15 +976,15 @@ input[type=file] {
 </script>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
 
+document.addEventListener("DOMContentLoaded", () => {
   const sendEmailBtn = document.querySelector(".info-action-btn");
   const modal = document.getElementById("storyModal");
   const iframe = document.getElementById("storyIframe");
+  const closeBtn = document.getElementById("closeModal");
 
-  if (!sendEmailBtn || !modal || !iframe) return;
+  if (!sendEmailBtn || !modal || !iframe || !closeBtn) return;
 
-  // берём ТОТ ЖЕ token, что используется везде
   const params = new URLSearchParams(window.location.search);
   const token = params.get("t") || params.get("token");
 
@@ -994,14 +994,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 👇 ВАЖНО: МЕНЯЕМ ТОЛЬКО URL iframe
-    iframe.src =
-      `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`;
-
+    iframe.src = `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`;
     modal.style.display = "flex";
   });
 
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    iframe.src = "";
+  });
 });
+
 </script>
 
 
