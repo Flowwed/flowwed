@@ -1112,13 +1112,12 @@ width: 100%;
 document.addEventListener("DOMContentLoaded", () => {
 
 // 🔥 ВСТАВЬ ВОТ СЮДА
-  function isHeaderValid() {
-    const headerEl = document.getElementById("fakeHeader");
-    const text = headerEl.innerText.trim();
+function isHeaderValid() {
+  const headerEl = document.getElementById("fakeHeader");
+  const text = headerEl.innerText.trim();
 
-    return text && text !== "Enter a header here...";
-  }
-
+  return text.length > 0 && !text.toLowerCase().includes("add a section header");
+}
   // TOAST HELPER
   function showToast(msg) {
     const t = document.getElementById("toast");
