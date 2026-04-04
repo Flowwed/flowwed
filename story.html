@@ -1661,37 +1661,45 @@ window.syncCurrentBlock = function () {
   // =========================
   // 🔥 3. TAB LOGIC
   // =========================
-  function openBlock(block) {
-    const key = block.dataset.key;
+function openBlock(block) {
+  const newKey = block.dataset.key;
 
+  // ✅ 1. сначала сохраняем старую вкладку
+  if (window.currentKey) {
+    const headerEl = document.getElementById("fakeHeader");
 
-    blocks.forEach(b => b.classList.remove("active"));
-
-    block.classList.add("active");
-    window.currentKey = key;
-
-    editorEl.style.display = "block";
-
-// 🔥 очищаем редактор перед загрузкой
-window.quill.setText("");
-
-const data = window.storyData[key] || { header: "", body: "" };
-
-// 👉 ставим header
-const headerEl = document.getElementById("fakeHeader");
-
-headerEl.innerText = data.header || "Enter a header here...";
-headerEl.style.color = data.header ? "#000" : "#aaa";
-
-// 👉 ставим текст
-window.quill.root.innerHTML = data.body || "";
-
-
-window.quill.root.dataset.placeholder =
-  (placeholders[key] || "") +
-  "\n\nThis section will not appear on your website until you add some content.";
-
+    window.storyData[window.currentKey] = {
+      header:
+        headerEl.innerText === "Enter a header here..."
+          ? ""
+          : headerEl.innerText.trim(),
+      body: window.quill.root.innerHTML
+    };
   }
+
+  // ✅ 2. теперь переключаемся
+  blocks.forEach(b => b.classList.remove("active"));
+  block.classList.add("active");
+
+  window.currentKey = newKey;
+
+  editorEl.style.display = "block";
+
+  // ✅ 3. загружаем данные НОВОЙ вкладки
+  const data = window.storyData[newKey] || { header: "", body: "" };
+
+  const headerEl = document.getElementById("fakeHeader");
+
+  headerEl.innerText = data.header || "Enter a header here...";
+  headerEl.style.color = data.header ? "#000" : "#aaa";
+
+  window.quill.root.innerHTML = data.body || "";
+
+  window.quill.root.dataset.placeholder =
+    (placeholders[newKey] || "") +
+    "\n\nThis section will not appear on your website until you add some content.";
+}
+  
 
   blocks.forEach(block => {
     const header = block.querySelector(".story-header");
