@@ -1664,12 +1664,16 @@ window.syncCurrentBlock = function () {
   function openBlock(block) {
     const key = block.dataset.key;
 
-if (window.currentKey) {
-  window.storyData[window.currentKey] = {
-    header: document.getElementById("fakeHeader").innerText,
-    body: window.quill.root.innerHTML
-  };
-}
+const headerEl = document.getElementById("fakeHeader");
+
+window.storyData[window.currentKey] = {
+  header:
+    headerEl.innerText === "Enter a header here..."
+      ? ""
+      : headerEl.innerText.trim(),
+  body: window.quill.root.innerHTML
+};
+
     blocks.forEach(b => b.classList.remove("active"));
 
     block.classList.add("active");
@@ -1692,7 +1696,7 @@ headerEl.style.color = data.header ? "#000" : "#aaa";
 window.quill.root.innerHTML = data.body || "";
 
 
-quill.root.dataset.placeholder =
+window.quill.root.dataset.placeholder =
   (placeholders[key] || "") +
   "\n\nThis section will not appear on your website until you add some content.";
 
@@ -1705,10 +1709,25 @@ quill.root.dataset.placeholder =
     header.addEventListener("click", () => openBlock(block));
 
     closeBtn.addEventListener("click", (e) => {
+
+
+
+
       e.stopPropagation();
 
       if (window.currentKey === block.dataset.key) {
-        window.storyData[block.dataset.key] = window.quill.root.innerHTML;
+        const headerEl = document.getElementById("fakeHeader");
+
+window.storyData[window.currentKey] = {
+  header:
+    headerEl.innerText === "Enter a header here..."
+      ? ""
+      : headerEl.innerText.trim(),
+  body: window.quill.root.innerHTML
+};
+
+
+
         window.currentKey = null;
       }
 
