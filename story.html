@@ -22,14 +22,14 @@
     }
 
     /* HEADER: TITLE + INFO BUBBLE */
-    .page-header {
+.page-header {
   display: flex;
-  justify-content: center;   /* ← ЦЕНТР */
+  justify-content: flex-start; /* ← вместо center */
   align-items: center;
   gap: 24px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
+  margin-left: 370px; /* 🔥 подвинь под редактор */
 }
-
 
     .page-title {
       font-size: 32px;
@@ -609,14 +609,17 @@ input[type=file] {
 .info-bubble--top {
   display: flex;
   align-items: center;
-
   padding: 20px 40px;     /* ← та же высота белого поля */
   line-height: 1.4;
 
   background: #fff;
   border-radius: 999px;
- margin-left: 240px;   /* ← СДВИГ ВПРАВО */
 
+}
+
+.info-bubble--top {
+  flex: 1;              /* 🔥 занимает всё доступное место */
+  max-width: 700px;     /* подгони под редактор */
 }
 
 .info-bubble {
@@ -848,11 +851,16 @@ width: 100%;
 .top-nav { display: none; }
 
 .page-header {
-  padding-left: 120px;
+  padding-left: 130px;
+width: 100%;
 }
 
 .apple-pill {
-  margin-right: -200px; /* подтягивает к правой */
+  margin-right: -20px; /* подтягивает к правой */
+}
+
+.apple-pill {
+  white-space: nowrap;
 }
 
 .info-bubble--bottom {
@@ -860,9 +868,6 @@ width: 100%;
   margin-left: 0;
 }  
 
-.info-bubble--top {
-  margin-left: 200px; /* или 40 / 80 */
-}
 
 #miniGallery img {
   width: 70px;
