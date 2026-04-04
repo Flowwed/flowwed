@@ -432,19 +432,26 @@
 }
 
 /* MODAL WINDOW */
+
 .modal-window {
   position: relative;
   background: white;
-
-  width: 560px;   /* вместо 75vw */
-  height: 65vh;
   border-radius: 18px;
   overflow: hidden;
-  z-index: 9999999;           /* ← поверх backdrop */
+  z-index: 9999999;
   display: flex;
   flex-direction: column;
 }
 
+.modal-window.large {
+  width: 75vw;
+  height: 75vh;
+}
+
+.modal-window.small {
+  width: 560px;
+  height: 65vh;
+}
 
 /* iframe must NEVER sit above X */
 .modal-iframe {
@@ -824,18 +831,27 @@
       }
     }
 
-    function openModal(url) {
-      const modal = $("#storyModal");
-      const iframe = $("#storyIframe");
+function openModal(url, size = "large") {
+  const modal = document.getElementById("storyModal");
+  const iframe = document.getElementById("storyIframe");
+  const windowEl = modal.querySelector(".modal-window");
 
-      if (!modal || !iframe) {
-        console.error("Modal or iframe not found");
-        return;
-      }
+  if (!modal || !iframe || !windowEl) {
+    console.error("Modal not found");
+    return;
+  }
 
-      iframe.src = url;
-      modal.classList.add("is-open");
-    }
+  iframe.src = url;
+
+  // ❗ убираем старые размеры
+  windowEl.classList.remove("large", "small");
+
+  // ❗ ставим нужный размер
+  windowEl.classList.add(size);
+
+  modal.classList.add("is-open");
+}
+
 
     function closeModal() {
       const modal = $("#storyModal");
@@ -893,14 +909,14 @@
           return;
         }
 
-        openModal(`https://flowwed.netlify.app/web-updates?token=${token}`);
+        openModal(`https://flowwed.netlify.app/web-updates?token=${token}`, "large");
         const iframe = document.getElementById("storyIframe");
 iframe.onload = sendTextToIframe;
       });
 
       sendEmailBtn?.addEventListener("click", () => {
         if (!ensureToken()) return;
-        openModal(`https://coruscating-pika-435f9a.netlify.app/guests?t=${token}`);
+        openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
       });
 
       closeBtn?.addEventListener("click", closeModal);
@@ -945,7 +961,7 @@ iframe.onload = sendTextToIframe;
   <script>
 
 document.getElementById("openGuide")?.addEventListener("click", () => {
-  openModal("tttupdates.html");
+  openModal("tttupdates.html", "small");
 });
 
 
