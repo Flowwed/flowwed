@@ -431,6 +431,15 @@
   z-index: 999999;            /* ← Поверх ВСЕГО сайта */
 }
 
+.modal-backdrop.small-mode {
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+}
+
+
+
 /* MODAL WINDOW */
 
 .modal-window {
@@ -844,12 +853,19 @@ function openModal(url, size = "large") {
   iframe.src = url;
 
   // ❗ убираем старые размеры
-  windowEl.classList.remove("large", "small");
 
-  // ❗ ставим нужный размер
-  windowEl.classList.add(size);
+windowEl.classList.remove("large", "small");
+windowEl.classList.add(size);
 
-  modal.classList.add("is-open");
+// 🔥 добавляем управление позицией
+modal.classList.remove("small-mode");
+
+if (size === "small") {
+  modal.classList.add("small-mode");
+}
+
+modal.classList.add("is-open");
+
 }
 
 
