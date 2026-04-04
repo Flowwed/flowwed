@@ -530,13 +530,14 @@
 }
 
 .editor-top-actions {
-  position: absolute;
-  right: 28px;
-  top: 64px;
+  position: static;     /* 🔥 вернуть в поток */
   display: flex;
+  justify-content: flex-end;
   gap: 10px;
-  z-index: 10;
+
+  margin-top: 10px;     /* расстояние от toolbar */
 }
+
 
   </style>
 </head>
