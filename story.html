@@ -1624,6 +1624,12 @@ window.storyData = {
   custom: parseHTML(data[0].custom)
 };
 
+// ✅ открыть первую вкладку после загрузки
+const firstBlock = document.querySelector('[data-key="how_we_met"]');
+if (firstBlock) {
+  openBlock(firstBlock);
+}
+
   }
 
   loadStoryFromSupabase();
@@ -1744,13 +1750,6 @@ window.storyData[window.currentKey] = {
     });
   });
 
-  // =========================
-  // 🔥 4. AUTO OPEN FIRST TAB
-  // =========================
-  const firstBlock = document.querySelector('[data-key="how_we_met"]');
-  if (firstBlock) {
-    openBlock(firstBlock);
-  }
 
 });
 
