@@ -346,6 +346,8 @@
     }
 
 #toolbar-container {
+display: flex;
+  align-items: center;
   margin-top: 46px;
   margin-bottom: 12px;
   padding-right: 180px;
@@ -533,7 +535,7 @@
   color: #1e63ff;
   text-decoration: underline;
   font-weight: 700;
-  cursor: default;
+  cursor: pointer;
 }
 
 .editor-top-actions {
@@ -541,6 +543,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  align-items: center;   /* 🔥 ВАЖНО */
 
   margin-top: 10px;     /* расстояние от toolbar */
 }
