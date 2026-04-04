@@ -22,8 +22,8 @@
 }
 
 body {
-  margin: 0;
-  padding: 0 26px 40px 26px;
+margin: 0;
+padding: 15px 40px 80px 40px;
 }
 
 #navbar-container {
@@ -37,15 +37,15 @@ body {
 }
 
     /* HEADER: TITLE + INFO BUBBLE */
-    .page-header {
-  display: flex;
-  justify-content: flex-start;
-  position: relative;
+    
+.page-header {
+  display: grid;
+  grid-template-columns: 1fr; /* 420 = ширина uploader */
   align-items: center;
-  gap: 24px;
-  margin-bottom: 28px;
-}
 
+  max-width: 1500px;
+margin: 40px auto 28px;  
+}
 
     .page-title {
       font-size: 32px;
@@ -939,7 +939,6 @@ fetch("/navbar.html")
 
 <!-- HEADER -->
 <div class="page-header">
-  <div class="apple-pill">JUST MARRIED ALBUM</div>
 
   <div class="info-bubble info-bubble--top">
   <div class="info-icon">i</div>
