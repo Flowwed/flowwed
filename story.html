@@ -1138,7 +1138,7 @@ const headerEl = document.getElementById("fakeHeader");
 
 window.storyData[window.currentKey] = {
   header:
-    headerEl.innerText === "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”
+    headerEl.innerText === "Enter a header here..."
       ? ""
       : headerEl.innerText.trim(),
   body: window.quill.root.innerHTML
@@ -1478,7 +1478,7 @@ const headerEl = document.getElementById("fakeHeader");
 if (window.currentKey) {
   window.storyData[window.currentKey] = {
     header:
-      headerEl.innerText === "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”
+      headerEl.innerText === "Enter a header here..."
         ? ""
         : headerEl.innerText.trim(),
     body: window.quill.root.innerHTML
@@ -1671,7 +1671,7 @@ window.syncCurrentBlock = function () {
 
     window.storyData[window.currentKey] = {
       header:
-        headerEl.innerText === "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”
+        headerEl.innerText === "Enter a header here..."
           ? ""
           : headerEl.innerText.trim(),
       body: window.quill.root.innerHTML
@@ -1693,7 +1693,7 @@ function openBlock(block) {
 
     window.storyData[window.currentKey] = {
       header:
-        headerEl.innerText === "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”
+        headerEl.innerText === "Enter a header here..."
           ? ""
           : headerEl.innerText.trim(),
       body: window.quill.root.innerHTML
@@ -1714,7 +1714,7 @@ function openBlock(block) {
 
   const headerEl = document.getElementById("fakeHeader");
 
-  headerEl.innerText = data.header || "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”;
+  headerEl.innerText = data.header || "Enter a header here...";
   headerEl.style.color = data.header ? "#000" : "#aaa";
 
   window.quill.root.innerHTML = data.body || "";
@@ -1744,7 +1744,7 @@ function openBlock(block) {
 
 window.storyData[window.currentKey] = {
   header:
-    headerEl.innerText === "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”
+    headerEl.innerText === "Enter a header here..."
       ? ""
       : headerEl.innerText.trim(),
   body: window.quill.root.innerHTML
@@ -1881,7 +1881,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const header = document.getElementById("fakeHeader");
 
 header.addEventListener("focus", () => {
-  if (header.innerText.trim() === "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”) {
+  if (header.innerText.trim() === "Enter a header here...") {
     header.innerText = "";
     header.style.color = "#000";
   }
@@ -1889,7 +1889,7 @@ header.addEventListener("focus", () => {
 
 header.addEventListener("blur", () => {
   if (!header.innerText.trim()) {
-    header.innerText = "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”)";
+    header.innerText = "Enter a header here...";
     header.style.color = "#aaa";
   }
 });
