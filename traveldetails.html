@@ -35,11 +35,8 @@ h1{
 }
 
 .layout{
-  display:grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap:22px;
+  display:block;
 }
-
 .panel{
   background:rgba(255,255,255,0.82);
   border-radius:22px;
@@ -198,6 +195,45 @@ button{
 }
 
 
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.modal-content{
+  width:95%;
+  height:95%;
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  position:relative;
+}
+
+.modal iframe{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+#closeModal{
+  position:absolute;
+  top:10px;
+  right:14px;
+  z-index:10;
+  background:#b41111;
+  color:white;
+  border:none;
+  border-radius:10px;
+  padding:6px 10px;
+  cursor:pointer;
+}
+
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -353,15 +389,12 @@ button{
 
 <button id="saveDraftBtn">Save Draft</button>
 
+<button id="previewBtn" style="margin-top:12px;">
+  Preview your webpage update
+</button>
+
 </div>
 
-<!-- PREVIEW -->
-<div class="panel preview">
-  <iframe
-    id="previewFrame"
-    style="width:100%; height:900px; border:none; border-radius:20px;"
-  ></iframe>
-</div>
 
 </div>
 </div>
@@ -374,8 +407,6 @@ let currentStep=0;
 const params = new URLSearchParams(location.search);
 const token = params.get("t") || params.get("token") || "demo-token";
 
-document.getElementById("previewFrame").src =
-  `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
 
 const steps=document.querySelectorAll(".step");
 const sections=document.querySelectorAll(".section");
@@ -666,6 +697,29 @@ async function loadFromSupabase() {
   return data;
 }
 
+
+const previewBtn = document.getElementById("previewBtn");
+const modal = document.getElementById("previewModal");
+const modalFrame = document.getElementById("modalFrame");
+const closeModal = document.getElementById("closeModal");
+
+previewBtn.addEventListener("click", () => {
+  saveDraft();
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || "";
+
+  modalFrame.src =
+    `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
+
+  modal.style.display = "flex";
+});
+
+closeModal.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+
 </script>
 
 
@@ -686,6 +740,15 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 });
 </script>
+
+<div id="previewModal" class="modal">
+  <div class="modal-content">
+    <button id="closeModal">✕</button>
+
+    <iframe id="modalFrame"></iframe>
+  </div>
+</div>
+
 
 </body>
 </html>
