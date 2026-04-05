@@ -966,7 +966,28 @@ function updateSelected(){
   console.log("📱 Phones:", phones);
 }
 
+document.getElementById("sendEmailBtn").onclick = () => {
 
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  if (!selected.length) {
+    alert("Select at least one guest");
+    return;
+  }
+
+  const emails = [];
+  const phones = [];
+
+  selected.forEach(ch => {
+    if (ch.dataset.email) emails.push(ch.dataset.email);
+    if (ch.dataset.phone) phones.push(ch.dataset.phone);
+  });
+
+  alert(
+    "Emails:\n" + emails.join(", ") +
+    "\n\nPhones:\n" + phones.join(", ")
+  );
+};
 
 </script>
 
