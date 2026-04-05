@@ -1031,21 +1031,20 @@ loadGuests();
 
 document.addEventListener("change", (e) => {
 
-  // если клик по чекбоксу строки
+  // чекбоксы строк
   if (e.target.classList.contains("rowCheck")) {
-    updateSelected();
+    refreshComposerFields();
   }
 
-  // если клик по selectAll
+  // select all
   if (e.target.id === "selectAll") {
-    setTimeout(updateSelected, 10);
+    setTimeout(() => refreshComposerFields(), 10);
   }
 
 });
 
-
 // 🔥 ОБЩАЯ ФУНКЦИЯ СБОРА ДАННЫХ
-function getSelectedData(){
+function refreshComposerFields() {
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
   const emails = [];
@@ -1056,24 +1055,11 @@ function getSelectedData(){
     if (ch.dataset.phone) phones.push(ch.dataset.phone);
   });
 
-  return { emails, phones };
-}
+  document.getElementById("composerEmails").value =
+    [...new Set(emails)].join(", ");
 
-
-// 🔥 LIVE SYNC (как в образце)
-function updateSelected(){
-
-  const { emails, phones } = getSelectedData();
-
-  console.log("📧 Emails:", emails);
-  console.log("📱 Phones:", phones);
-
-  const composer = document.getElementById("composerBox");
-
-  if (composer && composer.style.display === "block") {
-    document.getElementById("composerEmails").value = emails.join(", ");
-    document.getElementById("composerPhones").value = phones.join(", ");
-  }
+  document.getElementById("composerPhones").value =
+    [...new Set(phones)].join(", ");
 }
 
 
@@ -1090,20 +1076,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔥 OPEN COMPOSER
   if (openBtn) {
-    openBtn.onclick = () => {
 
-      const { emails, phones } = getSelectedData();
+openBtn.onclick = () => {
 
-      if (!emails.length && !phones.length) {
-        alert("Select at least one guest");
-        return;
-      }
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
-      composer.style.display = "block";
+  if (!selected.length) {
+    alert("Select at least one guest");
+    return;
+  }
 
-      document.getElementById("composerEmails").value = emails.join(", ");
-      document.getElementById("composerPhones").value = phones.join(", ");
-    };
+  composer.style.display = "block";
+
+  refreshComposerFields(); // 🔥 ВОТ КЛЮЧ
+};
   }
 
   // 🔥 CLOSE (крестик)
