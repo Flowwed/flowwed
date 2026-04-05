@@ -1003,25 +1003,25 @@ function renderGuests(){
     return;
   }
 
-  tbody.innerHTML = "";
+tbody.innerHTML = "";
 
-  guests.forEach((g, i) => {
-    tbody.innerHTML += `
-      <tr>
-        <td>
-          <input type="checkbox"
-            class="rowCheck"
-            data-email="${g.email || ""}"
-            data-phone="${g.phone || ""}">
-        </td>
-        <td>${i+1}</td>
-        <td>${g.first_name || ""} ${g.last_name || ""}</td>
-        <td>${g.email || ""}</td>
-        <td>${g.phone || ""}</td>
-      </tr>
-    `;
-  });
-
+guests.forEach((g, i) => {
+  tbody.innerHTML += `
+    <tr>
+      <td>
+        <input type="checkbox"
+          class="rowCheck"
+          data-id="${g.id}"              // 🔥 ВОТ ФИКС
+          data-email="${g.email || ""}"
+          data-phone="${g.phone || ""}">
+      </td>
+      <td>${i+1}</td>
+      <td>${g.first_name || ""} ${g.last_name || ""}</td>
+      <td>${g.email || ""}</td>
+      <td>${g.phone || ""}</td>
+    </tr>
+  `;
+});
 }
 
 
@@ -1129,11 +1129,11 @@ if (sendBtn) {
       return;
     }
 
-    const guests = selected.map(ch => ({
-      email: ch.dataset.email || "",
-      phone: ch.dataset.phone || ""
-    }));
-
+const guests = selected.map(ch => ({
+  id: ch.dataset.id,
+  email: ch.dataset.email,
+  phone: ch.dataset.phone
+}));
     const subject = document.getElementById("composerSubject").value.trim();
     const message = document.getElementById("composerBody").value.trim();
     const token = new URLSearchParams(location.search).get("t") || "";
