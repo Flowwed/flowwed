@@ -1043,8 +1043,9 @@ document.addEventListener("change", (e) => {
 
 });
 
-function updateSelected(){
 
+// 🔥 ОБЩАЯ ФУНКЦИЯ СБОРА ДАННЫХ
+function getSelectedData(){
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
   const emails = [];
@@ -1054,51 +1055,83 @@ function updateSelected(){
     if (ch.dataset.email) emails.push(ch.dataset.email);
     if (ch.dataset.phone) phones.push(ch.dataset.phone);
   });
+
+  return { emails, phones };
+}
+
+
+// 🔥 LIVE SYNC (как в образце)
+function updateSelected(){
+
+  const { emails, phones } = getSelectedData();
 
   console.log("📧 Emails:", emails);
   console.log("📱 Phones:", phones);
+
+  const composer = document.getElementById("composerBox");
+
+  if (composer && composer.style.display === "block") {
+    document.getElementById("composerEmails").value = emails.join(", ");
+    document.getElementById("composerPhones").value = phones.join(", ");
+  }
 }
 
-document.getElementById("sendEmailBtn").onclick = () => {
 
-  const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-  if (!selected.length) {
-    alert("Select at least one guest");
-    return;
-  }
-
-  const emails = [];
-  const phones = [];
-
-  selected.forEach(ch => {
-    if (ch.dataset.email) emails.push(ch.dataset.email);
-    if (ch.dataset.phone) phones.push(ch.dataset.phone);
-  });
-
-  // 🔥 ОТКРЫВАЕМ COMPOSER
-  document.getElementById("composerBox").style.display = "block";
-
-  // 🔥 ЗАПОЛНЯЕМ ПОЛЯ
-  document.getElementById("composerEmails").value = emails.join(", ");
-  document.getElementById("composerPhones").value = phones.join(", ");
-};
-
-
+// 🔥 ВСЯ ЛОГИКА ПОСЛЕ ЗАГРУЗКИ DOM
 document.addEventListener("DOMContentLoaded", () => {
-  const closeBtn = document.getElementById("composerClose");
 
-  if (closeBtn) {
-    closeBtn.onclick = () => {
-      document.getElementById("composerBox").style.display = "none";
+  const composer = document.getElementById("composerBox");
+  const closeBtn = document.getElementById("composerClose");
+  const expandBtn = document.getElementById("composerExpand");
+  const sendBtn = document.getElementById("composerSend");
+  const openBtn = document.getElementById("sendEmailBtn");
+
+  let expanded = false;
+
+  // 🔥 OPEN COMPOSER
+  if (openBtn) {
+    openBtn.onclick = () => {
+
+      const { emails, phones } = getSelectedData();
+
+      if (!emails.length && !phones.length) {
+        alert("Select at least one guest");
+        return;
+      }
+
+      composer.style.display = "block";
+
+      document.getElementById("composerEmails").value = emails.join(", ");
+      document.getElementById("composerPhones").value = phones.join(", ");
     };
   }
-});
 
+  // 🔥 CLOSE (крестик)
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      composer.style.display = "none";
+    };
+  }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const sendBtn = document.getElementById("composerSend");
+  // 🔥 EXPAND / COLLAPSE (как в образце)
+  if (expandBtn) {
+    expandBtn.onclick = () => {
 
+      expanded = !expanded;
+
+      if (expanded) {
+        composer.style.width = "600px";
+        composer.style.height = "80vh";
+        composer.style.right = "20px";
+        composer.style.bottom = "20px";
+      } else {
+        composer.style.width = "380px";
+        composer.style.height = "auto";
+      }
+    };
+  }
+
+  // 🔥 SEND
   if (sendBtn) {
     sendBtn.onclick = () => {
 
@@ -1107,15 +1140,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const subject = document.getElementById("composerSubject").value;
       const message = document.getElementById("composerBody").value;
 
-      console.log("SEND:");
+      console.log("🚀 SEND:");
       console.log("Emails:", emails);
       console.log("Phones:", phones);
       console.log("Subject:", subject);
       console.log("Message:", message);
 
-      alert("Send triggered (next step = real sending)");
+      alert("Send working ✅ (next = real sending)");
     };
   }
+
 });
 
 </script>
