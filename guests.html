@@ -1121,6 +1121,7 @@ h1 {
   cursor: pointer;
 }
 
+
 .top-nav-wrapper {
   position: relative;
   display: flex;
@@ -1274,7 +1275,15 @@ cursor: pointer;   /* ← добавь это */
   color: #b41111;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(180,17,17,0.4);
+  transition: 0.25s ease;
 }
+
+.pill-link:hover {
+  border-bottom: 1px solid #b41111;
+}
+
 
 .top-info-pill:hover {
   transform: translateY(-2px) scale(1.01);
