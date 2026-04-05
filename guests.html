@@ -450,23 +450,9 @@ h1 {
 /* Header layout: Guest List + inline bubble */
 .guestlist-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 14px;
 }
-
-.guestlist-header {
-  justify-content: flex-start; /* ← КЛЮЧ */
-}
-
-.guestlist-header h2 {
-  white-space: nowrap;
-}
-
-.info-bubble-inline {
-  margin-left: 16px;
-}
-
 
 /* Align <h2> nicely */
 .guestlist-header h2 {
@@ -474,13 +460,16 @@ h1 {
   padding: 0;
   font-size: 19px;
   color: #9c1818;
+  white-space: nowrap;
 }
 
-/* Inline bubble */
+/* Inline bubble (ЦЕНТР) */
 .info-bubble-inline {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 12px;
+
+  margin: 0 auto;   /* ← ЦЕНТРИРУЕТ */
 
   background: #fff7f7;
   border: 2px solid #ffcccc;
@@ -488,7 +477,6 @@ h1 {
   border-radius: 12px;
 
   box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-  max-width: 100%;
 }
 
 /* Ruby “i” icon */
@@ -501,6 +489,7 @@ h1 {
   color: white;
   font-size: 13px;
   font-weight: 700;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -515,8 +504,7 @@ h1 {
   font-size: 15px;
   color: #7e2a2a;
   font-weight: 600;
-  max-width: 260px;
-  line-height: 1.28;
+  white-space: nowrap;
 }
 
 /* Icons inline block */
@@ -528,28 +516,9 @@ h1 {
   font-size: 13px;
   color: #7e2a2a;
   font-weight: 600;
-}
 
-
-.info-bubble-inline {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-/* ТЕКСТ */
-.info-text-inline {
   white-space: nowrap;
 }
-
-/* WARNING ICONS — В КРАЙ ВПРАВО */
-.info-icons-inline {
-  margin-left: auto;   /* ← ВОТ КЛЮЧ */
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-
 
 /* Colors for icons */
 .icon-yes   { color: green; font-size: 18px; }
