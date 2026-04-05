@@ -233,6 +233,123 @@ button{
   cursor:pointer;
 }
 
+.table-section {
+  width: 93%;
+  margin: 40px auto;
+  padding: 18px;
+
+  background: rgba(255,255,255,0.75);
+  border-radius: 18px;
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.12),
+    inset 0 2px 6px rgba(255,255,255,0.25);
+}
+
+/* RUBY FRAME */
+.ruby-frame-outer {
+  border: 3px solid #b41111;
+  border-radius: 16px;
+  padding: 10px;
+  margin-top: 14px;
+
+  box-shadow:
+    0 0 12px rgba(180,17,17,0.18),
+    inset 0 0 6px rgba(255,255,255,0.45);
+}
+
+.ruby-frame-inner {
+  border: 2px solid #ffcccc;
+  border-radius: 14px;
+  padding: 6px;
+}
+
+.scroll-container {
+  position: relative;
+  height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
+/* RUBY SCROLLBAR */
+.scroll-container::-webkit-scrollbar {
+  width: 9px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: #ffe6eb;
+  border-radius: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: #b41111;
+  border-radius: 10px;
+  border: 2px solid #ffe6eb;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+}
+
+th, td {
+  padding: 10px 6px;
+  border-bottom: 1px solid #e9d4d4;
+  font-size: 15px;
+  text-align: center;
+}
+
+th {
+  color: #9c1818;
+  font-weight: 800;
+}
+
+/* STICKY HEADER */
+#guestTable thead th {
+  position: sticky;
+  top: 0;
+  background: #faf4f6;
+  z-index: 20;
+}
+
+.footer-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.footer-btn {
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.15),
+      rgba(255,255,255,0.04)
+    ),
+    #b41111;
+
+  color: white;
+  border: none;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    inset 0 -4px 10px rgba(60,0,20,0.3);
+
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.footer-btn:hover {
+  transform: translateY(-2px);
+}
+
 
 </style>
 
@@ -254,8 +371,7 @@ button{
 <div class="page">
 
 <div class="topbar">
-<h1>Travel & Details Admin</h1>
-<div id="tokenPill"></div>
+<h1>Travel & Event</h1>
 </div>
 
 <div class="layout">
@@ -393,11 +509,44 @@ button{
   Preview your webpage update
 </button>
 
+<!-- 👇 ВСТАВЛЯЕШЬ ЗДЕСЬ -->
+<div class="table-section">
+
+  <div class="ruby-frame-outer">
+    <div class="ruby-frame-inner">
+      <div class="scroll-container">
+
+        <table id="guestTable">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="selectAll"></th>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-buttons">
+    <button id="sendEmailBtn" class="footer-btn">
+      Send Email & SMS
+    </button>
+  </div>
+
+</div>
+
 </div>
 
 
 </div>
 </div>
+
 
 <script>
 
@@ -445,7 +594,6 @@ const sb = window.supabase.createClient(
 
     const storageKey = `venueMapDraft:${token}`;
 
-    document.getElementById("tokenPill").textContent = `Token: ${token}`;
 
     const fieldIds = [
       "coupleName","weddingDate",
