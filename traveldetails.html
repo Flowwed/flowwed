@@ -619,12 +619,16 @@ if(openPreviewBtn){
 })();
 
 async function saveToSupabase(data) {
+
   const params = new URLSearchParams(window.location.search);
   const token =
     params.get("t") ||
     params.get("token") ||
     params.get("TOKEN") ||
     params.get("T");
+
+  console.log("📦 DATA:", data);
+  console.log("🔑 TOKEN:", token);
 
   const { error } = await sb
     .from("wedding_info")
@@ -634,10 +638,11 @@ async function saveToSupabase(data) {
     );
 
   if (error) {
-    console.error("SAVE ERROR:", error);
-    alert("Ошибка сохранения");
+    console.error("❌ FULL ERROR:", error);
+    alert(error.message + " | " + error.details);
   }
 }
+
 
 async function loadFromSupabase() {
   const params = new URLSearchParams(window.location.search);
