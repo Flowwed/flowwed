@@ -936,6 +936,37 @@ function renderGuests(){
 loadGuests();
 
 
+document.addEventListener("change", (e) => {
+
+  // если клик по чекбоксу строки
+  if (e.target.classList.contains("rowCheck")) {
+    updateSelected();
+  }
+
+  // если клик по selectAll
+  if (e.target.id === "selectAll") {
+    setTimeout(updateSelected, 10);
+  }
+
+});
+
+function updateSelected(){
+
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  const emails = [];
+  const phones = [];
+
+  selected.forEach(ch => {
+    if (ch.dataset.email) emails.push(ch.dataset.email);
+    if (ch.dataset.phone) phones.push(ch.dataset.phone);
+  });
+
+  console.log("📧 Emails:", emails);
+  console.log("📱 Phones:", phones);
+}
+
+
 
 </script>
 
