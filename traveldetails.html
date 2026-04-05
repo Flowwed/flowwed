@@ -1147,34 +1147,38 @@ console.log("📧 EMAILS ONLY:", guests.map(g => g.email));
 
 const htmlBody = message + "<br><br>" + document.getElementById("composerFooter").innerHTML;
 
-const res = await fetch("/.netlify/functions/send-invites", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    subject,
-    html: htmlBody,
-    guests: [guests[0]]   // один гость
-  })
-});    
-      const data = await res.json();
+try {
 
-      console.log("✅ RESPONSE:", data);
+  for (let g of guests) {
 
-      if (!res.ok) {
-        console.error("❌ SEND FAILED:", data);
-        alert(data.error || "Send failed");
-        return;
-      }
+    const res = await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        subject,
+        html: htmlBody,
+        guests: [g]   // 👈 ОДИН за раз (ключ!)
+      })
+    });
 
-      alert("Sent successfully 🚀");
+    const data = await res.json();
 
-    } catch (err) {
-      console.error("❌ NETWORK ERROR:", err);
-      alert("Network error");
+    console.log("RESULT:", g.email, data);
+
+    if (!res.ok || !data?.results?.[0]?.ok) {
+      console.error("❌ FAILED:", g.email, data);
     }
 
+  }
+
+  alert("Sent successfully 🚀");
+
+} catch (err) {
+  console.error("❌ NETWORK ERROR:", err);
+  alert("Network error");
+}
   };
 }
     });
