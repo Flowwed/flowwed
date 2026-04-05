@@ -1149,7 +1149,7 @@ sendBtn.onclick = async () => {
 
   try {
 
-    const res = await fetch("/send-invites", {
+    const res = await fetch("/.netlify/functions/send-invites", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
