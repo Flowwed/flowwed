@@ -1143,33 +1143,45 @@ sendBtn.onclick = async () => {
 
   const subject = document.getElementById("composerSubject").value;
   const message = document.getElementById("composerBody").value;
-
   const token = new URLSearchParams(location.search).get("t");
 
-  console.log("🚀 SENDING TO FUNCTION...");
+  console.log("🚀 SENDING VIA /send-invites...");
 
-  const { data, error } = await sb.functions.invoke("send-batch", {
-    body: {
-      emails,
-      phones,
-      subject,
-      message,
-      token
+  try {
+
+    const res = await fetch("/send-invites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        emails,
+        phones,
+        subject,
+        message,
+        token
+      })
+    });
+
+    const data = await res.json();
+
+    console.log("✅ RESPONSE:", data);
+
+    if (!res.ok) {
+      console.error("❌ SEND FAILED:", data);
+      alert("Send failed");
+      return;
     }
-  });
 
-  if (error) {
-    console.error("❌ ERROR:", error);
-    alert("Send failed");
-    return;
+    alert("Sent successfully 🚀");
+
+  } catch (err) {
+    console.error("❌ NETWORK ERROR:", err);
+    alert("Network error");
   }
-
-  console.log("✅ RESPONSE:", data);
-  alert("Sent successfully 🚀");
-};  
+};
 
 
-});
 
 </script>
 
