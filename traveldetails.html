@@ -983,11 +983,19 @@ document.getElementById("sendEmailBtn").onclick = () => {
     if (ch.dataset.phone) phones.push(ch.dataset.phone);
   });
 
-  alert(
-    "Emails:\n" + emails.join(", ") +
-    "\n\nPhones:\n" + phones.join(", ")
-  );
+  // 🔥 ОТКРЫВАЕМ COMPOSER
+  document.getElementById("composerBox").style.display = "block";
+
+  // 🔥 ЗАПОЛНЯЕМ ПОЛЯ
+  document.getElementById("composerEmails").value = emails.join(", ");
+  document.getElementById("composerPhones").value = phones.join(", ");
 };
+
+
+document.getElementById("composerClose").onclick = () => {
+  document.getElementById("composerBox").style.display = "none";
+};
+
 
 </script>
 
