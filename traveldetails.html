@@ -1149,12 +1149,14 @@ console.log("📧 EMAILS ONLY:", guests.map(g => g.email));
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          guests, // 🔥 ФИКС
-          subject,
-          message,
-          token
-        })
+        
+const htmlBody = message + "<br><br>" + document.getElementById("composerFooter").innerHTML;
+
+body: JSON.stringify({
+  subject,
+  html: htmlBody,
+  guests: [guests[0]]   // пока отправим ТОЛЬКО одного
+})
       });
 
       const data = await res.json();
