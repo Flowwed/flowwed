@@ -107,13 +107,6 @@ h1 {
   margin-bottom: 14px;
 }
 
-#addGuestTopBtn {
-  padding: 10px 20px !important;
-  font-size: 15px !important;
-  border-radius: 14px;
-  transform: scale(0.97);
-}
-
     /* ============================= */
     /* TWO-COLUMN RESPONSIVE FORM   */
     /* ============================= */
@@ -641,6 +634,7 @@ h1 {
   font-size: 13px !important;
   border-radius: 8px !important;
   transform: none !important;
+  cursor: pointer;
 
   background: linear-gradient(
     to bottom,
@@ -1177,13 +1171,18 @@ h1 {
     inset 0 -6px 14px rgba(70,0,20,0.35);
 }
 
-.back-btn:hover {
-  opacity: 0.65;
-}
+    button:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,0.48),
+        0 6px 14px rgba(0,0,0,0.32),
+        inset 0 4px 10px rgba(255,255,255,0.28),
+        inset 0 -10px 18px rgba(60,0,20,0.38);
+    }
 
-.back-btn:active {
-  opacity: 0.4;
-}
+    button:active {
+      transform: scale(0.96);
+    }
 
 .back-arrow {
   font-size: 18px;
@@ -1202,6 +1201,7 @@ h1 {
 
   color: white;
   border: none;
+cursor: pointer;   /* ← добавь это */
 
   box-shadow:
     0 4px 10px rgba(0,0,0,0.25),
