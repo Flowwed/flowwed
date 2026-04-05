@@ -992,10 +992,38 @@ document.getElementById("sendEmailBtn").onclick = () => {
 };
 
 
-document.getElementById("composerClose").onclick = () => {
-  document.getElementById("composerBox").style.display = "none";
-};
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.getElementById("composerClose");
 
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      document.getElementById("composerBox").style.display = "none";
+    };
+  }
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sendBtn = document.getElementById("composerSend");
+
+  if (sendBtn) {
+    sendBtn.onclick = () => {
+
+      const emails = document.getElementById("composerEmails").value;
+      const phones = document.getElementById("composerPhones").value;
+      const subject = document.getElementById("composerSubject").value;
+      const message = document.getElementById("composerBody").value;
+
+      console.log("SEND:");
+      console.log("Emails:", emails);
+      console.log("Phones:", phones);
+      console.log("Subject:", subject);
+      console.log("Message:", message);
+
+      alert("Send triggered (next step = real sending)");
+    };
+  }
+});
 
 </script>
 
