@@ -1129,59 +1129,53 @@ if (sendBtn) {
       return;
     }
 
-const guests = selected.map(ch => ({
-  guest_id: ch.dataset.id,   // 🔥 ВОТ КЛЮЧЕВОЙ ФИКС
-  email: ch.dataset.email,
-  phone: ch.dataset.phone,
-  name: "Guest"              // можно пока так
-}));
+    const guests = selected.map(ch => ({
+      guest_id: ch.dataset.id,
+      email: ch.dataset.email,
+      phone: ch.dataset.phone,
+      name: "Guest"
+    }));
+
     const subject = document.getElementById("composerSubject").value.trim();
     const message = document.getElementById("composerBody").value.trim();
-    const token = new URLSearchParams(location.search).get("t") || "";
 
-    console.log("🚀 SENDING:", guests);
-console.log("📧 EMAILS ONLY:", guests.map(g => g.email));
+    const htmlBody = message + "<br><br>" + document.getElementById("composerFooter").innerHTML;
 
     try {
 
+      for (let g of guests) {
 
-const htmlBody = message + "<br><br>" + document.getElementById("composerFooter").innerHTML;
+        const res = await fetch("/.netlify/functions/send-invites", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            subject,
+            html: htmlBody,
+            guests: [g]
+          })
+        });
 
-try {
+        const data = await res.json();
 
-  for (let g of guests) {
+        console.log("RESULT:", g.email, data);
 
-    const res = await fetch("/.netlify/functions/send-invites", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        subject,
-        html: htmlBody,
-        guests: [g]   // 👈 ОДИН за раз (ключ!)
-      })
-    });
+        if (!res.ok || !data?.results?.[0]?.ok) {
+          console.error("❌ FAILED:", g.email, data);
+        }
 
-    const data = await res.json();
+      }
 
-    console.log("RESULT:", g.email, data);
+      alert("Sent successfully 🚀");
 
-    if (!res.ok || !data?.results?.[0]?.ok) {
-      console.error("❌ FAILED:", g.email, data);
+    } catch (err) {
+      console.error("❌ NETWORK ERROR:", err);
+      alert("Network error");
     }
 
-  }
-
-  alert("Sent successfully 🚀");
-
-} catch (err) {
-  console.error("❌ NETWORK ERROR:", err);
-  alert("Network error");
-}
   };
 }
-    });
 
 </script>
 
