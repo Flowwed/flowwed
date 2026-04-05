@@ -238,7 +238,6 @@ input[type=file] {
   font-size: 16px;
 }
 
-
     button {
       background: #0075ff;
       color: white;
@@ -260,8 +259,10 @@ input[type=file] {
 }
 
 
- #uploadBtn:hover {
-  background: #d0404d;
+/* 👇 ВСТАВЬ СРАЗУ СЮДА */
+#uploadBtn.ruby-btn {
+  height: 42px;
+  font-size: 17px;
 }
 
     .progress-container {
@@ -470,8 +471,14 @@ input[type=file] {
 
 /* hover — появляется цвет */
 .info-action-btn:hover {
-  background: rgba(180, 0, 18, 0.12);   /* мягкий ruby-hover */
-  transform: translateY(-1px);
+  background: rgba(180, 0, 18, 0.12);
+
+  transform: translateY(-3px) scale(1.02);
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.22),
+    0 4px 10px rgba(0,0,0,0.18),
+    inset 0 2px 6px rgba(255,255,255,0.25);
 }
 
 /* active */
@@ -773,18 +780,51 @@ input[type=file] {
     inset 0 1px 0 rgba(255,255,255,0.9);
 }
 
-    button:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow:
-        0 14px 28px rgba(0,0,0,0.48),
-        0 6px 14px rgba(0,0,0,0.32),
-        inset 0 4px 10px rgba(255,255,255,0.28),
-        inset 0 -10px 18px rgba(60,0,20,0.38);
-    }
+.ruby-btn {
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
 
-    button:active {
-      transform: scale(0.96);
-    }
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.38),
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 3px 6px rgba(255,255,255,0.22),
+    inset 0 -6px 14px rgba(70,0,20,0.35);
+}
+
+
+.back-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.48),
+    0 6px 14px rgba(0,0,0,0.32),
+    inset 0 4px 10px rgba(255,255,255,0.28),
+    inset 0 -10px 18px rgba(60,0,20,0.38);
+}
+
+.back-btn:active {
+  transform: scale(0.96);
+}
+
+
+#uploadBtn:hover {
+  transform: translateY(-4px) scale(1.03);
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.48),
+    0 6px 14px rgba(0,0,0,0.32),
+    inset 0 4px 10px rgba(255,255,255,0.28),
+    inset 0 -10px 18px rgba(60,0,20,0.38);
+}
+
+
+#uploadBtn:active {
+  transform: scale(0.96);
+}
 
 
 </style>
@@ -857,7 +897,7 @@ input[type=file] {
 </select>
 
     <input type="file" id="fileInput" accept="image/*" />
-    <button id="uploadBtn">Upload Photo to Your Page</button>
+    <button id="uploadBtn" class="ruby-btn">Upload Photo to Your Page</button>
 
     <div class="progress-container" id="progressContainer">
       <div class="progress-bar" id="progressBar"></div>
