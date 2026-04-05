@@ -1117,56 +1117,68 @@ openBtn.onclick = () => {
     };
   }
 
-  // 🔥 SEND
-sendBtn.onclick = async () => {
 
-  const { emails, phones } = getSelectedData();
+// 🔥 SEND (CLEAN VERSION LIKE SAMPLE)
+if (sendBtn) {
+  sendBtn.onclick = async () => {
 
-  if (!emails.length && !phones.length) {
-    alert("No recipients");
-    return;
-  }
+    const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
-  const subject = document.getElementById("composerSubject").value;
-  const message = document.getElementById("composerBody").value;
-  const token = new URLSearchParams(location.search).get("t");
-
-  console.log("🚀 SENDING VIA /send-invites...");
-
-  try {
-
-    const res = await fetch("/.netlify/functions/send-invites", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        emails,
-        phones,
-        subject,
-        message,
-        token
-      })
-    });
-
-    const data = await res.json();
-
-    console.log("✅ RESPONSE:", data);
-
-    if (!res.ok) {
-      console.error("❌ SEND FAILED:", data);
-      alert("Send failed");
+    if (!selected.length) {
+      alert("No recipients");
       return;
     }
 
-    alert("Sent successfully 🚀");
+    // собираем emails / phones
+    const emails = [...new Set(
+      selected.map(ch => ch.dataset.email).filter(Boolean)
+    )];
 
-  } catch (err) {
-    console.error("❌ NETWORK ERROR:", err);
-    alert("Network error");
-  }
-};
+    const phones = [...new Set(
+      selected.map(ch => ch.dataset.phone).filter(Boolean)
+    )];
 
+    const subject = document.getElementById("composerSubject").value.trim();
+    const message = document.getElementById("composerBody").value.trim();
+    const token = new URLSearchParams(location.search).get("t") || "";
+
+    console.log("🚀 SENDING VIA /send-invites...");
+
+    try {
+
+      const res = await fetch("/.netlify/functions/send-invites", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          emails,
+          phones,
+          subject,
+          message,
+          token
+        })
+      });
+
+      const data = await res.json();
+
+      console.log("✅ RESPONSE:", data);
+
+      if (!res.ok) {
+        console.error("❌ SEND FAILED:", data);
+        alert("Send failed");
+        return;
+      }
+
+      alert("Sent successfully 🚀");
+
+    } catch (err) {
+      console.error("❌ NETWORK ERROR:", err);
+      alert("Network error");
+    }
+
+  };
+}
     });
 
 </script>
