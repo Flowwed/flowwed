@@ -1011,7 +1011,7 @@ guests.forEach((g, i) => {
       <td>
         <input type="checkbox"
           class="rowCheck"
-          data-id="${g.id}"              // 🔥 ВОТ ФИКС
+          data-id="${g.guest_id}"              // 🔥 ВОТ ФИКС
           data-email="${g.email || ""}"
           data-phone="${g.phone || ""}">
       </td>
@@ -1130,10 +1130,10 @@ if (sendBtn) {
     }
 
 const guests = selected.map(ch => ({
-  id: ch.dataset.id,
+  guest_id: ch.dataset.id,   // 🔥 ВОТ КЛЮЧЕВОЙ ФИКС
   email: ch.dataset.email,
   phone: ch.dataset.phone,
-  name: ch.closest("tr").children[2]?.innerText || ""
+  name: "Guest"              // можно пока так
 }));
     const subject = document.getElementById("composerSubject").value.trim();
     const message = document.getElementById("composerBody").value.trim();
