@@ -876,6 +876,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+document.getElementById("selectAll").onclick = (e) => {
+  const all = document.querySelectorAll(".rowCheck");
+  all.forEach(ch => ch.checked = e.target.checked);
+};
+
+
+
+let guests = [];
+
+async function loadGuests(){
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t");
+
+  const { data } = await sb
+    .from("guests")
+    .select("*")
+    .eq("token", token);
+
+  guests = data || [];
+
+  renderGuests();
+}
+
+
+function renderGuests(){
+
+  const tbody = document.querySelector("#guestTable tbody");
+
+  if (!tbody) {
+    console.log("❌ tbody not found");
+    return;
+  }
+
+  tbody.innerHTML = "";
+
+  guests.forEach((g, i) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>
+          <input type="checkbox"
+            class="rowCheck"
+            data-email="${g.email || ""}"
+            data-phone="${g.phone || ""}">
+        </td>
+        <td>${i+1}</td>
+        <td>${g.first_name || ""} ${g.last_name || ""}</td>
+        <td>${g.email || ""}</td>
+        <td>${g.phone || ""}</td>
+      </tr>
+    `;
+  });
+
+}
+
+
+// 🔥 ВАЖНО — запускаем загрузку
+loadGuests();
+
+
+
 </script>
 
 
