@@ -1139,6 +1139,7 @@ const guests = selected.map(ch => ({
     const token = new URLSearchParams(location.search).get("t") || "";
 
     console.log("🚀 SENDING:", guests);
+console.log("📧 EMAILS ONLY:", guests.map(g => g.email));
 
     try {
 
