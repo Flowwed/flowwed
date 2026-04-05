@@ -1027,42 +1027,68 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 
-<div id="composerBox" style="
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  width:340px;
-  background:#fff;
-  border-radius:16px;
-  padding:14px;
-  box-shadow:0 14px 40px rgba(0,0,0,0.35);
-  display:none;
-  z-index:9999;
-">
+<div id="composerBox" class="email-composer" style="display:none;">
 
-  <div style="font-weight:700; margin-bottom:10px;">
-    Send Email & SMS
+  <!-- HEADER -->
+  <div class="composer-header">
+    <span>Send Email & SMS</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span id="composerExpand" class="expand-btn">⤢</span>
+      <span id="composerClose" class="close-btn">&times;</span>
+    </div>
   </div>
 
-  <label style="font-size:13px;">Emails</label>
-  <textarea id="composerEmails" style="width:100%;height:60px;margin-bottom:8px;"></textarea>
+  <!-- EMAILS -->
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="composerEmails" class="composer-input">
 
-  <label style="font-size:13px;">Phones</label>
-  <textarea id="composerPhones" style="width:100%;height:60px;margin-bottom:10px;"></textarea>
+  <!-- PHONES -->
+  <label class="composer-label">To Phone(s):</label>
+  <input type="text" id="composerPhones" class="composer-input">
 
-  <button id="composerClose" style="
-    background:#b41111;
-    color:#fff;
-    border:none;
-    border-radius:10px;
-    padding:6px 10px;
-    cursor:pointer;
+  <!-- SUBJECT -->
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="composerSubject" class="composer-input"
+         value="Wedding Update">
+
+  <!-- MESSAGE -->
+  <label class="composer-label">Message:</label>
+  <textarea id="composerBody" class="composer-textarea">
+Hello! Here is the latest update…
+  </textarea>
+
+  <!-- RSVP BLOCK -->
+  <div id="rsvpPreviewBlock" style="
+    margin-top:10px;
+    padding:10px;
+    border-radius:8px;
+    background:#fff7f7;
+    border:1px solid #ffd0d0;
+    font-size:13px;
   ">
-    Close
+    <div style="font-weight:700;color:#9c1818;margin-bottom:6px;">
+      RSVP Form Link
+    </div>
+
+    <div id="rsvpPreviewLink" style="word-break:break-all;">
+      Link will appear automatically
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div id="composerFooter" class="composer-footer">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <strong id="footerEmail"></strong>
+  </div>
+
+  <!-- SEND BUTTON -->
+  <button id="composerSend" class="composer-send">
+    Send Email & SMS
   </button>
 
 </div>
-
 
 </body>
 </html>
