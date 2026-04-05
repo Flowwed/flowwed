@@ -1132,7 +1132,7 @@ if (sendBtn) {
 const guests = selected.map(ch => ({
   id: ch.dataset.id,
   email: ch.dataset.email,
-  phone: ch.dataset.phone
+  phone: ch.dataset.phone,
   name: ch.closest("tr").children[2]?.innerText || ""
 }));
     const subject = document.getElementById("composerSubject").value.trim();
