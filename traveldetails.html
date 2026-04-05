@@ -351,6 +351,99 @@ th {
 }
 
 
+/* COMPOSER MAIN */
+.email-composer{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:380px;
+
+  background:rgba(255,255,255,0.95);
+  border-radius:18px;
+  padding:16px;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.35),
+    0 6px 20px rgba(0,0,0,0.2);
+
+  z-index:9999;
+  font-size:14px;
+}
+
+/* HEADER */
+.composer-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  font-weight:700;
+  margin-bottom:12px;
+  color:#9c1818;
+}
+
+/* CLOSE + EXPAND */
+.close-btn{
+  cursor:pointer;
+  font-size:18px;
+  color:#9c1818;
+}
+
+.expand-btn{
+  cursor:pointer;
+  font-size:14px;
+}
+
+/* LABELS */
+.composer-label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin:8px 0 4px;
+  color:#7e2a2a;
+}
+
+/* INPUTS */
+.composer-input{
+  width:100%;
+  border:1px solid #e9c8d0;
+  border-radius:10px;
+  padding:8px;
+  margin-bottom:6px;
+}
+
+/* TEXTAREA */
+.composer-textarea{
+  width:100%;
+  height:80px;
+  border:1px solid #e9c8d0;
+  border-radius:10px;
+  padding:8px;
+}
+
+/* FOOTER */
+.composer-footer{
+  margin-top:10px;
+  font-size:12px;
+  color:#7e2a2a;
+}
+
+/* BUTTON */
+.composer-send{
+  width:100%;
+  margin-top:12px;
+
+  padding:12px;
+  border:none;
+  border-radius:12px;
+
+  background:linear-gradient(135deg,#b41111,#8e1515);
+  color:white;
+
+  font-weight:700;
+  cursor:pointer;
+}
+
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
