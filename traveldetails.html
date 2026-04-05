@@ -192,6 +192,12 @@ button{
     inset 0 -6px 14px rgba(70,0,20,0.35);
 }
 
+.step:hover{
+  background:#d94b4b;
+  color:#fff;
+}
+
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -241,10 +247,6 @@ button{
 <div class="field">
 <label>Wedding Date</label>
 <input id="weddingDate" type="date">
-</div>
-<div class="field full">
-<label>Hero Subtitle</label>
-<input id="heroSubtitle" placeholder="Everything you need to know for the big day.">
 </div>
 </div>
 </div>
@@ -349,11 +351,6 @@ button{
 </div>
 </div>
 
-<div class="actions">
-<button onclick="prevStep()">← Back</button>
-<button onclick="nextStep()">Next →</button>
-</div>
-
 <button id="saveDraftBtn">Save Draft</button>
 
 </div>
@@ -383,6 +380,24 @@ document.getElementById("previewFrame").src =
 const steps=document.querySelectorAll(".step");
 const sections=document.querySelectorAll(".section");
 
+const savedStep = localStorage.getItem("activeStep");
+
+if (savedStep !== null) {
+  currentStep = parseInt(savedStep);
+  showStep(currentStep);
+}
+
+steps.forEach((step, index) => {
+  step.style.cursor = "pointer";
+
+  step.addEventListener("click", () => {
+    currentStep = index;
+    showStep(index);
+
+    localStorage.setItem("activeStep", index); // ✅ СОХРАНЕНИЕ
+  });
+});
+
 function showStep(i){
 sections.forEach(s=>s.classList.remove("active"));
 steps.forEach(s=>s.classList.remove("active"));
@@ -390,13 +405,6 @@ sections[i].classList.add("active");
 steps[i].classList.add("active");
 }
 
-function nextStep(){
-if(currentStep<sections.length-1){currentStep++;showStep(currentStep);}
-}
-
-function prevStep(){
-if(currentStep>0){currentStep--;showStep(currentStep);}
-}
 
 // ТВОЙ SUPABASE 1:1
 const sb = window.supabase.createClient(
@@ -409,7 +417,7 @@ const sb = window.supabase.createClient(
     document.getElementById("tokenPill").textContent = `Token: ${token}`;
 
     const fieldIds = [
-      "coupleName","heroSubtitle","weddingDate",
+      "coupleName","weddingDate",
       "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
       "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
       "airport","transferTime","flightsText",
@@ -483,6 +491,9 @@ document.getElementById("saveDraftBtn").addEventListener("click", async () => {
   const f = getFormData();
 
   const data = {
+
+    couple_names: f.coupleName,
+    wedding_date: f.weddingDate,
 
     schedule_time_1: f.scheduleTime1,
     schedule_text_1: f.scheduleText1,
@@ -559,6 +570,8 @@ if(openPreviewBtn){
   if (data) {
     const mapped = {
 
+      coupleName: data.couple_names,
+      weddingDate: data.wedding_date,
       scheduleTime1: data.schedule_time_1,
       scheduleText1: data.schedule_text_1,
       scheduleTime2: data.schedule_time_2,
