@@ -1082,7 +1082,7 @@ openBtn.onclick = () => {
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
   if (!selected.length) {
-    showToast("Select at least one guest");
+    showToast("Select at least one guest", "error");
     return;
   }
 
@@ -1125,7 +1125,7 @@ if (sendBtn) {
     const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
     if (!selected.length) {
-      alert("No recipients");
+      showToast("No recipients", "error");
       return;
     }
 
@@ -1232,7 +1232,7 @@ function showToast(message, type = "success") {
 
   // цвета
   if (type === "error") {
-    toast.style.background = "#d9534f";
+     toast.style.background = "#b41111";
   } else {
     toast.style.background = "#28a745";
   }
@@ -1400,11 +1400,10 @@ Hello! Here is the latest update…
 
 <div id="toastBox" style="
   position:fixed;
-  bottom:20px;
+  top:20px;
   right:20px;
   z-index:99999;
 "></div>
-
 
 </body>
 </html>
