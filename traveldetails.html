@@ -1144,21 +1144,20 @@ console.log("📧 EMAILS ONLY:", guests.map(g => g.email));
 
     try {
 
-      const res = await fetch("/.netlify/functions/send-invites", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        
+
 const htmlBody = message + "<br><br>" + document.getElementById("composerFooter").innerHTML;
 
-body: JSON.stringify({
-  subject,
-  html: htmlBody,
-  guests: [guests[0]]   // пока отправим ТОЛЬКО одного
-})
-      });
-
+const res = await fetch("/.netlify/functions/send-invites", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    subject,
+    html: htmlBody,
+    guests: [guests[0]]   // один гость
+  })
+});    
       const data = await res.json();
 
       console.log("✅ RESPONSE:", data);
