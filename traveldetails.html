@@ -492,7 +492,7 @@ document.getElementById("saveDraftBtn").addEventListener("click", async () => {
 
   const data = {
 
-    couple_names: f.coupleName,
+    couple_name: f.coupleName,
     wedding_date: f.weddingDate,
 
     schedule_time_1: f.scheduleTime1,
@@ -570,7 +570,7 @@ if(openPreviewBtn){
   if (data) {
     const mapped = {
 
-      coupleName: data.couple_names,
+      coupleName: data.couple_name,
       weddingDate: data.wedding_date,
       scheduleTime1: data.schedule_time_1,
       scheduleText1: data.schedule_text_1,
