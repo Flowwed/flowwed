@@ -1098,6 +1098,8 @@ fetch("/navbar.html")
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
       <button id="exportCsv" class="footer-btn">Download & Print</button>
       <button id="sendTestEmailFooter"class="footer-btn">Send Test Email</button>
+      <button id="shareBtn" class="footer-btn">Send via SMS</button>
+
     </div>
   </div>
 
@@ -2186,6 +2188,73 @@ document.getElementById("closeGuide").addEventListener("click", () => {
 });
 </script>
 
+<!-- QR MODAL -->
+<div id="qrModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+  ">
+    <div style="margin-bottom:10px;font-weight:600;">
+      Scan with your phone
+    </div>
+
+    <canvas id="qrCanvas"></canvas>
+
+    <div style="margin-top:10px;font-size:12px;color:#666;">
+      Open link → send SMS
+    </div>
+
+    <div style="margin-top:12px;">
+      <button onclick="document.getElementById('qrModal').style.display='none'">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<script>
+const shareBtn = document.getElementById("shareBtn");
+
+if (shareBtn) {
+
+  shareBtn.onclick = () => {
+
+    const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+    const link = window.location.href;
+
+    // 📱 MOBILE → SMS
+    if (isMobile) {
+      const smsLink = `sms:?body=${encodeURIComponent(link)}`;
+      window.location.href = smsLink;
+      return;
+    }
+
+    // 💻 DESKTOP → QR
+    const modal = document.getElementById("qrModal");
+    const canvas = document.getElementById("qrCanvas");
+
+    modal.style.display = "flex";
+
+    QRCode.toCanvas(canvas, link, {
+      width: 220
+    });
+  };
+
+}
+</script>
 
 </body>
 </html>
