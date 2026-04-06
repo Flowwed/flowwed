@@ -500,6 +500,8 @@ const supabase=createClient(
 const token=new URLSearchParams(location.search).get("t");
 const guestId=new URLSearchParams(location.search).get("g");
 
+const mode = new URLSearchParams(location.search).get("mode");
+
 /* LOAD SITE DATA */
 
 function formatDate(date){
@@ -743,6 +745,11 @@ smsBtn.onclick = async () => {
   window.location.href = smsLink;
 };
 
+}
+
+if (mode !== "admin") {
+  const bubble = document.getElementById("smsBubble");
+  if (bubble) bubble.style.display = "none";
 }
 
 </script>
