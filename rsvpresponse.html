@@ -650,23 +650,21 @@ message:messageInput.value
 
 try{
 
-
 const { data: guest, error } = await supabase
   .from("guests")
   .select("*")
   .eq("email", emailInput.value.trim().toLowerCase());
 
-console.log("FOUND GUEST:", guest, error);
-
-
-if(!guest){
-alert("Guest not found on the list.");
-btn.classList.remove("loading");
-sending=false;
-return;
+if (!guest || guest.length === 0) {
+  alert("Guest not found on the list.");
+  btn.classList.remove("loading");
+  sending = false;
+  return;
 }
 
-const { data, error } = await supabase
+const g = guest[0];
+
+const { data, error: updateError } = await supabase
   .from("guests")
   .update({
     name: nameInput.value,
@@ -677,13 +675,9 @@ const { data, error } = await supabase
     message: messageInput.value,
     responded_at: new Date().toISOString()
   })
-  .eq("id", guest.id)
-  .eq("token", token)
-  .select();
+  .eq("id", g.id);
 
-console.log("UPDATE RESULT:", data, error);
-
-
+console.log("UPDATE RESULT:", data, updateError);
 
 toast.classList.add("show");
 
