@@ -2622,7 +2622,7 @@ function openComposer() {
     const link =
     `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
 
-    currentInviteLink = link;
+    window.currentInviteLink = link;
 
     document.getElementById("rsvpPreviewLink").textContent = link;
   }
