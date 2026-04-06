@@ -501,10 +501,13 @@ const token=new URLSearchParams(location.search).get("t");
 const guestId=new URLSearchParams(location.search).get("g");
 
 // 🔥 если это гость — скрываем SMS блок
-if (guestId) {
+const isAdmin = window.location.href.includes("preview");
+
+if (guestId && !isAdmin) {
   const bubble = document.getElementById("smsBubble");
   if (bubble) bubble.style.display = "none";
 }
+
 
 /* LOAD SITE DATA */
 
@@ -532,7 +535,7 @@ return time.slice(0,5);
 }
 
 
-async function loadSiteData(){
+async function loadSiteData(){i
 
 const {data}=await supabase
 .from("sites")
