@@ -3854,7 +3854,7 @@ if (shareBtn) {
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
-    const link = currentRsvpLink;
+    const link = currentRsvpLink || window.location.href;
 
     // 📱 MOBILE → SMS
     if (isMobile) {
