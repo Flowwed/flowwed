@@ -1907,7 +1907,7 @@ border-top:3px solid #b41111;
     <div class="preview-info">
       <div class="preview-info-icon">i</div>
       <div class="preview-info-text">
-        This is the RSVP form your guests will receive.<br>
+        This is the RSVP your guests will receive and respond.<br>
       </div>
     </div>
   </div>
@@ -2026,6 +2026,7 @@ const supabase = createClient(
 
 let guests = [];
 let coupleFullName = "";
+let currentInviteLink = "";
 const tbody = document.querySelector("#guestTable tbody");
 
 const rsvpDateInput = document.getElementById("rsvpDate");
@@ -2620,6 +2621,8 @@ function openComposer() {
 
     const link =
     `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
+
+    currentInviteLink = link;
 
     document.getElementById("rsvpPreviewLink").textContent = link;
   }
