@@ -1595,17 +1595,16 @@ function refreshComposerFields() {
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
   const emails = [];
-  const phones = [];
+  // const phones = [];
 
   selected.forEach(ch => {
     if (ch.dataset.email) emails.push(ch.dataset.email);
-    if (ch.dataset.phone) phones.push(ch.dataset.phone);
+    // if (ch.dataset.phone) phones.push(ch.dataset.phone);
   });
 
   document.getElementById("composerEmails").value = [...new Set(emails)].join(", ");
-  document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
+  // document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
 }
-
 /* ----------------------------------------
    OPEN COMPOSER
 -----------------------------------------*/
