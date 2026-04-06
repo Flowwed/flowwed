@@ -725,8 +725,12 @@ if (smsBtn) {
   
 smsBtn.onclick = async () => {
 
-  const link = window.location.href;
-  const text = "You're invited! RSVP here: " + link;
+const url = new URL(window.location.href);
+url.searchParams.delete("mode");
+const link = url.toString();
+
+const text = "You're invited! RSVP here: " + link;
+
 
   // 📱 если есть native share (iPhone / Android)
   if (navigator.share) {
