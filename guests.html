@@ -251,13 +251,15 @@ h1 {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 360px;
+      width: 380px;
       background: #ffffff;
       border-radius: 14px;
       padding: 16px;
       box-shadow: 0 14px 32px rgba(0,0,0,0.35);
       z-index: 9999;
       display: none;
+      transition: all 0.28s ease; /* 🔥 ВОТ ЭТО ДОБАВИЛ */
+
     }
 
     .composer-header {
@@ -293,7 +295,7 @@ h1 {
     }
 
     .composer-textarea {
-      height: 110px;
+      height: 80px;
       resize: vertical;
     }
 
@@ -343,12 +345,6 @@ h1 {
   transform: scale(1.15);
 }
 
-   .email-composer.expanded {
-  width: 900px !important;
-  height: 540px !important;
-  right: 20px;
-  bottom: 20px;
-}
 
 .email-composer.expanded .composer-textarea {
   height: 250px !important;
@@ -1628,9 +1624,30 @@ function openComposer() {
 }
 
 // ===== EXPAND / SHRINK EMAIL COMPOSER =====
+
+let expanded = false;
+
 document.getElementById("composerExpand").onclick = () => {
-  emailComposer.classList.toggle("expanded");
+
+  expanded = !expanded;
+
+  if (expanded) {
+    emailComposer.style.width = "min(600px, 90vw)";
+    emailComposer.style.height = "80vh";
+    emailComposer.style.right = "20px";
+    emailComposer.style.bottom = "20px";
+
+    document.getElementById("composerBody").style.height = "200px";
+
+  } else {
+    emailComposer.style.width = "360px";
+    emailComposer.style.height = "auto";
+
+    document.getElementById("composerBody").style.height = "80px";
+  }
+
 };
+
 // ======================================================
 // SEND EMAIL → SEND TO BATCH WORKER
 // ======================================================
