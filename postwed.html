@@ -2938,31 +2938,47 @@ field.classList.remove("required-error");
 
 document.getElementById("shareBtn").onclick = () => {
 
-  if (!window.currentInviteLink) {
-    alert("Open Email Composer first");
-    return;
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  if (!selected.length) {
+    return showToastBox("Select at least one guest!", "error");
   }
 
-  const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+  const token = new URLSearchParams(location.search).get("t");
 
-  // 📱 PHONE → открыть SMS
-  if (isMobile) {
-    const smsLink = `sms:?body=${encodeURIComponent(window.currentInviteLink)}`;
-    window.location.href = smsLink;
-    return;
-  }
+  // 👉 берём ПЕРВОГО гостя (как у тебя в email)
+  const firstGuest = selected[0];
+  const guestId = firstGuest.dataset.id;
 
-  // 💻 DESKTOP → QR
-  const modal = document.getElementById("qrModal");
-  const canvas = document.getElementById("qrCanvas");
+  // 🔥 ВОТ ЭТО ГЛАВНОЕ
+  const guestLink =
+    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
 
-  modal.style.display = "flex";
+  const message = encodeURIComponent(
+    `Hello!
 
-  QRCode.toCanvas(canvas, window.currentInviteLink, {
-    width: 220
+${coupleFullName} invite you to their wedding.
+
+Please RSVP here:
+${guestLink}`
+  );
+
+  const phones = selected.map(ch => ch.dataset.phone).filter(Boolean);
+
+  const smsLink = `sms:${phones.join(",")}?body=${message}`;
+
+  // 👉 QR
+  const qrBox = document.getElementById("qrBox");
+  qrBox.innerHTML = "";
+
+  new QRCode(qrBox, {
+    text: smsLink,
+    width: 220,
+    height: 220
   });
-};
 
+  document.getElementById("qrOverlay").style.display = "flex";
+};
 
 </script>
 
@@ -3899,7 +3915,19 @@ if (shareBtn) {
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
-    const link = window.location.href;
+    const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+    if (!selected.length) {
+      return showToastBox("Select at least one guest!", "error");
+    }
+
+    const token = new URLSearchParams(location.search).get("t");
+
+    // 👉 берём первого гостя (как у тебя в email)
+    const guestId = selected[0].dataset.id;
+
+    // 🔥 ГЛАВНОЕ — правильная ссылка (НЕ admin!)
+    const link = `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
 
     // 📱 MOBILE → SMS
     if (isMobile) {
@@ -3921,10 +3949,6 @@ if (shareBtn) {
 
 }
 </script>
-
-
-
-
 </body>
 </html>
 
