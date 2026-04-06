@@ -2917,6 +2917,34 @@ field.classList.remove("required-error");
 
 });
 
+document.getElementById("shareBtn").onclick = () => {
+
+  if (!window.currentInviteLink) {
+    alert("Open Email Composer first");
+    return;
+  }
+
+  const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+  // 📱 PHONE → открыть SMS
+  if (isMobile) {
+    const smsLink = `sms:?body=${encodeURIComponent(window.currentInviteLink)}`;
+    window.location.href = smsLink;
+    return;
+  }
+
+  // 💻 DESKTOP → QR
+  const modal = document.getElementById("qrModal");
+  const canvas = document.getElementById("qrCanvas");
+
+  modal.style.display = "flex";
+
+  QRCode.toCanvas(canvas, window.currentInviteLink, {
+    width: 220
+  });
+};
+
+
 </script>
 
 <!-- PROGRESS OVERLAY START -->
