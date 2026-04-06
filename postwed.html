@@ -285,6 +285,11 @@
 }
 
 
+#sendTestEmailFooter {
+  display: none;
+}
+
+
 .row-error {
   background: #ffe6ec !important;
   box-shadow: inset 0 0 0 3px #ff0033 !important;
@@ -1941,10 +1946,11 @@ border-top:3px solid #b41111;
 
 <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
-      <button id="sendEmailBtn" class="footer-btn">Send Email &amp; SMS</button>
-      <button id="previewFormBtn" class="footer-btn">
-  See the Form Your Guests Will Fill
-</button>
+      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
+      <button id="shareBtn" class="footer-btn">Send via SMS</button>
+
+      <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
+
 
 <!-- Новая кнопка -->
   <button id="previewJustMarried" class="footer-btn">
@@ -1959,7 +1965,7 @@ border-top:3px solid #b41111;
   <div class="email-composer" id="emailComposer">
 
     <div class="composer-header">
-  <span>Send Email & SMS</span>
+  <span>Send Email</span>
 
   <div style="display:flex;align-items:center;gap:10px;">
     <span id="composerExpand" class="expand-btn">⤢</span>
@@ -1969,9 +1975,10 @@ border-top:3px solid #b41111;
     <label class="composer-label">To Email(s):</label>
     <input type="text" id="composerEmails" class="composer-input">
 
-    <label class="composer-label">To Phone(s):</label>
-    <input type="text" id="composerPhones" class="composer-input">
-
+<!--
+<label class="composer-label">To Phone(s):</label>
+<input type="text" id="composerPhones" class="composer-input">
+-->
     <label class="composer-label">Subject:</label>
     <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
 
@@ -2003,7 +2010,7 @@ Link will appear automatically
    If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
   </div>
 
-    <button id="composerSend" class="composer-send">Send Email & SMS</button>
+    <button id="composerSend" class="composer-send">Send Email</button>
   </div>
 
   <!-- TOAST -->
@@ -2577,20 +2584,23 @@ loadSenderEmail();
 /* ----------------------------------------
    ШАГ 1 — функция пересборки email/phones
 -----------------------------------------*/
+
+
 function refreshComposerFields() {
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
   const emails = [];
-  const phones = [];
+  // const phones = [];
 
   selected.forEach(ch => {
     if (ch.dataset.email) emails.push(ch.dataset.email);
-    if (ch.dataset.phone) phones.push(ch.dataset.phone);
+    // if (ch.dataset.phone) phones.push(ch.dataset.phone);
   });
 
   document.getElementById("composerEmails").value = [...new Set(emails)].join(", ");
-  document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
+  // document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
 }
+
 
 /* ----------------------------------------
    OPEN COMPOSER
@@ -3793,6 +3803,77 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
 
 
 </script>
+
+<!-- QR MODAL -->
+<div id="qrModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+  ">
+    <div style="margin-bottom:10px;font-weight:600;">
+      Scan with your phone
+    </div>
+
+    <canvas id="qrCanvas"></canvas>
+
+    <div style="margin-top:10px;font-size:12px;color:#666;">
+      Open link → send SMS
+    </div>
+
+    <div style="margin-top:12px;">
+      <button onclick="document.getElementById('qrModal').style.display='none'">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<script>
+const shareBtn = document.getElementById("shareBtn");
+
+if (shareBtn) {
+
+  shareBtn.onclick = () => {
+
+    const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+    const link = window.location.href;
+
+    // 📱 MOBILE → SMS
+    if (isMobile) {
+      const smsLink = `sms:?body=${encodeURIComponent(link)}`;
+      window.location.href = smsLink;
+      return;
+    }
+
+    // 💻 DESKTOP → QR
+    const modal = document.getElementById("qrModal");
+    const canvas = document.getElementById("qrCanvas");
+
+    modal.style.display = "flex";
+
+    QRCode.toCanvas(canvas, link, {
+      width: 220
+    });
+  };
+
+}
+</script>
+
+
+
 
 </body>
 </html>
