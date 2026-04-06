@@ -650,12 +650,14 @@ message:messageInput.value
 
 try{
 
-const { data: guest } = await supabase
-.from("guests")
-.select("id")
-.eq("email", emailInput.value.trim().toLowerCase())
-.eq("token", token)
-.single();
+
+const { data: guest, error } = await supabase
+  .from("guests")
+  .select("*")
+  .eq("email", emailInput.value.trim().toLowerCase());
+
+console.log("FOUND GUEST:", guest, error);
+
 
 if(!guest){
 alert("Guest not found on the list.");
