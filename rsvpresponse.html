@@ -678,7 +678,7 @@ await supabase
   responded_at: new Date().toISOString()
 })
 
-.eq("email", emailInput.value.trim().toLowerCase())
+.eq("id", guestId)
 .eq("token", token);
 toast.classList.add("show");
 
