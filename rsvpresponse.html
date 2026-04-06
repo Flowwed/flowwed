@@ -675,7 +675,7 @@ const { data, error } = await supabase
     message: messageInput.value,
     responded_at: new Date().toISOString()
   })
-  .eq("id", guestId)
+  .eq("id", guest.id)
   .eq("token", token)
   .select();
 
