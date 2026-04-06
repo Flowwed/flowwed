@@ -1907,7 +1907,7 @@ border-top:3px solid #b41111;
     <div class="preview-info">
       <div class="preview-info-icon">i</div>
       <div class="preview-info-text">
-        This is the RSVP your guests will receive and respond.<br>
+        This is the RSVP form your guests will receive.<br>
       </div>
     </div>
   </div>
@@ -2026,7 +2026,6 @@ const supabase = createClient(
 
 let guests = [];
 let coupleFullName = "";
-let currentInviteLink = "";
 const tbody = document.querySelector("#guestTable tbody");
 
 const rsvpDateInput = document.getElementById("rsvpDate");
@@ -2579,25 +2578,6 @@ if(!validateBlueFields()) return;
   openComposer();
 };
 
-document.getElementById("sendSmsBtn").onclick = () => {
-
-  const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-  if (!selected.length) {
-    return showToastBox("Select at least one guest!", "error");
-  }
-
-  const phones = selected
-    .map(ch => ch.dataset.phone)
-    .filter(p => p);
-
-  if (!phones.length) {
-    return showToastBox("No phone numbers!", "error");
-  }
-
-  alert("SMS logic triggered"); // временно
-};
-
 // загрузка email отправителя
 loadSenderEmail();
 
@@ -2640,8 +2620,6 @@ function openComposer() {
 
     const link =
     `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
-
-    window.currentInviteLink = link;
 
     document.getElementById("rsvpPreviewLink").textContent = link;
   }
@@ -2935,50 +2913,6 @@ field.classList.remove("required-error");
 });
 
 });
-
-document.getElementById("shareBtn").onclick = () => {
-
-  const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-  if (!selected.length) {
-    return showToastBox("Select at least one guest!", "error");
-  }
-
-  const token = new URLSearchParams(location.search).get("t");
-
-  // 👉 берём ПЕРВОГО гостя (как у тебя в email)
-  const firstGuest = selected[0];
-  const guestId = firstGuest.dataset.id;
-
-  // 🔥 ВОТ ЭТО ГЛАВНОЕ
-  const guestLink =
-    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
-
-  const message = encodeURIComponent(
-    `Hello!
-
-${coupleFullName} invite you to their wedding.
-
-Please RSVP here:
-${guestLink}`
-  );
-
-  const phones = selected.map(ch => ch.dataset.phone).filter(Boolean);
-
-  const smsLink = `sms:${phones.join(",")}?body=${message}`;
-
-  // 👉 QR
-  const qrBox = document.getElementById("qrBox");
-  qrBox.innerHTML = "";
-
-  new QRCode(qrBox, {
-    text: smsLink,
-    width: 220,
-    height: 220
-  });
-
-  document.getElementById("qrOverlay").style.display = "flex";
-};
 
 </script>
 
@@ -3915,19 +3849,7 @@ if (shareBtn) {
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
-    const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-    if (!selected.length) {
-      return showToastBox("Select at least one guest!", "error");
-    }
-
-    const token = new URLSearchParams(location.search).get("t");
-
-    // 👉 берём первого гостя (как у тебя в email)
-    const guestId = selected[0].dataset.id;
-
-    // 🔥 ГЛАВНОЕ — правильная ссылка (НЕ admin!)
-    const link = `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
+    const link = window.location.href;
 
     // 📱 MOBILE → SMS
     if (isMobile) {
@@ -3949,6 +3871,10 @@ if (shareBtn) {
 
 }
 </script>
+
+
+
+
 </body>
 </html>
 
