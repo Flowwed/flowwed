@@ -2621,6 +2621,8 @@ function openComposer() {
     const link =
     `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}`;
 
+currentRsvpLink = link;
+
     document.getElementById("rsvpPreviewLink").textContent = link;
   }
 
@@ -3841,6 +3843,9 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 <script>
+
+let currentRsvpLink = "";
+
 const shareBtn = document.getElementById("shareBtn");
 
 if (shareBtn) {
@@ -3849,7 +3854,7 @@ if (shareBtn) {
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
-    const link = window.location.href;
+    const link = currentRsvpLink;
 
     // 📱 MOBILE → SMS
     if (isMobile) {
