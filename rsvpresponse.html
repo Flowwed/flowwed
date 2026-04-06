@@ -500,15 +500,6 @@ const supabase=createClient(
 const token=new URLSearchParams(location.search).get("t");
 const guestId=new URLSearchParams(location.search).get("g");
 
-// 🔥 если это гость — скрываем SMS блок
-const isAdmin = window.location.href.includes("preview");
-
-if (guestId && !isAdmin) {
-  const bubble = document.getElementById("smsBubble");
-  if (bubble) bubble.style.display = "none";
-}
-
-
 /* LOAD SITE DATA */
 
 function formatDate(date){
@@ -535,7 +526,7 @@ return time.slice(0,5);
 }
 
 
-async function loadSiteData(){i
+async function loadSiteData(){
 
 const {data}=await supabase
 .from("sites")
