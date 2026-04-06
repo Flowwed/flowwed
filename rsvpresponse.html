@@ -664,22 +664,27 @@ sending=false;
 return;
 }
 
-await supabase
-.from("guests")
+const { data, error } = await supabase
+  .from("guests")
+  .update({
+    name: nameInput.value,
+    email: emailInput.value.trim().toLowerCase(),
+    guest_count: guestCount.value,
+    extra_guests: extraGuestsInput.value,
+    rsvp_status: rsvpSelect.value,
+    message: messageInput.value,
+    responded_at: new Date().toISOString()
+  })
+  .eq("id", guestId)
+  .eq("token", token)
+  .select();
 
-
-.update({
-  name: nameInput.value,
-  email: emailInput.value.trim().toLowerCase(),
-  guest_count: guestCount.value,
-  extra_guests: extraGuestsInput.value,
-  rsvp_status: rsvpSelect.value,
-  message: messageInput.value,
-  responded_at: new Date().toISOString()
-})
-
+console.log("UPDATE RESULT:", data, error);
 .eq("id", guestId)
 .eq("token", token);
+
+
+
 toast.classList.add("show");
 
 setTimeout(()=>{
