@@ -666,9 +666,18 @@ return;
 
 await supabase
 .from("guests")
+
+
 .update({
-  rsvp_status: rsvpSelect.value
+  name: nameInput.value,
+  email: emailInput.value.trim().toLowerCase(),
+  guest_count: guestCount.value,
+  extra_guests: extraGuestsInput.value,
+  rsvp_status: rsvpSelect.value,
+  message: messageInput.value,
+  responded_at: new Date().toISOString()
 })
+
 .eq("email", emailInput.value.trim().toLowerCase())
 .eq("token", token);
 toast.classList.add("show");
