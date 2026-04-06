@@ -2579,6 +2579,25 @@ if(!validateBlueFields()) return;
   openComposer();
 };
 
+document.getElementById("sendSmsBtn").onclick = () => {
+
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  if (!selected.length) {
+    return showToastBox("Select at least one guest!", "error");
+  }
+
+  const phones = selected
+    .map(ch => ch.dataset.phone)
+    .filter(p => p);
+
+  if (!phones.length) {
+    return showToastBox("No phone numbers!", "error");
+  }
+
+  alert("SMS logic triggered"); // временно
+};
+
 // загрузка email отправителя
 loadSenderEmail();
 
