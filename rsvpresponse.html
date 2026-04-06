@@ -306,6 +306,53 @@ margin-bottom:10px;
 
 <h1 id="coupleName"></h1>
 
+<div id="smsBubble" style="
+margin: 0 auto 20px auto;
+max-width: 420px;
+background: #fff7f7;
+border: 1px solid #ffd0d0;
+border-radius: 14px;
+padding: 14px 16px;
+display: flex;
+align-items: center;
+gap: 12px;
+box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+">
+
+  <div style="
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #b41111;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  ">
+    i
+  </div>
+
+  <div style="flex:1;font-size:13px;color:#7e2a2a;font-weight:600;">
+    Send this RSVP to your guest via SMS
+  </div>
+
+  <button id="smsQuickBtn" style="
+  background:#b41111;
+  color:white;
+  border:none;
+  border-radius:10px;
+  padding:6px 12px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  ">
+    Send
+  </button>
+
+</div>
+
 <div style="
 text-align:center;
 font-size:17px;
@@ -670,6 +717,33 @@ mapModal.style.display="none";
 
 });
 
+const smsBtn = document.getElementById("smsQuickBtn");
+
+if (smsBtn) {
+  
+smsBtn.onclick = async () => {
+
+  const link = window.location.href;
+  const text = "You're invited! RSVP here: " + link;
+
+  // 📱 если есть native share (iPhone / Android)
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        text: text
+      });
+      return;
+    } catch (err) {
+      // если пользователь отменил — ничего страшного
+    }
+  }
+
+  // fallback → SMS
+  const smsLink = `sms:?body=${encodeURIComponent(text)}`;
+  window.location.href = smsLink;
+};
+
+}
 
 </script>
 
