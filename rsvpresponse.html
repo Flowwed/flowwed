@@ -229,31 +229,28 @@ transform:translateY(0);
 @media(max-width:800px){
 
   body{
-    margin:0 !important;
-    padding:12px !important;
+    margin:0;
+    padding:0;
   }
 
   .layout{
     flex-direction:column;
     align-items:center;
     gap:18px;
+    padding:16px; /* ← ВОЗДУХ ТУТ, НЕ В BODY */
   }
 
-.player{
-  order:1;
-  width:100%;
-  max-width:380px;
-  margin:0 auto;
-}
-.form-box{
-  order:2;
-  width:100%;
-  max-width:380px;
-  margin:0 auto;
-  padding:16px;
-}
+  .player,
+  .form-box{
+    width:100%;
+    max-width:380px;
+    margin:0 auto;
+  }
 
-  /* INPUT UX (iPhone style) */
+  .form-box{
+    padding:16px;
+  }
+
   input,
   select,
   textarea{
@@ -268,8 +265,6 @@ transform:translateY(0);
   }
 
 }
-
-
 
 .preview-line{
 display:flex;
