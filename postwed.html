@@ -3849,17 +3849,18 @@ let currentRsvpLink = "";
 const shareBtn = document.getElementById("shareBtn");
 
 if (shareBtn) {
-
   shareBtn.onclick = () => {
+
+    const token = new URLSearchParams(location.search).get("t");
+
+    // ✅ ВСЕГДА универсальная ссылка (без гостей)
+    const link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
-    const link = currentRsvpLink || window.location.href;
-
     // 📱 MOBILE → SMS
     if (isMobile) {
-      const smsLink = `sms:?body=${encodeURIComponent(link)}`;
-      window.location.href = smsLink;
+      window.location.href = `sms:?body=${encodeURIComponent(link)}`;
       return;
     }
 
@@ -3869,12 +3870,10 @@ if (shareBtn) {
 
     modal.style.display = "flex";
 
-    QRCode.toCanvas(canvas, link, {
-      width: 220
-    });
+    QRCode.toCanvas(canvas, link, { width: 220 });
   };
-
 }
+
 </script>
 
 
