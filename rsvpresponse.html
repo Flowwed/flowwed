@@ -340,20 +340,31 @@ box-shadow:0 4px 10px rgba(0,0,0,0.15);
   transition:all .2s ease;
 }
 
+.share-icon{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#b41111;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  transition:all .2s ease;
+  box-shadow:0 6px 14px rgba(0,0,0,0.18);
+}
+
 .share-icon img{
-  width:20px;
-  height:20px;
+  width:22px;
+  height:22px;
   filter:invert(1);
 }
 
-.share-icon:hover{
-  transform:translateY(-2px);
-}
-
 .share-icon:active{
-  transform:scale(0.92);
+  transform:scale(0.9);
 }
-
 
 #shareBlock{
   display:flex;
@@ -559,9 +570,18 @@ margin-top:20px;
 width:100%;
 ">
 
-<div style="display:flex;justify-content:center;align-items:center;gap:12px;width:100%;">
-<div class="share-icon" data-type="sms">✉️</div>
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/applemessages.svg">
+<div style="
+display:flex;
+justify-content:center;
+align-items:center;
+gap:14px;
+width:100%;
+max-width:320px;
+margin:0 auto;
+">
+
+<div class="share-icon" data-type="sms">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/maildotru.svg">
 </div>
 
 <div class="share-icon" data-type="whatsapp">
