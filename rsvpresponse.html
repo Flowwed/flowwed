@@ -679,7 +679,7 @@ try{
 const { data: guest, error } = await supabase
   .from("guests")
   .select("*")
-  .eq("email", emailInput.value.trim().toLowerCase());
+  .eq("email", emailInput.value.trim().toLowerCase().replace(/\s+/g, ""));
 
 if (!guest || guest.length === 0) {
   alert("Guest not found on the list.");
