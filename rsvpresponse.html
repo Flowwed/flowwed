@@ -330,42 +330,34 @@ margin-bottom:10px;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:18px;
+  gap:12px;
   flex-wrap:nowrap;
   overflow-x:auto;
   padding:6px 0;
 }
 
 .share-icon-btn{
+  border:1.5px solid #b41111;
   background:none;
-  border:none;
-  padding:6px;
+  color:#b41111;
+
+  padding:6px 10px;
+  border-radius:999px;
+
+  font-size:12px;
+  font-weight:700;
+
   cursor:pointer;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
   transition:0.2s ease;
 }
 
-/* 🔥 ВАЖНО: используем fill, НЕ stroke */
-.share-icon-btn svg{
-  width:22px;
-  height:22px;
-  fill:#b41111;   /* фирменный цвет */
-  display:block;
-  transition:0.2s ease;
+.share-icon-btn:active{
+  transform:scale(0.95);
 }
 
-/* hover / tap */
-.share-icon-btn:hover svg{
-  transform:translateY(-2px);
-  opacity:0.9;
-}
-
-.share-icon-btn:active svg{
-  transform:scale(0.9);
+.share-icon-btn:hover{
+  background:#b41111;
+  color:white;
 }
 
 </style>
@@ -571,51 +563,18 @@ text-align:center;
 margin-top:20px;
 ">
 
-  <div class="share-icons-row">
 
-    <button class="share-icon-btn" data-type="sms" aria-label="Share by SMS" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4 5.5C4 4.67 4.67 4 5.5 4h13C19.33 4 20 4.67 20 5.5v8c0 .83-.67 1.5-1.5 1.5H9l-4.2 3.3c-.33.26-.8.02-.8-.4V15.5C4 14.67 4.67 14 5.5 14h13c.83 0 1.5-.67 1.5-1.5v-7z"/>
-      </svg>
-    </button>
+<div class="share-icons-row">
 
-    <button class="share-icon-btn" data-type="facebook" aria-label="Share on Facebook" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M13.5 21v-8.2H16l.4-3h-2.9V7.9c0-.87.24-1.47 1.49-1.47H16.5V3.74c-.27-.04-1.2-.12-2.28-.12-2.25 0-3.79 1.37-3.79 3.89v2.29H8v3h2.43V21h3.07z"/>
-      </svg>
-    </button>
+  <button class="share-icon-btn" data-type="sms">SMS</button>
+  <button class="share-icon-btn" data-type="whatsapp">WA</button>
+  <button class="share-icon-btn" data-type="telegram">TG</button>
+  <button class="share-icon-btn" data-type="facebook">f</button>
+  <button class="share-icon-btn" data-type="pinterest">p</button>
+  <button class="share-icon-btn" data-type="twitter">X</button>
 
-    <button class="share-icon-btn" data-type="instagram" aria-label="Share on Instagram" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9a4.5 4.5 0 0 1-4.5 4.5h-9A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3zm0 1.8A2.7 2.7 0 0 0 4.8 7.5v9a2.7 2.7 0 0 0 2.7 2.7h9a2.7 2.7 0 0 0 2.7-2.7v-9a2.7 2.7 0 0 0-2.7-2.7h-9zm9.45 1.35a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.8A3.2 3.2 0 1 0 12 15.2 3.2 3.2 0 0 0 12 8.8z"/>
-      </svg>
-    </button>
+</div>
 
-    <button class="share-icon-btn" data-type="pinterest" aria-label="Share on Pinterest" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12.04 3C7.06 3 4 6.37 4 10.72c0 2.6 1.47 5.84 3.82 6.87.36.16.31-.03.58-1.04.04-.13.02-.24-.09-.37-1.62-1.88-1.46-4.48-.31-6.26 1.67-2.6 4.83-3.07 7.35-2.06 3.48 1.39 3.03 5.56 1.51 7.79-.53.77-1.85 2.04-3.26 1.78-1.26-.24-1.1-1.57-.86-2.49.46-1.74 1.36-3.62 1.36-4.88 0-3.01-4.52-2.46-4.52 1.42 0 1.19.42 1.99.42 1.99s-1.39 5.88-1.64 6.95c-.44 1.87.06 4.9.1 5.18.03.16.21.22.31.09.16-.21 2.14-2.95 2.62-4.77.17-.65.87-3.34.87-3.34.46.83 1.78 1.53 3.19 1.53 4.2 0 6.96-3.7 6.96-8.3C20.5 6.36 16.82 3 12.04 3z"/>
-      </svg>
-    </button>
-
-    <button class="share-icon-btn" data-type="tiktok" aria-label="Share on TikTok" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M14.8 3c.2 1.73 1.2 3.27 2.76 4.14.94.53 1.98.8 3.04.81v2.93a8.7 8.7 0 0 1-3-.52v5.08a6.44 6.44 0 1 1-6.44-6.44c.34 0 .67.03 1 .08v3.02a3.41 3.41 0 1 0 2.64 3.34V3h3z"/>
-      </svg>
-    </button>
-
-    <button class="share-icon-btn" data-type="twitter" aria-label="Share on X" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M18.9 3H21l-6.54 7.47L22.16 21h-6.03l-4.72-6.18L5.99 21H3.88l7-8-7.38-10h6.18l4.27 5.64L18.9 3zm-1.06 16.2h1.67L8.77 4.7H7.01L17.84 19.2z"/>
-      </svg>
-    </button>
-
-    <button class="share-icon-btn" data-type="whatsapp" aria-label="Share on WhatsApp" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M20 12a8 8 0 0 1-11.78 7.04L4 20l1.03-4.04A8 8 0 1 1 20 12zm-4.36 2.15c-.2-.1-1.18-.58-1.37-.64-.18-.07-.31-.1-.44.1s-.5.63-.61.76c-.11.13-.23.15-.42.05-.2-.1-.82-.3-1.56-.96-.58-.52-.97-1.17-1.08-1.36-.11-.2-.01-.3.08-.4.08-.08.2-.22.3-.33.1-.11.13-.19.2-.31.07-.13.03-.24-.02-.34-.05-.1-.44-1.06-.6-1.45-.16-.38-.33-.33-.44-.34h-.38c-.13 0-.34.05-.52.24-.18.2-.69.67-.69 1.64 0 .96.7 1.9.8 2.03.1.13 1.37 2.1 3.33 2.95.46.2.82.32 1.1.42.46.15.88.13 1.21.08.37-.06 1.18-.48 1.35-.95.17-.46.17-.86.12-.95-.05-.08-.18-.13-.38-.23z"/>
-      </svg>
-    </button>
-
-  </div>
 </div>
 
 
