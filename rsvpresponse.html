@@ -358,10 +358,8 @@ margin-bottom:10px;
   height:48px;
   border-radius:50%;
 
-  background: rgba(164,157,159,0.85); /* основной спокойный цвет */
-
-  backdrop-filter: blur(6px);
-
+  background:rgba(195,12,30,0.85); /* немного мягче */
+  
   display:flex;
   align-items:center;
   justify-content:center;
@@ -370,13 +368,8 @@ margin-bottom:10px;
 
   flex:0 0 48px;
 
-  transition:all .2s ease;
-
-  box-shadow:
-    0 6px 14px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-
-  border:1px solid rgba(255,255,255,0.3);
+  transition:.2s;
+  box-shadow:0 4px 12px rgba(0,0,0,0.12);
 }
 
 .share-icon img{
@@ -397,27 +390,18 @@ margin-bottom:10px;
 
   padding:16px;
 
-  background: linear-gradient(
-    135deg,
-    rgba(164,157,159,0.9),   /* твой новый цвет */
-    rgba(195,12,30,0.75)     /* старый красный как акцент */
-  );
-
-  backdrop-filter: blur(6px);
-
+  background:#c30c1e;
   color:white;
-  border-radius:14px;
 
+  border-radius:14px;
   text-align:center;
   font-weight:700;
   font-size:17px;
 
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-
-  transition: all .2s ease;
+  box-shadow:0 6px 16px rgba(0,0,0,0.15);
+  transition:.2s;
 }
+
 .form-box.compact{
   padding:12px;
   width:90%;
@@ -427,7 +411,6 @@ margin-bottom:10px;
 #saveInviteBtn:active,
 .share-icon:active{
   transform:scale(0.96);
-  box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 
 #saveInviteBtn,
