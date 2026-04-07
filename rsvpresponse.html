@@ -352,6 +352,15 @@ margin-bottom:10px;
   transform:translateY(-3px);
 }
 
+.share-icon img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+  filter:invert(1); /* делает их белыми */
+  pointer-events:none;
+}
+
+
 </style>
 </head>
 
@@ -545,19 +554,37 @@ We’ll miss you! Feel free to leave a message for the couple.
 
 <div id="shareBlock" style="
 display:none;
-text-align:center;
 margin-top:20px;
+width:100%;
 ">
-
 
 <div style="display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto;">
 
-  <div class="share-icon" data-type="sms">💬</div>
-  <div class="share-icon" data-type="whatsapp">🟢</div>
-  <div class="share-icon" data-type="telegram">✈️</div>
-  <div class="share-icon" data-type="facebook">f</div>
-  <div class="share-icon" data-type="pinterest">p</div>
-  <div class="share-icon" data-type="twitter">x</div>
+<div class="share-icon" data-type="sms">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/applemessages.svg">
+</div>
+
+<div class="share-icon" data-type="whatsapp">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg">
+</div>
+
+<div class="share-icon" data-type="telegram">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg">
+</div>
+
+<div class="share-icon" data-type="facebook">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg">
+</div>
+
+<div class="share-icon" data-type="pinterest">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/pinterest.svg">
+</div>
+
+<div class="share-icon" data-type="twitter">
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg">
+</div>
+
+
 
 </div>
 </div>
@@ -815,7 +842,8 @@ setTimeout(() => {
   setTimeout(() => {
     thanks.style.display = "none";
 
-    share.style.display = "block";
+   share.style.display = "flex";
+   share.style.justifyContent = "center";
     share.style.opacity = "0";
     share.style.transition = "0.5s ease";
 
