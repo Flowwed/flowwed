@@ -191,14 +191,6 @@ font-size:13px;
 display:none;
 text-align:center;
 padding:30px 20px;
-max-width:360px;
-margin:40px auto;
-
-background:white;
-border-radius:16px;
-border:2px solid #b41111;
-
-box-shadow:0 10px 20px rgba(0,0,0,0.15);
 }
 
 #thanksScreen h2{
@@ -738,13 +730,7 @@ setTimeout(() => {
 }, 2000);
 
 form.style.display = "none";
-
-const thanks = document.getElementById("thanksScreen");
-thanks.style.display = "block";
-
-// 🔥 центрируем вертикально
-window.scrollTo({ top: 0, behavior: "smooth" });
-
+document.getElementById("thanksScreen").style.display = "block";
 
 } catch (err) {
   console.error(err);
