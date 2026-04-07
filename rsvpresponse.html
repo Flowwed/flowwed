@@ -190,7 +190,7 @@ font-size:13px;
 #thanksScreen{
 display:none;
 text-align:center;
-padding:30px 20px;
+padding: 0;
 }
 
 #thanksScreen h2{
@@ -371,18 +371,22 @@ margin-bottom:10px;
   transform:scale(0.9);
 }
 
-
 #saveInviteBtn{
-  margin:10px auto;
-  padding:14px;
+  display:block;
+  width:100%;
+  padding:16px;
   background:#b41111;
   color:white;
-  border-radius:12px;
+  border-radius:14px;
   text-align:center;
   font-weight:700;
-  cursor:pointer;
-  width:100%;
-  font-size:16px;
+  font-size:17px;
+}
+
+.form-box.compact{
+  padding:12px;
+  width:90%;
+  max-width:320px;
 }
 
 
@@ -857,15 +861,18 @@ thanks.style.display = "block";
 // через 2 сек переключаем
 setTimeout(() => {
 
-thanks.innerHTML = `
-  <div id="saveInviteBtn">Save This Invite</div>
-`;
+  thanks.innerHTML = `
+    <div id="saveInviteBtn">Save This Invite</div>
+  `;
+
+  const box = document.querySelector(".form-box"); // ← ДОБАВИЛИ
+  box.classList.add("compact");                    // ← ДОБАВИЛИ
+
   share.style.display = "flex";
   share.style.justifyContent = "center";
   share.style.alignItems = "center";
 
 }, 2000);
-
 
 } catch (err) {
   console.error(err);
