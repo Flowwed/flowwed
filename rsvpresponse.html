@@ -664,7 +664,14 @@ if (!guest || guest.length === 0) {
 
 const g = guest[0];
 
-const { data, error: updateError } = await supabase
+if (g.responded_at) {
+  alert("You already submitted RSVP");
+  btn.classList.remove("loading");
+  sending = false;
+  return;
+}
+
+const { data, error } = await supabase
   .from("guests")
   .update({
     name: nameInput.value,
@@ -675,26 +682,17 @@ const { data, error: updateError } = await supabase
     message: messageInput.value,
     responded_at: new Date().toISOString()
   })
-  .eq("id", g.id);
+  .eq("id", g.id)
+  .select();
 
-console.log("UPDATE RESULT:", data, updateError);
-
-toast.classList.add("show");
-
-setTimeout(()=>{
-  toast.classList.remove("show");
-},2000);
-
-form.style.display="none";
-document.getElementById("thanksScreen").style.display="block";
-
-}catch(err){
-
-alert("Error sending RSVP");
-btn.classList.remove("loading");
-sending=false;
-
+if (error) {
+  console.error("SUPABASE ERROR:", error);
+  alert("You already submitted RSVP");
+  btn.classList.remove("loading");
+  sending = false;
+  return;
 }
+
 });
 
 /* MAP LINK */
