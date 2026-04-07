@@ -687,7 +687,7 @@ const g = guestsList.find(item =>
 );
 
 if (!g) {
-  alert("Guest not found on the list.");
+  showToast("Guest not found on the list.", true);
   btn.classList.remove("loading");
   sending = false;
   return;
@@ -695,7 +695,7 @@ if (!g) {
 
 
 if (g.responded_at) {
-  alert("You already submitted RSVP");
+  showToast("You already submitted RSVP", true);
   btn.classList.remove("loading");
   sending = false;
   return;
@@ -734,7 +734,7 @@ document.getElementById("thanksScreen").style.display = "block";
 
 } catch (err) {
   console.error(err);
-  alert("Error sending RSVP");
+  showToast("Something went wrong. Please try again.", true);
   btn.classList.remove("loading");
   sending = false;
 }
@@ -861,6 +861,24 @@ border:0;
 
 </div>
 </div>
+
+<script>
+
+function showToast(message, isError = false){
+  const toast = document.getElementById("toast");
+
+  toast.textContent = message;
+  toast.style.background = isError ? "#d20000" : "#28a745";
+
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },2000);
+}
+
+</script>
+
 
 </body>
 </html>
