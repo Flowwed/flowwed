@@ -358,13 +358,7 @@ margin-bottom:10px;
   height:48px;
   border-radius:50%;
 
-  background:rgba(140, 45, 35, 0.75);
-background:linear-gradient(
-  135deg,
-  rgba(140,45,35,0.9),
-  rgba(110,35,25,0.9)
-);
-
+  background:rgba(195, 12, 30, 0.75); /* чуть прозрачнее */
   backdrop-filter: blur(6px);
 
   display:flex;
@@ -380,8 +374,6 @@ background:linear-gradient(
 
   border:1px solid rgba(255,255,255,0.25);
 }
-
-
 
 .share-icon img{
   width:22px;
@@ -404,13 +396,8 @@ background:linear-gradient(
 
   padding:16px;
 
-  background:rgba(140, 45, 35, 0.85); /* 🔥 мягче */
-  background:linear-gradient(
-  135deg,
-  rgba(140,45,35,0.9),
-  rgba(110,35,25,0.9)
-);
-  backdrop-filter: blur(6px);      /* 🔥 glass эффект */
+  background:rgba(195, 12, 30, 0.85); /* ← твой цвет, но мягче */
+  backdrop-filter: blur(6px);
 
   color:white;
   border-radius:14px;
@@ -419,11 +406,10 @@ background:linear-gradient(
   font-weight:700;
   font-size:17px;
 
-  box-shadow: 0 8px 20px rgba(180,17,17,0.25); /* мягкая тень */
+  box-shadow: 0 8px 20px rgba(195,12,30,0.25);
 
   transition: all .2s ease;
 }
-
 
 .form-box.compact{
   padding:12px;
@@ -437,6 +423,12 @@ background:linear-gradient(
   box-shadow:0 4px 10px rgba(0,0,0,0.15);
 }
 
+#saveInviteBtn,
+.share-icon{
+  box-shadow:
+    0 8px 20px rgba(195,12,30,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
 
 </style>
 </head>
