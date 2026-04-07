@@ -671,7 +671,8 @@ if (g.responded_at) {
   return;
 }
 
-const { data, error: updateError } = await supabase
+
+const { error: updateError } = await supabase
   .from("guests")
   .update({
     name: nameInput.value,
@@ -682,8 +683,7 @@ const { data, error: updateError } = await supabase
     message: messageInput.value,
     responded_at: new Date().toISOString()
   })
-  .eq("id", g.id)
-  .select();
+  .eq("id", g.id);
 
 if (updateError) {
   console.error(updateError);
@@ -693,6 +693,26 @@ if (updateError) {
   return;
 }
 
+toast.classList.add("show");
+
+setTimeout(() => {
+  toast.classList.remove("show");
+}, 2000);
+
+form.style.display = "none";
+document.getElementById("thanksScreen").style.display = "block";
+
+} catch (err) {
+  console.error(err);
+  alert("Error sending RSVP");
+  btn.classList.remove("loading");
+  sending = false;
+}
+
+btn.classList.remove("loading");
+sending = false;
+
+});
 /* MAP LINK */
 
 document.addEventListener("DOMContentLoaded", () => {
