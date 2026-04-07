@@ -3854,7 +3854,7 @@ if (shareBtn) {
     const token = new URLSearchParams(location.search).get("t");
 
     // ✅ ВСЕГДА универсальная ссылка (без гостей)
-    const link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
+    const link = `${window.location.origin}/rsvpresponse.html?t=${token}&mode=admin`;
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
