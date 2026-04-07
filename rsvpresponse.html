@@ -835,22 +835,30 @@ thanks.style.opacity = "1"; // важно для повторных открыт
 
 // через 1 сек — скрываем thanks
 setTimeout(() => {
-  thanks.style.transition = "0.5s ease";
+
+  // плавно скрываем thank you
+  thanks.style.transition = "opacity 0.4s ease";
   thanks.style.opacity = "0";
 
   setTimeout(() => {
+
+    // полностью убираем его из потока
     thanks.style.display = "none";
 
-   share.style.display = "flex";
-   share.style.justifyContent = "center";
+    // подготавливаем share
+    share.style.display = "flex";
+    share.style.justifyContent = "center";
+    share.style.alignItems = "center";
+
     share.style.opacity = "0";
-    share.style.transition = "0.5s ease";
+    share.style.transition = "opacity 0.4s ease";
 
-    setTimeout(() => {
+    // даём браузеру применить display
+    requestAnimationFrame(() => {
       share.style.opacity = "1";
-    }, 50);
+    });
 
-  }, 500);
+  }, 400);
 
 }, 2000);
 
