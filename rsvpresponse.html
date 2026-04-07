@@ -516,8 +516,27 @@ We’ll miss you! Feel free to leave a message for the couple.
 </div>
 
 
+
+<div id="shareBlock" style="
+display:none;
+text-align:center;
+margin-top:20px;
+">
+
+  <div style="font-weight:700;margin-bottom:10px;">
+    Share this invite
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+
+    <button class="share-btn" data-type="sms">SMS</button>
+    <button class="share-btn" data-type="whatsapp">WhatsApp</button>
+    <button class="share-btn" data-type="telegram">Telegram</button>
+
+  </div>
+
 </div>
-</div>
+
 
 <div id="toast">RSVP saved!</div>
 
@@ -735,7 +754,7 @@ setTimeout(() => {
 
 form.style.display = "none";
 
-// 🔥 меняем текст в зависимости от RSVP
+// 🔥 меняем текст
 const msg = document.getElementById("thanksMessage");
 const status = rsvpSelect.value;
 
@@ -756,9 +775,32 @@ if (status === "no") {
   `;
 }
 
-document.getElementById("thanksScreen").style.display = "block";
+// 🔥 НАЧИНАЕТСЯ МАГИЯ
+const thanks = document.getElementById("thanksScreen");
+const share = document.getElementById("shareBlock");
 
+thanks.style.display = "block";
+thanks.style.opacity = "1"; // важно для повторных открытий
 
+// через 1 сек — скрываем thanks
+setTimeout(() => {
+  thanks.style.transition = "0.5s ease";
+  thanks.style.opacity = "0";
+
+  setTimeout(() => {
+    thanks.style.display = "none";
+
+    share.style.display = "block";
+    share.style.opacity = "0";
+    share.style.transition = "0.5s ease";
+
+    setTimeout(() => {
+      share.style.opacity = "1";
+    }, 50);
+
+  }, 500);
+
+}, 1000);
 
 } catch (err) {
   console.error(err);
