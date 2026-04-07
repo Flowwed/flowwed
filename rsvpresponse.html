@@ -357,7 +357,9 @@ margin-bottom:10px;
   width:48px;
   height:48px;
   border-radius:50%;
-  background:#b41111;
+
+  background:rgba(180,17,17,0.75);
+  backdrop-filter: blur(6px);
 
   display:flex;
   align-items:center;
@@ -365,11 +367,14 @@ margin-bottom:10px;
 
   cursor:pointer;
 
-  flex:0 0 48px; /* ❗ фикс "яиц" */
+  flex:0 0 48px;
 
   transition:all .2s ease;
   box-shadow:0 6px 14px rgba(0,0,0,0.18);
+
+  border:1px solid rgba(255,255,255,0.25);
 }
+
 
 
 .share-icon img{
@@ -379,6 +384,9 @@ margin-bottom:10px;
   pointer-events:none;
 }
 
+
+
+
 .share-icon:active{
   transform:scale(0.9);
 }
@@ -386,15 +394,25 @@ margin-bottom:10px;
 #saveInviteBtn{
   display:block;
   width:80%;
-  margin: 0 auto; /* 🔥 ВОТ ЭТО */
+  margin:0 auto;
+
   padding:16px;
-  background:#b41111;
+
+  background:rgba(180,17,17,0.85); /* 🔥 мягче */
+  backdrop-filter: blur(6px);      /* 🔥 glass эффект */
+
   color:white;
   border-radius:14px;
+
   text-align:center;
   font-weight:700;
   font-size:17px;
+
+  box-shadow: 0 8px 20px rgba(180,17,17,0.25); /* мягкая тень */
+
+  transition: all .2s ease;
 }
+
 
 .form-box.compact{
   padding:12px;
@@ -402,6 +420,11 @@ margin-bottom:10px;
   max-width:320px;
 }
 
+#saveInviteBtn:active,
+.share-icon:active{
+  transform:scale(0.96);
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
 
 
 </style>
