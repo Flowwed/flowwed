@@ -325,19 +325,21 @@ padding-bottom:6px;
 margin-bottom:10px;
 }
 
-.share-icon{
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  background:#b41111;
 
+#shareBlock{
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
+  width:100%;
+  margin-top:20px;
+}
 
-  cursor:pointer;
-box-shadow:0 4px 10px rgba(0,0,0,0.15);
-  transition:all .2s ease;
+.share-row{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  width:100%;
 }
 
 .share-icon{
@@ -352,6 +354,8 @@ box-shadow:0 4px 10px rgba(0,0,0,0.15);
 
   cursor:pointer;
 
+  flex:0 0 48px; /* ❗ фикс "яиц" */
+
   transition:all .2s ease;
   box-shadow:0 6px 14px rgba(0,0,0,0.18);
 }
@@ -360,18 +364,13 @@ box-shadow:0 4px 10px rgba(0,0,0,0.15);
   width:22px;
   height:22px;
   filter:invert(1);
+  pointer-events:none;
 }
 
 .share-icon:active{
   transform:scale(0.9);
 }
 
-#shareBlock{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  width:100%;
-}
 
 </style>
 </head>
@@ -562,53 +561,35 @@ We’ll miss you! Feel free to leave a message for the couple.
   </p>
 </div>
 
+<div id="shareBlock" style="display:none;">
 
+  <div class="share-row">
 
-<div id="shareBlock" style="
-display:none;
-margin-top:20px;
-width:100%;
-">
+    <div class="share-icon" data-type="sms">✉️</div>
 
-<div style="
-display:flex;
-justify-content:center;
-align-items:center;
-gap:14px;
-width:100%;
-max-width:320px;
-margin:0 auto;
-">
+    <div class="share-icon" data-type="whatsapp">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg">
+    </div>
 
-<div class="share-icon" data-type="sms">
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/maildotru.svg">
-</div>
+    <div class="share-icon" data-type="telegram">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg">
+    </div>
 
-<div class="share-icon" data-type="whatsapp">
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/whatsapp.svg">
-</div>
+    <div class="share-icon" data-type="facebook">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg">
+    </div>
 
-<div class="share-icon" data-type="telegram">
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/telegram.svg">
-</div>
+    <div class="share-icon" data-type="pinterest">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/pinterest.svg">
+    </div>
 
-<div class="share-icon" data-type="facebook">
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/facebook.svg">
-</div>
+    <div class="share-icon" data-type="twitter">
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg">
+    </div>
 
-<div class="share-icon" data-type="pinterest">
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/pinterest.svg">
-</div>
-
-<div class="share-icon" data-type="twitter">
-  <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg">
-</div>
-
-
+  </div>
 
 </div>
-</div>
-
 
 <div id="toast">RSVP saved!</div>
 
