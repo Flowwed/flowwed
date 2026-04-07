@@ -676,19 +676,23 @@ message:messageInput.value
 
 try{
 
-const { data: guest, error } = await supabase
-  .from("guests")
-  .select("*")
-  .eq("email", emailInput.value.trim().toLowerCase().replace(/\s+/g, ""));
+const emailValue = emailInput.value.trim().toLowerCase();
 
-if (!guest || guest.length === 0) {
+const { data: guestsList } = await supabase
+  .from("guests")
+  .select("*");
+
+const g = guestsList.find(item =>
+  (item.email || "").trim().toLowerCase() === emailValue
+);
+
+if (!g) {
   alert("Guest not found on the list.");
   btn.classList.remove("loading");
   sending = false;
   return;
 }
 
-const g = guest[0];
 
 if (g.responded_at) {
   alert("You already submitted RSVP");
