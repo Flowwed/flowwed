@@ -325,12 +325,11 @@ padding-bottom:6px;
 margin-bottom:10px;
 }
 
-
 .share-icon{
-  width:48px;
-  height:48px;
+  width:42px;
+  height:42px;
   border-radius:50%;
-  background:#b41111; /* твой фирменный цвет */
+  background:#b41111;
   color:white;
 
   display:flex;
@@ -338,10 +337,11 @@ margin-bottom:10px;
   justify-content:center;
 
   font-weight:700;
-  font-size:18px;
+  font-size:16px;
 
   cursor:pointer;
   transition:0.2s ease;
+  flex:0 0 42px;
 }
 
 .share-icon:active{
@@ -351,7 +351,6 @@ margin-bottom:10px;
 .share-icon:hover{
   transform:translateY(-3px);
 }
-
 
 </style>
 </head>
@@ -550,11 +549,8 @@ text-align:center;
 margin-top:20px;
 ">
 
-  <div style="font-weight:700;margin-bottom:10px;">
-    Share this invite
-  </div>
 
-<div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+<div style="display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto;">
 
   <div class="share-icon" data-type="sms">💬</div>
   <div class="share-icon" data-type="whatsapp">🟢</div>
