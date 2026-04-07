@@ -605,38 +605,34 @@ We’ll miss you! Feel free to leave a message for the couple.
 </div> <!-- ← ВОТ ЭТО закрывает .form-box -->
 
 <!-- 🔥 ВСТАВЛЯЕМ СЮДА -->
+
 <div id="shareBlock" style="display:none;">
 
-<div class="share-icon" data-type="sms">
-  <img src="images/icon-sms.svg">
-</div>
+  <div class="share-icon" data-type="sms">
+    <img src="images/icon-sms.svg">
+  </div>
 
-<div class="share-icon" data-type="sms">
-  <img src="images/icon-whatsapp.svg">
-</div>
+  <div class="share-icon" data-type="whatsapp">
+    <img src="images/icon-whatsapp.svg">
+  </div>
 
+  <div class="share-icon" data-type="tiktok">
+    <img src="images/icon-tiktok.svg">
+  </div>
 
-<div class="share-icon" data-type="sms">
-  <img src="images/icon-tiktok.svg">
-</div>
+  <div class="share-icon" data-type="pinterest">
+    <img src="images/icon-pinterest.svg">
+  </div>
 
-<div class="share-icon" data-type="sms">
-  <img src="images/icon-pinterest.svg">
-</div>
+  <div class="share-icon" data-type="instagram">
+    <img src="images/icon-instagram.svg">
+  </div>
 
-
-<div class="share-icon" data-type="sms">
-  <img src="images/icon-instagram.svg">
-</div>
-
-
-<div class="share-icon" data-type="sms">
-  <img src="images/icon-facebook.svg">
-</div>
-
+  <div class="share-icon" data-type="facebook">
+    <img src="images/icon-facebook.svg">
+  </div>
 
 </div>
-
 
 <script type="module">
 
@@ -1069,6 +1065,53 @@ document.addEventListener("click", async (e) => {
     navigator.clipboard.writeText(url);
     alert("Link copied!");
   }
+
+});
+
+</script>
+
+<script>
+
+
+/* SHARE BUTTONS */
+
+const shareIcons = document.querySelectorAll(".share-icon");
+
+shareIcons.forEach(btn => {
+
+  btn.addEventListener("click", () => {
+
+    const type = btn.dataset.type;
+
+    const url = window.location.href;
+
+    const text = "You're invited! RSVP here: " + url;
+
+    if (type === "whatsapp") {
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+    }
+
+    if (type === "facebook") {
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
+    }
+
+    if (type === "pinterest") {
+      window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}`, "_blank");
+    }
+
+    if (type === "tiktok") {
+      alert("TikTok does not support direct link sharing");
+    }
+
+    if (type === "instagram") {
+      alert("Instagram does not support direct link sharing. Use copy link.");
+    }
+
+    if (type === "sms") {
+      window.location.href = `sms:?body=${encodeURIComponent(text)}`;
+    }
+
+  });
 
 });
 
