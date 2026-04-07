@@ -264,6 +264,25 @@ transform:translateY(0);
     width:100%;
   }
 
+#smsBubble{
+  flex-direction:column;
+  align-items:stretch;
+  text-align:center;
+  gap:10px;
+transition:0.25s ease;
+}
+
+#smsQuickBtn{
+  width:100%;
+  padding:12px;
+  font-size:14px;
+transition:0.2s ease;
+}
+
+#smsQuickBtn:hover{
+  transform:translateY(-2px);
+}
+
 }
 
 .preview-line{
@@ -336,9 +355,9 @@ box-shadow: 0 6px 16px rgba(0,0,0,0.12);
     i
   </div>
 
-  <div style="flex:1;font-size:13px;color:#7e2a2a;font-weight:600;">
-    Send this RSVP to your guest via SMS
-  </div>
+<div style="flex:1;font-size:13px;color:#7e2a2a;font-weight:600;line-height:1.4;">
+  Send this RSVP to your guest via SMS
+</div>
 
   <button id="smsQuickBtn" style="
   background:#b41111;
