@@ -326,39 +326,32 @@ margin-bottom:10px;
 }
 
 
-.share-icons-row{
+.share-icon{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#b41111; /* твой фирменный цвет */
+  color:white;
+
   display:flex;
-  justify-content:center;
   align-items:center;
-  gap:12px;
-  flex-wrap:nowrap;
-  overflow-x:auto;
-  padding:6px 0;
-}
+  justify-content:center;
 
-.share-icon-btn{
-  border:1.5px solid #b41111;
-  background:none;
-  color:#b41111;
-
-  padding:6px 10px;
-  border-radius:999px;
-
-  font-size:12px;
   font-weight:700;
+  font-size:18px;
 
   cursor:pointer;
   transition:0.2s ease;
 }
 
-.share-icon-btn:active{
-  transform:scale(0.95);
+.share-icon:active{
+  transform:scale(0.9);
 }
 
-.share-icon-btn:hover{
-  background:#b41111;
-  color:white;
+.share-icon:hover{
+  transform:translateY(-3px);
 }
+
 
 </style>
 </head>
@@ -557,26 +550,21 @@ text-align:center;
 margin-top:20px;
 ">
 
-<div id="shareBlock" style="
-display:none;
-text-align:center;
-margin-top:20px;
-">
+  <div style="font-weight:700;margin-bottom:10px;">
+    Share this invite
+  </div>
 
+<div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
 
-<div class="share-icons-row">
-
-  <button class="share-icon-btn" data-type="sms">SMS</button>
-  <button class="share-icon-btn" data-type="whatsapp">WA</button>
-  <button class="share-icon-btn" data-type="telegram">TG</button>
-  <button class="share-icon-btn" data-type="facebook">f</button>
-  <button class="share-icon-btn" data-type="pinterest">p</button>
-  <button class="share-icon-btn" data-type="twitter">X</button>
+  <div class="share-icon" data-type="sms">💬</div>
+  <div class="share-icon" data-type="whatsapp">🟢</div>
+  <div class="share-icon" data-type="telegram">✈️</div>
+  <div class="share-icon" data-type="facebook">f</div>
+  <div class="share-icon" data-type="pinterest">p</div>
+  <div class="share-icon" data-type="twitter">x</div>
 
 </div>
-
 </div>
-
 
 
 <div id="toast">RSVP saved!</div>
@@ -791,7 +779,7 @@ toast.classList.add("show");
 
 setTimeout(() => {
   toast.classList.remove("show");
-}, 2500);
+}, 2000);
 
 form.style.display = "none";
 
