@@ -372,6 +372,20 @@ margin-bottom:10px;
 }
 
 
+#saveInviteBtn{
+  margin:10px auto;
+  padding:14px;
+  background:#b41111;
+  color:white;
+  border-radius:12px;
+  text-align:center;
+  font-weight:700;
+  cursor:pointer;
+  width:100%;
+  font-size:16px;
+}
+
+
 </style>
 </head>
 
@@ -843,8 +857,9 @@ thanks.style.display = "block";
 // через 2 сек переключаем
 setTimeout(() => {
 
-  thanks.style.display = "none"; // ❗ убрали полностью
-
+thanks.innerHTML = `
+  <div id="saveInviteBtn">Save This Invite</div>
+`;
   share.style.display = "flex";
   share.style.justifyContent = "center";
   share.style.alignItems = "center";
@@ -996,6 +1011,33 @@ function showToast(message, isError = false){
     toast.classList.remove("show");
   },2000);
 }
+
+</script>
+
+<script>
+
+document.addEventListener("click", async (e) => {
+
+  if (e.target.id === "saveInviteBtn") {
+
+    const url = window.location.href;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Wedding Invite",
+          text: "Save this invite",
+          url: url
+        });
+        return;
+      } catch {}
+    }
+
+    navigator.clipboard.writeText(url);
+    alert("Link copied!");
+  }
+
+});
 
 </script>
 
