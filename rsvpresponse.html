@@ -358,8 +358,8 @@ margin-bottom:10px;
   height:48px;
   border-radius:50%;
 
-  background:rgba(195,12,30,0.85); /* немного мягче */
-  
+  background:transparent;          /* ❗ убрали заливку */
+
   display:flex;
   align-items:center;
   justify-content:center;
@@ -368,15 +368,16 @@ margin-bottom:10px;
 
   flex:0 0 48px;
 
+  border:2px solid #c30c1e;        /* рамка */
+  color:#c30c1e;                   /* для emoji */
+
   transition:.2s;
-  box-shadow:0 4px 12px rgba(0,0,0,0.12);
 }
 
 .share-icon img{
   width:22px;
   height:22px;
-  filter:invert(1);
-  pointer-events:none;
+  filter: invert(18%) sepia(88%) saturate(3000%) hue-rotate(340deg);
 }
 
 .share-icon:active{
@@ -390,17 +391,26 @@ margin-bottom:10px;
 
   padding:16px;
 
-  background:#c30c1e;
-  color:white;
+  background:transparent;          /* ❗ убрали заливку */
+  color:#c30c1e;                   /* текст ruby */
+
+  border:2px solid #c30c1e;        /* рамка */
 
   border-radius:14px;
   text-align:center;
   font-weight:700;
   font-size:17px;
 
-  box-shadow:0 6px 16px rgba(0,0,0,0.15);
   transition:.2s;
 }
+
+
+#saveInviteBtn:active,
+.share-icon:active{
+  transform:scale(0.95);
+  opacity:0.8;
+}
+
 
 .form-box.compact{
   padding:12px;
@@ -408,17 +418,6 @@ margin-bottom:10px;
   max-width:320px;
 }
 
-#saveInviteBtn:active,
-.share-icon:active{
-  transform:scale(0.96);
-}
-
-#saveInviteBtn,
-.share-icon{
-  box-shadow:
-    0 8px 20px rgba(195,12,30,0.25),
-    inset 0 1px 0 rgba(255,255,255,0.2);
-}
 
 </style>
 </head>
