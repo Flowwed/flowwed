@@ -31,7 +31,7 @@ body {
 
 #coupleName{
 text-align:center;
-font-size:32px;
+font-size:38px;
 color:#9c1818;
 margin-bottom:24px;
 font-weight:700;
@@ -95,7 +95,7 @@ margin-bottom:10px;
 display:block;
 font-weight:700;
 margin-bottom:3px;
-font-size:13px;
+font-size:15px;
 color:#7e2a2a;
 }
 
@@ -105,7 +105,7 @@ box-sizing:border-box;
 padding:8px;
 border-radius:8px;
 border:1px solid rgba(160,0,40,0.25);
-font-size:13px;
+font-size:15px;
 }
 textarea{
 height:60px;
@@ -303,40 +303,36 @@ transition:0.2s ease;
 }
 
 .preview-line{
-display:flex;
-align-items:center;
-gap:4px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+
+  font-size:16px;
+
+  border-bottom:1px solid rgba(180,17,17,0.15);
+  padding-bottom:6px;
+  margin-bottom:10px;
 }
 
 .preview-line label{
-width:100px;
-flex-shrink:0;
-font-weight:700;
-}
-
-.preview-line{
-display:flex;
-align-items:center;
-gap:8px;
+  width:110px;
+  flex-shrink:0;
+  font-weight:700;
 }
 
 .preview-line .dot{
-white-space:nowrap;
+  white-space:nowrap;
+  font-size:20px;
+  font-weight:700;
 }
+
 
 .preview-line span[data-preview]{
-font-size:13px;
-font-weight:700;
-color:#9c1818;
-letter-spacing:0.2px;
+  font-size:18px;
+  font-weight:700;
+  color:#9c1818;
+  letter-spacing:0.2px;
 }
-
-.preview-line{
-border-bottom:1px solid rgba(180,17,17,0.15);
-padding-bottom:6px;
-margin-bottom:10px;
-}
-
 
 #shareBlock{
   display:flex;
@@ -411,6 +407,12 @@ margin-bottom:10px;
 }
 
 
+.preview-line,
+.preview-line label,
+.preview-line span[data-preview]{
+  font-size:15px !important;
+}
+
 </style>
 </head>
 
@@ -469,7 +471,7 @@ box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 
 <div style="
 text-align:center;
-font-size:17px;
+font-size:22px;
 font-weight:700;
 color:#8b1a1a;
 margin-top:-12px;
@@ -478,6 +480,8 @@ letter-spacing:0.3px;
 ">
 Kindly respond by the RSVP date below
 </div>
+
+
 <div class="layout">
 
 <div class="player">
