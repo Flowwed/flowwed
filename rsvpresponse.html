@@ -928,7 +928,11 @@ setTimeout(() => {
   toast.classList.remove("show");
 }, 2000);
 
-form.closest(".form-box").style.display = "none";
+if (window.matchMedia("(max-width: 800px)").matches) {
+  form.style.display = "none";
+} else {
+  form.closest(".form-box").style.display = "none";
+}
 
 const status = rsvpSelect.value;
 
