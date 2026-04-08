@@ -751,6 +751,8 @@ body.fade-out {
     </div>
   </button>
 
+
+
   <!-- ROW 3 -->
   <button class="big-btn" id="memories" onclick="openPage('memories')">
     <i class="fa-solid fa-heart"></i>Memories
@@ -781,7 +783,7 @@ body.fade-out {
   </button>
 
   <!-- ROW 4 (CENTERED 2 BUTTONS) -->
-  <div class="last-row">
+
     <button class="big-btn" id="party" onclick="openPage('party')">
       <i class="fa-solid fa-people-group"></i>Wedding Party
       <div class="bubble">
@@ -795,7 +797,22 @@ body.fade-out {
         Manage your <b>wedding website</b>
       </div>
     </button>
+
+<button class="big-btn" id="wedreports" onclick="openPage('wedreports')">
+  <i class="fa-solid fa-chart-line"></i>Wed Reports
+  <div class="bubble">
+    View your <b>wedding analytics</b>
   </div>
+</button>
+
+<button class="big-btn" id="feedback" onclick="openPage('feedback')">
+  <i class="fa-solid fa-comment-dots"></i>Guest Feedback
+  <div class="bubble">
+    See what your <b>guests say</b>
+  </div>
+</button>
+
+
 
 </div>
 
@@ -937,6 +954,10 @@ function openPage(page) {
 
     case "yourweb":
       file = "YourWeb.html";
+      break;
+
+    case "wedreports":
+      file = "wed_reports.html";
       break;
 
     default:

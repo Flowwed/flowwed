@@ -661,147 +661,6 @@ th {
 
 <!-- ================= EMAIL COMPOSERS (6 штук) ================= -->
 
-<!-- STD — YES -->
-<div class="email-composer" id="composer_stdYes">
-  <div class="composer-header">
-    <span>Send Email & SMS</span>
-
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span class="composerExpand" data-group="stdYes" style="cursor:pointer;">⤢</span>
-      <span class="close-btn" data-group="stdYes">&times;</span>
-    </div>
-  </div>
-
-  <label class="composer-label">To Email(s):</label>
-  <input type="text" id="toEmail_stdYes" class="composer-input">
-
-  <label class="composer-label">To Phone(s):</label>
-  <input type="text" id="toPhone_stdYes" class="composer-input">
-
-  <label class="composer-label">Subject:</label>
-  <input type="text" id="subject_stdYes" class="composer-input" value="Wedding Update">
-
-  <label class="composer-label">Message:</label>
-  <textarea id="body_stdYes" class="composer-textarea">Hello, here is the latest update…</textarea>
-
-   <!-- FOOTER ✨ -->
-  <div class="composer-footer" data-group="stdYes">
-  <p style="font-size:12px;color:#666;margin-top:12px;">
-    This message is sent from a notification-only address.<br>
-    If you'd like to contact us, please write to:
-    <b id="composerReply_stdYes"></b>
-  </p>
-</div>
-
-  <button class="composer-send" data-group="stdYes">Send Email & SMS</button>
-</div>
-
-<!-- STD — NO -->
-<div class="email-composer" id="composer_stdNo">
-  <div class="composer-header">
-    <span>Send Email & SMS</span>
-
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span class="composerExpand" data-group="stdNo" style="cursor:pointer;">⤢</span>
-      <span class="close-btn" data-group="stdNo">&times;</span>
-    </div>
-  </div>
-
-  <label class="composer-label">To Email(s):</label>
-  <input type="text" id="toEmail_stdNo" class="composer-input">
-
-  <label class="composer-label">To Phone(s):</label>
-  <input type="text" id="toPhone_stdNo" class="composer-input">
-
-  <label class="composer-label">Subject:</label>
-  <input type="text" id="subject_stdNo" class="composer-input" value="Wedding Update">
-
-  <label class="composer-label">Message:</label>
-  <textarea id="body_stdNo" class="composer-textarea">Hello, here is the latest update…</textarea>
-
-  <!-- FOOTER ✨ -->
-  <div class="composer-footer" data-group="stdNo">
-  <p style="font-size:12px;color:#666;margin-top:12px;">
-    This message is sent from a notification-only address.<br>
-    If you'd like to contact us, please write to:
-    <b id="composerReply_stdNo"></b>
-  </p>
-</div>
-
-  <button class="composer-send" data-group="stdNo">Send Email & SMS</button>
-</div>
-
-<!-- STD — MAYBE -->
-<div class="email-composer" id="composer_stdMaybe">
-  <div class="composer-header">
-    <span>Send Email & SMS</span>
-
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span class="composerExpand" data-group="stdMaybe" style="cursor:pointer;">⤢</span>
-      <span class="close-btn" data-group="stdMaybe">&times;</span>
-    </div>
-  </div>
-
-  <label class="composer-label">To Email(s):</label>
-  <input type="text" id="toEmail_stdMaybe" class="composer-input">
-
-  <label class="composer-label">To Phone(s):</label>
-  <input type="text" id="toPhone_stdMaybe" class="composer-input">
-
-  <label class="composer-label">Subject:</label>
-  <input type="text" id="subject_stdMaybe" class="composer-input" value="Wedding Update">
-
-  <label class="composer-label">Message:</label>
-  <textarea id="body_stdMaybe" class="composer-textarea">Hello, here is the latest update…</textarea>
-
-
-<!-- FOOTER ✨ -->
-<div class="composer-footer" data-group="stdMaybe">
-  <p style="font-size:12px;color:#666;margin-top:12px;">
-    This message is sent from a notification-only address.<br>
-    If you'd like to contact us, please write to:
-    <b id="composerReply_stdMaybe"></b>
-  </p>
-</div>
-
-  <button class="composer-send" data-group="stdMaybe">Send Email & SMS</button>
-</div>
-
-<!-- STD — NO RESPONSE -->
-<div class="email-composer" id="composer_stdNoResponse">
-  <div class="composer-header">
-    <span>Send Email & SMS</span>
-
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span class="composerExpand" data-group="stdNoResponse" style="cursor:pointer;">⤢</span>
-      <span class="close-btn" data-group="stdNoResponse">&times;</span>
-    </div>
-  </div>
-
-  <label class="composer-label">To Email(s):</label>
-  <input type="text" id="toEmail_stdNoResponse" class="composer-input">
-
-  <label class="composer-label">To Phone(s):</label>
-  <input type="text" id="toPhone_stdNoResponse" class="composer-input">
-
-  <label class="composer-label">Subject:</label>
-  <input type="text" id="subject_stdNoResponse" class="composer-input" value="Wedding Update">
-
-  <label class="composer-label">Message:</label>
-  <textarea id="body_stdNoResponse" class="composer-textarea">Hello…</textarea>
-
-
-<!-- FOOTER ✨ -->
-<div class="composer-footer" data-group="stdNoResponse">
-  <p style="font-size:12px;color:#666;margin-top:12px;">
-    This message is sent from a notification-only address.<br>
-    If you'd like to contact us, please write to:
-    <b id="composerReply_stdNoResponse"></b>
-  </p>
-</div>
-
-  <button class="composer-send" data-group="stdNoResponse">Send Email & SMS</button>
-</div>
 
 <!-- RSVP — YES -->
 <div class="email-composer" id="composer_rsvpYes">
@@ -1039,10 +898,6 @@ async function loadGuests() {
   }
 
   const groups = {
-  stdYes: data.filter(g => g.std_status?.toLowerCase() === "yes"),
-  stdNo: data.filter(g => g.std_status?.toLowerCase() === "no"),
-  stdMaybe: data.filter(g => g.std_status?.toLowerCase() === "maybe"),
-  stdNoResponse: data.filter(g => !g.std_status),          // ← added
 
   rsvpYes: data.filter(g => g.rsvp_status?.toLowerCase() === "yes"),
   rsvpNo: data.filter(g => g.rsvp_status?.toLowerCase() === "no"),
@@ -1089,14 +944,10 @@ function totalCard(groupKey, label, num) {
 
 function renderTotals(g) {
   totalsBox.innerHTML = `
-    ${totalCard("stdYes", "SD — ✔", g.stdYes.length)}
-    ${totalCard("stdNo", "SD — ✘", g.stdNo.length)}
-    ${totalCard("stdMaybe", 'SD — <span style="color:white;">❔</span>', g.stdMaybe.length)}
-    ${totalCard("stdNoResponse", "SD — ⚠️", g.stdNoResponse.length)}
 
     ${totalCard("rsvpYes", "RSVP — ✔", g.rsvpYes.length)}
     ${totalCard("rsvpNo", "RSVP — ✘", g.rsvpNo.length)}
-    ${totalCard("stdMaybe", 'RSVP — <span style="color:white;">❔</span>', g.stdMaybe.length)}
+    ${totalCard("rsvpMaybe", 'RSVP — <span style="color:white;">❔</span>', g.stdMaybe.length)}
     ${totalCard("rsvpNoResponse", "RSVP — ⚠️", g.rsvpNoResponse.length)}
   `;
 }
@@ -1270,10 +1121,6 @@ function renderTables(g) {
 
   // clear + insert fresh HTML for all tables
   tables.innerHTML = `
-    ${renderTable("STD — YES", g.stdYes, "stdYes")}
-    ${renderTable("STD — NO", g.stdNo, "stdNo")}
-    ${renderTable("STD — MAYBE", g.stdMaybe, "stdMaybe")}
-    ${renderTable("STD — NO RESPONSE", g.stdNoResponse, "stdNoResponse")}
 
     ${renderTable("RSVP — YES", g.rsvpYes, "rsvpYes")}
     ${renderTable("RSVP — NO", g.rsvpNo, "rsvpNo")}
