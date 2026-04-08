@@ -245,26 +245,24 @@ transform:translateY(0);
     padding:0;
   }
 
-.layout{
-  display:flex;
-  flex-direction:column;
-  align-items:stretch; /* ← ВАЖНО (не center) */
-  gap:18px;
-  padding:16px;
-}
+  .layout{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:18px;
+    padding:16px;
+  }
   
-.player{
-  width:100%;
-  max-width:100%;
-  margin:0;
-}
+  .player{
+    width:100%;
+    max-width:100%;
+    margin:0;
+  }
 
-.form-box{
-  width:90%;
-  max-width:380px;
-  margin:0 auto;
-}
   .form-box{
+    width:90%;
+    max-width:380px;
+    margin:0 auto;
     padding:16px;
   }
 
@@ -281,26 +279,66 @@ transform:translateY(0);
     width:100%;
   }
 
-#smsBubble{
-  flex-direction:column;
-  align-items:stretch;
-  text-align:center;
-  gap:10px;
-transition:0.25s ease;
+  #smsBubble{
+    flex-direction:column;
+    align-items:stretch;
+    text-align:center;
+    gap:10px;
+    transition:0.25s ease;
+  }
+
+  #smsQuickBtn{
+    width:100%;
+    padding:12px;
+    font-size:14px;
+    transition:0.2s ease;
+  }
+
+  #smsQuickBtn:hover{
+    transform:translateY(-2px);
+  }
+
+  /* 🔥 MOBILE SHARE (ЛЁГКИЙ ВАРИАНТ) */
+
+  #shareBlock{
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    width:100%;
+    margin-top:8px;
+    padding:0 10px;
+  }
+
+  .share-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:6px;
+    border-radius:10px;
+
+    background:none;
+    box-shadow:none;
+
+    cursor:pointer;
+  }
+
+  .share-icon img{
+    width:28px;
+    height:28px;
+  }
+
+  .share-icon:active{
+    transform:scale(0.9);
+    opacity:0.7;
+  }
+
 }
 
-#smsQuickBtn{
-  width:100%;
-  padding:12px;
-  font-size:14px;
-transition:0.2s ease;
-}
 
-#smsQuickBtn:hover{
-  transform:translateY(-2px);
-}
-
-}
+/* ================= COMMON (НЕ ТРОГАЕМ) ================= */
 
 .preview-line{
   display:flex;
@@ -326,7 +364,6 @@ transition:0.2s ease;
   font-weight:700;
 }
 
-
 .preview-line span[data-preview]{
   font-size:18px;
   font-weight:700;
@@ -334,14 +371,6 @@ transition:0.2s ease;
   letter-spacing:0.2px;
 }
 
-#shareBlock{
-  display:none;
-  justify-content:center;
-  align-items:center;
-  gap:14px; /* ВОТ ЭТО КЛЮЧ */
-  width:100%;
-  margin-top:5px;
-}
 .share-row{
   display:flex;
   justify-content:center;
@@ -350,120 +379,54 @@ transition:0.2s ease;
   width:100%;
 }
 
-.share-icon{
-  display:flex;
-  align-items:center;
-  justify-content:center;
 
-  cursor:pointer;
+/* ================= DESKTOP ================= */
 
-  padding:12px;
-  border-radius:14px;
+@media(min-width:801px){
 
-  transition:all 0.25s ease;
+  .share-icon{
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-  /* 💎 стеклянный эффект */
-  background:linear-gradient(145deg, #ffffff, #fff0f0);
+    cursor:pointer;
 
-  /* 💎 объём */
-  box-shadow:
-    0 6px 16px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.8);
+    padding:12px;
+    border-radius:14px;
 
-}
+    transition:all 0.25s ease;
 
+    background:linear-gradient(145deg, #ffffff, #fff0f0);
 
-.share-icon:hover{
-  transform:translateY(-5px) scale(1.06);
+    box-shadow:
+      0 6px 16px rgba(0,0,0,0.12),
+      inset 0 1px 0 rgba(255,255,255,0.8);
+  }
 
-  box-shadow:
-    0 14px 30px rgba(0,0,0,0.18),
-    0 0 12px rgba(255, 60, 60, 0.25),
-    0 0 24px rgba(255, 60, 60, 0.18);
-}
+  .share-icon:hover{
+    transform:translateY(-5px) scale(1.06);
 
+    box-shadow:
+      0 14px 30px rgba(0,0,0,0.18),
+      0 0 12px rgba(255, 60, 60, 0.25),
+      0 0 24px rgba(255, 60, 60, 0.18);
+  }
 
-.share-icon:active{
-  transform:scale(0.94);
+  .share-icon:active{
+    transform:scale(0.94);
 
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.15),
-    inset 0 2px 6px rgba(0,0,0,0.15);
-}
+    box-shadow:
+      0 4px 10px rgba(0,0,0,0.15),
+      inset 0 2px 6px rgba(0,0,0,0.15);
+  }
 
-.share-icon img{
-  width:34px;
-  height:34px;
+  .share-icon img{
+    width:34px;
+    height:34px;
 
-  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.25));
-  transition:all 0.25s ease;
-}
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  }
 
-.share-icon:hover img{
-  transform:scale(1.12);
-}
-
-
-
-
-#saveInviteBtn{
-  display:block;
-  width:80%;
-  margin:0 auto;
-
-  padding:16px;
-
-  background:transparent;
-  color:#7a4b3a;
-
-  border:2px solid #7a4b3a;
-
-  border-radius:14px;
-  text-align:center;
-  font-weight:700;
-  font-size:17px;
-
-  transition:.2s;
-}
-
-#saveInviteBtn:active,
-.share-icon:active{
-  transform:scale(0.95);
-  opacity:0.8;
-}
-
-
-.form-box.compact{
-  padding:12px;
-  width:90%;
-  max-width:320px;
-}
-
-
-.preview-line,
-.preview-line label,
-.preview-line span[data-preview]{
-  font-size:15px !important;
-}
-
-#desktopThanks{
-  display:none;
-  width:360px;
-  align-self:center;
-  margin-left:28px;
-}
-
-#desktopThanksInner{
-  text-align:center;
-}
-
-#desktopThanks h2{
-  color:#9c1818;
-  margin-bottom:10px;
-}
-
-#desktopShareRow{
-  margin-top:12px;
 }
 
 
