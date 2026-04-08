@@ -865,6 +865,9 @@ setTimeout(() => {
 
 form.style.display = "none";
 
+btn.classList.remove("loading");
+sending = false;
+
 // 🔥 меняем текст
 const msg = document.getElementById("thanksMessage");
 const status = rsvpSelect.value;
