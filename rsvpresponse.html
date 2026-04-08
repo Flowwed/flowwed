@@ -894,7 +894,7 @@ setTimeout(() => {
   toast.classList.remove("show");
 }, 2000);
 
-form.style.display = "none";
+form.closest(".form-box").style.display = "none";
 
 const status = rsvpSelect.value;
 
