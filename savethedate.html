@@ -2432,7 +2432,8 @@ for (let i = 0; i < batchGuests.length; i++) {
   let ok = true;
 
   const rsvpLink =
-  `${window.location.origin}/std_preview.html?t=${token}&g=${g.guest_id}`;
+  const rsvpLink =
+`${window.location.origin}/std_preview.html?t=${token}&g=${g.guest_id}&mode=admin`;
 
   try {
 
