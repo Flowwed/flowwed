@@ -552,12 +552,12 @@ background:#9c1818;
 
 <div class="field">
 <label>Name</label>
-<input type="text" id="nameInput">
+<input type="text" id="nameInput" required>
 </div>
 
 <div class="field">
 <label>Number of guests</label>
-<select id="guestCount">
+<select id="guestCount" required>
 <option value="1">1</option>
 <option value="2">2</option>
 <option value="more">More than 2</option>
@@ -566,17 +566,17 @@ background:#9c1818;
 
 <div class="field" id="extraGuests">
 <label>Names of additional guests</label>
-<input type="text" id="extraGuestsInput">
+<input type="text" id="extraGuestsInput" required>
 </div>
 
 <div class="field">
 <label>Email</label>
-<input type="email" id="emailInput">
+<input type="email" id="emailInput required">
 </div>
 
 <div class="field">
 <label>RSVP</label>
-<select id="rsvpSelect">
+<select id="rsvpSelect" required>
 <option value="">Select</option>
 <option value="yes">Yes</option>
 <option value="no">No</option>
@@ -787,6 +787,11 @@ let sending=false;
 form.addEventListener("submit",async(e)=>{
 
 e.preventDefault();
+
+if (!form.checkValidity()) {
+  form.reportValidity();
+  return;
+}
 
 if(sending)return;
 
