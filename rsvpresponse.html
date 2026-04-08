@@ -654,6 +654,15 @@ const guestId=new URLSearchParams(location.search).get("g");
 
 const mode = new URLSearchParams(location.search).get("mode");
 
+const bubble = document.getElementById("smsBubble");
+
+if (mode === "admin") {
+  if (bubble) bubble.style.display = "flex";
+} else {
+  if (bubble) bubble.style.display = "none";
+}
+
+
 /* LOAD SITE DATA */
 
 function formatDate(date){
@@ -978,10 +987,7 @@ const text = "You're invited! RSVP here: " + link;
 
 }
 
-if (mode === "admin") {
-  const bubble = document.getElementById("smsBubble");
-  if (bubble) bubble.style.display = "flex";
-}
+
 </script>
 
 <div id="mapModal" style="
