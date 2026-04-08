@@ -413,6 +413,25 @@ transition:0.2s ease;
   font-size:15px !important;
 }
 
+#desktopThanks{
+  display:none;
+  width:320px;
+  align-self:center;
+}
+
+#desktopThanksInner{
+  text-align:center;
+}
+
+#desktopThanks h2{
+  color:#9c1818;
+  margin-bottom:10px;
+}
+
+#desktopShareRow{
+  margin-top:12px;
+}
+
 
 </style>
 </head>
@@ -643,6 +662,19 @@ We’ll miss you! Feel free to leave a message for the couple.
 </div> <!-- ← ВОТ ЭТО закрывает .form-box -->
 
 
+<!-- 🔥 ВСТАВЛЯЕШЬ СЮДА -->
+<div id="desktopThanks" style="display:none;">
+  <div id="desktopThanksInner">
+
+    <h2>Thank you!</h2>
+    <p id="desktopThanksMessage"></p>
+
+    <div id="desktopShareRow" class="share-row"></div>
+
+  </div>
+</div>
+
+
 <script type="module">
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
@@ -863,67 +895,50 @@ setTimeout(() => {
 
 form.style.display = "none";
 
-// 🔥 меняем текст
-const msg = document.getElementById("thanksMessage");
 const status = rsvpSelect.value;
 
+/* готовим текст */
+let text = "";
+
 if (status === "no") {
-  msg.innerHTML = `
-    Your RSVP has been received.<br>
-    We’ll miss you! ❤️
-  `;
+  text = "Your RSVP has been received.<br>We’ll miss you! ❤️";
 } else if (status === "maybe") {
-  msg.innerHTML = `
-    Your RSVP has been received.<br>
-    We hope you can make it ❤️
-  `;
+  text = "Your RSVP has been received.<br>We hope you can make it ❤️";
 } else {
-  msg.innerHTML = `
-    Your RSVP has been received.<br>
-    We look forward to celebrating with you ❤️
-  `;
+  text = "Your RSVP has been received.<br>We look forward to celebrating with you ❤️";
 }
 
-// 🔥 НАЧИНАЕТСЯ МАГИЯ
-const thanks = document.getElementById("thanksScreen");
-const share = document.getElementById("shareBlock");
+/* MOBILE */
+if (window.innerWidth <= 800) {
 
-thanks.style.display = "block";
-thanks.style.opacity = "1"; // важно для повторных открытий
+  const thanks = document.getElementById("thanksScreen");
+  const share = document.getElementById("shareBlock");
 
+  document.getElementById("thanksMessage").innerHTML = text;
 
-// через 2 сек переключаем
+  thanks.style.display = "block";
 
-setTimeout(() => {
-
-  if (window.innerWidth <= 800) {
-
+  setTimeout(() => {
     share.style.display = "flex";
+  }, 1500);
 
-  } else {
-
-    // 💻 desktop
-    share.style.display = "flex";
-    share.style.justifyContent = "center";
-    share.style.alignItems = "center";
-
-  }
-
-}, 2000);
-
-
-} catch (err) {
-  console.error(err);
-  showToast("Something went wrong. Please try again.", true);
-  btn.classList.remove("loading");
-  sending = false;
 }
 
-btn.classList.remove("loading");
-sending = false;
+/* DESKTOP */
+else {
 
-});
-/* MAP LINK */
+  const desktop = document.getElementById("desktopThanks");
+  const msg = document.getElementById("desktopThanksMessage");
+  const shareRow = document.getElementById("desktopShareRow");
+
+  msg.innerHTML = text;
+
+  const originalShare = document.getElementById("shareBlock");
+  shareRow.innerHTML = originalShare.innerHTML;
+
+  desktop.style.display = "block";
+
+}/* MAP LINK */
 
 document.addEventListener("DOMContentLoaded", () => {
 
