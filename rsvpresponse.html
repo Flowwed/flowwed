@@ -938,6 +938,15 @@ else {
 
   desktop.style.display = "block";
 
+}
+
+} catch (err) {
+  console.error(err);
+  showToast("Something went wrong. Please try again.", true);
+  btn.classList.remove("loading");
+  sending = false;
+}
+
 }/* MAP LINK */
 
 document.addEventListener("DOMContentLoaded", () => {
