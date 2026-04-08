@@ -2432,7 +2432,7 @@ for (let i = 0; i < batchGuests.length; i++) {
   let ok = true;
 
   const rsvpLink =
-  `${window.location.origin}/rsvpresponse.html?t=${token}&g=${g.guest_id}`;
+  `${window.location.origin}/std_preview.html?t=${token}&g=${g.guest_id}`;
 
   try {
 
@@ -3584,7 +3584,7 @@ if (shareBtn) {
     const token = new URLSearchParams(location.search).get("t");
 
     // ✅ ВСЕГДА универсальная ссылка (без гостей)
-    const link = `${window.location.origin}/rsvpresponse.html?t=${token}&mode=admin`;
+    const link = `${window.location.origin}/std_preview.html?t=${token}&mode=admin`;
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
