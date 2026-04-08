@@ -420,6 +420,7 @@ transition:0.2s ease;
 
 
 <div id="smsBubble" style="
+display:none;
 margin: 0 auto 20px auto;
 max-width: 420px;
 background: #fff7f7;
@@ -977,11 +978,10 @@ const text = "You're invited! RSVP here: " + link;
 
 }
 
-if (mode !== "admin") {
+if (mode === "admin") {
   const bubble = document.getElementById("smsBubble");
-  if (bubble) bubble.style.display = "none";
+  if (bubble) bubble.style.display = "flex";
 }
-
 </script>
 
 <div id="mapModal" style="
