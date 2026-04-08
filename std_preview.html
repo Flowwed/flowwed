@@ -8,6 +8,7 @@
 <script src="https://player.vimeo.com/api/player.js"></script>
 
 <style>
+
 body{
   margin:0;
   height:100vh;
@@ -54,11 +55,10 @@ body{
 
 @media (max-width: 768px){
 
-  body{
-    justify-content:flex-start;
-    padding-top:20px;
-    padding-left:14px;
-    padding-right:14px;
+body{
+    display:block;   /* 🔥 КЛЮЧЕВОЕ */
+    margin:0;
+    padding:0;
   }
 
   #videoPlayerBox{
@@ -69,6 +69,9 @@ body{
   }
 
 }
+
+
+
 </style>
 </head>
 
@@ -93,7 +96,7 @@ body{
   </div>
 
   <div style="flex:1;font-size:13px;color:#7e2a2a;font-weight:600;">
-    Send this video to your guest
+    Send this Save The Date card to your guests
   </div>
 
   <button id="smsQuickBtn" style="
