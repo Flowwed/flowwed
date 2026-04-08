@@ -944,7 +944,8 @@ if (status === "no") {
 }
 
 /* MOBILE */
-if (window.innerWidth <= 800) {
+
+if (window.matchMedia("(max-width: 800px)").matches) {
 
   const thanks = document.getElementById("thanksScreen");
   const share = document.getElementById("shareBlock");
