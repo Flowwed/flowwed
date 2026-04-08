@@ -414,11 +414,6 @@ transition:0.2s ease;
 }
 
 
-body:not(.admin-mode) #smsBubble{
-  display:none;
-}
-
-
 </style>
 </head>
 
@@ -433,7 +428,6 @@ background: #fff7f7;
 border: 1px solid #ffd0d0;
 border-radius: 14px;
 padding: 14px 16px;
-display: flex;
 align-items: center;
 gap: 12px;
 box-shadow: 0 6px 16px rgba(0,0,0,0.12);
@@ -661,7 +655,8 @@ const guestId=new URLSearchParams(location.search).get("g");
 const mode = new URLSearchParams(location.search).get("mode");
 
 if (mode === "admin") {
-  document.body.classList.add("admin-mode");
+  const bubble = document.getElementById("smsBubble");
+  if (bubble) bubble.style.display = "flex";
 }
 
 
