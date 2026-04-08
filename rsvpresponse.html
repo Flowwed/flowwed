@@ -606,10 +606,6 @@ We’ll miss you! Feel free to leave a message for the couple.
 </div>
 
 
-<div id="toast">RSVP saved!</div>
-
-</div> <!-- ← ВОТ ЭТО закрывает .form-box -->
-
 <!-- 🔥 ВСТАВЛЯЕМ СЮДА -->
 
 <div id="shareBlock" style="display:none;">
@@ -639,6 +635,13 @@ We’ll miss you! Feel free to leave a message for the couple.
   </div>
 
 </div>
+
+
+
+<div id="toast">RSVP saved!</div>
+
+</div> <!-- ← ВОТ ЭТО закрывает .form-box -->
+
 
 <script type="module">
 
@@ -892,21 +895,34 @@ thanks.style.opacity = "1"; // важно для повторных открыт
 // показать thank you
 thanks.style.display = "block";
 
+
 // через 2 сек переключаем
+
 setTimeout(() => {
 
-  thanks.innerHTML = `
-    <div id="saveInviteBtn">Save This Invite</div>
-  `;
+  if (window.innerWidth <= 800) {
 
-  const box = document.querySelector(".form-box"); // ← ДОБАВИЛИ
-  box.classList.add("compact");                    // ← ДОБАВИЛИ
+    // 📱 mobile
+    thanks.innerHTML = `
+      <div id="saveInviteBtn">Save This Invite</div>
+    `;
 
-  share.style.display = "flex";
-  share.style.justifyContent = "center";
-  share.style.alignItems = "center";
+    const box = document.querySelector(".form-box");
+    box.classList.add("compact");
+
+    share.style.display = "flex";
+
+  } else {
+
+    // 💻 desktop
+    share.style.display = "flex";
+    share.style.justifyContent = "center";
+    share.style.alignItems = "center";
+
+  }
 
 }, 2000);
+
 
 } catch (err) {
   console.error(err);
