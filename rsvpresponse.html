@@ -811,7 +811,7 @@ const { data: g } = await supabase
   .from("guests")
   .select("*")
   .eq("email", emailValue)
-  .eq("site_token", token)
+  .eq("token", token)
   .single();
 
 
