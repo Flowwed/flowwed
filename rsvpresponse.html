@@ -335,7 +335,7 @@ transition:0.2s ease;
 }
 
 #shareBlock{
-  display:flex;
+  display:none;
   justify-content:center;
   align-items:center;
   gap:14px; /* ВОТ ЭТО КЛЮЧ */
@@ -891,20 +891,12 @@ const share = document.getElementById("shareBlock");
 thanks.style.display = "block";
 thanks.style.opacity = "1"; // важно для повторных открытий
 
-// через 1 сек — скрываем thanks
-// показать thank you
-thanks.style.display = "block";
-
 
 // через 2 сек переключаем
 
 setTimeout(() => {
 
   if (window.innerWidth <= 800) {
-
-
-    const box = document.querySelector(".form-box");
-    box.classList.add("compact");
 
     share.style.display = "flex";
 
