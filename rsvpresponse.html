@@ -413,6 +413,12 @@ transition:0.2s ease;
   font-size:15px !important;
 }
 
+
+body:not(.admin-mode) #smsBubble{
+  display:none;
+}
+
+
 </style>
 </head>
 
@@ -654,12 +660,8 @@ const guestId=new URLSearchParams(location.search).get("g");
 
 const mode = new URLSearchParams(location.search).get("mode");
 
-const bubble = document.getElementById("smsBubble");
-
 if (mode === "admin") {
-  if (bubble) bubble.style.display = "flex";
-} else {
-  if (bubble) bubble.style.display = "none";
+  document.body.classList.add("admin-mode");
 }
 
 
