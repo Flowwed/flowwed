@@ -958,6 +958,8 @@ else {
 
   desktop.style.display = "block";
 
+initShareButtons();
+
 }
 
 } catch (err) {
@@ -1176,6 +1178,52 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+
+// 🔥 ВОТ СЮДА ВСТАВЛЯЕШЬ
+function initShareButtons(){
+
+  const shareIcons = document.querySelectorAll("#desktopShareRow .share-icon");
+
+  shareIcons.forEach(btn => {
+
+    btn.addEventListener("click", () => {
+
+      const type = btn.dataset.type;
+      const url = window.location.href;
+      const text = "You're invited! RSVP here: " + url;
+
+      if (type === "whatsapp") {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+      }
+
+      if (type === "facebook") {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
+      }
+
+      if (type === "pinterest") {
+        window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}`, "_blank");
+      }
+
+      if (type === "sms") {
+        window.location.href = `sms:?body=${encodeURIComponent(text)}`;
+      }
+
+      if (type === "tiktok") {
+        alert("TikTok does not support direct link sharing");
+      }
+
+      if (type === "instagram") {
+        alert("Instagram does not support direct link sharing. Use copy link.");
+      }
+
+    });
+
+  });
+
+}
+
+
 
 </script>
 
