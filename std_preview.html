@@ -12,11 +12,32 @@ body{
   margin:0;
   height:100vh;
   display:flex;
-  justify-content:center;
+  flex-direction:column; /* 🔥 важно чтобы bubble был сверху */
   align-items:center;
+  justify-content:center;
   background: linear-gradient(180deg, #fff1f4, #ffffff);
   font-family: 'Segoe UI', sans-serif;
 }
+
+/* ✅ SMS BUBBLE */
+#smsBubble{
+  display:none;
+  align-items:center;
+  gap:12px;
+
+  margin: 16px auto 10px auto;
+  width:90%;
+  max-width:420px;
+
+  background:#fff7f7;
+  border:1px solid #ffd0d0;
+  border-radius:14px;
+  padding:12px 14px;
+
+  box-shadow:0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* VIDEO */
 
 #videoPlayerBox{
   width:min(380px, 90%);
@@ -29,42 +50,15 @@ body{
     0 8px 16px rgba(0,0,0,0.18);
 }
 
-
-
-body::before{
-  content:"";
-  position:fixed;
-  top:-20%;
-  left:-20%;
-  width:140%;
-  height:140%;
-
-  background: radial-gradient(
-    circle at 30% 40%,
-    rgba(255,150,150,0.25),
-    transparent 60%
-  );
-
-  animation: moveGlow 12s ease-in-out infinite;
-  z-index:-1;
-}
-
-@keyframes moveGlow{
-  0%   { transform: translate(0,0); }
-  50%  { transform: translate(60px, 40px); }
-  100% { transform: translate(0,0); }
-}
-
-
 /* 📱 MOBILE */
 
 @media (max-width: 768px){
 
-body{
-    align-items:flex-start;
+  body{
+    justify-content:flex-start;
     padding-top:20px;
-    padding-left:14px;   /* ← ВОЗДУХ */
-    padding-right:14px;  /* ← ВОЗДУХ */
+    padding-left:14px;
+    padding-right:14px;
   }
 
   #videoPlayerBox{
@@ -75,15 +69,49 @@ body{
   }
 
 }
-
-
-
-
 </style>
 </head>
 
 <body>
 
+<!-- ✅ ADMIN SMS BUBBLE -->
+<div id="smsBubble">
+
+  <div style="
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#b41111;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+  font-weight:700;
+  ">
+    i
+  </div>
+
+  <div style="flex:1;font-size:13px;color:#7e2a2a;font-weight:600;">
+    Send this video to your guest
+  </div>
+
+  <button id="smsQuickBtn" style="
+  background:#b41111;
+  color:white;
+  border:none;
+  border-radius:10px;
+  padding:6px 12px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  ">
+    Send
+  </button>
+
+</div>
+
+<!-- VIDEO -->
 <div id="videoPlayerBox">
   <iframe id="postWeddingIframe"
     src=""
@@ -94,6 +122,7 @@ body{
 </div>
 
 <script type="module">
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabase = createClient(
@@ -101,9 +130,18 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
 
+const token = new URLSearchParams(location.search).get("t");
+const mode  = new URLSearchParams(location.search).get("mode");
+
+/* ✅ SHOW ADMIN BUBBLE */
+if (mode === "admin") {
+  const bubble = document.getElementById("smsBubble");
+  if (bubble) bubble.style.display = "flex";
+}
+
+/* ✅ LOAD VIDEO */
 async function loadVideo(){
 
-  const token = new URLSearchParams(location.search).get("t");
   if(!token) return;
 
   const { data, error } = await supabase
@@ -126,6 +164,35 @@ async function loadVideo(){
 }
 
 loadVideo();
+
+/* ✅ SEND BUTTON LOGIC */
+const smsBtn = document.getElementById("smsQuickBtn");
+
+if (smsBtn) {
+
+  smsBtn.onclick = async () => {
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("mode"); // 🔥 убираем admin
+    const link = url.toString();
+
+    const text = "You're invited! Watch this: " + link;
+
+    // native share (iPhone / Android)
+    if (navigator.share) {
+      try {
+        await navigator.share({ text });
+        return;
+      } catch {}
+    }
+
+    // fallback SMS
+    const smsLink = `sms:?body=${encodeURIComponent(text)}`;
+    window.location.href = smsLink;
+  };
+
+}
+
 </script>
 
 </body>
