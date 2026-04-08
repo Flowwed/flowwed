@@ -357,37 +357,52 @@ transition:0.2s ease;
 
   cursor:pointer;
 
-  padding:10px;
-  border-radius:12px;
+  padding:12px;
+  border-radius:14px;
 
   transition:all 0.25s ease;
 
-  background:rgba(255,255,255,0.6);
-  backdrop-filter:blur(6px);
+  /* 💎 стеклянный эффект */
+  background:linear-gradient(145deg, #ffffff, #f3f3f3);
 
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  /* 💎 объём */
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+
 }
+
 
 .share-icon:hover{
-  transform:translateY(-4px) scale(1.05);
-  box-shadow:0 10px 22px rgba(0,0,0,0.15);
+  transform:translateY(-5px) scale(1.06);
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.18),
+    0 0 14px rgba(255,120,120,0.25); /* 🔥 glow */
 }
+
+
 
 .share-icon:active{
-  transform:scale(0.95);
-  box-shadow:0 3px 8px rgba(0,0,0,0.1);
-}
+  transform:scale(0.94);
 
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.15),
+    inset 0 2px 6px rgba(0,0,0,0.15);
+}
 
 .share-icon img{
   width:34px;
   height:34px;
-  transition:transform 0.25s ease;
+
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  transition:all 0.25s ease;
 }
 
 .share-icon:hover img{
-  transform:scale(1.1);
+  transform:scale(1.12);
 }
+
 
 
 
