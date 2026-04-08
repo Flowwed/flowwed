@@ -1083,41 +1083,45 @@ document.addEventListener("click", async (e) => {
 
 /* SHARE BUTTONS */
 
-const shareIcons = document.querySelectorAll(".share-icon");
+document.addEventListener("DOMContentLoaded", () => {
 
-shareIcons.forEach(btn => {
+  const shareIcons = document.querySelectorAll(".share-icon");
 
-  btn.addEventListener("click", () => {
+  shareIcons.forEach(btn => {
 
-    const type = btn.dataset.type;
+    btn.addEventListener("click", () => {
 
-    const url = window.location.href;
+      const type = btn.dataset.type;
 
-    const text = "You're invited! RSVP here: " + url;
+      const url = window.location.href;
 
-    if (type === "whatsapp") {
-      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-    }
+      const text = "You're invited! RSVP here: " + url;
 
-    if (type === "facebook") {
-      window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
-    }
+      if (type === "whatsapp") {
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
+      }
 
-    if (type === "pinterest") {
-      window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}`, "_blank");
-    }
+      if (type === "facebook") {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
+      }
 
-    if (type === "tiktok") {
-      alert("TikTok does not support direct link sharing");
-    }
+      if (type === "pinterest") {
+        window.open(`https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}`, "_blank");
+      }
 
-    if (type === "instagram") {
-      alert("Instagram does not support direct link sharing. Use copy link.");
-    }
+      if (type === "tiktok") {
+        alert("TikTok does not support direct link sharing");
+      }
 
-    if (type === "sms") {
-      window.location.href = `sms:?body=${encodeURIComponent(text)}`;
-    }
+      if (type === "instagram") {
+        alert("Instagram does not support direct link sharing. Use copy link.");
+      }
+
+      if (type === "sms") {
+        window.location.href = `sms:?body=${encodeURIComponent(text)}`;
+      }
+
+    });
 
   });
 
