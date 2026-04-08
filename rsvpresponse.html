@@ -807,13 +807,13 @@ try{
 
 const emailValue = emailInput.value.trim().toLowerCase();
 
-const { data: guestsList } = await supabase
+const { data: g } = await supabase
   .from("guests")
-  .select("*");
+  .select("*")
+  .eq("email", emailValue)
+  .eq("site_token", token)
+  .single();
 
-const g = guestsList.find(item =>
-  (item.email || "").trim().toLowerCase() === emailValue
-);
 
 if (!g) {
   showToast("Guest not found on the list.", true);
