@@ -17,7 +17,7 @@
       background: linear-gradient(180deg, #fff1f4, #ffffff);
       color: #6a2a2a;
       margin: 40px auto;
-      max-width: 1020px;
+      max-width: 1100px;
     }
 
     /* ============================= */
@@ -79,7 +79,9 @@
 }
 
 .table-section {
-  width: 93%;
+ width: 100%;
+  max-width: 800px;
+
   margin: 40px auto;
   padding: 18px;
 
@@ -110,6 +112,7 @@
       border-radius: 14px;
       padding: 6px;
     }
+
 
 
 
@@ -1606,18 +1609,22 @@ Fill in the blue fields, select your guests, and reach them by email and SMS.
 
 <div class="top-divider-line"></div>
 
-<div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
+<div style="margin: 0 18px 16px 18px; width:100%;">
 
 
-<!-- POST-WEDDING VIDEO PLAYER -->
-<div id="postWeddingVideo" style="
-  margin: 150px 18px 26px 18px;
-  display:flex;
-  justify-content:center;
+<!-- POST-WEDDING VIDEO + TABLE -->
+
+<div style="
+display:flex;
+justify-content:center;
+gap:60px;
+align-items:flex-start;
+margin:40px 0;
 ">
 
+  <!-- VIDEO -->
   <div id="videoPlayerBox" style="
-    width: min(520px, 100%);
+    width: min(400px, 100%);
     aspect-ratio: 9/16;
     border-radius: 16px;
     overflow: hidden;
@@ -1635,314 +1642,34 @@ Fill in the blue fields, select your guests, and reach them by email and SMS.
 
   </div>
 
-</div>
+  <!-- TABLE -->
+  <div class="table-section">
 
-<div style="
-flex:1;
-padding:18px 22px;
-">
+    <div class="ruby-frame-outer">
+      <div class="ruby-frame-inner">
+        <div class="scroll-container">
 
-<div style="
-border:2px solid #b41111;
-border-radius:14px;
-padding:18px;
-background:rgba(255,255,255,0.85);
-box-shadow:
-0 6px 18px rgba(0,0,0,0.12),
-inset 0 0 6px rgba(255,255,255,0.5);
-">
+          <table id="guestTable">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAll"></th>
+                <th>#</th>
+                <th>First</th>
+                <th>Last</th>
+                <th>Email</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
 
-<div id="rsvpFormTitle" style="
-font-size:20px;
-font-weight:700;
-color:#9c1818;
-margin-bottom:18px;
-">
-Wedding Details
-</div>
-
-<!-- WEDDING DETAILS -->
-
-
-<div class="field">
-<label>Wedding Date</label>
-<input id="weddingDateInput" type="date" class="couple-field" data-sync="date">
-</div>
-
-<div class="field">
-<label>Wedding Time</label>
-<input id="weddingTimeInput" type="time" class="couple-field" data-sync="time">
-</div>
-
-
-<div class="field">
-<label>Venue</label>
-<input id="venueInput" type="text" placeholder="Venue name" class="couple-field" data-sync="venue">
-</div>
-
-
-<div class="field">
-<label>Address</label>
-<input id="venueAddressInput" type="text" placeholder="Venue address" class="couple-field" data-sync="address">
-
-<div style="margin-top:14px;font-size:13px;">
-<a id="checkMapLink" href="#" target="_blank" style="color:#1e63ff;text-decoration:underline;">
-Check this address on map
-</a>
-</div>
-
-</div>
-
-
-<!-- HEADER -->
-
-<div style="
-display:flex;
-align-items:center;
-gap:14px;
-margin-top:16px;
-margin-bottom:16px;
-">
-
-<div style="
-font-weight:700;
-color:#9c1818;
-font-size:14px;
-">
-RSVP Deadline
-</div>
-
-<div style="
-display:flex;
-align-items:center;
-gap:8px;
-">
-
-<input id="rsvpDate" type="date" data-sync="deadline"
-style="
-border:1px solid rgba(160,0,40,0.25);
-padding:6px 10px;
-border-radius:8px;
-font-size:13px;
-background:#eef4ff;
-cursor:pointer;
-">
-
-<span id="rsvpSaved" style="
-font-size:12px;
-color:#2e7d32;
-display:none;
-font-weight:600;
-">
-✓ Saved
-</span>
-
-<div class="date-info">
-  <div class="date-info-icon">i</div>
-  <div class="date-info-text">
-    Choose your RSVP deadline. Guests must respond before this date.
-  </div>
-</div>
-
-</div>
-</div>
-</div>
-
-<!-- FORM -->
-
-<div class="field">
-
-<div style="
-margin-top:24px;
-margin-bottom:10px;
-font-size:15px;
-font-weight:700;
-color:#9c1818;
-">
-
-<div style="
-border:2px solid #b41111;
-border-radius:14px;
-padding:18px;
-margin-bottom:20px;
-background:rgba(255,255,255,0.9);
-">
-
-<div id="guestFormTitle" style="
-font-size:22px;
-font-weight:700;
-color:#9c1818;
-margin-bottom:18px;
-"></div>
-
-
-<div class="field" style="display:flex; gap:8px;">
-<label>Wedding Date</label>
-<span class="dot">·</span>
-<div data-preview="date"></div>
-</div>
-
-
-<div class="field" style="display:flex; gap:8px;">
-<label>Wedding Time</label>
-<span class="dot">·</span>
-<div data-preview="time"></div>
-</div>
-
-
-<div class="field" style="display:flex; gap:8px;">
-<label>Venue</label>
-<span class="dot">·</span>
-<div data-preview="venue"></div>
-</div>
-
-<div class="field preview-line">
-  <label>Address</label>
-  <span class="dot">·</span>
-  <span data-preview="address"></span>
-</div>
-
-<div class="map-link-box">
-  <a id="previewMapLink" href="#" target="_blank">
-    Check this address on map
-  </a>
-
-</div>
-<div class="field" style="display:flex; gap:8px;">
-<label>RSVP Deadline</label>
-<span class="dot">·</span>
-<div data-preview="deadline"></div>
-</div>
-
-
-<hr style="
-margin:18px 0 20px 0;
-border:none;
-border-top:3px solid #b41111;
-">
-  <div class="field">
-    <label style="margin-top:6px;">Name</label>
-    <input type="text" placeholder="Your name" disabled>
-  </div>
-
-  <div class="field">
-    <label>Number of guests</label>
-
-    <select id="guestCountSelect" style="
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    ">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="more">More than 2</option>
-    </select>
-  </div>
-
-  <div class="field" id="extraGuestsField" style="display:none;">
-    <label>Names of additional guests</label>
-
-    <input type="text"
-    placeholder="Enter names separated by commas"
-    style="
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    ">
-  </div>
-
-  <div class="field">
-    <label>Email</label>
-    <input type="text" placeholder="your@email.com" disabled>
-  </div>
-
-  <div class="field" id="rsvpField">
-    <label>RSVP</label>
-
-    <select id="rsvpSelect" style="
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    ">
-      <option value="">Select response</option>
-      <option value="yes">Yes</option>
-      <option value="no">No</option>
-      <option value="maybe">Maybe</option>
-    </select>
-  </div>
-
-  <div id="missYouBox" style="
-  display:none;
-  margin-top:12px;
-  padding:12px 14px;
-  border:1px solid #ffd0d0;
-  border-radius:10px;
-  background:#fff7f7;
-  color:#8b1a1a;
-  font-size:14px;
-  ">
-    We’ll miss you!  
-    Feel free to leave a message for the couple below.
-  </div>
-
-  <div class="field">
-    <label>Leave a message</label>
-    <textarea disabled style="
-    width:95%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    height:70px;
-    "></textarea>
-  </div>
-
-  <div class="preview-submit-row">
-    <button id="previewSubmitBtn" disabled>
-      Submit RSVP
-    </button>
-
-    <div class="preview-info">
-      <div class="preview-info-icon">i</div>
-      <div class="preview-info-text">
-        This is the RSVP form your guests will receive.<br>
+        </div>
       </div>
     </div>
+
   </div>
 
 </div>
-</div>
-
-</div>
-</div>
-</div>
-
-<div class="table-section">
-
-<div class="ruby-frame-outer">
-  <div class="ruby-frame-inner">
-    <div class="scroll-container">
-
-      <table id="guestTable">
-        <thead>
-          <tr>
-            <th><input type="checkbox" id="selectAll"></th>
-            <th>#</th>
-            <th>First</th>
-            <th>Last</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-    </div>
-  </div>
-</div>    
-
 
 <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
@@ -2183,15 +1910,15 @@ async function loadPostWeddingVideo() {
 
   const { data, error } = await supabase
     .from("sites")
-    .select("stdvideo_url")
+    .select("video_url")
     .eq("edit_token", token)
     .single();
 
-  if (error || !data || !data.stdvideo_url) return;
+  if (error || !data || !data.video_url) return;
 
   const iframe = document.getElementById("postWeddingIframe");
 
-  iframe.src = data.stdvideo_url;
+  iframe.src = data.video_url;
 
   const player = new Vimeo.Player(iframe);
 
