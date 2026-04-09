@@ -1429,6 +1429,10 @@ del.onclick = async () => {
   label.className = "photo-label";
   label.innerText = `Photo ${photoNumber}`;
 
+if (!path) return;
+
+const container = document.createElement("div");
+
 const url = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
 
 if (path.endsWith(".mp4")) {
@@ -1436,10 +1440,6 @@ if (path.endsWith(".mp4")) {
   const video = document.createElement("video");
   video.src = url;
   video.controls = true;
-  video.style.width = "70px";
-  video.style.height = "70px";
-  video.style.objectFit = "cover";
-  video.style.borderRadius = "8px";
 
   container.appendChild(video);
 
@@ -1448,17 +1448,10 @@ if (path.endsWith(".mp4")) {
   const img = document.createElement("img");
   img.src = url;
 
-  img.onerror = () => {
-    setTimeout(() => {
-      img.src = img.src.split("?")[0] + "?v=" + Date.now();
-    }, 500);
-  };
-
   container.appendChild(img);
-
 }
 
-
+gallery.appendChild(container);
 
   const text = document.createElement("div");
   text.className = "caption-text";
