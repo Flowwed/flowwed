@@ -1,0 +1,1896 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modify Your 'Our Story' Page</title>
+
+  <style>
+    body {
+      font-family: "Inter", -apple-system, BlinkMacSystemFont,
+             "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  background: linear-gradient(
+  180deg,
+  #f8d9dc 0%,
+  #f6e2e5 30%,
+  #f9edef 80%,
+  #fff5f6 100%
+);
+
+margin: 0;
+padding: 30px 40px 80px 40px;
+}
+
+    /* HEADER: TITLE + INFO BUBBLE */
+
+.page-header {
+  display: grid;
+  grid-template-columns: 1fr; /* 420 = ширина uploader */
+  align-items: center;
+
+  max-width: 1500px;
+margin: 30px auto 28px;  
+}
+
+.page-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0px 2px 4px rgba(0,0,0,0.25);
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    /* INFO BUBBLE — FIXED VERSION */
+
+.info-bubble {
+  /* позиционирование */
+  justify-self: end;
+  transform: translateX(-100px) translateY(2px);
+
+  /* внешний вид */
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 20px;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.22),
+    0 3px 6px rgba(0,0,0,0.14);
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 720px;
+  height: 12px;
+
+  /* текст */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.info-text {
+  font-size: 15px;
+  white-space: nowrap;  /* ← одна строка, не переносится */
+  color: #444;
+}
+
+.info-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #1f8bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    0 0 0 2px rgba(255,255,255,0.9);
+}
+
+.editor-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* нижняя плашка */
+
+.info-bubble--bottom {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  /* позиция */
+  margin-left: auto;       /* 🔥 вправо */
+  margin-top: 40px;
+
+  /* размер */
+  width: 70%;
+  max-width: 900px;
+
+  /* стиль */
+  padding: 20px 40px;
+  background: #fff;
+  border-radius: 999px;
+}
+
+
+/* текстовый блок */
+.bottom-info-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+/* стрелка */
+.bottom-info-arrow {
+  font-size: 20px;
+  font-weight: 600;
+  color: #b40012;
+}
+
+/* кнопка */
+.bottom-info-btn {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #0075ff;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bottom-info-btn:hover {
+  background: #005bd1;
+}
+
+.info-bubble--bottom,
+.info-bubble--bottom * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+    /* MAIN 2-COLUMN LAYOUT */
+.page-wrapper {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+
+  max-width: 1500px;   /* ← ВОТ КЛЮЧ */
+  margin: 0 auto;      /* ← центр */
+  width: 100%;
+}
+
+    /* LEFT UPLOADER BOX */
+    .uploader-container {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      width: 420px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #previewBox {
+      width: 100%;
+      height: 300px;
+      border: 1.5px solid #d2d2d2;
+      border-radius: 14px;
+      background: #fafafa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    #previewBox.placeholder::before {
+      content: "";
+      width: 70px;
+      height: 70px;
+      opacity: 0.30;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/685/685655.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    #preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      border-radius: 14px;
+    }
+
+    select,
+input[type=file] {
+  padding: 10px;
+  height: 38px;      
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+    button {
+      background: #0075ff;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+#uploadBtn {
+  margin-top: 10px;        /* отступ от file input */
+  height: 42px;            /* нормальная высота */
+  border-radius: 14px;     /* 🔵 скруглённые края */
+  font-size: 17px;         /* 🔤 крупнее текст */
+  font-weight: 600;
+  background: #c30c1e;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* 👇 ВСТАВЬ СРАЗУ СЮДА */
+#uploadBtn.ruby-btn {
+  height: 42px;
+  font-size: 17px;
+}
+
+    .progress-container {
+      margin-top: 15px;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 12px;
+      width: 100%;
+      display: none;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #d0404d;
+      transition: width 0.3s;
+    }
+
+    #status {
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    #tokenDisplay, #slugDisplay {
+      display: none;
+    }
+
+    /* RIGHT TEXT EDITOR — FULL WIDTH */
+    .text-editor-box {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      flex: 1; /* takes remaining width */
+      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .save-btn {
+      background: #c00111;
+      color: white;
+    }
+
+    .update-btn {
+      background: #6f685e;
+      color: white;
+    }
+
+    .editor-btn:hover {
+      opacity: 0.82;
+    }
+.update-btn:hover {
+  background: #827b6f; /* темнее */
+  opacity: 1;          /* убираем общее затемнение */
+}
+
+
+.editor-actions {
+  display: flex;
+  gap: 16px;          /* расстояние между кнопками */
+  margin-top: 14px;
+ align-items: stretch;   
+}
+
+/* кнопки одной высоты и нормальной ширины */
+.editor-btn {
+  flex: 1;
+  padding: 14px 0;        /* ← ВОТ ЭТО КЛЮЧ */
+  height: 48px;           /* ← И ЭТО */
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+
+
+/* MODAL BACKDROP — MUST cover ENTIRE SCREEN */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;                    /* ← заменяет top:0; left:0; width:100vw; height:100vh */
+  background: rgba(0,0,0,0.55);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
+}
+
+/* MODAL WINDOW */
+.modal-window {
+  position: relative;
+  background: white;
+  width: 75vw;
+  height: 75vh;
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 9999999;           /* ← поверх backdrop */
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* iframe must NEVER sit above X */
+.modal-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: relative;
+  z-index: 1;                  /* lower than button */
+}
+
+/* TOAST STYLES */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  background: #28a745;
+  color: white;
+  padding: 14px 22px;
+  border-radius: 10px;
+  font-size: 18px;
+
+  width: auto;
+  max-width: 320px;
+  box-sizing: border-box;
+  white-space: normal;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 999999999;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.apple-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center; /* 🔥 центр в колонке */
+
+  padding: 10px 32px;        /* ← больше воздуха */
+  border-radius: 999px;      /* ← нормальная pill */
+
+  white-space: nowrap;       /* ← НЕ переносится */
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.95) 0%,
+    rgba(245,245,245,0.92) 45%,
+    rgba(230,230,230,0.9) 100%
+  );
+
+  backdrop-filter: blur(6px);
+
+  color: #b40012;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  box-shadow:
+    0 12px 28px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(0,0,0,0.08);
+
+  transform: translateY(-1px);
+}
+/* Send Email — прозрачная кнопка с hover */
+.info-action-btn {
+  all: unset;
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 14px;
+  border-radius: 999px;
+
+  background: transparent;              /* ← ПРОЗРАЧНАЯ */
+  color: #b40012;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+
+  white-space: nowrap;
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+/* hover — появляется цвет */
+.info-action-btn:hover {
+  background: rgba(180, 0, 18, 0.12);
+
+  transform: translateY(-3px) scale(1.02);
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.22),
+    0 4px 10px rgba(0,0,0,0.18),
+    inset 0 2px 6px rgba(255,255,255,0.25);
+}
+
+/* active */
+.info-action-btn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.18),
+    inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* disabled */
+.info-action-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+.info-action-btn {
+  margin-left: 20px; /* подбери значение: 8px, 12px, 20px и т.д. */
+}
+
+
+.info-bubble--top {
+  display: flex;
+  align-items: center;
+
+  padding: 20px 40px;     /* ← та же высота белого поля */
+  line-height: 1.4;
+
+  background: #fff;
+  border-radius: 999px;
+
+}
+
+
+
+/* ================= BACK BUTTON ================= */
+
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 14px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  border: 1px solid rgba(255,255,255,0.35);
+
+  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.38),
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 3px 6px rgba(255,255,255,0.22),
+    inset 0 -6px 14px rgba(70,0,20,0.35);
+}
+
+
+.top-nav { display: none; }
+
+
+.caption-gallery {
+  height: 260px;              /* поле фиксированное */
+  overflow-y: auto;           /* вертикальный скролл */
+  overflow-x: hidden;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 в ряд */
+  gap: 14px;
+  padding: 14px;
+
+  align-content: start;       /* ❗ ВАЖНО: старые фото не “прыгают” */
+}
+
+.caption-item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.caption-item img {
+  width: 100%;
+  height: 90px;               /* ❗ ФИКСИРОВАННЫЙ РАЗМЕР */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.caption-text {
+  font-size: 13px;
+  line-height: 1.2;
+  color: #444;
+  text-align: center;
+  word-break: break-word;
+}
+
+.photo-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8b8b8b;
+  text-align: center;
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+
+.caption-item {
+  position: relative;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  color: #b40012;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.delete-btn:hover {
+  background: #fff;
+}
+
+#miniPreview {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 25%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  display: none;
+}
+
+#previewBox {
+  position: relative; /* важно для позиционирования мини-картинки */
+}
+
+
+#musicUploadBtn {
+  height: 46px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  background: #c30c1e;
+  color: white;
+}
+
+#musicUploadBtn:hover {
+  background: #d0404d;
+}
+
+.see-web-btn {
+  margin-top: 18px;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 14px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  background: linear-gradient(180deg, #ffffff, #f2f2f2);
+  color: #b40012;
+
+  border: 1px solid rgba(180, 17, 17, 0.25);
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;   /* ← центрирует надпись */
+  gap: 8px;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.see-web-btn:hover {
+  background: linear-gradient(180deg, #fff5f6, #f7d9dc);
+  color: #8f0010;
+  transform: translateY(-1px);
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+}
+
+.see-web-btn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.18),
+    inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.confirm-toast {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.confirm-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px 24px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+  text-align: center;
+  min-width: 260px;
+}
+
+.confirm-text {
+  font-size: 16px;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-actions button {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+#confirmYes {
+  background: #c00111;
+  color: #fff;
+}
+
+#confirmNo {
+  background: #e6e6e6;
+  color: #333;
+}
+
+.mini-pill {
+  display: inline-block;
+  padding: 5px 12px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.9),
+    rgba(245,245,245,0.85)
+  );
+
+  color: #b40012;
+  font-weight: 700;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.ruby-btn {
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.38),
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 3px 6px rgba(255,255,255,0.22),
+    inset 0 -6px 14px rgba(70,0,20,0.35);
+}
+
+
+.back-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.48),
+    0 6px 14px rgba(0,0,0,0.32),
+    inset 0 4px 10px rgba(255,255,255,0.28),
+    inset 0 -10px 18px rgba(60,0,20,0.38);
+}
+
+.back-btn:active {
+  transform: scale(0.96);
+}
+
+
+#uploadBtn:hover {
+  transform: translateY(-4px) scale(1.03);
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.48),
+    0 6px 14px rgba(0,0,0,0.32),
+    inset 0 4px 10px rgba(255,255,255,0.28),
+    inset 0 -10px 18px rgba(60,0,20,0.38);
+}
+
+
+#uploadBtn:active {
+  transform: scale(0.96);
+}
+
+
+</style>
+
+</head>
+
+<body data-page="photo-gallery">
+
+
+<!-- ======= TOP NAV + BACK BUTTON ======= -->
+<div class="top-nav-wrapper">
+
+<button id="backBtn" class="back-btn">
+  <span class="back-arrow">‹</span>
+  Back to Dash
+</button>
+
+  <div class="top-nav">
+  <a href="/photo-gallery.html">Photo Gallery</a>
+  <a href="/gift-registry.html">Gift Registry</a>
+  <a href="/our-story.html">Our Story</a>
+  <a href="/updates.html">Updates</a>
+  <a href="/wedding-party.html">Wedding Party</a>
+  <a href="/wedding-info.html">Wedding Info</a>
+  <a href="/venue-map.html">Venue & Map</a>
+  <a href="/travel-info.html">Travel Info</a>
+  <a href="/just_married.html">Just Married</a>
+</div>
+
+
+</div>
+
+
+<!-- HEADER -->
+<div class="page-header">
+
+  <div class="info-bubble info-bubble--top">
+    <div class="info-icon">i</div>
+    <div class="info-text">
+      Customize your <span class="mini-pill">Photo Gallery</span> page.
+      Upload up to 50 photos and update them anytime you wish.
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page-wrapper">
+
+  <!-- LEFT: UPLOADER -->
+  <div class="uploader-container">
+
+    <div id="tokenDisplay"></div>
+    <div id="slugDisplay"></div>
+
+    <div id="previewBox" class="placeholder">
+
+<video id="preview" controls style="display:none; width:100%; height:100%; object-fit:cover; border-radius:14px;"></video>
+      <img id="miniPreview" />
+    </div>
+
+<select id="slotSelect">
+  <script>
+    const start = 145;
+    const total = 50;
+
+    for (let i = 0; i < total; i++) {
+      const slot = start + i; // 145 → 194
+      document.write(`<option value="jm_img${slot}">Photo ${i + 1}</option>`);
+    }
+  </script>
+</select>
+
+    <input type="file" id="fileInput" accept="video/mp4,video/webm" />
+    <button id="uploadBtn" class="ruby-btn">Upload Photo to Your Page</button>
+
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="status"></div>
+
+<!-- SEE WEB PHOTOS BUTTON -->
+
+<button class="see-web-btn">
+  👁 Preview Your Page
+</button>
+
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="editor-column">
+
+    <div class="text-editor-box">
+      <div id="captionGallery" class="caption-gallery"></div>
+    </div>
+
+   <!--
+<div class="text-editor-box" style="margin-top:16px">
+  <h3 style="margin:0 0 10px">Background music for this page</h3>
+
+  <input
+    type="file"
+    id="musicInput"
+    accept="audio/*"
+    style="width:100%"
+  >
+
+  <audio
+    id="musicPreview"
+    controls
+    style="width:100%; margin-top:12px; display:none">
+  </audio>
+
+  <button id="musicUploadBtn"
+          class="editor-btn save-btn"
+          style="margin-top:12px; width:100%">
+    Upload Music to Your Page
+  </button>
+</div>
+-->
+
+
+    <!-- ⬇️ ТЕПЕРЬ ПЛАШКА ЗДЕСЬ -->
+    <div class="info-bubble info-bubble--bottom" style="margin-top:24px">
+      <div class="info-icon">i</div>
+      <div class="info-content">
+        <span class="info-text">
+          You can notify your guests about your updates via email & SMS here
+        </span>
+      </div>
+      <button class="info-action-btn">Send Email & SMS</button>
+
+
+    </div>
+
+  </div>
+</div>
+
+</script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sendEmailBtn = document.querySelector(".info-action-btn");
+  const modal = document.getElementById("storyModal");
+  const iframe = document.getElementById("storyIframe");
+  const closeBtn = document.getElementById("closeModal");
+
+  if (!sendEmailBtn || !modal || !iframe || !closeBtn) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  sendEmailBtn.addEventListener("click", () => {
+    if (!token) {
+      alert("Missing token");
+      return;
+    }
+
+    iframe.src = `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`;
+    modal.style.display = "flex";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    iframe.src = "";
+  });
+});
+
+</script>
+
+
+
+<script>
+  const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+  const SUPABASE_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  const tokenDisplay = document.getElementById("tokenDisplay");
+  const slugDisplay = document.getElementById("slugDisplay");
+  const uploadBtn = document.getElementById("uploadBtn");
+  const preview = document.getElementById("preview");
+  const previewBox = document.getElementById("previewBox");
+  const status = document.getElementById("status");
+  const slotSelect = document.getElementById("slotSelect");
+  const progressContainer = document.getElementById("progressContainer");
+  const progressBar = document.getElementById("progressBar");
+
+  let slug = null;
+
+slotSelect.addEventListener("change", () => {
+  const fileInput = document.getElementById("fileInput");
+  fileInput.value = "";
+  preview.style.display = "none";
+  miniPreview.style.display = "none";
+  previewBox.classList.add("placeholder");
+  status.innerText = "";
+});
+
+const miniPreview = document.getElementById("miniPreview");
+
+function showPreview(file, isFinal = false) {
+  const url = URL.createObjectURL(file);
+
+  if (isFinal) {
+    // после успешной загрузки — большое фото
+    preview.src = url;
+    preview.style.display = "block";
+    miniPreview.style.display = "none";
+    previewBox.classList.remove("placeholder");
+  } else {
+    // сразу после выбора файла — маленькое превью
+    miniPreview.src = url;
+    miniPreview.style.display = "block";
+  }
+}
+
+// 🔽 ВОТ ОН — СРАЗУ ПОСЛЕ showPreview
+document.getElementById("fileInput").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (file) showPreview(file, false);
+status.innerText = "";   // ← убираем предупреждение
+});
+
+async function loadSlugFromGallery(token) {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/rpc/get_site_gallery`,
+      {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ p_token: token })
+      }
+    );
+
+    const rows = await res.json();
+    console.log(rows);
+
+    if (Array.isArray(rows) && rows.length > 0) {
+      window.slug = rows[0].slug;
+
+      slugDisplay.innerText = "Slug: " + slug;
+
+      const musicUploadBtn = document.getElementById("musicUploadBtn");
+      if (musicUploadBtn) {
+        musicUploadBtn.disabled = false;
+      }
+
+      window.dispatchEvent(new Event("slug-ready"));
+
+      loadCaptionsFromSupabase();
+    } else {
+      slugDisplay.innerText = "❌ No rows returned for token";
+    }
+
+  } catch (err) {
+    slugDisplay.innerText = "Error loading slug: " + err.message;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!token) {
+    tokenDisplay.innerText = "❌ No token in URL";
+    return;
+  }
+
+  tokenDisplay.innerText = "Token: " + token;
+  loadSlugFromGallery(token);
+});
+
+uploadBtn.onclick = async () => {
+
+const originalUploadText = uploadBtn.innerHTML;
+
+  const fileInput = document.getElementById("fileInput");
+
+  if (!fileInput.files.length) {
+     status.innerText = "⚠️ Choose a file first.";
+    return;
+  }
+
+  if (!token) {
+    status.innerText = "❌ Missing token.";
+    return;
+  }
+
+
+const file = fileInput.files[0];
+const slot = slotSelect.value;
+
+// 👉 блокируем от двойного клика (НО текст не меняем)
+uploadBtn.disabled = true;
+
+// 🔎 ПРОВЕРКА
+const checkRes = await fetch(
+  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}&select=slot`,
+  {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    }
+  }
+);
+
+const exists = await checkRes.json();
+
+if (Array.isArray(exists) && exists.length > 0) {
+  const real = Number(slot.replace("jm_img", ""));
+  const num = real - start + 1;
+
+  await showAlertBox(`Delete Photo ${num} from the gallery first, then try again.`);
+
+  // ❗ возвращаем кнопку обратно
+  uploadBtn.disabled = false;
+
+  return;
+}
+
+// ✅ ТОЛЬКО ТЕПЕРЬ показываем загрузку
+uploadBtn.innerHTML = "Uploading...";
+
+status.innerText = "Requesting upload URL...";
+progressContainer.style.display = "none";
+preview.style.display = "none";
+
+try {
+  const res = await fetch("/.netlify/functions/mint-upload-url-2", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      slug: slug || "fallback",
+      token,
+      slot,
+      filename: file.name,
+      page_key: "photo_gallery"
+    })
+  });
+
+
+
+  if (!res.ok) {
+    throw new Error("Upload URL request failed");
+  }
+
+  const data = await res.json();
+  const uploadURL = data.url || data.signedUrl || data.uploadURL;
+
+  if (!uploadURL) {
+    throw new Error("No upload URL returned");
+  }
+
+  progressBar.style.width = "0%";
+  progressContainer.style.display = "block";
+  status.innerText = "";
+
+  await uploadFileWithProgress(uploadURL, file, (p) => {
+    progressBar.style.width = p + "%";
+  });
+
+
+
+  // ----------------------------------------
+  // 🔥 ДОБАВЛЕНО: обновляем path в записи галереи
+  // ----------------------------------------
+await fetch(
+  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}`,
+  {
+    method:"PATCH",
+    headers:{
+      apikey: SUPABASE_KEY,
+      Authorization:"Bearer " + SUPABASE_KEY,
+      "Content-Type":"application/json",
+      Prefer:"return=minimal"
+    },
+    body: JSON.stringify({
+      path:`${slug}/${slot}/${file.name}`
+    })
+  }
+);
+
+lastUploadedFile = file;
+
+uploadBtn.disabled = false;
+uploadBtn.innerHTML = originalUploadText;
+
+status.innerText = "✅ Uploaded!";
+showPreview(file, true);
+
+await fetch(
+  `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=minimal"
+    },
+    body: JSON.stringify({
+      edit_token: token,
+      slot: slotSelect.value,
+      caption: ""
+    })
+  }
+);
+
+setTimeout(async () => {
+  await loadCaptionsFromSupabase();
+}, 500);
+
+setTimeout(() => {
+
+  // плавно скрываем превью
+  preview.classList.add("fade-out-preview");
+
+  setTimeout(() => {
+    resetUploaderForm();
+
+    // вернуть обратно (чтобы при следующей загрузке не было скрыто)
+    preview.classList.remove("fade-out-preview");
+
+  }, 500); // время анимации
+
+}, 2000); // сколько показывать фото
+
+
+
+// setTimeout(openCaptionModal, 300);i
+
+
+  setTimeout(() => {
+    progressContainer.style.display = "none";
+    progressBar.style.width = "0%";
+  }, 800);
+
+} catch (err) {
+  console.error(err);
+  status.innerText = "❌ Upload failed: " + err.message;
+}
+
+};
+
+function resetUploaderForm() {
+  const fileInput = document.getElementById("fileInput");
+  fileInput.value = "";
+
+  slotSelect.selectedIndex = 0;
+
+  preview.src = "";
+  preview.style.display = "none";
+  miniPreview.style.display = "none";
+
+  previewBox.classList.add("placeholder");
+  status.innerText = "";
+}
+
+
+  function uploadFileWithProgress(url, file, onProgress) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open("PUT", url, true);
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const percent = Math.round((e.loaded / e.total) * 100);
+          onProgress(percent);
+        }
+      };
+
+      xhr.onload = () =>
+        xhr.status === 200 ? resolve() : reject("Error " + xhr.status);
+
+      xhr.onerror = () => reject("Upload failed");
+
+      xhr.send(file);
+    });
+  }
+
+async function loadCaptionsFromSupabase() {
+  if (!token) return;
+
+  // 1️⃣ captions
+  const capRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&order=created_at.asc`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
+    }
+  );
+
+  const captions = await capRes.json();
+  if (!Array.isArray(captions)) return;
+const jmCaptions = captions.filter(c => {
+  if (!c.slot.startsWith("jm_img")) return false;
+  const n = Number(c.slot.replace("jm_img", ""));
+  return n >= 145 && n <= 194;
+});
+
+
+
+  // 2️⃣ images (slot → path)
+const imgRes = await fetch(
+  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=like.jm_img%25&select=slot,path,updated_at&order=updated_at.desc.nullslast`,
+  {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    }
+  }
+);
+
+  const images = await imgRes.json();
+  if (!Array.isArray(images)) return;
+
+console.log("IMG51 ROWS:", images.filter(x => x.slot === "img51"));
+
+
+console.log("IMAGES RAW:", images);
+console.log("CAPTIONS RAW:", captions);
+
+const slotToPath = {};
+images.forEach(img => {
+  // не даём пустому или старому path перезатирать нормальный
+  if (img.path && !slotToPath[img.slot]) {
+    slotToPath[img.slot] = img.path;
+  }
+});
+
+  // 3️⃣ render
+  const gallery = document.getElementById("captionGallery");
+  gallery.innerHTML = "";
+
+
+jmCaptions.sort((a, b) => {
+  const na = Number(a.slot.replace("jm_img", ""));
+  const nb = Number(b.slot.replace("jm_img", ""));
+  return na - nb;
+});
+
+jmCaptions.forEach((row) => {
+
+  const path = slotToPath[row.slot];
+  if (!path) return;
+
+  const item = document.createElement("div");
+  item.className = "caption-item";
+
+  const del = document.createElement("div");
+  del.className = "delete-btn";
+  del.innerText = "×";
+
+del.onclick = async () => {
+  const ok = await showConfirm("Delete this photo?");
+  if (!ok) return;
+
+  const res = await fetch("/.netlify/functions/delete-photo", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      token,
+      slot: row.slot,
+      path: path
+    })
+  });
+
+  if (!res.ok) {
+    alert("Delete failed");
+    return;
+  }
+
+  await loadCaptionsFromSupabase();
+};
+
+
+  const real = Number(row.slot.replace("jm_img", ""));
+  const photoNumber = real - start + 1;
+
+  const label = document.createElement("div");
+  label.className = "photo-label";
+  label.innerText = `Photo ${photoNumber}`;
+
+const img = document.createElement("img");
+img.src =
+  `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
+
+img.onerror = () => {
+  setTimeout(() => {
+    img.src = img.src.split("?")[0] + "?v=" + Date.now();
+  }, 500);
+};
+
+  const text = document.createElement("div");
+  text.className = "caption-text";
+  text.innerText = row.caption || "—";
+
+  item.appendChild(del);
+  item.appendChild(label);
+  item.appendChild(img);
+  item.appendChild(text);
+
+  gallery.appendChild(item);
+});
+
+// 🎵 MUSIC PREVIEW (STEP 3)
+const musicInput = document.getElementById("musicInput");
+const musicPreview = document.getElementById("musicPreview");
+
+}
+</script>
+
+
+
+<script>
+/* ===============================
+   TOP NAV — TOKEN + BACK
+================================ */
+
+const tokenNav = new URLSearchParams(location.search).get("t") || "";
+
+/* прокинуть token во все ссылки меню */
+document.querySelectorAll(".top-nav a").forEach(a => {
+  if (tokenNav) {
+    a.href = a.href + "?t=" + tokenNav;
+  }
+});
+
+/* back button */
+document.getElementById("backBtn")?.addEventListener("click", () => {
+  window.location.href = "/dashboard.html?t=" + tokenNav;
+});
+
+/* active nav link */
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page || "photo-gallery";
+
+  document.querySelectorAll(".top-nav a").forEach(link => {
+    if (link.getAttribute("href").includes(page)) {
+      link.classList.add("active");
+    }
+  });
+});
+</script>
+
+<!-- CAPTION MODAL -->
+<div class="modal-backdrop" id="captionModal">
+  <div class="modal-window" style="width:420px; height:auto; padding:24px;">
+
+    <div style="font-size:18px; font-weight:600; margin-bottom:14px;">
+      Would you like to add a caption/text to your uploaded photo?
+    </div>
+
+    <textarea
+      id="captionInput"
+      placeholder="Enter caption…"
+      style="
+        width:100%;
+        min-height:90px;
+        border-radius:14px;
+        border:1px solid #ccc;
+        padding:12px;
+        font-size:15px;
+        resize:none;
+        box-sizing:border-box;
+      "
+    ></textarea>
+
+    <div style="display:flex; gap:12px; margin-top:18px;">
+      <button id="captionAddBtn" class="editor-btn save-btn" style="flex:1;">
+        Yes
+      </button>
+      <button id="captionCancelBtn" class="editor-btn update-btn" style="flex:1;">
+        No
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  let lastUploadedCaption = null;
+  let lastUploadedFile = null;
+
+  function openCaptionModal() {
+    document.getElementById("captionInput").value = "";
+    document.getElementById("captionModal").style.display = "flex";
+  }
+
+  function closeCaptionModal() {
+    document.getElementById("captionModal").style.display = "none";
+  }
+
+document.addEventListener("keydown", (e) => {
+  const modal = document.getElementById("captionModal");
+
+  // если модалка не открыта — ничего не делаем
+  if (!modal || modal.style.display !== "flex") return;
+
+  if (e.key === "Enter") {
+    e.preventDefault();
+    document.getElementById("captionAddBtn").click(); // = Yes
+  }
+
+  if (e.key === "Escape") {
+    e.preventDefault();
+    document.getElementById("captionCancelBtn").click(); // = No
+  }
+});
+
+
+function showToast(text) {
+  const t = document.getElementById("toast");
+  t.innerText = text;
+  t.classList.add("show");
+
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => {
+    t.classList.remove("show");
+  }, 2200);
+}
+
+function showAlertBox(text) {
+  return new Promise(resolve => {
+    const wrap = document.getElementById("confirmToast");
+    const msg = wrap.querySelector(".confirm-text");
+    const yes = document.getElementById("confirmYes");
+    const no = document.getElementById("confirmNo");
+
+    msg.innerText = text;
+
+    // делаем режим "alert" — одна кнопка OK
+    yes.innerText = "OK";
+    no.style.display = "none";
+
+    wrap.style.display = "flex";
+
+    const cleanup = () => {
+      wrap.style.display = "none";
+      yes.innerText = "Yes";
+      no.style.display = "";
+      yes.onclick = null;
+      resolve();
+    };
+
+    yes.onclick = cleanup;
+  });
+}
+
+
+function showConfirm(text) {
+  return new Promise(resolve => {
+    const wrap = document.getElementById("confirmToast");
+    const msg = wrap.querySelector(".confirm-text");
+    const yes = document.getElementById("confirmYes");
+    const no = document.getElementById("confirmNo");
+
+    msg.innerText = text;
+    wrap.style.display = "flex";
+
+    const cleanup = (result) => {
+      wrap.style.display = "none";
+      yes.onclick = null;
+      no.onclick = null;
+      resolve(result);
+    };
+
+    yes.onclick = () => cleanup(true);
+    no.onclick = () => cleanup(false);
+  });
+}
+
+
+document.getElementById("captionAddBtn").addEventListener("click", async () => {
+
+  const caption =
+    document.getElementById("captionInput").value.trim();
+
+  if (!lastUploadedFile) {
+    closeCaptionModal();
+    return;
+  }
+
+  if (!caption) {
+    showToast("Please enter a caption for your photo");
+    return; // ⛔ не закрываем модалку
+  }
+
+  // 1️⃣ СОХРАНЯЕМ caption В SUPABASE (UPSERT)
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
+    {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates,return=minimal"
+      },
+      body: JSON.stringify({
+        edit_token: token,
+        slot: slotSelect.value,
+        caption: caption
+      })
+    }
+  );
+
+  await loadCaptionsFromSupabase();
+  closeCaptionModal();
+  resetUploaderForm();
+
+  lastUploadedFile = null;
+  lastUploadedCaption = null;
+});
+
+document.getElementById("captionCancelBtn").addEventListener("click", async () => {
+  if (lastUploadedFile) {
+    // создаём пустую caption-запись, чтобы фото попало в галерею
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
+      {
+        method: "POST",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates,return=minimal"
+        },
+        body: JSON.stringify({
+          edit_token: token,
+          slot: slotSelect.value,
+          caption: ""
+        })
+      }
+    );
+
+    // перерисовать галерею
+    await loadCaptionsFromSupabase();
+  }
+
+  lastUploadedFile = null;
+  closeCaptionModal();
+ resetUploaderForm();   // ← ВНЕ if, всегда
+
+});
+
+
+</script>
+
+
+
+<script>
+/* ===============================
+   🎵 MUSIC — WORKING VERSION
+   PATCH → INSERT (как фото)
+================================ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const musicInput = document.getElementById("musicInput");
+  const musicPreview = document.getElementById("musicPreview");
+  const musicUploadBtn = document.getElementById("musicUploadBtn");
+
+  if (!musicInput || !musicUploadBtn || !musicPreview) return;
+
+  const pageKey = "just_married";
+
+
+
+  // preview
+  musicInput.addEventListener("change", () => {
+    const file = musicInput.files[0];
+    if (!file) return;
+
+    musicPreview.src = URL.createObjectURL(file);
+    musicPreview.style.display = "block";
+  });
+
+  // upload
+  musicUploadBtn.addEventListener("click", async () => {
+
+
+    if (!musicInput.files.length) {
+      alert("Choose a music file");
+      return;
+    }
+
+    const file = musicInput.files[0];
+
+    try {
+      // 1️⃣ signed upload url
+      const res = await fetch(
+        `${SUPABASE_URL}/functions/v1/mint-music-upload-url`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + SUPABASE_KEY,
+            "apikey": SUPABASE_KEY
+          },
+          body: JSON.stringify({
+     slug: window.slug || "fallback",
+            token,
+            page_key: pageKey,
+            filename: file.name
+          })
+        }
+      );
+
+      if (!res.ok) throw new Error("Signed URL failed");
+
+      const { signedUrl, path } = await res.json();
+
+      // 2️⃣ upload to storage
+      await fetch(signedUrl, {
+        method: "PUT",
+        body: file
+      });
+
+
+
+// 3️⃣ UPSERT (по РЕАЛЬНОМУ unique ключу)
+await fetch(
+  `${SUPABASE_URL}/rest/v1/site_page_music?on_conflict=slug,page_key,edit_token`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates"
+    },
+    body: JSON.stringify({
+      slug: window.slug || "fallback",
+      page_key: pageKey,
+      edit_token: token,
+      music_path: path,
+      music_title: file.name,
+      music_mime: file.type
+    })
+  }
+);
+
+alert("🎵 Music uploaded");
+
+} catch (err) {
+  console.error(err);
+  alert("Music upload failed");
+}
+});
+
+// auto-load music
+window.addEventListener("slug-ready", async () => {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/site_page_music?slug=eq.${window.slug}&page_key=eq.${pageKey}&order=created_at.desc&limit=1`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
+        }
+      }
+    );
+
+    const rows = await res.json();
+    if (!rows.length) return;
+
+    musicPreview.src =
+      `${SUPABASE_URL}/storage/v1/object/public/music/${rows[0].music_path}`;
+    musicPreview.style.display = "block";
+    musicPreview.load();
+
+  } catch (err) {
+    console.error("Music autoload failed", err);
+  }
+});
+
+});
+</script>
+
+<div class="modal-backdrop" id="webPreviewModal">
+  <div class="modal-window">
+
+    <div id="closeWebPreview" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999999;
+    ">×</div>
+
+    <iframe id="webPreviewIframe" class="modal-iframe"></iframe>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const seeWebBtn = document.querySelector(".see-web-btn");
+  const modal = document.getElementById("webPreviewModal");
+  const iframe = document.getElementById("webPreviewIframe");
+  const closeBtn = document.getElementById("closeWebPreview");
+
+  if (!seeWebBtn || !modal || !iframe || !closeBtn) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || params.get("token");
+
+  seeWebBtn.addEventListener("click", () => {
+    if (!token) {
+      alert("Missing token");
+      return;
+    }
+
+    iframe.src = `https://flowwed.netlify.app/photo_gallery.html?token=${token}`;
+    modal.style.display = "flex";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    iframe.src = "";
+  });
+});
+</script>
+
+<div id="toast" class="toast"></div>
+
+<div class="modal-backdrop" id="storyModal">
+  <div class="modal-window">
+
+    <div id="closeModal" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999999;
+    ">×</div>
+
+    <iframe id="storyIframe" class="modal-iframe"></iframe>
+
+  </div>
+</div>
+
+
+<div id="confirmToast" class="confirm-toast">
+  <div class="confirm-box">
+    <div class="confirm-text">Delete this photo?</div>
+    <div class="confirm-actions">
+      <button id="confirmYes">Yes</button>
+      <button id="confirmNo">No</button>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
