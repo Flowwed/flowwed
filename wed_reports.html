@@ -18,15 +18,14 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 44px;
-  font-weight: 800;
+  font-size: 36px;
+  font-weight: 600;
   background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
   -webkit-background-clip: text;
   color: transparent;
   margin-bottom: 36px;
   letter-spacing: -1px;
 }
-
 /* ====================================================== */
 /* TOTAL CARDS                                            */
 /* ====================================================== */
@@ -171,11 +170,10 @@ h1 {
 
 .top-nav-wrapper {
   position: relative;
-  width: 100%;
-  padding-top: 0 !important;
-  margin-bottom: 6px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
 .top-nav {
   display: flex;
   justify-content: center;
@@ -205,38 +203,45 @@ h1 {
 }
 
 /* Back Button */
+
 .back-btn {
   position: absolute;
-  left: 135px;            /* ↓↓↓ больше пространства справа */
-  top: 12px;
+  left: 20px;
+  top: 20px;
 
-  padding: 3px 10px;     /* уменьшили кнопку */
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 8px;
-
-  background: rgba(255, 255, 255, 0.25);
-  border: 1px solid rgba(196, 0, 55, 0.25);
-
-  color: #b1162a;
-
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+
+  padding: 6px 14px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
+
+  color: white;
+
+  font-size: 13px;
+  font-weight: 600;
+
   cursor: pointer;
 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.35);
 
-  transition: 0.25s ease;
+  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.38),
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 3px 6px rgba(255,255,255,0.22),
+    inset 0 -6px 14px rgba(70,0,20,0.35);
 }
 
-.back-btn:hover {
-  background: rgba(255,255,255,0.45);
-  border-color: rgba(196,0,55,0.45);
-  box-shadow: 0 4px 12px rgba(196,0,55,0.15);
-  transform: translateY(-1px);
-}
 
 /* ====================================================== */
 /* TABLE BLOCK HEADER (НЕ ТРОГАЕМ СТРУКТУРУ)              */
@@ -610,40 +615,13 @@ th {
 <!-- ======= TOP NAV + BACK BUTTON (COPY FROM PREVIEW PAGE) ======= -->
 
 <div class="top-nav-wrapper">
-
   <button id="backBtn" class="back-btn">
-    <svg width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="#6d6d6d" fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    Back
+    ‹ Back To Dash
   </button>
-
-  <div class="top-nav">
-    <a href="#">Guest Manager</a>
-    <a href="#">Save The Date</a>
-    <a href="#">RSVP</a>
-    <a href="#">Seating Chart</a>
-    <a href="#">Registry</a>
-    <a href="#">Budget</a>
-    <a href="#">Web Manager</a>
-    <a href="#">Wed Reports</a>
-  </div>
-
-
 </div>
-
 
 <h1>Wed Reports</h1>
 
-<div id="coupleSmallName" style="
-  text-align:center;
-  font-size:22px;
-  font-weight:600;
-  margin-top:-20px;
-  margin-bottom:25px;
-  color:#b41111;
-  opacity:0.85;
-"></div>
 
 <div class="ios-banner">
   Track all your RSVP stats in one place. View the Quick User Guide for this page
@@ -878,7 +856,6 @@ async function loadCoupleName() {
   const bride = cap(parts[0]);
   const groom = cap(parts[1]);
 
-  document.getElementById("coupleSmallName").textContent = `${bride} & ${groom}`;
 }
 
 loadCoupleName();
