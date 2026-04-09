@@ -1429,15 +1429,36 @@ del.onclick = async () => {
   label.className = "photo-label";
   label.innerText = `Photo ${photoNumber}`;
 
-const img = document.createElement("img");
-img.src =
-  `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
+const url = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}?v=${Date.now()}`;
 
-img.onerror = () => {
-  setTimeout(() => {
-    img.src = img.src.split("?")[0] + "?v=" + Date.now();
-  }, 500);
-};
+if (path.endsWith(".mp4")) {
+
+  const video = document.createElement("video");
+  video.src = url;
+  video.controls = true;
+  video.style.width = "70px";
+  video.style.height = "70px";
+  video.style.objectFit = "cover";
+  video.style.borderRadius = "8px";
+
+  container.appendChild(video);
+
+} else {
+
+  const img = document.createElement("img");
+  img.src = url;
+
+  img.onerror = () => {
+    setTimeout(() => {
+      img.src = img.src.split("?")[0] + "?v=" + Date.now();
+    }, 500);
+  };
+
+  container.appendChild(img);
+
+}
+
+
 
   const text = document.createElement("div");
   text.className = "caption-text";
