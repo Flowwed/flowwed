@@ -1038,28 +1038,20 @@ slotSelect.addEventListener("change", () => {
 
 const miniPreview = document.getElementById("miniPreview");
 
-function showPreview(file, isFinal = false) {
+function showPreview(file) {
   const url = URL.createObjectURL(file);
 
-  if (isFinal) {
-    // после успешной загрузки — большое фото
-    preview.src = url;
-    preview.style.display = "block";
-preview.src = url;
-    miniPreview.style.display = "none";
-    previewBox.classList.remove("placeholder");
-  } else {
-    // сразу после выбора файла — маленькое превью
-    miniPreview.src = url;
-    miniPreview.style.display = "block";
-miniPreview.load();
-  }
+  preview.src = url;
+  preview.style.display = "block";
+
+  miniPreview.style.display = "none";
+  previewBox.classList.remove("placeholder");
 }
 
 // 🔽 ВОТ ОН — СРАЗУ ПОСЛЕ showPreview
 document.getElementById("fileInput").addEventListener("change", e => {
   const file = e.target.files[0];
-  if (file) showPreview(file, false);
+  if (file) showPreview(file);
 status.innerText = "";   // ← убираем предупреждение
 });
 
@@ -1229,7 +1221,7 @@ uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalUploadText;
 
 status.innerText = "✅ Uploaded!";
-showPreview(file, true);
+showPreview(file);
 
 await fetch(
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
@@ -1252,22 +1244,6 @@ await fetch(
 setTimeout(async () => {
   await loadCaptionsFromSupabase();
 }, 500);
-
-setTimeout(() => {
-
-  // плавно скрываем превью
-  preview.classList.add("fade-out-preview");
-
-  setTimeout(() => {
-    resetUploaderForm();
-
-    // вернуть обратно (чтобы при следующей загрузке не было скрыто)
-    preview.classList.remove("fade-out-preview");
-
-  }, 500); // время анимации
-
-}, 2000); // сколько показывать фото
-
 
 
 // setTimeout(openCaptionModal, 300);i
