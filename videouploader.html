@@ -1036,12 +1036,14 @@ function showPreview(file, isFinal = false) {
     // после успешной загрузки — большое фото
     preview.src = url;
     preview.style.display = "block";
+preview.src = url;
     miniPreview.style.display = "none";
     previewBox.classList.remove("placeholder");
   } else {
     // сразу после выбора файла — маленькое превью
     miniPreview.src = url;
     miniPreview.style.display = "block";
+miniPreview.load();
   }
 }
 
@@ -1709,6 +1711,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     musicPreview.src = URL.createObjectURL(file);
     musicPreview.style.display = "block";
+
   });
 
   // upload
