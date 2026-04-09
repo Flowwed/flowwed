@@ -1386,8 +1386,8 @@ jmCaptions.sort((a, b) => {
 
 jmCaptions.forEach((row) => {
 
-  const path = slotToPath[row.slot];
-  if (!path) return;
+const path = `${slug}/video.mp4`;  
+if (!path) return;
 
   const item = document.createElement("div");
   item.className = "caption-item";
