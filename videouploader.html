@@ -927,6 +927,28 @@ select {
   width: 260px;
 }
 
+.controls-card {
+  width: 260px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;  /* расстояние между кнопками */
+}
+
+
+#uploadBtn,
+.see-web-btn {
+  width: 100%;
+}
+
+
+select,
+input[type=file] {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
 
 </style>
 
@@ -977,58 +999,70 @@ select {
   <div class="editor-column">
 
     <!-- UPLOADER -->
-    <div class="uploader-container">
+<div class="uploader-container">
 
-      <div id="tokenDisplay"></div>
-      <div id="slugDisplay"></div>
+  <!-- LEFT: PREVIEW -->
+  <div id="previewBox" class="placeholder">
 
-      <div id="previewBox" class="placeholder">
-        <video
-          id="preview"
-          controls
-          style="display:none; width:100%; height:100%; object-fit:cover; border-radius:14px;">
-        </video>
+<div id="deletePreviewBtn" class="delete-btn" style="display:none;">×</div>
 
-        <video
-          id="miniPreview"
-          muted
-          autoplay
-          playsinline
-          style="display:none; width:100px; height:70px; object-fit:cover; border-radius:10px;">
-        </video>
-      </div>
+    <video
+      id="preview"
+      controls
+      style="display:none; width:100%; height:100%; object-fit:cover; border-radius:14px;">
+    </video>
 
-<div class="controls-card">
-
-  <select id="slotSelect">
-    <script>
-      const start = 145;
-      const total = 50;
-
-      for (let i = 0; i < total; i++) {
-        const slot = start + i;
-        document.write(`<option value="jm_img${slot}">Photo ${i + 1}</option>`);
-      }
-    </script>
-  </select>
-
-  <input type="file" id="fileInput" accept="image/*,video/mp4,video/webm" />
-
-  <button id="uploadBtn" class="ruby-btn">
-    Upload Photo to Your Page
-  </button>
-
-  <div class="progress-container" id="progressContainer">
-    <div class="progress-bar" id="progressBar"></div>
+    <video
+      id="miniPreview"
+      muted
+      autoplay
+      playsinline
+      style="display:none; width:100px; height:70px; object-fit:cover; border-radius:10px;">
+    </video>
   </div>
 
-  <div id="status"></div>
+  <!-- RIGHT: CONTROLS -->
+  <div class="controls-card">
 
-  <button class="see-web-btn">
-    👁 Preview Your Page
+    <select id="slotSelect"></select>
+
+    <input type="file" id="fileInput" accept="image/*,video/mp4,video/webm" />
+
+    <button id="uploadBtn" class="ruby-btn">
+      Upload Photo to Your Page
+    </button>
+
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="status"></div>
+
+    <button class="see-web-btn">
+      👁 Preview Your Page
+    </button>
+
+  </div>
+</div>
+
+<!-- 🔥 НИЖНЯЯ ПЛАШКА (ОТДЕЛЬНО!) -->
+<div class="info-bubble info-bubble--bottom">
+  <div class="bottom-info-content">
+    <span class="bottom-info-arrow">→</span>
+    <span>After uploading, preview your page to see changes</span>
+  </div>
+
+  <button class="bottom-info-btn">
+    Preview Page
   </button>
+</div>
 
 </div>
+
+
+
+
+
 </script>
 
 <script>
@@ -1082,7 +1116,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const progressContainer = document.getElementById("progressContainer");
   const progressBar = document.getElementById("progressBar");
 
-const start = 145;
+// 🔽 ВСТАВИЛ ЗДЕСЬ
+document.addEventListener("DOMContentLoaded", () => {
+  const select = document.getElementById("slotSelect");
+
+  const start = 145;
+  const total = 50;
+
+  for (let i = 0; i < total; i++) {
+    const slot = start + i;
+
+    const option = document.createElement("option");
+    option.value = "jm_img" + slot;
+    option.textContent = "Photo " + (i + 1);
+
+    select.appendChild(option);
+  }
+});
+
+
 
   let slug = null;
 
@@ -1097,15 +1149,27 @@ slotSelect.addEventListener("change", () => {
 
 const miniPreview = document.getElementById("miniPreview");
 
-function showPreview(file) {
+function showPreview(file, isFinal = false) {
   const url = URL.createObjectURL(file);
+  const delBtn = document.getElementById("deletePreviewBtn");
 
-  preview.src = url;
-  preview.style.display = "block";
+  if (isFinal) {
+    preview.src = url;
+    preview.style.display = "block";
+    miniPreview.style.display = "none";
+    previewBox.classList.remove("placeholder");
 
-  miniPreview.style.display = "none";
-  previewBox.classList.remove("placeholder");
+    delBtn.style.display = "block"; // 🔥 показать крестик
+
+  } else {
+    miniPreview.src = url;
+    miniPreview.style.display = "block";
+
+    delBtn.style.display = "block"; // 🔥 показать сразу
+  }
 }
+
+
 
 // 🔽 ВОТ ОН — СРАЗУ ПОСЛЕ showPreview
 document.getElementById("fileInput").addEventListener("change", e => {
@@ -1273,6 +1337,9 @@ await fetch(
     })
   }
 );
+
+// 🔥 ВОТ ЗДЕСЬ (после fetch)
+window.lastUploadedPath = `${slug}/${slot}/${file.name}`;
 
 lastUploadedFile = file;
 
@@ -1491,6 +1558,48 @@ const musicInput = document.getElementById("musicInput");
 const musicPreview = document.getElementById("musicPreview");
 
 }
+
+document.getElementById("deletePreviewBtn").onclick = async () => {
+
+  const slot = slotSelect.value;
+  const path = window.lastUploadedPath;
+
+  if (!path) {
+    // файл ещё не загружен → просто очистить
+    resetUploaderForm();
+    return;
+  }
+
+  const ok = await showConfirm("Delete this file?");
+  if (!ok) return;
+
+  const res = await fetch("/.netlify/functions/delete-photo", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      token,
+      slot,
+      path
+    })
+  });
+
+  if (!res.ok) {
+    alert("Delete failed");
+    return;
+  }
+
+  // 🔥 как в gallery
+  window.lastUploadedPath = null;
+  resetUploaderForm();
+
+  // если хочешь обновить галерею
+  if (typeof loadCaptionsFromSupabase === "function") {
+    await loadCaptionsFromSupabase();
+  }
+};
+
 </script>
 
 
