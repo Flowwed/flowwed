@@ -223,7 +223,15 @@ body: JSON.stringify({
 
     });
 
-    const { uploadURL } = await res.json();
+    const data = await res.json();
+
+const uploadURL =
+  data.uploadURL || data.url || data.signedUrl;
+
+if (!uploadURL) {
+  console.error("NO URL FROM FUNCTION:", data);
+  throw new Error("No upload URL returned");
+}
 
     await fetch(uploadURL, {
       method: "PUT",
