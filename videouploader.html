@@ -190,7 +190,9 @@ fileInput.addEventListener("change", e => {
 });
 
 /* UPLOAD */
+
 uploadBtn.onclick = async () => {
+
   const file = fileInput.files[0];
 
   if (!file) {
@@ -207,68 +209,63 @@ uploadBtn.onclick = async () => {
   status.innerText = "Uploading...";
 
   try {
-    const path = `${slug}/main/${file.name}`;
+
+    const safeName = file.name.replace(/\s+/g, "_");
+    const path = `${slug}/main/${safeName}`;
 
     const res = await fetch("/.netlify/functions/mint-upload-url-2", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-
-body: JSON.stringify({
-  slug,
-  token,
-  slot: "main",
-  filename: file.name,
-  page_key: "main_video"
-})
-
+      body: JSON.stringify({
+        slug,
+        token,
+        slot: "main",
+        filename: safeName,
+        page_key: "main_video"
+      })
     });
 
     const data = await res.json();
 
-const uploadURL =
-  data.uploadURL || data.url || data.signedUrl;
+    const uploadURL =
+      data.uploadURL || data.url || data.signedUrl;
 
-if (!uploadURL) {
-  console.error("NO URL FROM FUNCTION:", data);
-  throw new Error("No upload URL returned");
-}
-
-
-try {
-  const safeName = file.name.replace(/\s+/g, "_");
-  const path = `${slug}/main/${safeName}`;
-
-  await fetch(uploadURL, {
-    method: "PUT",
-    body: file,
-    headers: {
-      "Content-Type": file.type || "video/mp4"
+    if (!uploadURL) {
+      console.error("NO URL FROM FUNCTION:", data);
+      throw new Error("No upload URL returned");
     }
-  });
 
-  await fetch(`${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`, {
-    method: "PATCH",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      video_path: path
-    })
-  });
+    await fetch(uploadURL, {
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type || "video/mp4"
+      }
+    });
 
-  preview.src =
-    `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}`;
+    await fetch(`${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`, {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        video_path: path
+      })
+    });
 
-  status.innerText = "✅ Uploaded!";
+    preview.src =
+      `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}`;
 
-} catch (e) {
-  console.error(e);
-  status.innerText = "❌ Upload failed";
-}
+    status.innerText = "✅ Uploaded!";
 
-uploadBtn.disabled = false;
+  } catch (e) {
+    console.error(e);
+    status.innerText = "❌ Upload failed";
+  }
+
+  uploadBtn.disabled = false;
 
 };
 
