@@ -233,33 +233,43 @@ if (!uploadURL) {
   throw new Error("No upload URL returned");
 }
 
-    await fetch(uploadURL, {
-      method: "PUT",
-      body: file
-    });
 
-    await fetch(`${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`, {
-      method: "PATCH",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        video_path: path
-      })
-    });
+try {
+  const safeName = file.name.replace(/\s+/g, "_");
+  const path = `${slug}/main/${safeName}`;
 
-    preview.src =
-      `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}`;
+  await fetch(uploadURL, {
+    method: "PUT",
+    body: file,
+    headers: {
+      "Content-Type": file.type || "video/mp4"
+    }
+  });
 
-    status.innerText = "✅ Uploaded!";
-  } catch (e) {
-    console.error(e);
-    status.innerText = "❌ Upload failed";
-  }
+  await fetch(`${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`, {
+    method: "PATCH",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      video_path: path
+    })
+  });
 
-  uploadBtn.disabled = false;
+  preview.src =
+    `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}`;
+
+  status.innerText = "✅ Uploaded!";
+
+} catch (e) {
+  console.error(e);
+  status.innerText = "❌ Upload failed";
+}
+
+uploadBtn.disabled = false;
+
 };
 
 /* REMOVE */
