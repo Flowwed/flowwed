@@ -1373,6 +1373,8 @@ status.innerText = "✅ Uploaded!";
 
 // 🔥 SAVE VIDEO TO SITES TABLE
 
+const path = `${slug}/${slot}/${file.name}`;
+
 await fetch(`${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`, {
   method: "PATCH",
   headers: {
