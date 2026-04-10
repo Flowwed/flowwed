@@ -212,10 +212,15 @@ uploadBtn.onclick = async () => {
     const res = await fetch("/.netlify/functions/mint-upload-url-2", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        path,
-        contentType: file.type
-      })
+
+body: JSON.stringify({
+  slug,
+  token,
+  slot: "main",
+  filename: file.name,
+  page_key: "main_video"
+})
+
     });
 
     const { uploadURL } = await res.json();
