@@ -1394,6 +1394,8 @@ uploadBtn.innerHTML = originalUploadText;
 status.innerText = "✅ Uploaded!";
 showPreview(file);
 
+document.getElementById("removeBtn").style.display = "flex";
+
 await fetch(
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
   {
