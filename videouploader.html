@@ -257,8 +257,6 @@ uploadBtn.onclick = async () => {
 
 const videoUrl = `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}`;
 
-preview.src = videoUrl + "?t=" + Date.now();
-preview.load();
 
 
     status.innerText = "✅ Uploaded!";
