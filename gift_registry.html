@@ -1001,6 +1001,27 @@ document.getElementById("composerClose").onclick = () => {
 };
 
 
+let expanded = false;
+
+document.getElementById("composerExpand").onclick = () => {
+
+  const composer = document.getElementById("emailComposer");
+  const textarea = document.getElementById("composerBody");
+
+  expanded = !expanded;
+
+  if (expanded) {
+    composer.style.width = "600px";
+    composer.style.height = "80vh";
+    textarea.style.height = "200px";
+  } else {
+    composer.style.width = "380px";
+    composer.style.height = "auto";
+    textarea.style.height = "80px";
+  }
+
+};
+
 </script>
 
 
