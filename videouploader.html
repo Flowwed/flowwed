@@ -345,6 +345,7 @@ uploadBtn.onclick = async () => {
     const safeName = file.name.replace(/\s+/g, "_");
     const path = `${slug}/main/${safeName}`;
 
+
     const res = await fetch("/.netlify/functions/mint-upload-url-2", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
@@ -372,6 +373,12 @@ console.log("UPLOAD RESPONSE:", data);
 await uploadFileWithProgress(uploadURL, file, (p) => {
   progressBar.style.width = p + "%";
 });
+
+console.log("UPLOAD FILE NAME:", file.name);
+console.log("EXPECTED PATH:", path);
+console.log("FINAL PATH SAVED:", path);
+
+
     await fetch(`${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`, {
       method: "PATCH",
       headers: {
