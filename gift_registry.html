@@ -424,6 +424,35 @@ h1 {
 }
 
 
+.email-composer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 360px;
+  background: white;
+  padding: 16px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  display: none;
+  z-index: 9999;
+}
+
+.composer-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.email-composer input,
+.email-composer textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+
+
 </style>
 </head>
 
@@ -905,6 +934,11 @@ function renderGuestTable() {
 loadGuests();
 
 
+document.getElementById("composerClose").onclick = () => {
+  document.getElementById("emailComposer").style.display = "none";
+};
+
+
 </script>
 
 
@@ -1027,11 +1061,33 @@ document.getElementById("sendEmailBtn").onclick = () => {
     return;
   }
 
-  console.log("Emails:", emails);
+  document.getElementById("composerEmails").value = emails.join(", ");
+
+  document.getElementById("emailComposer").style.display = "block";
 
 };
 
 </script>
+
+<div class="email-composer" id="emailComposer">
+
+  <div class="composer-header">
+    <span>Send Email</span>
+    <span id="composerClose" style="cursor:pointer;">×</span>
+  </div>
+
+  <label>To:</label>
+  <input type="text" id="composerEmails">
+
+  <label>Subject:</label>
+  <input type="text" id="composerSubject" value="Wedding Invite">
+
+  <label>Message:</label>
+  <textarea id="composerBody">Hello! Please join us...</textarea>
+
+  <button id="composerSend">Send</button>
+
+</div>
 
 
 </body>
