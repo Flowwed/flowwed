@@ -428,14 +428,34 @@ if (localVideoURL) {
 };
 
 /* REMOVE */
-removeBtn.onclick = () => {
+
+removeBtn.onclick = async () => {
+
+  if (!preview.src) return;
+
+  const path = preview.src.split("/galleries/")[1];
+
+  await fetch("/.netlify/functions/delete-video", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      token,
+      path
+    })
+  });
+
+  // очистка UI
   preview.src = "";
   preview.style.display = "none";
   fileInput.value = "";
   previewBox.classList.add("placeholder");
   removeBtn.style.display = "none";
-  status.innerText = "";
+  status.innerText = "Deleted";
 };
+
+
 
 /* PREVIEW PAGE */
 document.getElementById("previewPageBtn").onclick = () => {
