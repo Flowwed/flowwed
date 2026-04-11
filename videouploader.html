@@ -433,7 +433,7 @@ removeBtn.onclick = async () => {
 
   if (!preview.src) return;
 
-  const path = preview.src.split("/galleries/")[1];
+  const path = preview.src.split("/galleries/")[1].split("?")[0];
 
   await fetch("/.netlify/functions/delete-video", {
     method: "POST",
