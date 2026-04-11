@@ -20,7 +20,7 @@ body {
   grid-template-columns: 1fr 260px;
   gap: 20px;
 
-  width: 660px;
+  width: 640px;
   margin: auto;
   background: white;
   padding: 20px;
@@ -190,6 +190,33 @@ transition: 0.2s ease;
   transition: width 0.2s;
 }
 
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.modal-window {
+  position: relative;
+  background: white;
+  width: 75vw;
+  height: 75vh;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.modal-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
 </style>
 </head>
 
@@ -211,7 +238,7 @@ transition: 0.2s ease;
 </button>
 
 <div id="fileName" style="font-size:14px; margin-top:6px; color:#555;">
-  No file chosen
+  No video chosen
 </div>
 
 
@@ -307,7 +334,7 @@ uploadBtn.onclick = async () => {
   const file = fileInput.files[0];
 
   if (!file) {
-    status.innerText = "Choose file first";
+    status.innerText = "Choose videofile first";
     return;
   }
 
@@ -412,8 +439,26 @@ removeBtn.onclick = () => {
 
 /* PREVIEW PAGE */
 document.getElementById("previewPageBtn").onclick = () => {
-  window.open(`https://flowwed.netlify.app/?t=${token}`, "_blank");
+
+  const modal = document.getElementById("videoPreviewModal");
+  const iframe = document.getElementById("videoPreviewIframe");
+  const closeBtn = document.getElementById("closeVideoPreview");
+
+  if (!token) {
+    alert("Missing token");
+    return;
+  }
+
+  iframe.src = `https://flowwed.netlify.app/?t=${token}`;
+  modal.style.display = "flex";
+
+  closeBtn.onclick = () => {
+    modal.style.display = "none";
+    iframe.src = "";
+  };
+
 };
+
 
 loadSlug();
 
@@ -455,6 +500,25 @@ fileInput.addEventListener("change", e => {
 });
 
 </script>
+
+<div class="modal-backdrop" id="videoPreviewModal">
+  <div class="modal-window">
+
+    <div id="closeVideoPreview" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999;
+    ">×</div>
+
+    <iframe id="videoPreviewIframe" class="modal-iframe"></iframe>
+
+  </div>
+</div>
+
 
 </body>
 </html>
