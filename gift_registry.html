@@ -1003,6 +1003,34 @@ document.getElementById("selectAll").onclick = (e) => {
 
 };
 
+function getSelectedEmails() {
+
+  const selected = document.querySelectorAll(".rowCheck:checked");
+
+  const emails = [];
+
+  selected.forEach(ch => {
+    const email = ch.dataset.email;
+    if (email) emails.push(email);
+  });
+
+  return [...new Set(emails)];
+}
+
+
+document.getElementById("sendEmailBtn").onclick = () => {
+
+  const emails = getSelectedEmails();
+
+  if (!emails.length) {
+    alert("Выбери гостей");
+    return;
+  }
+
+  console.log("Emails:", emails);
+
+};
+
 </script>
 
 
