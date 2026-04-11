@@ -8,6 +8,8 @@ export async function handler(event) {
     const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
     const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+console.log("SERVICE KEY LENGTH:", SERVICE_KEY?.length);
+
     if (!SERVICE_KEY) {
       return {
         statusCode: 500,
