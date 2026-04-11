@@ -286,7 +286,6 @@ const fileInput = document.getElementById("fileInput");
 const uploadBtn = document.getElementById("uploadBtn");
 const preview = document.getElementById("preview");
 const previewBox = document.getElementById("previewBox");
-const removeBtn = document.getElementById("removeBtn");
 const status = document.getElementById("status");
 const deleteBtn = document.getElementById("deleteBtn");
 
@@ -348,7 +347,7 @@ uploadBtn.onclick = async () => {
   const file = fileInput.files[0];
 
   if (!file) {
-    status.innerText = "Choose videofile first";
+    status.innerText = "Choose video first";
     return;
   }
 
@@ -441,35 +440,6 @@ if (localVideoURL) {
   uploadBtn.disabled = false;
 
 };
-
-/* REMOVE */
-
-removeBtn.onclick = async () => {
-
-  if (!preview.src) return;
-
-  const path = preview.src.split("/galleries/")[1].split("?")[0];
-
-  await fetch("/.netlify/functions/delete-video", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      token,
-      path
-    })
-  });
-
-  // очистка UI
-  preview.src = "";
-  preview.style.display = "none";
-  fileInput.value = "";
-  previewBox.classList.add("placeholder");
-  removeBtn.style.display = "none";
-  status.innerText = "Deleted";
-};
-
 
 
 /* PREVIEW PAGE */
