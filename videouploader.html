@@ -232,7 +232,6 @@ transition: 0.2s ease;
 
   <div id="previewBox" class="placeholder">
     <video id="preview" controls></video>
-    <div id="removeBtn">×</div>
   </div>
 
   <div class="controls-card">
@@ -262,6 +261,11 @@ transition: 0.2s ease;
     <button class="see-web-btn" id="previewPageBtn">
       👁 Preview Your Page
     </button>
+
+<button id="deleteBtn" class="see-web-btn">
+  🗑 Delete Video
+</button>
+
   </div>
 
 </div>
@@ -284,9 +288,11 @@ const preview = document.getElementById("preview");
 const previewBox = document.getElementById("previewBox");
 const removeBtn = document.getElementById("removeBtn");
 const status = document.getElementById("status");
+const deleteBtn = document.getElementById("deleteBtn");
 
 let slug = null;
 let localVideoURL = null;
+let currentVideoPath = null;
 
 /* LOAD SLUG */
 async function loadSlug() {
@@ -306,6 +312,8 @@ if (data.length) {
   slug = data[0].slug;
 
   const videoPath = data[0].video_path;
+
+currentVideoPath = videoPath;
 
   if (videoPath) {
 const videoUrl = `${SUPABASE_URL}/storage/v1/object/public/galleries/${videoPath}?t=${Date.now()}`;
@@ -403,9 +411,10 @@ await uploadFileWithProgress(uploadURL, file, (p) => {
       })
     });
 
+// 👇 ВОТ ЭТА СТРОКА
+currentVideoPath = path;
+
 const videoUrl = `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}`;
-
-
 
     status.innerText = "✅ Uploaded!";
 
@@ -484,6 +493,43 @@ document.getElementById("previewPageBtn").onclick = () => {
   };
 
 };
+
+
+deleteBtn.onclick = async () => {
+
+  if (!currentVideoPath) {
+    status.innerText = "No video to delete";
+    return;
+  }
+
+  const res = await fetch("/.netlify/functions/delete-video", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      token,
+      path: currentVideoPath
+    })
+  });
+
+  if (!res.ok) {
+    const txt = await res.text();
+    console.error("DELETE ERROR:", txt);
+    status.innerText = "❌ Delete failed";
+    return;
+  }
+
+  // очистка UI
+  preview.src = "";
+  preview.style.display = "none";
+  fileInput.value = "";
+  previewBox.classList.add("placeholder");
+  status.innerText = "🗑 Deleted";
+
+  currentVideoPath = null;
+};
+
 
 
 loadSlug();
