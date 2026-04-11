@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Gift Registry</title>
@@ -649,6 +653,11 @@ fetch("/navbar.html")
 
 <div class="table-section">
 
+  <!-- 🔥 QR ВСТАВЛЕН ВОТ ЗДЕСЬ -->
+  <div style="text-align:center; margin-bottom:20px;">
+    <div id="qrCode"></div>
+  </div>
+
   <div class="ruby-frame-outer">
     <div class="ruby-frame-inner">
 
@@ -674,17 +683,17 @@ fetch("/navbar.html")
     </div>
   </div>
 
-<div class="footer-buttons">
+  <div class="footer-buttons">
 
-  <button id="deleteSelected">Delete Selected</button>
+    <button id="deleteSelected">Delete Selected</button>
 
-  <button id="sendEmailBtn">Send Email</button>
+    <button id="sendEmailBtn">Send Email</button>
 
-  <button id="shareBtn">Send via SMS</button>
+    <button id="shareBtn">Send via SMS</button>
+
+  </div>
 
 </div>
-</div>
-
 
 
 
@@ -1085,6 +1094,8 @@ document.addEventListener("change", (e) => {
 });
 
 
+
+
 </script>
 
 
@@ -1271,6 +1282,38 @@ Please use the RSVP link below.
   <button id="composerSend" class="composer-send">Send Email</button>
 
 </div>
+
+<script>
+
+
+function generateQR() {
+
+  const container = document.getElementById("qrCode");
+
+  const params = new URLSearchParams(window.location.search);
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    "";
+
+  if (!token) return;
+
+  const url = `https://flowwed.netlify.app/gift_registry?t=${token}`;
+
+  container.innerHTML = "";
+
+  QRCode.toCanvas(url, { width: 180 }, function (err, canvas) {
+    if (!err) container.appendChild(canvas);
+  });
+
+}
+
+generateQR();
+
+</script>
+
+
+
 
 
 </body>
