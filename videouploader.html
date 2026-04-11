@@ -166,7 +166,7 @@ let localVideoURL = null;
 /* LOAD SLUG */
 async function loadSlug() {
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=slug`,
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=slug,video_path`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -176,8 +176,24 @@ async function loadSlug() {
   );
 
   const data = await res.json();
-  if (data.length) slug = data[0].slug;
+
+if (data.length) {
+  slug = data[0].slug;
+
+  const videoPath = data[0].video_path;
+
+  if (videoPath) {
+const videoUrl = `${SUPABASE_URL}/storage/v1/object/public/galleries/${videoPath}?t=${Date.now()}`;
+
+
+    preview.src = videoUrl;
+preview.load(); 
+    preview.style.display = "block";
+    previewBox.classList.remove("placeholder");
+    removeBtn.style.display = "flex";
+  }
 }
+
 
 /* PREVIEW */
 fileInput.addEventListener("change", e => {
