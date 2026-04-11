@@ -1022,6 +1022,46 @@ document.getElementById("composerExpand").onclick = () => {
 
 };
 
+
+
+
+document.getElementById("composerSend").onclick = async () => {
+
+  const emails = getSelectedEmails();
+
+  if (!emails.length) {
+    alert("Нет получателей");
+    return;
+  }
+
+  const subject = document.getElementById("composerSubject").value;
+  const body = document.getElementById("composerBody").value;
+
+  try {
+
+    await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        subject: subject,
+        html: body,
+        guests: emails.map(e => ({ email: e }))
+      })
+    });
+
+    alert("Отправлено");
+
+  } catch (e) {
+    alert("Ошибка отправки");
+    console.error(e);
+  }
+
+};
+
+
+
 </script>
 
 
