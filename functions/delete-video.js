@@ -8,7 +8,13 @@ export async function handler(event) {
     const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
     const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-    console.log("SERVICE KEY:", SERVICE_KEY ? "OK" : "MISSING");
+    if (!SERVICE_KEY) {
+      console.error("❌ NO SERVICE ROLE KEY");
+      return {
+        statusCode: 500,
+        body: "Missing service key"
+      };
+    }
 
     if (!token || !path) {
       return {
@@ -17,22 +23,36 @@ export async function handler(event) {
       };
     }
 
-    // 🔥 1. УДАЛЕНИЕ ИЗ STORAGE
+    console.log("DELETE PATH:", path);
+
+    // ✅ 1. УДАЛЕНИЕ ИЗ STORAGE (ПРАВИЛЬНЫЙ СПОСОБ)
     const storageRes = await fetch(
-      `${SUPABASE_URL}/storage/v1/object/galleries/${path}`,
+      `${SUPABASE_URL}/storage/v1/object/remove`,
       {
-        method: "DELETE",
+        method: "POST",
         headers: {
           Authorization: `Bearer ${SERVICE_KEY}`,
-          apikey: SERVICE_KEY
-        }
+          apikey: SERVICE_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          bucketId: "galleries",
+          paths: [path] // 👈 ВАЖНО: массив!
+        })
       }
     );
 
-    const storageText = await storageRes.text();
-    console.log("STORAGE DELETE:", storageRes.status, storageText);
+    const storageJson = await storageRes.json();
+    console.log("STORAGE DELETE:", storageRes.status, storageJson);
 
-    // 🔥 2. ОЧИЩАЕМ video_path В ТАБЛИЦЕ sites
+    if (!storageRes.ok) {
+      return {
+        statusCode: 500,
+        body: "Storage delete failed: " + JSON.stringify(storageJson)
+      };
+    }
+
+    // ✅ 2. ОЧИЩАЕМ БД
     const siteRes = await fetch(
       `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`,
       {
@@ -48,11 +68,12 @@ export async function handler(event) {
       }
     );
 
-    console.log("SITE UPDATE:", siteRes.status);
+    const siteText = await siteRes.text();
+    console.log("SITE UPDATE:", siteRes.status, siteText);
 
     return {
       statusCode: 200,
-      body: "Video deleted OK"
+      body: "✅ Video deleted completely"
     };
 
   } catch (err) {
