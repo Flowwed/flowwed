@@ -1061,6 +1061,29 @@ document.getElementById("composerSend").onclick = async () => {
 };
 
 
+function refreshComposerEmails() {
+
+  const composer = document.getElementById("emailComposer");
+
+  // если composer не открыт — ничего не делаем
+  if (composer.style.display !== "block") return;
+
+  const emails = getSelectedEmails();
+
+  document.getElementById("composerEmails").value = emails.join(", ");
+}
+
+
+document.addEventListener("change", (e) => {
+
+  if (e.target.classList.contains("rowCheck") || e.target.id === "selectAll") {
+    setTimeout(() => {
+      refreshComposerEmails();
+    }, 0);
+  }
+
+});
+
 
 </script>
 
