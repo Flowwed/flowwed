@@ -386,6 +386,8 @@ uploadBtn.onclick = async () => {
 
     const data = await res.json();
 
+console.log("UPLOAD RESPONSE:", data);
+
     const uploadURL =
       data.uploadURL || data.url || data.signedUrl;
 
