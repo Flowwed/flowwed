@@ -318,6 +318,13 @@ uploadBtn.onclick = async () => {
 
   const file = fileInput.files[0];
 
+const MAX_SIZE = 80 * 1024 * 1024; // 80MB
+
+if (file.size > MAX_SIZE) {
+  status.innerText = "❌ Video too large (max 80MB)";
+  return;
+}
+
   if (!file) {
     status.innerText = "Choose video first";
     return;
