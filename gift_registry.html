@@ -1281,10 +1281,9 @@ Please use the RSVP link below.
 
 <script>
 
-
 function generateQR() {
 
-  const container = document.getElementById("qrCode");
+  const container = document.getElementById("qrCodePopup");
 
   const params = new URLSearchParams(window.location.search);
   const token =
@@ -1298,14 +1297,16 @@ function generateQR() {
 
   container.innerHTML = "";
 
-  QRCode.toCanvas(url, { width: 180 }, function (err, canvas) {
+  QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
     if (!err) container.appendChild(canvas);
   });
 
 }
 
+
 document.getElementById("shareBtn").onclick = () => {
   document.getElementById("qrPopup").style.display = "flex";
+  generateQR();
 };
 
 </script>
