@@ -319,10 +319,9 @@ const videoUrl = `${SUPABASE_URL}/storage/v1/object/public/galleries/${videoPath
 
 
     preview.src = videoUrl;
-preview.load(); 
+    preview.load(); 
     preview.style.display = "block";
     previewBox.classList.remove("placeholder");
-    removeBtn.style.display = "flex";
   }
 }
 }
