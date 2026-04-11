@@ -535,7 +535,7 @@ fetch("/navbar.html")
     <button id="saveBtn">Save gift</button>
   </div>
 
-  <!-- TABLE -->
+<!-- TABLE -->
 
 <h2>Gift List</h2>
 <div class="table-wrap">
@@ -554,7 +554,7 @@ fetch("/navbar.html")
   </table>
 </div>
 
-<!-- ⬇️ ВОТ СЮДА ВСТАВЛЯЕШЬ -->
+<!-- ВТОРАЯ ТАБЛИЦА (ГОСТИ) -->
 
 <div class="table-section">
 
@@ -583,9 +583,16 @@ fetch("/navbar.html")
     </div>
   </div>
 
+<div class="footer-buttons">
+
+  <button id="deleteSelected">Delete Selected</button>
+
+  <button id="sendEmailBtn">Send Email</button>
+
+  <button id="shareBtn">Send via SMS</button>
+
 </div>
-
-
+</div>
 
 
 
@@ -979,6 +986,21 @@ document.getElementById("backBtn").onclick = () => {
     params.get("T");
 
   window.location.href = `dashboard.html?t=${token}`;
+};
+
+
+</script>
+
+<script>
+
+document.getElementById("selectAll").onclick = (e) => {
+
+  const all = document.querySelectorAll(".rowCheck");
+
+  all.forEach(ch => {
+    ch.checked = e.target.checked;
+  });
+
 };
 
 </script>
