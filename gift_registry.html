@@ -1310,10 +1310,13 @@ document.getElementById("shareBtn").onclick = () => {
 };
 
 
-document.getElementById("closeQrPopup").onclick = () => {
-  document.getElementById("qrPopup").style.display = "none";
-};
+document.addEventListener("click", (e) => {
 
+  if (e.target.id === "closeQrPopup") {
+    document.getElementById("qrPopup").style.display = "none";
+  }
+
+});
 
 </script>
 
