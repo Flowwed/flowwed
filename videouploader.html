@@ -20,7 +20,7 @@ body {
   grid-template-columns: 1fr 260px;
   gap: 20px;
 
-  width: 720px;
+  width: 620px;
   margin: auto;
   background: white;
   padding: 20px;
@@ -81,17 +81,23 @@ body {
 }
 
 /* controls */
+
 .controls-card {
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  justify-content: center;   /* 👈 центр по вертикали */
+  height: 100%;              /* 👈 занимает всю высоту */
 }
 
 input, select {
   height: 42px;
   border-radius: 10px;
   border: 1px solid #ccc;
-  padding: 0 10px;
+  padding: 0 12px;        /* 👈 добавили */
+  display: flex;
+  align-items: center;    /* 👈 центрирует текст */
 }
 
 button {
@@ -99,21 +105,91 @@ button {
   border-radius: 14px;
   border: none;
   cursor: pointer;
+transition: 0.2s ease;
 }
 
 #uploadBtn {
-  background: #c30c1e;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.18),
+    rgba(255,255,255,0.05)
+  ), #9c1818;
+
   color: white;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.35),
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 3px 6px rgba(255,255,255,0.2),
+    inset 0 -6px 14px rgba(70,0,20,0.3);
 }
 
-.see-web-btn {
-  background: #eee;
+#uploadBtn:hover {
+  transform: translateY(-3px) scale(1.02);
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.45),
+    0 6px 14px rgba(0,0,0,0.3),
+    inset 0 4px 10px rgba(255,255,255,0.25),
+    inset 0 -10px 18px rgba(60,0,20,0.35);
 }
+
+#uploadBtn:active {
+  transform: scale(0.96);
+}
+
+
+.see-web-btn {
+  margin-top: 16px;
+
+  background: linear-gradient(180deg, #ffffff, #f2f2f2);
+  color: #b40012;
+
+  border: 1px solid rgba(180, 17, 17, 0.25);
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+
+  transition: 0.2s ease;
+}
+
+.see-web-btn:hover {
+  background: linear-gradient(180deg, #fff5f6, #f7d9dc);
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+}
+
+
+#fileInput {
+  display: none !important;
+}
+
 
 /* status */
 #status {
   font-size: 14px;
 }
+
+.progress-container {
+  margin-top: 12px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 10px;
+  display: none;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #c30c1e;
+  transition: width 0.2s;
+}
+
 </style>
 </head>
 
@@ -127,11 +203,26 @@ button {
   </div>
 
   <div class="controls-card">
-    <input type="file" id="fileInput" accept="video/mp4,video/webm">
+
+<input type="file" id="fileInput" hidden>
+
+<button id="chooseFileBtn" class="see-web-btn">
+  Choose Video
+</button>
+
+<div id="fileName" style="font-size:14px; margin-top:6px; color:#555;">
+  No file chosen
+</div>
+
 
     <button id="uploadBtn">
       Upload Video
     </button>
+
+<div class="progress-container" id="progressContainer">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
 
     <div id="status"></div>
 
@@ -147,7 +238,8 @@ const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
 
-
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
 
 
 const params = new URLSearchParams(window.location.search);
@@ -219,12 +311,21 @@ uploadBtn.onclick = async () => {
     return;
   }
 
+
   if (!slug) {
     status.innerText = "No slug";
     return;
   }
 
+// 👇 ВОТ СЮДА ВСТАВИЛ
+  const originalText = uploadBtn.innerHTML;
+
   uploadBtn.disabled = true;
+  uploadBtn.innerHTML = "Uploading...";
+
+  progressContainer.style.display = "block";
+  progressBar.style.width = "0%";
+
   status.innerText = "Uploading...";
 
   try {
@@ -254,14 +355,9 @@ uploadBtn.onclick = async () => {
       throw new Error("No upload URL returned");
     }
 
-    await fetch(uploadURL, {
-      method: "PUT",
-      body: file,
-      headers: {
-        "Content-Type": file.type || "video/mp4"
-      }
-    });
-
+await uploadFileWithProgress(uploadURL, file, (p) => {
+  progressBar.style.width = p + "%";
+});
     await fetch(`${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`, {
       method: "PATCH",
       headers: {
@@ -279,6 +375,15 @@ const videoUrl = `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}`;
 
 
     status.innerText = "✅ Uploaded!";
+
+uploadBtn.disabled = false;
+uploadBtn.innerHTML = originalText;
+
+setTimeout(() => {
+  progressContainer.style.display = "none";
+  progressBar.style.width = "0%";
+}, 800);
+
 
 if (localVideoURL) {
   preview.src = localVideoURL;
@@ -311,6 +416,44 @@ document.getElementById("previewPageBtn").onclick = () => {
 };
 
 loadSlug();
+
+
+function uploadFileWithProgress(url, file, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", url, true);
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const percent = Math.round((e.loaded / e.total) * 100);
+        onProgress(percent);
+      }
+    };
+
+    xhr.onload = () => resolve();
+    xhr.onerror = () => reject();
+
+    xhr.send(file);
+  });
+}
+
+const chooseFileBtn = document.getElementById("chooseFileBtn");
+const fileName = document.getElementById("fileName");
+
+chooseFileBtn.onclick = () => {
+  fileInput.click();
+};
+
+fileInput.addEventListener("change", e => {
+  const file = e.target.files[0];
+
+  if (file) {
+    fileName.innerText = file.name;
+  } else {
+    fileName.innerText = "No file chosen";
+  }
+});
+
 </script>
 
 </body>
