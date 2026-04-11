@@ -452,6 +452,68 @@ h1 {
 }
 
 
+.email-composer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 380px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 14px 32px rgba(0,0,0,0.35);
+  z-index: 9999;
+  display: none;
+}
+
+.composer-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: #b41111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.composer-label {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.composer-input,
+.composer-textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(180,0,40,0.25);
+  margin-top: 4px;
+}
+
+.composer-textarea {
+  height: 80px;
+}
+
+.composer-footer {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 13px;
+  background: #fff7f9;
+  border: 1px solid #ffd6e2;
+  border-radius: 10px;
+}
+
+.composer-send {
+  margin-top: 12px;
+  background: #b41111;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  cursor: pointer;
+}
+
+
 
 </style>
 </head>
@@ -1069,23 +1131,60 @@ document.getElementById("sendEmailBtn").onclick = () => {
 
 </script>
 
+
+
 <div class="email-composer" id="emailComposer">
 
   <div class="composer-header">
     <span>Send Email</span>
-    <span id="composerClose" style="cursor:pointer;">×</span>
+
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span id="composerExpand" style="cursor:pointer;">⤢</span>
+      <span id="composerClose" style="cursor:pointer;">×</span>
+    </div>
   </div>
 
-  <label>To:</label>
-  <input type="text" id="composerEmails">
+  <label class="composer-label">To Email(s):</label>
+  <input type="text" id="composerEmails" class="composer-input">
 
-  <label>Subject:</label>
-  <input type="text" id="composerSubject" value="Wedding Invite">
+  <label class="composer-label">Subject:</label>
+  <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
 
-  <label>Message:</label>
-  <textarea id="composerBody">Hello! Please join us...</textarea>
+  <label class="composer-label">Message:</label>
+  <textarea id="composerBody" class="composer-textarea">
+Hello!
 
-  <button id="composerSend">Send</button>
+We are happy to invite you to our wedding.
+
+Please use the RSVP link below.
+  </textarea>
+
+  <!-- RSVP LINK BLOCK -->
+  <div style="
+    margin-top:10px;
+    padding:10px;
+    border-radius:8px;
+    background:#fff7f7;
+    border:1px solid #ffd0d0;
+    font-size:13px;
+  ">
+
+    <div style="font-weight:700;color:#9c1818;margin-bottom:6px;">
+      RSVP Form Link
+    </div>
+
+    <div id="rsvpPreviewLink">
+      Link will appear automatically
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="composer-footer">
+    This message is sent from a notification-only address.
+  </div>
+
+  <button id="composerSend" class="composer-send">Send Email</button>
 
 </div>
 
