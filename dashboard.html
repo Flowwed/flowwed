@@ -964,14 +964,17 @@ function openPage(page) {
       file = "wed_reports.html";
       break;
 
+case "feedback":
+  file = "guest_memory.html";
+  break;
+
+
+
     default:
       alert("Not connected: " + page);
       return;
   }
 
-case "feedback":
-  file = "guest_memory.html";
-  break;
 
 if (page === "yourweb") {
   window.open(`${file}?t=${token}`, "_blank");
