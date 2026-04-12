@@ -127,6 +127,8 @@ async function loadArchive(){
 
 const token = new URLSearchParams(location.search).get("t");
 
+console.log("TOKEN:", token);
+
 const { data, error } = await supabase
 .from("postwed_messages")
 .select("*")
@@ -212,8 +214,6 @@ list.appendChild(folder);
 
 }
 
-loadArchive();
-
 window.openPhoto = function(src){
 const modal = document.getElementById("photoModal");
 const img = document.getElementById("photoModalImg");
@@ -223,7 +223,10 @@ if(!modal || !img) return;
 img.src = src;
 modal.style.display = "flex";
 };
+
 window.addEventListener("DOMContentLoaded", () => {
+
+loadArchive();   // ← теперь здесь (правильное место)
 
 const modal = document.getElementById("photoModal");
 
