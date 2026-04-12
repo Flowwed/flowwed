@@ -100,15 +100,100 @@ margin-top:6px;
 }
 
 
+.info-banner {
+  margin: 24px auto 26px;
+  max-width: 720px;
+  padding: 12px 18px;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(12px);
+
+  border-radius: 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #7a3a4a;
+
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.12),
+    inset 0 1px 2px rgba(255,255,255,0.6);
+
+  text-align: center;
+}
+
+.guide-link {
+  color: #2a6bff;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.top-nav-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+
+  padding: 6px 14px;
+  border-radius: 999px;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
+
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+
+  border: 1px solid rgba(255,255,255,0.35);
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.38),
+    inset 0 3px 6px rgba(255,255,255,0.22);
+}
+
+
 </style>
 </head>
 
 <body>
 
+<div class="top-nav-wrapper">
+
+  <button id="backBtn" class="back-btn" type="button">
+    <span>‹</span> Back
+  </button>
+
+</div>
+
+<h1 style="
+  text-align:center;
+  font-size:32px;
+  font-weight:700;
+  color:#9c1818;
+  margin-bottom:10px;
+">
+  Guest Memories & Messages
+</h1>
+
+
+<div class="info-banner">
+  View how your guest memories are organized and used.
+  Open the Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>.
+</div>
+
 <div class="archive-box">
 
 <div class="archive-header">
-📁 Guest Memories Archive
+📁 Guest Memories & Messages
 </div>
 
 <div id="archiveList" class="archive-list"></div>
@@ -238,6 +323,29 @@ modal.style.display = "none";
 
 });
 
+document.getElementById("openGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "flex";
+});
+
+document.getElementById("closeGuide").addEventListener("click", () => {
+  document.getElementById("guideModal").style.display = "none";
+});
+
+
+document.getElementById("backBtn").onclick = () => {
+
+  const params = new URLSearchParams(window.location.search);
+
+  const token =
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T");
+
+  window.location.href = `dashboard.html?t=${token}`;
+};
+
+
 </script>
 
 
@@ -260,6 +368,49 @@ border-radius:12px;
 box-shadow:0 10px 40px rgba(0,0,0,0.6);
 ">
 </div>
+
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttguestmemories.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+
+  </div>
+</div>
+
 
 </body>
 </html>
