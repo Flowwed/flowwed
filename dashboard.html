@@ -969,6 +969,10 @@ function openPage(page) {
       return;
   }
 
+case "feedback":
+  file = "guest_memory.html";
+  break;
+
 if (page === "yourweb") {
   window.open(`${file}?t=${token}`, "_blank");
 } else {
