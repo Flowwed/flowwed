@@ -267,8 +267,6 @@ body {
 .custom-scroll-container table {
   width: 100%;
   border-collapse: collapse;
-  min-height: 500px;   /* 🔥 КЛЮЧ */
-  table-layout: fixed;   /* 🔥 КЛЮЧ */
 
 }
 
@@ -701,13 +699,8 @@ height: 1px;
     inset 0 -10px 20px rgba(0,60,20,0.35);
 }
 
-
-.custom-scroll-container table {
-  width: 100%;
-  border-collapse: collapse;
-  min-height: 500px;
-
-  table-layout: fixed;   /* 🔥 КЛЮЧ */
+.custom-scroll-container {
+  scrollbar-gutter: stable;
 }
 
 </style>
