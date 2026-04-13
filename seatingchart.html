@@ -268,7 +268,37 @@ body {
   width: 100%;
   border-collapse: collapse;
   min-height: 500px;   /* 🔥 КЛЮЧ */
+  table-layout: fixed;   /* 🔥 КЛЮЧ */
+
 }
+
+
+#mainRSVPTable th:nth-child(1),
+#mainRSVPTable td:nth-child(1) {
+  width: 60px;
+}
+
+#mainRSVPTable th:nth-child(2),
+#mainRSVPTable td:nth-child(2) {
+  width: 180px;
+}
+
+#mainRSVPTable th:nth-child(3),
+#mainRSVPTable td:nth-child(3) {
+  width: 120px;
+}
+
+#mainRSVPTable th:nth-child(4),
+#mainRSVPTable td:nth-child(4) {
+  width: 220px;
+}
+
+#mainRSVPTable th:nth-child(5),
+#mainRSVPTable td:nth-child(5) {
+  width: 100px;
+}
+
+
 
 th, td {
   padding: 8px 10px;
@@ -672,6 +702,13 @@ height: 1px;
 }
 
 
+.custom-scroll-container table {
+  width: 100%;
+  border-collapse: collapse;
+  min-height: 500px;
+
+  table-layout: fixed;   /* 🔥 КЛЮЧ */
+}
 
 </style>
 </head>
