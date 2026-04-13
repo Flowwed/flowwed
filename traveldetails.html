@@ -444,6 +444,14 @@ th {
 }
 
 
+#closeQrPopup:hover {
+  transform: translateY(-2px);
+  background: #8e1515;
+  color: white;
+}
+
+
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -947,6 +955,8 @@ async function loadFromSupabase() {
 }
 
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const previewBtn = document.getElementById("previewBtn");
@@ -954,11 +964,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalFrame = document.getElementById("modalFrame");
   const closeModal = document.getElementById("closeModal");
 
+  const sendSmsBtn = document.getElementById("sendSmsBtn");
+  const closeQrPopup = document.getElementById("closeQrPopup");
+  const qrPopup = document.getElementById("qrPopup");
+  const qrCodePopup = document.getElementById("qrCodePopup");
+
   if (!previewBtn) {
     console.log("❌ previewBtn not found");
     return;
   }
 
+  // PREVIEW
   previewBtn.addEventListener("click", () => {
     saveDraft();
 
@@ -966,17 +982,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = params.get("t") || "";
 
     modalFrame.src =
-      `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`; 
+      `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
 
     modal.style.display = "flex";
   });
 
-  closeModal.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
+  // CLOSE PREVIEW
+  if (closeModal) {
+    closeModal.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
+
+  // SEND SMS (QR)
+  if (sendSmsBtn) {
+    sendSmsBtn.onclick = () => {
+
+      const params = new URLSearchParams(location.search);
+      const token = params.get("t") || "";
+      const url = `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
+
+      qrCodePopup.innerHTML = "";
+
+      QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        qrCodePopup.appendChild(canvas);
+      });
+
+      qrPopup.style.display = "flex";
+    };
+  }
+
+  // CLOSE QR POPUP
+  if (closeQrPopup) {
+    closeQrPopup.addEventListener("click", () => {
+      qrPopup.style.display = "none";
+    });
+  }
 
 });
 
+
+// SELECT ALL
 document.getElementById("selectAll").onclick = (e) => {
   const all = document.querySelectorAll(".rowCheck");
   all.forEach(ch => ch.checked = e.target.checked);
@@ -1072,6 +1122,7 @@ function refreshComposerFields() {
 
 
 // 🔥 ВСЯ ЛОГИКА ПОСЛЕ ЗАГРУЗКИ DOM
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const composer = document.getElementById("composerBox");
