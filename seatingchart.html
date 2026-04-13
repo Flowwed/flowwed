@@ -1256,7 +1256,48 @@ function renderRSVPTable() {
 
 document.getElementById("mainRSVPTable").outerHTML = `
 <table id="mainRSVPTable">
- ...
+  <thead>
+    <tr>
+      <th>RSVP</th>
+      <th>Name</th>
+      <th>Assign Table</th>
+      <th>Table #</th>
+      <th>Unassign Table</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    ${combined.map(g => {
+      const assigned = guestPosition[g.id] || null;
+      return `
+        <tr>
+          <td><span class="${g.iconClass}">${g.icon}</span></td>
+
+          <td>${g.first_name} ${g.last_name}</td>
+
+          <td>
+            ${tables.map(t => `
+              <button class="mini-assign-btn ${assigned === t.id ? "active" : ""}"
+                      data-guest="${g.id}" data-table="${t.id}">
+                ${t.id}
+              </button>
+            `).join("")}
+          </td>
+
+          <td>${assigned ? "T " + assigned : "—"}</td>
+
+          <td>
+            <button class="unassign-btn" data-id="${g.id}">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M6 6L18 18M6 18L18 6"
+                      stroke="white" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </td>
+
+        </tr>`;
+    }).join("")}
+  </tbody>
 </table>
 `;
 
@@ -1266,63 +1307,6 @@ setTimeout(() => {
 }, 0);
 
 initFloatingScrollbar();
-
-
-
-<table id="mainRSVPTable">
-  <thead>
-    <tr>
-      <th>RSVP</th>
-      <th>Name</th>
-      
-      <th>Assign Table</th>
-
-      <th>Table #</th>
-
-      <th>Unassign Table</th>
-    </tr>
-  </thead>
-
-
-<tbody>
-  ${combined.map(g => {
-    const assigned = guestPosition[g.id] || null;
-    return `
-      <tr>
-        <td><span class="${g.iconClass}">${g.icon}</span></td>
-
-        <td>${g.first_name} ${g.last_name}</td>
-
-        <!-- 🔥 ТЕПЕРЬ ЗДЕСЬ КНОПКИ -->
-        <td>
-          ${tables.map(t => `
-            <button class="mini-assign-btn ${assigned === t.id ? "active" : ""}"
-                    data-guest="${g.id}" data-table="${t.id}">
-              ${t.id}
-            </button>
-          `).join("")}
-        </td>
-
-        <!-- 🔥 А ЗДЕСЬ НОМЕР СТОЛА -->
-        <td>${assigned ? "T " + assigned : "—"}</td>
-
-        <td>
-          <button class="unassign-btn" data-id="${g.id}">
-            <svg width="18" height="18" viewBox="0 0 24 24">
-              <path d="M6 6L18 18M6 18L18 6"
-                    stroke="white" stroke-width="3" stroke-linecap="round"/>
-            </svg>
-          </button>
-        </td>
-
-      </tr>`;
-  }).join("")}
-</tbody>
-</table>
-`;
-
-initFloatingScrollbar();
-
 }
 
 /***************************************************
