@@ -1360,7 +1360,7 @@ h1 {
   align-items: center;
 
   width: 100%;
-
+ height: 0;   /* 🔥 ключ */
   margin-bottom: 8px;   /* 🔥 вместо 100px */
 }
 
@@ -1375,24 +1375,16 @@ h1 {
   gap: 6px;
 
   padding: 6px 16px;
-
   border-radius: 999px;
 
   background:
-    linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.25),
-      rgba(255,255,255,0.05)
-    ),
+    linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.05)),
     #9c1818;
 
   color: white;
-
   font-size: 13px;
   font-weight: 600;
-
   cursor: pointer;
-
   border: 1px solid rgba(255,255,255,0.35);
 
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -1403,27 +1395,28 @@ h1 {
     inset 0 -8px 16px rgba(70,0,20,0.4);
 }
 
-
 .back-btn:hover {
   transform: translateY(-50%) translateY(-2px);
-
-  box-shadow:
-    0 14px 28px rgba(0,0,0,0.4),
-    inset 0 3px 6px rgba(255,255,255,0.3),
-    inset 0 -10px 20px rgba(70,0,20,0.45);
 }
 
 .back-btn:active {
   transform: translateY(-50%) scale(0.96);
-
-  box-shadow:
-    inset 0 6px 14px rgba(0,0,0,0.45);
 }
-
 
 #coupleSmallName {
   display: none;
 }
+
+
+.top-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 18px;
+}
+
 
 </style>
 </head>
@@ -1431,79 +1424,15 @@ h1 {
 
 <body>
 
-<div class="top-nav-wrapper">
+<div class="top-header">
   <button id="backBtn" class="back-btn" type="button">
     <span class="back-arrow">‹</span>
     Back to Dash
   </button>
+
+  <h1>Wedding Budget</h1>
 </div>
 
-<!--
-<div id="navbar-container"></div>
-
-<script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
-}
-
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => {
-    const container = document.getElementById("navbar-container");
-    container.innerHTML = html;
-
-    const token = getToken();
-
-    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
-    const links = container.querySelectorAll(".nav-links a");
-
-    // ================= CLICK =================
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const page = link.dataset.page;
-        if (!page) return;
-
-        const url = token
-          ? `${page}.html?t=${encodeURIComponent(token)}`
-          : `${page}.html`;
-
-        window.location.href = url;
-      });
-    });
-
-    // ================= ACTIVE (FIXED) =================
-    let current = window.location.pathname;
-
-    // убираем trailing slash
-    if (current.endsWith("/")) {
-      current = current.slice(0, -1);
-    }
-
-    current = current.split("/").pop().toLowerCase();
-
-    links.forEach(link => {
-      const page = (link.dataset.page || "") + ".html";
-
-      if (current === page.toLowerCase()) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
--->
-
-
-
-<h1>Wedding Budget</h1>
 
 <div id="coupleSmallName" class="couple-subtitle"></div>
 
