@@ -935,7 +935,7 @@ async function loadTableCount() {
     return;
   }
 
-  const count = data?.table_count ?? 4;
+  const count = Math.max(data?.table_count ?? 3, 3);
   seatMap = data?.seat_map || {};
 
   console.log("📥 loadTableCount result:", count, seatMap);
@@ -1025,8 +1025,11 @@ document.getElementById("btnAddTable").onclick = async () => {
  *  TABLE BUTTONS — DELETE
  ***************************************************/
 document.getElementById("btnDeleteTable").onclick = async () => {
-  if (tables.length === 0) return;
 
+  if (tables.length <= 3) {
+    showGreenToast("Minimum 3 tables required");
+    return;
+  }
   const last = tables[tables.length - 1];
 
   if (guestsAtTable[last.id]) {
@@ -1283,7 +1286,7 @@ function renderRSVPTable() {
         </td>
 
         <!-- 🔥 А ЗДЕСЬ НОМЕР СТОЛА -->
-        <td>${assigned ? "T" + assigned : "—"}</td>
+        <td>${assigned ? "T " + assigned : "—"}</td>
 
         <td>
           <button class="unassign-btn" data-id="${g.id}">
