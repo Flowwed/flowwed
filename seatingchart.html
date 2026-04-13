@@ -17,7 +17,8 @@ body {
 
 body {
   margin: 0;
-  padding: 28px 26px 40px 26px;
+ padding: 42px 26px 40px 26px;
+
 }
 
 
@@ -118,6 +119,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 10px;     /* ← добавили */
   margin-bottom: 25px;
 }
 
@@ -442,6 +444,9 @@ th, td {
   box-shadow:
     0 6px 14px rgba(0,0,0,0.12),
     inset 0 1px 3px rgba(255,255,255,0.6);
+  display: block;
+  margin: 6px auto 32px auto;   /* ← ключ */
+
 }
 
 .guide-link {
@@ -495,26 +500,26 @@ th, td {
     inset 0 2px 3px rgba(255,255,255,0.25);
 }
 
-.top-logo-title {
+.top-header {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
-  max-width: 1500px;
-  margin: 0 auto 10px auto;
-  padding: 0 6px;
+  justify-content: center;
+  margin-top: 18px;
 }
 
+
 #topMainTitle {
-  margin: 0;
-  font-size: 24px;
-  font-weight: 600;
+  margin: 0 0 28px 0;
+  text-align: center;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
 
   background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
   -webkit-background-clip: text;
   color: transparent;
 }
-
     #coupleSmallName {
   font-size: 21px;
   font-weight: 648;
@@ -525,8 +530,8 @@ th, td {
 
 .top-divider-line {
   max-width: 1500px;
-  margin: 10px auto 14px auto;
-  height: 1px;
+margin: 14px auto 24px auto;  
+height: 1px;
   background: linear-gradient(to right,
     transparent,
     rgba(180,17,17,0.35),
@@ -595,19 +600,21 @@ th, td {
 .back-btn {
   position: absolute;
   left: 20px;
-  top: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 14px;
+  padding: 6px 16px;
 
   border-radius: 999px;
 
-  background: linear-gradient(
+  background:
+    linear-gradient(
       to bottom,
-      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.25),
       rgba(255,255,255,0.05)
     ),
     #9c1818;
@@ -621,115 +628,58 @@ th, td {
 
   border: 1px solid rgba(255,255,255,0.35);
 
-  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   box-shadow:
-    0 8px 20px rgba(0,0,0,0.38),
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 3px 6px rgba(255,255,255,0.22),
-    inset 0 -6px 14px rgba(70,0,20,0.35);
+    0 10px 22px rgba(0,0,0,0.35),
+    inset 0 2px 5px rgba(255,255,255,0.25),
+    inset 0 -8px 16px rgba(70,0,20,0.4);
 }
 
-#topMainTitle {
-  margin-left: 220px;
+
+.back-btn:hover {
+  transform: translateY(-50%) translateY(-2px);
+
+  box-shadow:
+    0 14px 28px rgba(0,0,0,0.4),
+    inset 0 3px 6px rgba(255,255,255,0.3),
+    inset 0 -10px 20px rgba(70,0,20,0.45);
 }
+
+.back-btn:active {
+  transform: translateY(-50%) scale(0.96);
+
+  box-shadow:
+    inset 0 6px 14px rgba(0,0,0,0.45);
+}
+
 
 </style>
 </head>
 
 <body>
 
-<div class="top-nav-wrapper">
+<div class="top-header">
+
   <button id="backBtn" class="back-btn" type="button">
     <span class="back-arrow">‹</span>
     Back to Dash
   </button>
-</div>
 
-<!--
-<div id="navbar-container"></div>
-
-<script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
-}
-
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => {
-    const container = document.getElementById("navbar-container");
-    container.innerHTML = html;
-
-    const token = getToken();
-
-    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
-    const links = container.querySelectorAll(".nav-links a");
-
-    // ================= CLICK =================
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const page = link.dataset.page;
-        if (!page) return;
-
-        const url = token
-          ? `${page}.html?t=${encodeURIComponent(token)}`
-          : `${page}.html`;
-
-        window.location.href = url;
-      });
-    });
-
-    // ================= ACTIVE (FIXED) =================
-    let current = window.location.pathname;
-
-    // убираем trailing slash
-    if (current.endsWith("/")) {
-      current = current.slice(0, -1);
-    }
-
-    current = current.split("/").pop().toLowerCase();
-
-    links.forEach(link => {
-      const page = (link.dataset.page || "") + ".html";
-
-      if (current === page.toLowerCase()) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
--->
-
-<div class="top-logo-title" style="gap:16px;">
   <h1 id="topMainTitle">Seating Chart</h1>
 
-  <div class="ios-banner-inline">
-    View the Quick User Guide for this page
-    <span id="openGuide" class="guide-link">here</span>
-  </div>
-
   <div id="coupleSmallName"></div>
+
 </div>
+
+<div class="ios-banner-inline" style="max-width:fit-content; margin: 0 auto 14px auto;">
+  Organize guests, assign tables, and see your seating at a glance. Open the Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>
+</div>
+
 
 <div class="top-divider-line"></div>
 
-<div class="info-bubble-inline" style="margin: 0 18px 20px 18px;">
-  <div class="info-icon-inline">i</div>
-
-  <div class="info-text-inline" style="flex:1;max-width:none;">
-    Organize your guests by table and instantly see who is seated where.
-    Assign guests, adjust seat counts, and export your layout for printing or sharing.
-  </div>
-</div>
 
 
 <!-- EMAIL COMPOSER POPUP -->
