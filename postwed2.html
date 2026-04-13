@@ -2702,6 +2702,26 @@ style="max-width:90%;max-height:90%;border-radius:12px;">
 </div>
 
 
+document.getElementById("sendSmsBtn").onclick = () => {
+
+  const token = new URLSearchParams(location.search).get("t") || "";
+  const url = `https://coruscating-pika-435f9a.netlify.app/postwed-form?t=${token}`;
+
+  const container = document.getElementById("qrCodePopup");
+  container.innerHTML = "";
+
+  QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
+    if (!err) container.appendChild(canvas);
+  });
+
+  document.getElementById("qrPopup").style.display = "flex";
+};
+
+document.getElementById("closeQrPopup").onclick = () => {
+  document.getElementById("qrPopup").style.display = "none";
+};
+
+
 </body>
 </html>
 
