@@ -279,10 +279,14 @@
 
  .footer-buttons {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: 12px;     /* было 20px — уменьшили */
   flex-wrap: wrap;
+  justify-content: flex-start; /* или flex-start если хочешь слева */
 }
+
+
+
 
 .footer-buttons .footer-btn {
   padding: 10px 18px;   /* уменьшено */
@@ -1033,7 +1037,12 @@ input[type="file"] {
   width: 100%;
 }
 
+
+
 </style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 </head>
 
@@ -1051,7 +1060,7 @@ input[type="file"] {
 
 
 <div class="top-logo-title" style="gap:16px;">
-  <h1 id="topMainTitle">Post-Wedding</h1>
+  <h1 id="topMainTitle">'Just Married' Album</h1>
 
   <!-- mini info bubble -->
   <div class="ios-banner-inline">
@@ -1130,7 +1139,11 @@ input[type="file"] {
 
     <!-- RIGHT (ТАБЛИЦА) -->
     <div class="ruby-frame-outer">
+
+
       <div class="ruby-frame-inner">
+
+
         <div class="scroll-container">
 
           <table id="guestTable">
@@ -1149,16 +1162,20 @@ input[type="file"] {
 
         </div>
       </div>
+
+    <div class="footer-buttons">
+      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
+<button id="sendSmsBtn" class="footer-btn">Send SMS</button>
+
+  </div>
+
+
     </div>
 
   </div>
 
 </div>
 
-    <div class="footer-buttons">
-      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
-
-  </div>
 
   <!-- UNIVERSAL EMAIL COMPOSER -->
   <div class="email-composer" id="emailComposer">
@@ -2601,6 +2618,37 @@ reader.readAsDataURL(file);
 
 });
 
+
+function generateQR() {
+
+  const container = document.getElementById("qrCodePopup");
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("t") || "";
+
+  const url = `postwed-form.html?t=${token}`;
+
+  container.innerHTML = "";
+
+  QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
+    if (!err) container.appendChild(canvas);
+  });
+
+}
+
+
+document.getElementById("sendSmsBtn").onclick = () => {
+  document.getElementById("qrPopup").style.display = "flex";
+  generateQR();
+};
+
+
+document.getElementById("closeQrPopup").onclick = () => {
+  document.getElementById("qrPopup").style.display = "none";
+};
+
+
+
 </script>
 
 <div id="photoModal" style="
@@ -2616,6 +2664,38 @@ z-index:9999;
 <img id="photoModalImg"
 onclick="event.stopPropagation()"
 style="max-width:90%;max-height:90%;border-radius:12px;">
+</div>
+
+
+<div id="qrPopup" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+">
+
+  <div style="
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+  ">
+
+    <div style="font-weight:700; margin-bottom:10px;">
+      Scan QR Code
+    </div>
+
+    <div id="qrCodePopup"></div>
+
+    <div style="margin-top:10px;">
+      <button id="closeQrPopup">Close</button>
+    </div>
+
+  </div>
+
 </div>
 
 
