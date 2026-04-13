@@ -1167,6 +1167,10 @@ input[type="file"] {
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
 <button id="sendSmsBtn" class="footer-btn">Send SMS</button>
 
+
+<div id="qrBox"></div>
+
+
   </div>
 
 
@@ -2645,6 +2649,25 @@ document.getElementById("sendSmsBtn").onclick = () => {
 
 document.getElementById("closeQrPopup").onclick = () => {
   document.getElementById("qrPopup").style.display = "none";
+};
+
+
+
+
+document.getElementById("sendSmsBtn").onclick = () => {
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || "";
+
+  const url = `postwed-form.html?t=${token}`;
+
+  const box = document.getElementById("qrBox");
+  box.innerHTML = "";
+
+  QRCode.toCanvas(url, { width: 180 }, function (err, canvas) {
+    if (!err) box.appendChild(canvas);
+  });
+
 };
 
 
