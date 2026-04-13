@@ -657,6 +657,11 @@ height: 1px;
   border: 3px solid #ffe6eb;
 }
 
+.custom-scroll-container::after {
+  content: "";
+  display: block;
+  height: 40px;   /* ← даёт "пустое место" */
+}
 
 </style>
 </head>
