@@ -704,6 +704,10 @@ height: 1px;
 }
 
 
+
+
+
+/* Scrollbar — оставляем как есть */
 .custom-scroll-container::-webkit-scrollbar {
   width: 12px;
 }
@@ -719,33 +723,12 @@ height: 1px;
   border: 3px solid #ffe6eb;
 }
 
-
-.table-pair.active-table .simple-table-block {
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.25),
-      rgba(255,255,255,0.05)
-    ),
-    #1a8f3b;   /* 🔥 приятный зелёный */
-
-  box-shadow:
-    0 18px 45px rgba(0,0,0,0.28),
-    0 0 18px rgba(26,143,59,0.45),
-    inset 0 3px 8px rgba(255,255,255,0.25),
-    inset 0 -10px 20px rgba(0,60,20,0.35);
-}
-
-.custom-scroll-container {
-  scrollbar-gutter: stable;
-}
-
-
-
+/* НЕ ломаем таблицу */
 #mainRSVPTable {
-  table-layout: fixed;
   width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
 }
-
 
 /* RSVP */
 #mainRSVPTable th:nth-child(1),
@@ -757,27 +740,43 @@ height: 1px;
 #mainRSVPTable th:nth-child(2),
 #mainRSVPTable td:nth-child(2) {
   width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* 🔥 Assign Table (КНОПКИ — ШИРОКО) */
+/* 🔥 Assign Table — ГЛАВНОЕ */
 #mainRSVPTable th:nth-child(3),
 #mainRSVPTable td:nth-child(3) {
-  width: 420px;
+  width: auto;              /* ← убрали фикс */
 }
 
-/* 🔥 Table # (УЗКО) */
+/* КНОПКИ — АККУРАТНО */
+#mainRSVPTable td:nth-child(3) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;  /* ← центр */
+  align-items: center;
+  gap: 6px;
+
+  max-width: 260px;         /* ← ограничение */
+  margin: 0 auto;           /* ← центр внутри ячейки */
+}
+
+/* 🔥 Table # — УЗКАЯ */
 #mainRSVPTable th:nth-child(4),
 #mainRSVPTable td:nth-child(4) {
   width: 80px;
   white-space: nowrap;
+  text-align: center;
 }
 
 /* Unassign */
 #mainRSVPTable th:nth-child(5),
 #mainRSVPTable td:nth-child(5) {
   width: 90px;
+  text-align: center;
 }
-
 
 
 </style>
