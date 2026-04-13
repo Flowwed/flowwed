@@ -2622,52 +2622,32 @@ reader.readAsDataURL(file);
 
 });
 
-
 function generateQR() {
-
   const container = document.getElementById("qrCodePopup");
 
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("t") || "";
-
-  const url = `postwed-form.html?t=${token}`;
+  const token = new URLSearchParams(window.location.search).get("t") || "";
+  const url = `https://coruscating-pika-435f9a.netlify.app/postwed-form?t=${token}`;
 
   container.innerHTML = "";
 
   QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
-    if (!err) container.appendChild(canvas);
+    if (err) {
+      console.error(err);
+      return;
+    }
+    container.appendChild(canvas);
   });
-
 }
 
-
+// ✅ ОДИН обработчик
 document.getElementById("sendSmsBtn").onclick = () => {
   document.getElementById("qrPopup").style.display = "flex";
   generateQR();
 };
 
-
+// закрытие popup
 document.getElementById("closeQrPopup").onclick = () => {
   document.getElementById("qrPopup").style.display = "none";
-};
-
-
-
-
-document.getElementById("sendSmsBtn").onclick = () => {
-
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t") || "";
-
-  const url = `postwed-form.html?t=${token}`;
-
-  const box = document.getElementById("qrBox");
-  box.innerHTML = "";
-
-  QRCode.toCanvas(url, { width: 180 }, function (err, canvas) {
-    if (!err) box.appendChild(canvas);
-  });
-
 };
 
 
