@@ -541,21 +541,21 @@
 /* Ruby “i” icon */
 .info-icon-inline {
   min-width: 24px;
+  width: 24px;
   height: 24px;
-  border-radius: 50%;
+gap: 10px;
 
+  border-radius: 50%;
   background: #b41111;
   color: white;
-  font-size: 13px;
-  font-weight: 700;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 2px 3px rgba(255,255,255,0.25);
+  flex-shrink: 0;   /* ← ВОТ ЭТО КЛЮЧ */
 }
+
 
 /* Main text */
 .info-text-inline {
@@ -998,12 +998,17 @@ flex-wrap:wrap;
   font-size: 14px;
   font-weight: 600;
   color: #7e2a2a;
-  white-space: nowrap;
+  white-space: normal;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   box-shadow:
     0 6px 14px rgba(0,0,0,0.12),
     inset 0 1px 3px rgba(255,255,255,0.6);
 }
+
+
 
 .guide-link {
   color: #1e63ff;
@@ -1050,7 +1055,8 @@ input[type="file"] {
 
   <!-- mini info bubble -->
   <div class="ios-banner-inline">
-    View the Quick User Guide for this page
+<div class="info-icon-inline">i</div>
+    Collect your guests' messages and photos as lasting memories of your wedding. View the Quick User Guide for this page
     <span id="openGuide" class="guide-link">here</span>
   </div>
 
@@ -1060,18 +1066,6 @@ input[type="file"] {
 
 <div class="top-divider-line"></div>
 
-<div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
-  <div class="info-icon-inline">i</div>
-
-  <div class="info-text-inline" style="
-    max-width: none;
-    white-space: normal;
-    flex: 1;
-  ">
-    The wedding may be over, but the fun isn’t.
-    Invite your guests to leave a few words and upload their favorite photos —
-    and watch those moments come alive on your website. See the form your guests will fill — and preview a sample of how your “Just Married” page can come to life.
-  </div>
 </div>
 
 <!-- POST WEDDING FORM PREVIEW -->
@@ -1162,19 +1156,8 @@ input[type="file"] {
 </div>
 
     <div class="footer-buttons">
-      <button id="deleteSelected" class="footer-btn">Delete Selected</button>
-      <button id="sendEmailBtn" class="footer-btn">Send Email &amp; SMS</button>
-      <button id="previewFormBtn" class="footer-btn">
-  See the Form Your Guests Will Fill
-</button>
+      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
 
-<!-- Новая кнопка -->
-  <button id="previewJustMarried" class="footer-btn">
-    “Just Married” Sample Page
-  </button>
-
-      <button id="sendTestEmailFooter"class="footer-btn">Send Test Email</button>
-    </div>
   </div>
 
   <!-- UNIVERSAL EMAIL COMPOSER -->
