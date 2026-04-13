@@ -267,10 +267,8 @@ body {
 .custom-scroll-container table {
   width: 100%;
   border-collapse: collapse;
-  display: table;
-  height: auto;
+  min-height: 500px;   /* 🔥 КЛЮЧ */
 }
-
 
 th, td {
   padding: 8px 10px;
@@ -657,11 +655,6 @@ height: 1px;
   border: 3px solid #ffe6eb;
 }
 
-.custom-scroll-container::after {
-  content: "";
-  display: block;
-  height: 40px;   /* ← даёт "пустое место" */
-}
 
 </style>
 </head>
@@ -1239,19 +1232,25 @@ function initFloatingScrollbar() {
 /***************************************************
  *  SCROLL TO TABLE (LEFT COLUMN — FIXED)
  ***************************************************/
+
 function scrollToTable(tableId) {
   const container = document.querySelector(".left-scroll");
   const card = document.querySelector(`.table-pair[data-id="${tableId}"]`);
   if (!container || !card) return;
 
-  const cardHeight = card.offsetHeight || 120;
-  const offset = cardHeight * 1.15;   /* 🔥 идеальный отступ */
+  const containerHeight = container.clientHeight;
+  const cardTop = card.offsetTop;
+  const cardHeight = card.offsetHeight;
+
+  const scrollTarget =
+    cardTop - (containerHeight / 2) + (cardHeight / 2);
 
   container.scrollTo({
-    top: card.offsetTop - offset,
+    top: scrollTarget,
     behavior: "smooth"
   });
 }
+
 /***************************************************
  *  EMAIL POPUP OPEN / CLOSE
  ***************************************************/
