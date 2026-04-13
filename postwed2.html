@@ -743,21 +743,8 @@
 
 
 .form-archive-layout {
-  display: grid;
-  grid-template-columns: 1fr 420px;
-  gap: 26px;
-  align-items: start;
+  display: block;
 }
-
-.form-left {
-  min-width: 0;
-}
-
-.form-right {
-  position: sticky;
-  top: 20px;
-}
-
 
 /* ===== ARCHIVE ===== */
 
@@ -886,17 +873,26 @@ gap:7px;                      /* 10 → 7 */
 flex-wrap:wrap;
 }
 
-.form-left input,
+.form-left input {
+  padding: 8px;              /* было ~11-12 */
+  width: 240px;
+  font-size: 10px;           /* было 14-17 */
+  border-radius: 7px;
+}
+
+
 .form-left textarea {
   padding: 8px;              /* было ~11-12 */
+  width: 225px;
   font-size: 10px;           /* было 14-17 */
   border-radius: 7px;
 }
 
 .form-left {
-  width: 480px;   /* ← уменьшаешь = уже */
-  margin: 0 auto; /* центрирует */
+  width: 280px;   /* ← уменьшаешь = уже */
+  margin: 0; /* центрирует */
 }
+
 
 .form-left button {
   width: 100%;
@@ -999,6 +995,11 @@ flex-wrap:wrap;
 }
 
 
+input[type="file"] {
+  display: none;
+}
+
+
 </style>
 
 </head>
@@ -1013,68 +1014,6 @@ flex-wrap:wrap;
 </div>
 
 
-<!--
-<div id="navbar-container"></div>
-
-<script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
-}
-
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => {
-    const container = document.getElementById("navbar-container");
-    container.innerHTML = html;
-
-    const token = getToken();
-
-    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
-    const links = container.querySelectorAll(".nav-links a");
-
-    // ================= CLICK =================
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const page = link.dataset.page;
-        if (!page) return;
-
-        const url = token
-          ? `${page}.html?t=${encodeURIComponent(token)}`
-          : `${page}.html`;
-
-        window.location.href = url;
-      });
-    });
-
-    // ================= ACTIVE (FIXED) =================
-    let current = window.location.pathname;
-
-    // убираем trailing slash
-    if (current.endsWith("/")) {
-      current = current.slice(0, -1);
-    }
-
-    current = current.split("/").pop().toLowerCase();
-
-    links.forEach(link => {
-      const page = (link.dataset.page || "") + ".html";
-
-      if (current === page.toLowerCase()) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
--->
 
 
 
@@ -1180,21 +1119,6 @@ Submit Memory
 </div>
 
 </div>
-
-
-
-    <!-- RIGHT -->
-    <div class="form-right">
-
-      <div class="archive-box">
-        <div class="archive-header">
-          📁 Guest Memories Archive
-        </div>
-
-        <div id="archiveList" class="archive-list"></div>
-      </div>
-
-    </div>
 
   </div> <!-- form-archive-layout -->
 
@@ -1347,7 +1271,6 @@ async function loadGuests() {
 }
 loadGuests();
 
-loadArchive();
 
 // ======================================================
 // RENDER TABLE
@@ -1936,102 +1859,6 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 });
 
 
-async function loadArchive(){
-
-const token = new URLSearchParams(location.search).get("t");
-
-const { data, error } = await supabase
-.from("postwed_messages")
-.select("*")
-.eq("token", token)
-.order("created_at",{ascending:false});
-
-if(error){
-console.log(error);
-return;
-}
-
-const list = document.getElementById("archiveList");
-if(!list) return;
-
-list.innerHTML = "";
-
-const grouped = {};
-
-data.forEach(item=>{
-const key = item.guest_email || "unknown";
-if(!grouped[key]) grouped[key]=[];
-grouped[key].push(item);
-});
-
-Object.keys(grouped).forEach(email=>{
-
-const folder = document.createElement("div");
-folder.className="archive-folder";
-
-const header = document.createElement("div");
-header.className="folder-header";
-header.textContent="📁 " + email;
-
-const content = document.createElement("div");
-content.className="folder-content";
-content.style.display="none";
-
-header.onclick = ()=>{
-content.style.display =
-content.style.display==="none" ? "block" : "none";
-};
-
-grouped[email].forEach(item=>{
-
-const photos=[
-item.photo1,
-item.photo2,
-item.photo3,
-item.photo4,
-item.photo5
-].filter(Boolean);
-
-const div=document.createElement("div");
-div.className="archive-item";
-
-div.innerHTML=`
-<div><b>${item.guest_email}</b></div>
-
-<div class="msg-box">${item.message||""}</div>
-
-<div class="archive-photos">
-${photos.map(p=>`
-<img src="${p}" onclick="openPhoto('${p}')">
-`).join("")}
-</div>
-`;
-
-content.appendChild(div);
-
-});
-
-folder.appendChild(header);
-folder.appendChild(content);
-list.appendChild(folder);
-
-});
-
-}
-
-window.openPhoto = function(src){
-const modal = document.getElementById("photoModal");
-const img = document.getElementById("photoModalImg");
-
-if(!modal || !img) return;
-
-img.src = src;
-modal.style.display = "flex";
-};
-
-document.getElementById("photoModal").onclick = ()=>{
-document.getElementById("photoModal").style.display="none";
-};
 
 </script>
 
