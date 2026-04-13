@@ -741,13 +741,21 @@
   align-items: stretch; /* 🔥 КЛЮЧЕВОЕ */
 }
 
+
 .form-archive-layout {
-  display: flex;
-  gap: 40px;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 26px;
+  align-items: start;
 }
+
 .form-left {
   min-width: 0;
+}
+
+.form-right {
+  position: sticky;
+  top: 20px;
 }
 
 
@@ -1004,9 +1012,76 @@ flex-wrap:wrap;
   </button>
 </div>
 
+
+<!--
+<div id="navbar-container"></div>
+
+<script>
+function getToken() {
+  const params = new URLSearchParams(window.location.search);
+  return (
+    params.get("t") ||
+    params.get("token") ||
+    params.get("TOKEN") ||
+    params.get("T") ||
+    ""
+  );
+}
+
+fetch("/navbar.html")
+  .then(res => res.text())
+  .then(html => {
+    const container = document.getElementById("navbar-container");
+    container.innerHTML = html;
+
+    const token = getToken();
+
+    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
+    const links = container.querySelectorAll(".nav-links a");
+
+    // ================= CLICK =================
+    links.forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const page = link.dataset.page;
+        if (!page) return;
+
+        const url = token
+          ? `${page}.html?t=${encodeURIComponent(token)}`
+          : `${page}.html`;
+
+        window.location.href = url;
+      });
+    });
+
+    // ================= ACTIVE (FIXED) =================
+    let current = window.location.pathname;
+
+    // убираем trailing slash
+    if (current.endsWith("/")) {
+      current = current.slice(0, -1);
+    }
+
+    current = current.split("/").pop().toLowerCase();
+
+    links.forEach(link => {
+      const page = (link.dataset.page || "") + ".html";
+
+      if (current === page.toLowerCase()) {
+        link.classList.add("active");
+      }
+    });
+  });
+</script>
+-->
+
+
+
 <div class="top-logo-title" style="gap:16px;">
   <h1 id="topMainTitle">Post-Wedding</h1>
 
+  <!-- mini info bubble -->
   <div class="ios-banner-inline">
     View the Quick User Guide for this page
     <span id="openGuide" class="guide-link">here</span>
@@ -1015,69 +1090,115 @@ flex-wrap:wrap;
   <div id="coupleSmallName"></div>
 </div>
 
+
 <div class="top-divider-line"></div>
 
 <div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
   <div class="info-icon-inline">i</div>
-  <div class="info-text-inline" style="max-width:none;flex:1;">
+
+  <div class="info-text-inline" style="
+    max-width: none;
+    white-space: normal;
+    flex: 1;
+  ">
     The wedding may be over, but the fun isn’t.
     Invite your guests to leave a few words and upload their favorite photos —
-    and watch those moments come alive on your website.
+    and watch those moments come alive on your website. See the form your guests will fill — and preview a sample of how your “Just Married” page can come to life.
   </div>
 </div>
 
-<!-- 🔥 ЕДИНЫЙ LAYOUT -->
-<div class="form-archive-layout">
+<!-- POST WEDDING FORM PREVIEW -->
 
-  <!-- ЛЕВО -->
-  <div>
+<div class="section" style="margin-bottom:22px;">
 
-    <!-- ФОРМА -->
-    <div class="form-left">
-      <h2 style="margin-top:0;color:#9c1818;">Guest Memories Form</h2>
+  <div class="form-archive-layout">
 
-      <div style="max-width:760px;margin:0 auto;">
-        <div class="form-box">
+    <!-- LEFT -->
 
-          <div class="field">
-            <label>Your Name</label>
-            <input>
-          </div>
+<div class="form-left">
 
-          <div class="field">
-            <label>Your Email</label>
-            <input type="email">
-          </div>
+<h2 style="margin-top:0;color:#9c1818;">Guest Memories Form</h2>
 
-          <div class="field">
-            <label>Your Message</label>
-            <textarea placeholder="Max 30 words please"></textarea>
-          </div>
+<div style="
+max-width:760px;
+margin:0 auto;
+">
 
-          <div style="font-size:14px;color:#a05a5a;margin-top:6px;text-align:right;">
-            30 words left
-          </div>
+<div class="form-box">
 
-          <div class="upload-box">
-            <label class="upload-tile">
-              <div class="upload-icon">📷</div>
-              <div class="upload-text">Add Photos</div>
-              <input type="file" multiple accept="image/*">
-            </label>
+<div class="field">
+<label>Your Name</label>
+<input>
+</div>
 
-            <div class="upload-hint">Max 5 photos</div>
-            <div class="preview"></div>
-          </div>
+<div class="field">
+<label>Your Email</label>
+<input type="email">
+</div>
 
-          <button style="width:100%;margin-top:16px;">
-            Submit Memory
-          </button>
+<div class="field">
+<label>Your Message</label>
+<textarea placeholder="Max 30 words please"></textarea>
+</div>
 
+<div style="
+font-size:14px;
+color:#a05a5a;
+margin-top:6px;
+text-align:right;
+font-weight:500;
+">
+30 words left
+</div>
+
+<div class="upload-box">
+
+<label class="upload-tile">
+<div class="upload-icon">📷</div>
+<div class="upload-text">Add Photos</div>
+<input type="file" multiple accept="image/*">
+</label>
+
+<div class="upload-hint" style="
+font-size:13px;
+color:#7a3a3a;
+margin-top:6px;
+">
+Max 5 photos
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+<button style="width:100%;margin-top:16px;">
+Submit Memory
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+    <!-- RIGHT -->
+    <div class="form-right">
+
+      <div class="archive-box">
+        <div class="archive-header">
+          📁 Guest Memories Archive
         </div>
+
+        <div id="archiveList" class="archive-list"></div>
       </div>
+
     </div>
 
-    <!-- ТАБЛИЦА -->
+  </div> <!-- form-archive-layout -->
+
+</div>
     <div class="ruby-frame-outer">
       <div class="ruby-frame-inner">
         <div class="scroll-container">
@@ -1091,6 +1212,7 @@ flex-wrap:wrap;
                 <th>Last</th>
                 <th>Email</th>
                 <th>Phone</th>
+                
               </tr>
             </thead>
             <tbody></tbody>
@@ -1102,51 +1224,54 @@ flex-wrap:wrap;
 
     <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
-      <button id="sendEmailBtn" class="footer-btn">Send Email & SMS</button>
+      <button id="sendEmailBtn" class="footer-btn">Send Email &amp; SMS</button>
       <button id="previewFormBtn" class="footer-btn">
-        See the Form Your Guests Will Fill
-      </button>
-      <button id="previewJustMarried" class="footer-btn">
-        “Just Married” Sample Page
-      </button>
-      <button id="sendTestEmailFooter" class="footer-btn">
-        Send Test Email
-      </button>
+  See the Form Your Guests Will Fill
+</button>
+
+<!-- Новая кнопка -->
+  <button id="previewJustMarried" class="footer-btn">
+    “Just Married” Sample Page
+  </button>
+
+      <button id="sendTestEmailFooter"class="footer-btn">Send Test Email</button>
     </div>
-
-
-  <!-- ПРАВО -->
-  <div style="width:380px; position:sticky; top:20px;">
-
-<div id="emailComposer" class="email-composer">
-
-
-      <div class="composer-header">
-        <span>Send Email & SMS</span>
-      </div>
-
-      <label class="composer-label">To Email(s):</label>
-      <input type="text" class="composer-input">
-
-      <label class="composer-label">Subject:</label>
-      <input type="text" class="composer-input" value="Wedding Update">
-
-      <label class="composer-label">Message:</label>
-      <textarea class="composer-textarea">
-Hello! Here is the latest update…
-      </textarea>
-
-      <button class="composer-send">Send</button>
-
-    </div>
-
   </div>
 
-</div>  
+  <!-- UNIVERSAL EMAIL COMPOSER -->
+  <div class="email-composer" id="emailComposer">
+
+    <div class="composer-header">
+  <span>Send Email & SMS</span>
+
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span id="composerExpand" class="expand-btn">⤢</span>
+    <span id="composerClose" class="close-btn">&times;</span>
+  </div>
+</div>
+    <label class="composer-label">To Email(s):</label>
+    <input type="text" id="composerEmails" class="composer-input">
+
+    <label class="composer-label">To Phone(s):</label>
+    <input type="text" id="composerPhones" class="composer-input">
+
+    <label class="composer-label">Subject:</label>
+    <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
+
+    <label class="composer-label">Message:</label>
+
+<textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
 
 
+   <div id="composerFooter" class="composer-footer">
+   This message is sent from a notification-only address.<br>
+   If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
+  </div>
 
-<!-- TOAST -->
+    <button id="composerSend" class="composer-send">Send Email & SMS</button>
+  </div>
+
+  <!-- TOAST -->
   <div id="greenToast">Message Sent!</div>
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
