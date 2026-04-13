@@ -279,7 +279,12 @@ body {
 #mainRSVPTable th:nth-child(2),
 #mainRSVPTable td:nth-child(2) {
   width: 180px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 #mainRSVPTable th:nth-child(3),
 #mainRSVPTable td:nth-child(3) {
@@ -1278,7 +1283,7 @@ function renderRSVPTable() {
         </td>
 
         <!-- 🔥 А ЗДЕСЬ НОМЕР СТОЛА -->
-        <td>${assigned ? "Table " + assigned : "—"}</td>
+        <td>${assigned ? "T" + assigned : "—"}</td>
 
         <td>
           <button class="unassign-btn" data-id="${g.id}">
