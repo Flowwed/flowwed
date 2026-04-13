@@ -271,18 +271,6 @@ body {
   height: auto;
 }
 
-.custom-scroll-container tbody {
-  display: block;
-  height: 600px;       /* ← именно это даёт скролл */
-  overflow-y: auto;    /* ← скролл теперь тут */
-}
-
-.custom-scroll-container thead, 
-.custom-scroll-container tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
 
 th, td {
   padding: 8px 10px;
@@ -407,7 +395,7 @@ th, td {
   position: sticky;
   top: 0;
   background: #fff5f7;
-  z-index: 10;
+  z-index: 20;
   border-bottom: 2px solid #b41111;
 }
 
@@ -1151,11 +1139,14 @@ function renderRSVPTable() {
 <table id="mainRSVPTable">
   <thead>
     <tr>
-      <th>Status</th>
+      <th>RSVP</th>
       <th>Name</th>
-      <th>Table</th>
-      <th>Assign</th>
-      <th>Unassign</th>
+      
+      <th>Assign Table</th>
+
+      <th>Table #</th>
+
+      <th>Unassign Table</th>
     </tr>
   </thead>
   <tbody>
