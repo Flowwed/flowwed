@@ -259,6 +259,9 @@ body {
   padding-right: 6px;
 
   scrollbar-gutter: stable; /* ← ВАЖНО */
+
+border: 3px solid red; /* ← ВОТ ЭТО ДОБАВИЛ */
+
 }
 
 
@@ -1244,9 +1247,14 @@ function renderRSVPTable() {
   const container = document.getElementById("mainScroll");
 
   let combined = [
+
     ...RSVP_YES.map(g => ({ ...g, icon: "✔", iconClass: "icon-yes" })),
     ...RSVP_MAYBE.map(g => ({ ...g, icon: "❔", iconClass: "icon-maybe" }))
   ];
+
+for (let i = 0; i < 30; i++) {
+  combined.push(combined[0]);
+}
 
   if (currentFilter === "yes")
     combined = combined.filter(g => g.icon === "✔");
