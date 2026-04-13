@@ -288,7 +288,14 @@ body {
 
 #mainRSVPTable th:nth-child(3),
 #mainRSVPTable td:nth-child(3) {
-  width: 120px;
+  width: auto;        /* убрали жесткую ширину */
+}
+
+#mainRSVPTable td:nth-child(3) {
+  display: flex;
+  flex-wrap: wrap;    /* 🔥 перенос */
+  gap: 6px;
+  max-width: 260px;   /* 🔥 ключ */
 }
 
 #mainRSVPTable th:nth-child(4),
@@ -315,15 +322,34 @@ th, td {
 .mini-assign-btn {
   background: #b41111;
   color: white;
-  padding: 4px 8px;
+
+  min-width: 28px;      /* 🔥 одинаковая ширина */
+  text-align: center;
+
+  padding: 4px 0;       /* ровные кнопки */
   border-radius: 8px;
   border: none;
+
   cursor: pointer;
   font-size: 12px;
+
   position: relative;
   z-index: 20;
+
+  transition: 0.2s ease;
 }
-.mini-assign-btn.active { background: #1a8f3b; }
+
+/* hover — лёгкий подъём */
+.mini-assign-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* активная (выбранный стол) */
+.mini-assign-btn.active {
+  background: #1a8f3b;
+}
+
+
 
 .unassign-btn {
   background: #b41111;
