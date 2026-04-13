@@ -1238,15 +1238,14 @@ function scrollToTable(tableId) {
   const card = document.querySelector(`.table-pair[data-id="${tableId}"]`);
   if (!container || !card) return;
 
-  const containerHeight = container.clientHeight;
-  const cardTop = card.offsetTop;
-  const cardHeight = card.offsetHeight;
+  const containerRect = container.getBoundingClientRect();
+  const cardRect = card.getBoundingClientRect();
 
-  const scrollTarget =
-    cardTop - (containerHeight / 2) + (cardHeight / 2);
+  const offset =
+    cardRect.top - containerRect.top - (container.clientHeight / 2) + (cardRect.height / 2);
 
-  container.scrollTo({
-    top: scrollTarget,
+  container.scrollBy({
+    top: offset,
     behavior: "smooth"
   });
 }
