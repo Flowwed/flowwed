@@ -1562,7 +1562,7 @@ const saveRes = await fetch(
     body: JSON.stringify({
       edit_token: token,
       slug: slug,
-      page_key: "story",
+      page_key: PAGE_KEY,
       slot: slot,
       path: serverPath,
       caption: ""
@@ -1677,7 +1677,7 @@ if (!res.ok) {
 const modal = document.getElementById("storyModal");
 const iframe = document.getElementById("storyIframe");
 
-iframe.src = `https://flowwed.netlify.app/our_story?token=${token}`;
+iframe.src = `https://flowwed.netlify.app/wed_party.html?t=${token}&v=${Date.now()}`;
 modal.style.display = "flex";
 
   });
