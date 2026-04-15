@@ -384,6 +384,15 @@ h1 {
   flex-shrink: 0;
 }
 
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+
 </style>
 </head>
 
@@ -767,6 +776,48 @@ fileInput.addEventListener("change", e => {
 
   </div>
 </div>
+
+
+<div id="guideModal" class="modal-backdrop">
+  <div class="modal-window" style="width: min(980px, 92vw); height: min(80vh, 900px);">
+    <div id="closeGuideModal" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999;
+    ">×</div>
+
+    <iframe id="guideIframe" class="modal-iframe"></iframe>
+  </div>
+</div>
+
+
+<script>
+const openGuide = document.getElementById("openGuide");
+const guideModal = document.getElementById("guideModal");
+const guideIframe = document.getElementById("guideIframe");
+const closeGuideModal = document.getElementById("closeGuideModal");
+
+openGuide.onclick = () => {
+  guideIframe.src = "tttvideouploader.html";
+  guideModal.style.display = "flex";
+};
+
+closeGuideModal.onclick = () => {
+  guideModal.style.display = "none";
+  guideIframe.src = "";
+};
+
+guideModal.onclick = (e) => {
+  if (e.target === guideModal) {
+    guideModal.style.display = "none";
+    guideIframe.src = "";
+  }
+};
+</script>
 
 
 </body>
