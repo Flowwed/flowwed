@@ -858,6 +858,11 @@ cursor: pointer;   /* ← добавь это */
 }
 
 
+#coupleSmallName {
+  display: none !important;
+}
+
+
 </style>
 
 </head>
@@ -996,11 +1001,10 @@ cursor: pointer;   /* ← добавь это */
               <tr>
                 <th><input type="checkbox" id="selectAll"></th>
                 <th>#</th>
-                <th>First</th>
-                <th>Last</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>RSVP</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -1164,8 +1168,6 @@ function render() {
         <td contenteditable="true" data-field="email">${g.email}</td>
         <td contenteditable="true" data-field="phone">${g.phone}</td>
 
-        <!-- Keep icons for now -->
-        <td data-field="rsvp">${getIcon(g.rsvp)}</td>
       </tr>
     `;
 
@@ -1487,14 +1489,13 @@ document.getElementById("exportCsv").onclick = () => {
         last: cells[3].innerText,
         email: cells[4].innerText,
         phone: cells[5].innerText,
-        rsvp: cells[6].innerText
       };
     });
 
   if (!filtered.length) return alert("No guests to export!");
 
   const csv = [
-    ["First","Last","Email","Phone","RSVP"],
+    ["First","Last","Email","Phone"],
     ...filtered.map(g => [g.first,g.last,g.email,g.phone,g.std,g.rsvp])
   ].map(r => r.map(x => `"${x}"`).join(",")).join("\n");
 
@@ -1697,64 +1698,6 @@ if (failures > 0) {
 }
 
 };
-/* ============================
-   FILTER FUNCTION
-============================ */
-let currentFilter = "all";
-
-function applyGuestFilters() {
-  const rows = document.querySelectorAll("#guestTable tbody tr");
-
-  rows.forEach(row => {
-const rsvp = row.children[6].innerText.trim();
-
-    let show = true;
-
-    switch (currentFilter) {
-
-      case "rsvp-yes":   show = rsvp === "✔"; break;
-      case "rsvp-no":    show = rsvp === "✘"; break;
-      case "rsvp-maybe": show = rsvp === "❔"; break;
-      case "rsvp-none":  show = rsvp === "⚠️"; break;
-
-      case "all": break;
-
-      default: break;
-    }
-
-    row.style.display = show ? "" : "none";
-  });
-}
-
-/* ============================
-   FILTER BUTTON HANDLERS
-============================ */
-document.querySelectorAll(".filter-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const filter = btn.dataset.filter;
-
-    if (filter === "clear") {
-      currentFilter = "all";
-
-      document.querySelectorAll(".filter-btn")
-        .forEach(b => b.classList.remove("active"));
-
-      document.querySelector('[data-filter="all"]').classList.add("active");
-
-      applyGuestFilters();
-      return;
-    }
-
-    currentFilter = filter;
-
-    document.querySelectorAll(".filter-btn")
-      .forEach(b => b.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    applyGuestFilters();
-  });
-});
 
 </script>
 
