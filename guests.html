@@ -22,39 +22,6 @@
     /*  RUBY 3D TITLE                */
     /* ============================= */
 
-h1 {
-  text-align: center;
-  font-size: 38px;
-  font-weight: 700;
-
-  margin: 0 0 6px;   /* 🔥 убрали верхний отступ */
-
-  background: linear-gradient(
-    to bottom,
-    #c02828 0%,
-    #9c1818 45%,
-    #6a0f0f 100%
-  );
-  -webkit-background-clip: text;
-  color: transparent;
-
-  text-shadow: none;
-}
-    /* Small couple name */
-    #coupleSmallName {
-  font-size: 21px;
-  font-weight: 648;
-  color: #9c1818;
-  margin: 0;
-  text-align: right;
-}
-
-#topMainTitle {
-  font-size: 22px;
-  font-weight: 600;
-  color: #9c1818;
-  margin: 0;
-}
 
 .top-divider-line {
   height: 2px;
@@ -160,15 +127,6 @@ h1 {
   height: 140px;
 }
 
-/* SCROLL CONTAINER */
-.scroll-container {
-  position: relative;
-  height: 260px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 4px;
-  scrollbar-gutter: stable;
-}
 
 /* Хак чтобы скролл был всегда */
 .scroll-container::after {
@@ -258,6 +216,8 @@ h1 {
       box-shadow: 0 14px 32px rgba(0,0,0,0.35);
       z-index: 9999;
       display: none;
+     overflow-y: auto;
+
 
     }
 
@@ -324,10 +284,6 @@ h1 {
       cursor: pointer;
       width: 100%;
     }
-     
-     .email-composer {
-  overflow-y: auto;
- }
 
     .expand-btn {
   cursor: pointer;
@@ -370,39 +326,6 @@ h1 {
       transform: translateY(0);
     }
 
-/* ====== FILTER BUTTONS (small ruby controls) ====== */
-.filter-btn {
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.15),
-      rgba(255,255,255,0.04)
-    ),
-    #b41111;
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.22s ease;
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 2px 4px rgba(255,255,255,0.18),
-    inset 0 -4px 10px rgba(60,0,20,0.3);
-}
-
-.filter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 12px rgba(0,0,0,0.28),
-    inset 0 2px 6px rgba(255,255,255,0.22),
-    inset 0 -5px 12px rgba(60,0,20,0.32);
-}
-
-.filter-btn.active {
-  outline: 2px solid #fff;
-}
 
 .table-action-btn {
   background: #b41111;
@@ -428,13 +351,6 @@ h1 {
 
 /* Верхний хедер: заголовок слева, пара справа */
 
-.top-logo-title {
-  display: block;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 18px 6px 18px;
-  margin: 0;
-}
 
 .top-titles {
   display: flex;
@@ -458,68 +374,7 @@ h1 {
   white-space: nowrap;
 }
 
-/* Inline bubble (ЦЕНТР) */
-.info-bubble-inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
 
-  margin: 0 auto;   /* ← ЦЕНТРИРУЕТ */
-
-  background: #fff7f7;
-  border: 2px solid #ffcccc;
-  padding: 10px 14px;
-  border-radius: 12px;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-}
-
-/* Ruby “i” icon */
-.info-icon-inline {
-  min-width: 24px;
-  height: 24px;
-  border-radius: 50%;
-
-  background: #b41111;
-  color: white;
-  font-size: 13px;
-  font-weight: 700;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 2px 3px rgba(255,255,255,0.25);
-}
-
-/* Main text */
-.info-text-inline {
-  font-size: 15px;
-  color: #7e2a2a;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* Icons inline block */
-.info-icons-inline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  font-size: 13px;
-  color: #7e2a2a;
-  font-weight: 600;
-
-  white-space: nowrap;
-}
-
-/* Colors for icons */
-.icon-yes   { color: green; font-size: 18px; }
-.icon-no    { color: red; font-size: 18px; }
-.icon-maybe { color: #d4a300; font-size: 18px; }
-.icon-none  { color: #ff9800; font-size: 18px; }
 
 /* On smaller screens — bubble goes below */
 @media(max-width: 900px) {
@@ -645,58 +500,6 @@ h1 {
 }
 
 
-#sendTestEmailFooter {
-  margin-left: auto !important;
-}
-
-.top-logo-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 4px 18px;   /* 🔥 компактнее */
-  margin: 0;
-}
-.top-info-bubble {
-  flex: 1;
-  max-width: 520px;
-  margin: 0 24px;
-
-  padding: 8px 16px;
-  text-align: center;
-
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(14px);
-  border-radius: 14px;
-
-  font-size: 14px;
-  font-weight: 600;
-  color: #7a3a4a;
-
-  box-shadow:
-    0 6px 18px rgba(0,0,0,0.12),
-    inset 0 1px 2px rgba(255,255,255,0.6);
-}
-
-.guide-link {
-  color: #2a6bff;
-  text-decoration: underline;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-
-.top-nav-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-
-  margin-bottom: 8px;   /* 🔥 вместо 100px */
-}
-
 
 /* info bubble */
 .ios-banner {
@@ -719,12 +522,6 @@ h1 {
   box-shadow:
     0 6px 16px rgba(0,0,0,0.10); 
     inset 0 3px 8px rgba(255,255,255,0.25);
-}
-
-.top-header {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
 }
 
 
@@ -842,15 +639,6 @@ cursor: pointer;   /* ← добавь это */
 }
 
 
-#filterBar {
-  display: none !important;
-}
-
-
-.info-bubble-inline {
-  display: none !important;
-}
-
 
 #sendEmailBtn,
 #shareBtn {
@@ -949,48 +737,7 @@ cursor: pointer;   /* ← добавь это */
 <!-- GUEST LIST TABLE -->
 <div class="guestlist-header">
   <h2>Guest List</h2>
-
-  <div class="info-bubble-inline">
-    <div class="info-icon-inline">i</div>
-
-<div class="info-text-inline">
-  RSVP status filters 
-<span class="arrow">→</span>
 </div>
-    <div class="info-icons-inline">
-      <span class="icon-yes">✔</span> Yes
-      <span class="icon-no">✘</span> No
-      <span class="icon-maybe">❔</span> Maybe
-      <span class="icon-none">⚠️</span> No Response
-    </div>
-  </div>
-</div>
-
-<!-- FILTER BAR -->
-<div id="filterBar" style="
-  display:flex;
-  gap:10px;
-  margin-bottom:12px;
-">
-  <button class="filter-btn" data-filter="all">All</button>
-
-<!--
-<button class="filter-btn" data-filter="std-yes">SD ✔</button>
-<button class="filter-btn" data-filter="std-maybe">SD ❔</button>
-<button class="filter-btn" data-filter="std-no">SD ✘</button>
-<button class="filter-btn" data-filter="std-none">SD ⚠️</button>
--->
-
-  <button class="filter-btn" data-filter="rsvp-yes">RSVP ✔</button>
-  <button class="filter-btn" data-filter="rsvp-no">RSVP ✘</button>
-  <button class="filter-btn" data-filter="rsvp-maybe">RSVP ❔</button>
-  <button class="filter-btn" data-filter="rsvp-none">RSVP ⚠️</button>
-
-  <button class="filter-btn" data-filter="clear" style="margin-left:auto;">
-    Clear Filters
-  </button>
-</div>
-
 
     <div class="ruby-frame-outer">
       <div class="ruby-frame-inner">
@@ -1073,46 +820,6 @@ let coupleFullName = "";
 const tbody = document.querySelector("#guestTable tbody");
 
 // ======================================================
-// LOAD COUPLE NAME (dashboard style)
-// ======================================================
-async function loadCoupleName() {
-  const token = new URLSearchParams(location.search).get("t");
-
-  const { data } = await supabase
-    .from("sites")
-    .select("slug")
-    .eq("edit_token", token)
-    .single();
-
-if (!data?.slug) return;
-
-const parts = data.slug.split("-");
-
-const bride = parts[0]
-  ? parts[0].charAt(0).toUpperCase() + parts[0].slice(1)
-  : "";
-
-const groom = parts[1]
-  ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1)
-  : "";
-
-coupleFullName = `${bride} & ${groom}`;
-document.getElementById("coupleSmallName").textContent = coupleFullName;
- }
- loadCoupleName();
-
-// ======================================================
-// GET ICON
-// ======================================================
-function getIcon(status) {
-  const s = (status || "").toLowerCase();
-  if (s === "yes") return `<span style="color:green;font-size:20px;">✔</span>`;
-  if (s === "no") return `<span style="color:red;font-size:20px;">✘</span>`;
-  if (s === "maybe") return `<span style="color:#ffd400;font-size:20px;">❔</span>`;
-  return `<span style="color:#ff9800;font-size:20px;">⚠️</span>`;
-}
-
-// ======================================================
 // LOAD GUESTS
 // ======================================================
 async function loadGuests() {
@@ -1131,8 +838,7 @@ console.log("FROM DB:", data);
     first: g.first_name || "",
     last: g.last_name || "",
     email: g.email || "",
-    phone: g.phone || "",
-    rsvp: g.rsvp_status || ""
+    phone: g.phone || ""
   }));
 
   render();
@@ -1380,9 +1086,7 @@ if (!data || !data.length) {
     first,
     last,
     email: emailValue,
-    phone: phoneValue,
-    std: "",
-    rsvp: ""
+    phone: phoneValue
   });
 
 render();
@@ -1494,10 +1198,11 @@ document.getElementById("exportCsv").onclick = () => {
 
   if (!filtered.length) return alert("No guests to export!");
 
-  const csv = [
-    ["First","Last","Email","Phone"],
-    ...filtered.map(g => [g.first,g.last,g.email,g.phone,g.std,g.rsvp])
-  ].map(r => r.map(x => `"${x}"`).join(",")).join("\n");
+const csv = [
+  ["First","Last","Email","Phone"],
+  ...filtered.map(g => [g.first, g.last, g.email, g.phone])
+].map(r => r.map(x => `"${x}"`).join(",")).join("\n");
+
 
   const BOM = "\uFEFF"; // UTF-8 BOM
 const blob = new Blob([BOM + csv], { type: "text/csv;charset=utf-8" });
@@ -1853,167 +1558,8 @@ document.getElementById("backBtn").onclick = () => {
     window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
 };
 
-</script>
 
-<!-- TEST EMAIL MODAL -->
-<div id="testEmailOverlay" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-">
-  <div style="
-    background: #fff;
-    padding: 22px;
-    border-radius: 14px;
-    width: 320px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  ">
-    <div style="font-size:18px; font-weight:600; margin-bottom:12px;">
-      Send Test Email
-    </div>
 
-    <input id="testEmailInput" type="email"
-           placeholder="Your Email"
-           style="width:95%; padding:10px; font-size:15px;
-                  border:1px solid #ccc; border-radius:8px;">
-
-    <button id="sendTestEmailBtn" style="
-      margin-top:16px;
-      padding:10px 16px;
-      background:#d6003d;
-      color:white;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-      width:100%;
-    ">Send</button>
-
-    <button id="closeTestEmail" style="
-      margin-top:10px;
-      background:none;
-      border:none;
-      font-size:14px;
-      text-decoration:underline;
-      color:#666;
-      cursor:pointer;
-    ">Cancel</button>
-  </div>
-</div>
-
-<script>
-// OPEN modal
-document.getElementById("sendTestEmailFooter").onclick = () => {
-    document.getElementById("testEmailOverlay").style.display = "flex";
-};
-
-// CLOSE modal
-document.getElementById("closeTestEmail").onclick = () => {
-    document.getElementById("testEmailOverlay").style.display = "none";
-};
-
-// SEND test email
-document.getElementById("sendTestEmailBtn").onclick = async (e) => {
-  const btn = e.target;
-  const email = document.getElementById("testEmailInput").value.trim();
-
-  if (!email) return showToastBox("Please enter your email.", "error");
-
-  btn.disabled = true;
-  btn.textContent = "Sending…";
-
-  const overlay = document.getElementById("testEmailOverlay");
-  const emailInput = document.getElementById("testEmailInput");
-
-  const payload = {
-    type: "STD",
-    html: `
-      <div style="font-family:Arial;padding:20px;">
-        <h2 style="color:#b41111;">Test Email</h2>
-        <p>This is a test message sent from your Guest Hub.</p>
-      </div>
-    `,
-    subject: "Test Email",
-    token: new URLSearchParams(location.search).get("t"),
-    guests: [
-      {
-        name: "Test Recipient",
-        email: email,
-        guest_id: "TEST_" + Date.now()
-      }
-    ]
-  };
-
-  try {
-    const resp = await fetch("/.netlify/functions/send-invites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    let data = null;
-    try { data = await resp.json(); } catch {}
-
-    console.log("TEST EMAIL RESULT:", data);
-
-    if (resp.ok) {
-
-      // показать тост
-      showToastBox("Test email sent!", "success");
-
-      // подготовка к fade-out
-      overlay.style.transition = "opacity 0.5s ease";
-      overlay.style.opacity = "1";
-
-      setTimeout(() => {
-        overlay.style.opacity = "0";
-
-        setTimeout(() => {
-          // скрыть окно
-          overlay.style.display = "none";
-          overlay.style.opacity = "1"; 
-
-          // 🔥 АВТО-ОЧИСТКА EMAIL ПОЛЯ
-          emailInput.value = "";
-
-        }, 500);
-
-      }, 900);
-
-    } else {
-      showToastBox("Error sending test email.", "error");
-    }
-
-  } catch (err) {
-    console.error(err);
-    showToastBox("Network error.", "error");
-  }
-
-  btn.disabled = false;
-  btn.textContent = "Send";
-};
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const pageTitle = document.getElementById("topMainTitle")
-    ?.textContent.trim().toLowerCase();
-
-  document.querySelectorAll(".top-nav a").forEach(link => {
-    const txt = link.textContent.trim().toLowerCase();
-    if (txt === pageTitle) link.classList.add("active");
-  });
-
-});
-</script>
-
-<script>
 document.addEventListener("DOMContentLoaded", () => {
   // Если страница открыта внутри iframe
   if (window.self !== window.top) {
@@ -2119,37 +1665,6 @@ document.getElementById("closeGuide").addEventListener("click", () => {
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-<script>
-const shareBtn = document.getElementById("shareBtn");
-
-if (shareBtn) {
-
-  shareBtn.onclick = () => {
-
-    const isMobile = /iPhone|Android/i.test(navigator.userAgent);
-
-    const link = window.location.href;
-
-    // 📱 MOBILE → SMS
-    if (isMobile) {
-      const smsLink = `sms:?body=${encodeURIComponent(link)}`;
-      window.location.href = smsLink;
-      return;
-    }
-
-    // 💻 DESKTOP → QR
-    const modal = document.getElementById("qrModal");
-    const canvas = document.getElementById("qrCanvas");
-
-    modal.style.display = "flex";
-
-    QRCode.toCanvas(canvas, link, {
-      width: 220
-    });
-  };
-
-}
-</script>
 
 </body>
 </html>
