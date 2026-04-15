@@ -421,7 +421,7 @@ h1 {
 
   background: white;
   border-radius: 14px;
-  padding: 10px 0;
+  padding: 6px 0;
 
   display: none;
 
@@ -429,23 +429,37 @@ h1 {
   min-width: 220px;
 }
 
-.menu-dropdown div {
-  padding: 10px 16px;
-  cursor: pointer;
-}
-
-.menu-dropdown div:hover {
-  background: #ffeef3;
-}
-
-.menu-dropdown {
-  display: none;
-}
-
+/* открытие через JS */
 .menu-dropdown.open {
   display: block;
 }
 
+/* все пункты */
+.menu-dropdown div {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+/* hover */
+.menu-dropdown div:hover {
+  background: #ffeef3;
+}
+
+/* 🔥 Back to Dash (верхний пункт) */
+.menu-back {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #9c1818;
+  border-radius: 10px 10px 0 0;
+}
+
+/* линия как в iOS */
+.menu-divider {
+  height: 1px;
+  background: #e5e5e5;
+  margin: 4px 0 6px 0;
+}
 
 
 </style>
@@ -473,6 +487,8 @@ h1 {
   <span id="openGuide" class="guide-link">here</span>
 </div>
 
+
+<div class="menu-back" id="menuBack">← Back to Dash</div>
 
 
 <div class="uploader-container">

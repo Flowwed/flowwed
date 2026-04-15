@@ -11,6 +11,9 @@ export function loadNavbar() {
 
     <div class="menu-dropdown" id="menuDrop">
 
+<div class="menu-back" id="menuBack">← Back to Dash</div>
+    <div class="menu-divider"></div>
+
       <div onclick="go('videouploader.html')">Web Video</div>
       <div onclick="go('Guests.html')">Guest Hub</div>
       <div onclick="go('upload.html')">Photo Gallery</div>
@@ -36,6 +39,15 @@ export function loadNavbar() {
 
   const btn = nav.querySelector("#menuBtn");
   const drop = nav.querySelector("#menuDrop");
+
+
+/* 🔥 ВОТ СЮДА ВСТАВИЛ */
+const backMenu = nav.querySelector("#menuBack");
+
+backMenu.onclick = () => {
+  window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
+};
+
 
   // 🔥 toggle по клику
   btn.onclick = (e) => {
