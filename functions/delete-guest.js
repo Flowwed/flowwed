@@ -1,42 +1,67 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  'https://octwwpatppbenqwkcqaw.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI'
-);
-
-export const handler = async (event) => {
+export async function handler(event) {
   try {
-    const { payload } = JSON.parse(event.body);
+    console.log("DELETE GUESTS START");
 
-    if (payload.event !== "submission_deleted") {
-      return { statusCode: 200, body: "Ignored" };
+    const { token, ids } = JSON.parse(event.body);
+
+    console.log("DELETE IDS:", ids);
+
+    const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+    const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!SERVICE_KEY) {
+      return {
+        statusCode: 500,
+        body: "No service key"
+      };
     }
 
-    const email = payload.data.email;
-    const first = payload.data["First Name"];
-    const last = payload.data["Last Name"];
-    const fullName = `${first} ${last}`.trim();
+    if (!token || !ids || !ids.length) {
+      return {
+        statusCode: 400,
+        body: "Missing token or ids"
+      };
+    }
 
-    const { error } = await supabase
-      .from("guests")
-      .delete()
-      .eq("email", email)
-      .eq("name", fullName);
+    // 🔥 формируем фильтр id
+    const idFilter = ids.map(id => `id.eq.${id}`).join(",");
 
-    if (error) {
-      return { statusCode: 400, body: JSON.stringify(error) };
+    // 🔥 DELETE запрос (как у тебя в видео, через REST)
+    const deleteRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/guests?token=eq.${token}&or=(${idFilter})`,
+      {
+        method: "DELETE",
+        headers: {
+          apikey: SERVICE_KEY,
+          Authorization: `Bearer ${SERVICE_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    const text = await deleteRes.text();
+
+    console.log("DELETE STATUS:", deleteRes.status);
+    console.log("DELETE RESPONSE:", text);
+
+    if (!deleteRes.ok) {
+      return {
+        statusCode: 500,
+        body: "Delete failed"
+      };
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        success: true,
-        deleted: fullName,
-      }),
+      body: "OK"
     };
 
   } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+    console.error("DELETE ERROR:", err);
+
+    return {
+      statusCode: 500,
+      body: err.message
+    };
   }
-};
+}

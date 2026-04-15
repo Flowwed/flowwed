@@ -1163,15 +1163,20 @@ async function loadCoupleName() {
     .eq("edit_token", token)
     .single();
 
-  if (!data || !data.slug) return;
+if (!data?.slug) return;
 
-  const parts = data.slug.split("-");
-  const bride = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-  const groom = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
+const parts = data.slug.split("-");
 
-  coupleFullName = `${bride} & ${groom}`;
-  document.getElementById("coupleSmallName").textContent = coupleFullName;
+const bride = parts[0]
+  ? parts[0].charAt(0).toUpperCase() + parts[0].slice(1)
+  : "";
 
+const groom = parts[1]
+  ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1)
+  : "";
+
+coupleFullName = `${bride} & ${groom}`;
+document.getElementById("coupleSmallName").textContent = coupleFullName;
  }
  loadCoupleName();
 
@@ -1510,24 +1515,29 @@ document.getElementById("deleteCancelBtn").onclick = () => {
 
 document.getElementById("deleteYesBtn").onclick = async () => {
 
-  const token = new URLSearchParams(location.search).get("t"); // 👈 добавили
+  const token = new URLSearchParams(location.search).get("t");
 
-  const { error, data } = await supabase
-    .from("guests")
-    .delete()
-    .in("id", idsToDelete)
-    .eq("token", token)   // 👈 КЛЮЧЕВОЙ ФИКС
-    .select();
+  const res = await fetch("/.netlify/functions/delete-guests", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      token,
+      ids: idsToDelete
+    })
+  });
 
-  console.log("DELETE ids:", idsToDelete);
-  console.log("DELETE result data:", data);
-  console.log("DELETE error:", error);
+  const text = await res.text();
 
-  if (error) {
-    showToastBox(error.message || "Delete failed", "error");
+  console.log("DELETE RESPONSE:", text);
+
+  if (!res.ok) {
+    showToastBox("Delete failed", "error");
     return;
   }
 
+  // 🔥 обновляем UI
   guests = guests.filter(g => !idsToDelete.includes(String(g.id)));
   render();
 
@@ -1538,7 +1548,6 @@ document.getElementById("deleteYesBtn").onclick = async () => {
 
   showToastBox("Guests deleted", "success");
 };
-
 
 // ======================================================
 // EXPORT CSV
