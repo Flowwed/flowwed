@@ -870,10 +870,15 @@ z-index: 99999; /* 👈 добавь */
 
 /* все пункты */
 .menu-dropdown div {
-  padding: 10px 16px;
+  padding: 12px 16px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  border-radius: 8px;
+  margin: 2px 6px;
+
+  display: flex;
+  justify-content: center;   /* 👈 центр по горизонтали */
 }
+
 
 /* hover */
 .menu-dropdown div:hover {
@@ -890,6 +895,13 @@ z-index: 99999; /* 👈 добавь */
 
 .back-btn {
   display: none;
+}
+
+
+.menu-dropdown .active {
+  background: #ffeef3;
+  font-weight: 600;
+  color: #9c1818;
 }
 
 
