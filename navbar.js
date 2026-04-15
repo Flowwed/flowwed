@@ -11,7 +11,15 @@ export function loadNavbar() {
       top: 0;
       width: 220px;
       height: 100%;
-      background: #9c1818;
+
+      background: linear-gradient(
+  to bottom,
+  #ffeef3,
+  #ffd9e5,
+  #f8b6ca
+);
+
+
       padding: 16px;
       box-sizing: border-box;
     ">
