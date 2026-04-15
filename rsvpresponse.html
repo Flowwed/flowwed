@@ -266,19 +266,30 @@ transform:translateY(0);
   .layout{
     display:flex;
     flex-direction:column;
-    align-items:stretch;
+    align-items:center;
     gap:18px;
     padding:16px;
   }
   
 .player{
   width:100%;
-  max-width:100%;
-  margin:0;
+  max-width:420px;
+  margin:0 auto;
 
-  border-radius:0;
-  box-shadow:none;
+  aspect-ratio:9/16;
+
+  border-radius:16px;
+  overflow:hidden;
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.25),
+    0 8px 16px rgba(0,0,0,0.18);
+
+  flex:none; /* 🔥 ОЧЕНЬ ВАЖНО */
 }
+
+
+
   .form-box{
     width:90%;
     max-width:380px;
