@@ -393,31 +393,12 @@ h1 {
 }
 
 
-.mini-menu {
-  margin-top: 20px;
-  margin-left: 40px;
-  position: relative;
-  width: fit-content;
-}
-
-.menu-trigger {
-  background: #9c1818;
-  color: white;
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-
-  box-shadow:
-    0 6px 16px rgba(0,0,0,0.3),
-    inset 0 2px 6px rgba(255,255,255,0.25);
-}
-
-/* dropdown */
 .menu-dropdown {
   position: absolute;
-  top: 120%;
+  top: 100%;
   left: 0;
+
+  margin-top: 6px;
 
   background: white;
   border-radius: 14px;
@@ -429,19 +410,11 @@ h1 {
   min-width: 220px;
 }
 
-.menu-dropdown div {
-  padding: 10px 16px;
-  cursor: pointer;
-}
-
-.menu-dropdown div:hover {
-  background: #ffeef3;
-}
-
-/* 🔥 показываем при наведении */
-.mini-menu:hover .menu-dropdown {
+/* 🔥 открытие */
+.menu-dropdown.open {
   display: block;
 }
+
 
 </style>
 </head>

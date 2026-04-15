@@ -7,9 +7,9 @@ export function loadNavbar() {
   nav.className = "mini-menu";
 
   nav.innerHTML = `
-    <div class="menu-trigger">☰ Menu</div>
+    <div class="menu-trigger" id="menuBtn">☰ Menu</div>
 
-    <div class="menu-dropdown">
+    <div class="menu-dropdown" id="menuDrop">
 
       <div onclick="go('videouploader.html')">Web Video</div>
       <div onclick="go('Guests.html')">Guest Hub</div>
@@ -31,12 +31,27 @@ export function loadNavbar() {
     </div>
   `;
 
-  // 👉 вставляем ПОД кнопкой Back
   const backBtn = document.getElementById("backBtn");
+  backBtn.parentElement.insertAdjacentElement("afterend", nav);
 
-  if (backBtn) {
-    backBtn.parentElement.insertAdjacentElement("afterend", nav);
-  }
+  const btn = nav.querySelector("#menuBtn");
+  const drop = nav.querySelector("#menuDrop");
+
+  // 🔥 toggle по клику
+  btn.onclick = (e) => {
+    e.stopPropagation();
+    drop.classList.toggle("open");
+  };
+
+  // 🔥 закрытие при клике вне
+  document.addEventListener("click", () => {
+    drop.classList.remove("open");
+  });
+
+  // 🔥 не закрывать при клике внутри
+  drop.onclick = (e) => {
+    e.stopPropagation();
+  };
 
   window.go = function(page) {
     window.location.href = page + "?t=" + token;
