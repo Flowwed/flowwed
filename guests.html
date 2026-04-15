@@ -429,7 +429,7 @@ h1 {
 /* Верхний хедер: заголовок слева, пара справа */
 
 .top-logo-title {
-  display: flex;
+  display: block;
   justify-content: space-between;
   align-items: center;
   padding: 10px 18px 6px 18px;
@@ -698,61 +698,99 @@ h1 {
 }
 
 
+/* info bubble */
+.ios-banner {
+  margin: 0 auto 36px auto;
+  padding: 16px 24px;
+  max-width: fit-content;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 15.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10); 
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
+
+.top-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+
 .back-btn {
   position: absolute;
-  left: -270px;
-  top: 20px;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
 
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 14px;
+  height: 32px;
+  padding: 0 14px;
 
   border-radius: 999px;
 
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.05)),
     #9c1818;
 
   color: white;
-
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-
-  cursor: pointer;
+  line-height: 1;
 
   border: 1px solid rgba(255,255,255,0.35);
 
-  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
-
   box-shadow:
-    0 8px 20px rgba(0,0,0,0.38),
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 3px 6px rgba(255,255,255,0.22),
-    inset 0 -6px 14px rgba(70,0,20,0.35);
+    0 4px 10px rgba(0,0,0,0.25),
+    inset 0 1px 3px rgba(255,255,255,0.2);
+}
+.back-btn:hover {
+  transform: translateY(-50%) translateY(-2px);
 }
 
-    button:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow:
-        0 14px 28px rgba(0,0,0,0.48),
-        0 6px 14px rgba(0,0,0,0.32),
-        inset 0 4px 10px rgba(255,255,255,0.28),
-        inset 0 -10px 18px rgba(60,0,20,0.38);
-    }
+.back-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
 
-    button:active {
-      transform: scale(0.96);
-    }
 
-.back-arrow {
-  font-size: 18px;
-  display: inline-flex;
+.top-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
   align-items: center;
+  margin-top: 10px;
+  margin-bottom: 18px;
+}
+
+
+
+
+/* ================= HEADER (same as Reports) ================= */
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 600;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-top: 28px;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
 }
 
 
@@ -784,92 +822,41 @@ cursor: pointer;   /* ← добавь это */
   display: none;
 }
 
-.top-info-pill {
-  display: flex;
-  align-items: center;
-  gap: 14px;
 
-  max-width: 720px;
-  margin: 0 auto;
-
-  padding: 14px 20px;
-
-  border-radius: 999px;
-
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(18px) saturate(180%);
-
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.18),
-    inset 0 1px 2px rgba(255,255,255,0.8);
-
-  transition: all 0.3s ease;
-}
-
-.pill-icon {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-
-  background: #b41111;
-  color: white;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  display: flex;
+.info-icon {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  box-shadow:
-    0 4px 10px rgba(180,17,17,0.4),
-    inset 0 2px 3px rgba(255,255,255,0.4);
-}
+  width: 24px;
+  height: 24px;
 
+  border-radius: 50%;
+  background: #b41111;
+  color: white;
 
-.pill-text {
-  font-size: 16px;
-  line-height: 1.45;
-  font-weight: 600;
-  color: #7a3a4a;
-}
-
-
-.pill-link {
-  color: #b41111;
+  font-size: 13px;
   font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(180,17,17,0.4);
-  transition: 0.25s ease;
-}
 
-.pill-link:hover {
-  border-bottom: 1px solid #b41111;
+  margin-right: 8px;
 }
 
 
-.top-info-pill:hover {
-  transform: translateY(-2px) scale(1.01);
-
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.25),
-    inset 0 1px 2px rgba(255,255,255,0.85);
+#filterBar {
+  display: none !important;
 }
 
-.arrow {
-  margin-left: 8px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #b41111;
 
-  display: inline-block;
-  transition: 0.25s ease;
+.info-bubble-inline {
+  display: none !important;
 }
 
-.info-text-inline:hover .arrow {
-  transform: translateX(4px);
+
+#sendEmailBtn,
+#shareBtn {
+  display: none !important;
 }
+
 
 </style>
 
@@ -877,95 +864,27 @@ cursor: pointer;   /* ← добавь это */
 
 <body>
 
-<div class="top-nav-wrapper">
+<div class="top-header">
   <button id="backBtn" class="back-btn" type="button">
     <span class="back-arrow">‹</span>
     Back to Dash
   </button>
+
+
+  <h1>GUEST HUB</h1>
 </div>
 
-<!--
-<div id="navbar-container"></div>
 
-<script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
-}
-
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => {
-    const container = document.getElementById("navbar-container");
-    container.innerHTML = html;
-
-    const token = getToken();
-
-    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
-    const links = container.querySelectorAll(".nav-links a");
-
-    // ================= CLICK =================
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const page = link.dataset.page;
-        if (!page) return;
-
-        const url = token
-          ? `${page}.html?t=${encodeURIComponent(token)}`
-          : `${page}.html`;
-
-        window.location.href = url;
-      });
-    });
-
-    // ================= ACTIVE (FIXED) =================
-    let current = window.location.pathname;
-
-    // убираем trailing slash
-    if (current.endsWith("/")) {
-      current = current.slice(0, -1);
-    }
-
-    current = current.split("/").pop().toLowerCase();
-
-    links.forEach(link => {
-      const page = (link.dataset.page || "") + ".html";
-
-      if (current === page.toLowerCase()) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
--->
-
-
-
-<div class="top-logo-title">
-  <h1 id="topMainTitle">Guest Hub</h1>
-
-<div class="top-info-pill" id="infoPill">
-
-  <div class="pill-icon">i</div>
-
-  <div class="pill-text">
-    Manage and organize your guests.
-    View the Quick User Guide
-    <span id="openGuide" class="pill-link">here</span>
-  </div>
-
+<div class="ios-banner">
+<span class="info-icon">i</span>
+  Manage and organize your guests.  Check the Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>
 </div>
+
 
   <div id="coupleSmallName"></div>
 </div>
+
 
 <div class="top-divider-line"></div>
 
@@ -990,36 +909,34 @@ fetch("/navbar.html")
       <input id="email" type="email" required>
     </div>
 
-    <div class="field">
-      <label>Phone *</label>
+<div class="field">
+  <label>Phone (optional)</label>
 
-      <div style="display:flex; gap:8px;">
-        <select id="countryCode" style="
-          padding:10px;
-          border-radius:10px;
-          border:1px solid rgba(160,0,40,0.25);
-          background:white;
-          width:85px;
-        " required>
-          <option value="" disabled selected>🌍</option>
-          <option value="+1">🇺🇸 +1</option> 
-          <option value="+33">🇫🇷 +33</option>
-          <option value="+34">🇪🇸 +34</option>
-          <option value="+39">🇮🇹 +39</option>
-          <option value="+44">🇬🇧 +44</option>
-          <option value="+49">🇩🇪 +49</option>
-          <option value="+61">🇦🇺 +61</option>
-          <option value="+81">🇯🇵 +81</option>
-          <option value="+90">🇹🇷 +90</option>
-          <option value="+972">🇮🇱 +972</option>
-          <option value="+994">🇦🇿 +994</option>
-        </select>
+  <div style="display:flex; gap:8px;">
+    <select id="countryCode" style="
+      padding:10px;
+      border-radius:10px;
+      border:1px solid rgba(160,0,40,0.25);
+      background:white;
+      width:85px;
+    ">
+      <option value="" selected>🌍</option>
+      <option value="+1">🇺🇸 +1</option> 
+      <option value="+33">🇫🇷 +33</option>
+      <option value="+34">🇪🇸 +34</option>
+      <option value="+39">🇮🇹 +39</option>
+      <option value="+44">🇬🇧 +44</option>
+      <option value="+49">🇩🇪 +49</option>
+      <option value="+61">🇦🇺 +61</option>
+      <option value="+81">🇯🇵 +81</option>
+      <option value="+90">🇹🇷 +90</option>
+      <option value="+972">🇮🇱 +972</option>
+      <option value="+994">🇦🇿 +994</option>
+    </select>
 
-        <input id="phone" required style="flex:1;">
-      </div>
-
-    </div>
-
+    <input id="phone" style="flex:1;">
+  </div>
+</div>
   </form>
 
 </div>  
@@ -1419,10 +1336,15 @@ const phoneValue = countryCodeInput.value + phoneInput.value.trim();
 
   const token = new URLSearchParams(location.search).get("t");
 
-  if (!name || !emailValue || !phoneInput.value.trim() || !countryCodeInput.value)
+  if (!name || !emailValue) {
+  return alert("Fill required fields!");
+}
+
+if (phoneInput.value.trim() && !countryCodeInput.value) {
+  return alert("Select country code!");
+}
 
 
-    return alert("Fill all fields and select country code!");
 
   // === CHECK EMAIL DUPLICATE ===
 const emailExists = guests.some(g => g.email.toLowerCase() === emailValue.toLowerCase());
