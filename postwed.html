@@ -3610,6 +3610,22 @@ if (shareBtn) {
 </script>
 
 
+<script id="backfix1">
+document.getElementById("backBtn").onclick = () => {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || "";
+
+  window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
+};
+</script>
+
+
+<script type="module">
+  import { loadNavbar } from "./navbar.js";
+  loadNavbar();
+</script>
+
+
 
 
 </body>
