@@ -1509,10 +1509,14 @@ document.getElementById("deleteCancelBtn").onclick = () => {
 // Yes button — delete from DB
 
 document.getElementById("deleteYesBtn").onclick = async () => {
+
+  const token = new URLSearchParams(location.search).get("t"); // 👈 добавили
+
   const { error, data } = await supabase
     .from("guests")
     .delete()
     .in("id", idsToDelete)
+    .eq("token", token)   // 👈 КЛЮЧЕВОЙ ФИКС
     .select();
 
   console.log("DELETE ids:", idsToDelete);
