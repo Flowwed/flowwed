@@ -22,7 +22,8 @@ export function loadNavbar() {
         gap: 12px;
       ">
 
-        <button class="nav-btn ${current==='dashboard.html' ? 'active' : ''}" onclick="go('dashboard.html')">🏠<br>Dash</button>
+        <button class="nav-btn ${current==='videouploader.html' ? 'active' : ''}" onclick="go('videouploader.html')">📸<br>Video</button>
+
         <button class="nav-btn ${current==='Guests.html' ? 'active' : ''}" onclick="go('Guests.html')">👥<br>Guests</button>
         <button class="nav-btn ${current==='upload.html' ? 'active' : ''}" onclick="go('upload.html')">📸<br>Gallery</button>
         <button class="nav-btn ${current==='savethedate.html' ? 'active' : ''}" onclick="go('savethedate.html')">📅<br>Date</button>
