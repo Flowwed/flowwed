@@ -1506,18 +1506,34 @@ document.getElementById("deleteCancelBtn").onclick = () => {
 };
 
 // Yes button — delete from DB
-document.getElementById("deleteYesBtn").onclick = async () => {
-  await supabase.from("guests").delete().in("id", idsToDelete);
 
-  guests = guests.filter(g => !idsToDelete.includes(g.id));
+document.getElementById("deleteYesBtn").onclick = async () => {
+  const { error, data } = await supabase
+    .from("guests")
+    .delete()
+    .in("id", idsToDelete)
+    .select();
+
+  console.log("DELETE ids:", idsToDelete);
+  console.log("DELETE result data:", data);
+  console.log("DELETE error:", error);
+
+  if (error) {
+    showToastBox(error.message || "Delete failed", "error");
+    return;
+  }
+
+  guests = guests.filter(g => !idsToDelete.includes(String(g.id)));
   render();
 
   deleteOverlay.style.display = "none";
 
-  // Clean checkboxes after delete
   document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
   document.getElementById("selectAll").checked = false;
+
+  showToastBox("Guests deleted", "success");
 };
+
 
 // ======================================================
 // EXPORT CSV
