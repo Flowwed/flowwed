@@ -2,59 +2,40 @@ export function loadNavbar() {
 
   const params = new URLSearchParams(window.location.search);
   const token = params.get("t") || "";
-  const current = window.location.pathname;
 
   const nav = document.createElement("div");
-  nav.className = "top-nav";
+  nav.className = "mini-menu";
 
   nav.innerHTML = `
+    <div class="menu-trigger">☰ Menu</div>
 
-    ${link('videouploader.html','Web Video')}
-    ${link('Guests.html','Guests')}
+    <div class="menu-dropdown">
 
-    ${dropdown('Planning', [
-      ['savethedate.html','Save the Date'],
-      ['postwed.html','RSVP'],
-      ['SeatingChart.html','Seating'],
-      ['Budget.html','Budget'],
-      ['traveldetails.html','Travel']
-    ])}
+      <div onclick="go('videouploader.html')">Web Video</div>
+      <div onclick="go('Guests.html')">Guest Hub</div>
+      <div onclick="go('upload.html')">Photo Gallery</div>
+      <div onclick="go('savethedate.html')">Save the Date</div>
+      <div onclick="go('postwed.html')">RSVP</div>
+      <div onclick="go('SeatingChart.html')">Seating</div>
+      <div onclick="go('gift_registry.html')">Gifts</div>
+      <div onclick="go('Budget.html')">Budget</div>
+      <div onclick="go('traveldetails.html')">Travel & Event</div>
+      <div onclick="go('postwed2.html')">Memories</div>
+      <div onclick="go('just_married.html')">Album</div>
+      <div onclick="go('story.html')">Our Story</div>
+      <div onclick="go('dash-updates.html')">Updates</div>
+      <div onclick="go('wedparty.html')">Wedding Party</div>
+      <div onclick="go('wed_reports.html')">Wed Reports</div>
+      <div onclick="go('guest_memory.html')">Guest Feedback</div>
 
-    ${dropdown('Media', [
-      ['upload.html','Gallery'],
-      ['postwed2.html','Memories'],
-      ['just_married.html','Album'],
-      ['story.html','Story']
-    ])}
-
-    ${dropdown('Reports', [
-      ['wed_reports.html','Reports'],
-      ['dash-updates.html','Updates'],
-      ['guest_memory.html','Feedback'],
-      ['wedparty.html','Wedding Party']
-    ])}
-
+    </div>
   `;
 
-document.body.prepend(nav);
+  // 👉 вставляем ПОД кнопкой Back
+  const backBtn = document.getElementById("backBtn");
 
-
-  function link(page, text) {
-    const active = current.includes(page) ? "active" : "";
-    return `<span class="${active}" onclick="go('${page}')">${text}</span>`;
-  }
-
-  function dropdown(title, items) {
-    return `
-      <div class="nav-dropdown">
-        <span>${title}</span>
-        <div class="dropdown-menu">
-          ${items.map(i => `
-            <div onclick="go('${i[0]}')">${i[1]}</div>
-          `).join("")}
-        </div>
-      </div>
-    `;
+  if (backBtn) {
+    backBtn.parentElement.insertAdjacentElement("afterend", nav);
   }
 
   window.go = function(page) {

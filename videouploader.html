@@ -393,46 +393,28 @@ h1 {
 }
 
 
-
-.top-nav {
-  display: flex;
-  justify-content: center;
-  gap: 28px;
-  margin: 20px 0 30px;
-
-  font-size: 16px;
-  font-weight: 600;
-  color: #a02449;
-}
-
-/* обычные ссылки */
-.top-nav span {
-  cursor: pointer;
+.mini-menu {
+  margin-top: 20px;
+  margin-left: 40px;
   position: relative;
+  width: fit-content;
 }
 
-/* underline hover */
-.top-nav span::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 2px;
-  background: #a02449;
-  transition: 0.25s;
-}
+.menu-trigger {
+  background: #9c1818;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
 
-.top-nav span:hover::after {
-  width: 100%;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.3),
+    inset 0 2px 6px rgba(255,255,255,0.25);
 }
 
 /* dropdown */
-.nav-dropdown {
-  position: relative;
-}
-
-.dropdown-menu {
+.menu-dropdown {
   position: absolute;
   top: 120%;
   left: 0;
@@ -443,31 +425,23 @@ h1 {
 
   display: none;
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  min-width: 180px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  min-width: 220px;
 }
 
-.dropdown-menu div {
+.menu-dropdown div {
   padding: 10px 16px;
   cursor: pointer;
-  white-space: nowrap;
 }
 
-.dropdown-menu div:hover {
+.menu-dropdown div:hover {
   background: #ffeef3;
 }
 
-/* hover open */
-.nav-dropdown:hover .dropdown-menu {
+/* 🔥 показываем при наведении */
+.mini-menu:hover .menu-dropdown {
   display: block;
 }
-
-
-.top-nav {
-  margin-top: 10px;
-}
-
-
 
 </style>
 </head>
