@@ -384,10 +384,6 @@
     gap: 10px;
   }
 
-  .info-bubble-inline {
-    max-width: 100%;
-  }
-
 .addGuestHeader h2 {
   font-size: 15px;   /* любой размер */
   font-weight: 700;  /* по желанию */
@@ -482,9 +478,6 @@
   padding-left: 18px !important;
 }
 
-#filterBar {
-  padding-left: 18px !important;
-}
 
 /* Таблица – выравниваем, но НЕ сужаем */
 .ruby-frame-outer {
@@ -675,9 +668,6 @@ cursor: pointer;   /* ← добавь это */
 </div>
 
 
-  <div id="coupleSmallName"></div>
-</div>
-
 
 <div class="top-divider-line"></div>
 
@@ -764,9 +754,6 @@ cursor: pointer;   /* ← добавь это */
     <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
       <button id="exportCsv" class="footer-btn">Download & Print</button>
-      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
-      <button id="sendTestEmailFooter"class="footer-btn">Send Test Email</button>
-      <button id="shareBtn" class="footer-btn">Send via SMS</button>
 
     </div>
   </div>
@@ -816,7 +803,6 @@ const supabase = createClient(
 );
 
 let guests = [];
-let coupleFullName = "";
 const tbody = document.querySelector("#guestTable tbody");
 
 // ======================================================
@@ -1276,8 +1262,8 @@ function openComposer() {
   refreshComposerFields(); // ← ВАЖНО! вызываем при открытии
 
   // Auto Subject
-  document.getElementById("composerSubject").value =
-    `Wedding Update: ${coupleFullName}`;
+document.getElementById("composerSubject").value =
+  "Wedding Update";
 
   emailComposer.style.display = "block";
 }
@@ -1629,41 +1615,7 @@ document.getElementById("closeGuide").addEventListener("click", () => {
 });
 </script>
 
-<!-- QR MODAL -->
-<div id="qrModal" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-">
-  <div style="
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    text-align: center;
-  ">
-    <div style="margin-bottom:10px;font-weight:600;">
-      Scan with your phone
-    </div>
 
-    <canvas id="qrCanvas"></canvas>
-
-    <div style="margin-top:10px;font-size:12px;color:#666;">
-      Open link → send SMS
-    </div>
-
-    <div style="margin-top:12px;">
-      <button onclick="document.getElementById('qrModal').style.display='none'">
-        Close
-      </button>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
 
 </body>
