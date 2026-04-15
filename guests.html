@@ -1199,6 +1199,7 @@ async function loadGuests() {
     .eq("token", token)
     .order("created_at");
 
+console.log("FROM DB:", data);
   guests = data.map(g => ({
     id: g.id,
     first: g.first_name || "",
