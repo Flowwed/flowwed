@@ -639,6 +639,64 @@ textarea {
 
 }
 
+
+
+/* info bubble */
+.ios-banner {
+  margin: 0 auto 36px auto;
+  padding: 16px 24px;
+  max-width: 880px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 15.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10); 
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
+
+
+
+/* bubble — строго центр экрана */
+.ios-banner {
+  justify-self: center;
+  text-align: center;
+}
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ff4d4d, #b41111);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  color: white;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  flex-shrink: 0;
+}
+
+
+
+
+
  </style>
 
  <style>
@@ -743,401 +801,6 @@ textarea {
   align-items: stretch; /* 🔥 КЛЮЧЕВОЕ */
 }
 
-.ai-assistant-card {
-  background: rgba(255,255,255,0.75);
-  flex: 0 0 70%;
-  max-width: 520px;
-
-  margin-left: 24px;
-  margin-bottom: 26px;
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-
-  border-radius: 18px;
-
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.18),
-    0 8px 20px rgba(0,0,0,0.12),
-    inset 0 2px 6px rgba(255,255,255,0.25);
-}
-
-/* ============================= */
-/* AI ASSISTANT — UI ONLY        */
-/* ============================= */
-
-.ai-assistant-card {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  margin-left: 24px;
-  padding: 16px;
-
-  border-radius: 18px;
-}
-
-/* =========================
-   AI CHAT — MESSAGES
-========================= */
-
-.ai-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ffd6e2;
-}
-
-/* LEFT PART grouped properly */
-.ai-header-left {
-  display: flex;
-  align-items: center;
-  gap: 14px;   /* ← контролируем расстояние между кругом и текстом */
-}
-
-.ai-header-text strong,
-.ai-header-text span {
-  line-height: 1.14;   /* уменьшает вертикальный воздух */
-}
-
-/* RIGHT PART stays the same */
-.ai-voice-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.ai-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-image: url("/images/emily.jpeg"); /* ← ВОТ */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.ai-messages {
-  height: 180px;
-  overflow-y: auto;
-  padding: 6px 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.ai-msg {
-  max-width: 80%;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.35;
-}
-
-/* Bot (Emily) */
-.ai-msg-bot {
-  background: #fff3f6;
-  border: 1px solid #ffd6e2;
-  align-self: flex-start;
-}
-
-/* User (later) */
-.ai-msg-user {
-  background: #b41111;
-  color: white;
-  align-self: flex-end;
-}
-
-
-.ai-header-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-
-  background-image: url("images/emily.jpeg"); /* ← ВАЖНО */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  box-shadow:
-    0 4px 12px rgba(180, 17, 17, 0.35),
-    inset 0 0 0 2px rgba(255,255,255,0.85);
-}
-
-.ai-header-avatar {
-  animation: emilyBreath 4.6s ease-in-out infinite;
-  transform-origin: center;
-}
-
-@keyframes emilyBreath {
-  0%   { transform: scale(1);     box-shadow: 0 0 10px rgba(180,0,40,0.25); }
-  50%  { transform: scale(1.06);  box-shadow: 0 0 20px rgba(180,0,40,0.45); }
-  100% { transform: scale(1);     box-shadow: 0 0 10px rgba(180,0,40,0.25); }
-}
-
-
-/* =========================
-   INPUT ROW
-========================= */
-
-.ai-input-row {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.ai-input-row input {
-  flex: 1;
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(160,0,40,0.25);
-  font-size: 14px;
-}
-
-.ai-input-row button {
-  padding: 10px 18px;
-  border-radius: 12px;
-  font-size: 14px;
-}
-
-/* =============================
-   AI VOICE EQUALIZER
-============================= */
-
-.ai-equalizer {
-  width: 26px;
-
-  margin-left: 14px;
-  margin-bottom: 26px; /* ← чтобы совпал низ */
-
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-
-  padding: 10px 6px;
-
-  background: rgba(255,255,255,0.6);
-  border-radius: 16px;
-
-  box-shadow:
-    0 14px 32px rgba(0,0,0,0.18),
-    inset 0 0 8px rgba(255,255,255,0.55);
-
-  backdrop-filter: blur(14px) saturate(160%);
-}
-
-/* bars */
-.ai-equalizer span {
-  display: block;
-  width: 3px;
-  height: 20%;
-  border-radius: 3px;
-
-  background: linear-gradient(
-    to top,
-    #6a0f0f,
-    #b41111,
-    #ffb3b3
-  );
-
-  box-shadow:
-    0 0 6px rgba(180,17,17,0.6),
-    inset 0 0 4px rgba(255,255,255,0.35);
-
-  transform-origin: bottom;
-  animation: eqIdle 8.2s ease-in-out infinite;
-}
-
-/* offsets */
-.ai-equalizer span:nth-child(2) { animation-delay: .2s }
-.ai-equalizer span:nth-child(3) { animation-delay: .4s }
-.ai-equalizer span:nth-child(4) { animation-delay: .1s }
-.ai-equalizer span:nth-child(5) { animation-delay: .3s }
-.ai-equalizer span:nth-child(6) { animation-delay: .5s }
-
-/* bars — visual style only */
-.ai-equalizer span {
-  display: block;
-  width: 3px;
-  height: 20%;
-  border-radius: 3px;
-
-  background: linear-gradient(
-    to top,
-    #6a0f0f,
-    #b41111,
-    #ffb3b3
-  );
-
-  box-shadow:
-    0 0 6px rgba(180,17,17,0.6),
-    inset 0 0 4px rgba(255,255,255,0.35);
-}
-
-/* =============================
-   AI EQUALIZER — SMOOTH & RANDOM
-============================= */
-
-:root {
-  --eq-speed: 3;
-}
-
-.ai-equalizer span {
-  transform-origin: bottom;
-  animation-name: eqFloat;
-  animation-timing-function: cubic-bezier(.4,0,.2,1);
-  animation-iteration-count: infinite;
-}
-
-/* individual timing (asynchronous) */
-.ai-equalizer span:nth-child(1) {
-  animation-duration: calc(3.6s * var(--eq-speed));
-  animation-delay: -0.8s;
-}
-
-.ai-equalizer span:nth-child(2) {
-  animation-duration: calc(4.2s * var(--eq-speed));
-  animation-delay: -1.4s;
-}
-
-.ai-equalizer span:nth-child(3) {
-  animation-duration: calc(3.1s * var(--eq-speed));
-  animation-delay: -2.2s;
-}
-
-.ai-equalizer span:nth-child(4) {
-  animation-duration: calc(4.8s * var(--eq-speed));
-  animation-delay: -0.6s;
-}
-
-.ai-equalizer span:nth-child(5) {
-  animation-duration: calc(3.9s * var(--eq-speed));
-  animation-delay: -1.9s;
-}
-
-.ai-equalizer span:nth-child(6) {
-  animation-duration: calc(4.5s * var(--eq-speed));
-  animation-delay: -2.7s;
-}
-/* idle — slow breathing */
-@keyframes eqFloat {
-  0%   { transform: scaleY(0.25); opacity: 0.6; }
-  20%  { transform: scaleY(0.55); opacity: 0.8; }
-  40%  { transform: scaleY(0.35); opacity: 0.7; }
-  60%  { transform: scaleY(0.75); opacity: 0.9; }
-  80%  { transform: scaleY(0.45); opacity: 0.75; }
-  100% { transform: scaleY(0.3);  opacity: 0.6; }
-}
-
-/* speaking — stronger but calm */
-.ai-equalizer.active span {
-  animation-name: eqSpeakSoft;
-  opacity: 1;
-}
-
-@keyframes eqSpeakSoft {
-  0%   { transform: scaleY(0.4); }
-  30%  { transform: scaleY(1.1); }
-  55%  { transform: scaleY(0.6); }
-  75%  { transform: scaleY(0.95); }
-  100% { transform: scaleY(0.45); }
-}
-/* === FINAL AI AVATAR FIX === */
-
-.ai-voice-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-
-  background: transparent;
-  border: 1.5px solid rgba(180, 17, 17, 0.35); /* контур */
-
-  color: #8b1a1a;
-  font-size: 14px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 2px 6px rgba(180, 17, 17, 0.15);
-
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-}
-
-.ai-voice-btn:hover {
-  background: rgba(180, 17, 17, 0.06);
-  box-shadow:
-    0 4px 10px rgba(180, 17, 17, 0.25);
-}
-
-.ai-voice-btn:active {
-  transform: scale(0.95);
-}
-
-.ai-voice-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* =========================
-   MIC BUTTON STATES
-========================= */
-
-/* БАЗА */
-.ai-voice-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-/* ===== MIC ON — green glow ===== */
-.ai-voice-btn.mic-on {
-  animation: micGlow 2.4s ease-in-out infinite;
-}
-
-@keyframes micGlow {
-  0%   { box-shadow: 0 0 0 2px rgba(90,170,130,0.25), 0 0 10px rgba(90,170,130,0.35); }
-  50%  { box-shadow: 0 0 0 2px rgba(90,170,130,0.45), 0 0 18px rgba(90,170,130,0.45); }
-  100% { box-shadow: 0 0 0 2px rgba(90,170,130,0.25), 0 0 10px rgba(90,170,130,0.35); }
-}
-/* ===== MIC OFF — crossed circle ===== */
-.ai-voice-btn.mic-off {
-  opacity: 0.45;
-  border-color: rgba(140, 0, 0, 0.45);
-}
-
-.ai-voice-btn.mic-off::before,
-.ai-voice-btn.mic-off::after {
-  display: none;
-}
-
-
-/* текст слева */
-.listening-text {
-  font-size: 13px;
-  font-weight: 600;
-  color: #8b1a1a;
-  opacity: 0;
-  transform: translateX(6px);
-  transition: 0.25s ease;
-  white-space: nowrap;
-}
-
-/* когда слушает */
-.listening-text.active {
-  opacity: 1;
-  transform: translateX(0);
-}
 
 .ios-banner-inline {
   padding: 8px 14px;
@@ -1477,40 +1140,155 @@ box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
 
 .back-btn {
   position: absolute;
-  left: -270px;
-  top: 20px;
+  left: 90px;
+  top: 50%;
+  transform: translateY(-50%);
 
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 6px 14px;
+  height: 32px;
+  padding: 0 14px;
 
   border-radius: 999px;
 
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.05)),
     #9c1818;
 
   color: white;
-
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-
-  cursor: pointer;
+  line-height: 1;
 
   border: 1px solid rgba(255,255,255,0.35);
 
-  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    inset 0 1px 3px rgba(255,255,255,0.2);
+}
+.back-btn:hover {
+  transform: translateY(-50%) translateY(-2px);
+}
+
+.back-btn:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+
+
+
+
+
+/* ================= HEADER (same as Reports) ================= */
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 600;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-top: 28px;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+/* couple names under title */
+.couple-subtitle {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  margin-top: -20px;
+  margin-bottom: 25px;
+  color: #b41111;
+  opacity: 0.85;
+}
+
+/* info bubble */
+.ios-banner {
+  margin: 0 auto 36px auto;
+  padding: 16px 24px;
+  max-width: 880px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 15.5px;
+  font-weight: 550;
+  line-height: 1.45;
 
   box-shadow:
-    0 8px 20px rgba(0,0,0,0.38),
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 3px 6px rgba(255,255,255,0.22),
-    inset 0 -6px 14px rgba(70,0,20,0.35);
+    0 6px 16px rgba(0,0,0,0.10); 
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
+
+.top-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+.back-btn {
+  position: static;
+  justify-self: start;
+}
+
+h1 {
+  justify-self: center;
+}
+
+
+.video-info-bubble {
+  margin: 0 auto 20px auto;
+  max-width: 420px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 14px;
+
+  background: #fff7f7;
+  border: 1px solid #ffd0d0;
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #7e2a2a;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 3px rgba(255,255,255,0.6);
+}
+
+.video-info-icon {
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+  background: #b41111;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+#deleteSelected {
+  display: none;
 }
 
 
@@ -1519,86 +1297,27 @@ box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
 
 <body>
 
-<div class="top-nav-wrapper">
+<div class="top-header">
   <button id="backBtn" class="back-btn" type="button">
     <span class="back-arrow">‹</span>
     Back to Dash
   </button>
+
+
+
+
+  <h1>RSVP</h1>
 </div>
 
 
-<!--
-<div id="navbar-container"></div>
-
-<script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
-}
-
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => {
-    const container = document.getElementById("navbar-container");
-    container.innerHTML = html;
-
-    const token = getToken();
-
-    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
-    const links = container.querySelectorAll(".nav-links a");
-
-    // ================= CLICK =================
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const page = link.dataset.page;
-        if (!page) return;
-
-        const url = token
-          ? `${page}.html?t=${encodeURIComponent(token)}`
-          : `${page}.html`;
-
-        window.location.href = url;
-      });
-    });
-
-    // ================= ACTIVE (FIXED) =================
-    let current = window.location.pathname;
-
-    // убираем trailing slash
-    if (current.endsWith("/")) {
-      current = current.slice(0, -1);
-    }
-
-    current = current.split("/").pop().toLowerCase();
-
-    links.forEach(link => {
-      const page = (link.dataset.page || "") + ".html";
-
-      if (current === page.toLowerCase()) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
--->
 
 
-<div class="top-logo-title" style="gap:16px;">
-  <h1 id="topMainTitle">RSVP</h1>
+<div class="ios-banner">
+<span class="info-icon">i</span>
+  Complete the blue fields and send the RSVP form to your guests via email or SMS. Check the Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>
+</div>
 
-  <!-- mini info bubble -->
-  <div class="ios-banner-inline">
-    ℹ️ This is the cinematic invitation and RSVP form your guests will receive.
-Fill in the blue fields, select your guests, and reach them by email and SMS.
-  </div>
 
   <div id="coupleSmallName"></div>
 </div>
@@ -1610,32 +1329,46 @@ Fill in the blue fields, select your guests, and reach them by email and SMS.
 
 
 <!-- POST-WEDDING VIDEO PLAYER -->
-<div id="postWeddingVideo" style="
-  margin: 150px 18px 26px 18px;
-  display:flex;
-  justify-content:center;
-">
 
-  <div id="videoPlayerBox" style="
-    width: min(520px, 100%);
-    aspect-ratio: 9/16;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow:
-      0 18px 40px rgba(0,0,0,0.25),
-      0 8px 16px rgba(0,0,0,0.18);
+<div id="postWeddingVideoWrapper">
+
+  <div id="postWeddingVideo" style="
+    margin: 150px 18px 12px 18px;
+    display:flex;
+    justify-content:center;
   ">
 
-    <iframe id="postWeddingIframe"
-      src=""
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      style="width:100%;height:100%;">
-    </iframe>
+    <div id="videoPlayerBox" style="
+      width: min(520px, 100%);
+      aspect-ratio: 9/16;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow:
+        0 18px 40px rgba(0,0,0,0.25),
+        0 8px 16px rgba(0,0,0,0.18);
+    ">
+
+      <iframe id="postWeddingIframe"
+        src=""
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        style="width:100%;height:100%;">
+      </iframe>
+
+    </div>
 
   </div>
 
+  <!-- 👇 ВОТ НОВЫЙ BUBBLE -->
+  <div class="video-info-bubble">
+    <span class="video-info-icon">i</span>
+    <span class="video-info-text">
+      This is the cinematic invitation your guests will receive
+    </span>
+  </div>
+
 </div>
+
 
 <div style="
 flex:1;
@@ -1658,7 +1391,7 @@ font-weight:700;
 color:#9c1818;
 margin-bottom:18px;
 ">
-Wedding Details
+RSVP Details
 </div>
 
 <!-- WEDDING DETAILS -->
@@ -1740,7 +1473,7 @@ font-weight:600;
 <div class="date-info">
   <div class="date-info-icon">i</div>
   <div class="date-info-text">
-    Choose your RSVP deadline. Guests must respond before this date.
+   Your guests are expected to respond before this date
   </div>
 </div>
 
@@ -1907,7 +1640,7 @@ border-top:3px solid #b41111;
     <div class="preview-info">
       <div class="preview-info-icon">i</div>
       <div class="preview-info-text">
-        This is the RSVP form your guests will receive.<br>
+        This is the RSVP form your guests will receive<br>
       </div>
     </div>
   </div>
@@ -1947,7 +1680,7 @@ border-top:3px solid #b41111;
 <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
-      <button id="shareBtn" class="footer-btn">Send via SMS</button>
+      <button id="shareBtn" class="footer-btn">Send SMS</button>
 
       <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
 
@@ -3606,7 +3339,7 @@ document.addEventListener("DOMContentLoaded", () => {
       z-index:10;
     ">×</div>
 
-    <iframe src="tttpostwed.html?embed=1" style="
+    <iframe src="tttrsvp.html?embed=1" style="
       width:100%;
       height:100%;
       border:none;
