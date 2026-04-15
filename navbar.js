@@ -36,8 +36,8 @@ export function loadNavbar() {
 
   `;
 
-  const header = document.querySelector("h1");
-  header.insertAdjacentElement("afterend", nav);
+document.body.prepend(nav);
+
 
   function link(page, text) {
     const active = current.includes(page) ? "active" : "";
