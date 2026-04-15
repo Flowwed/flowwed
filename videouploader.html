@@ -443,6 +443,50 @@ h1 {
 }
 
 
+
+
+.top-nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 20px 0 30px;
+
+  font-size: 16px;
+  font-weight: 600;
+  color: #a02449;
+}
+
+.top-nav span {
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.top-nav span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #a02449;
+  transition: 0.25s;
+}
+
+.top-nav span:hover::after {
+  width: 100%;
+}
+
+/* активная страница */
+.top-nav span.active {
+  font-weight: 700;
+}
+
+.top-nav span.active::after {
+  width: 100%;
+}
+
+
 </style>
 </head>
 
