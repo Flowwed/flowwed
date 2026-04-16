@@ -394,10 +394,12 @@ h1 {
 
 
 .mini-menu {
-  margin-top: 20px;
-  margin-left: 40px;
-  position: relative;
+  position: fixed;   /* 👈 ВАЖНО: не absolute */
+  top: 50px;
+  left: 150px;
   width: fit-content;
+
+  z-index: 9999999;  /* 👈 выше ВСЕГО */
 }
 
 .menu-trigger {
