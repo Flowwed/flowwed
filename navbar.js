@@ -76,3 +76,5 @@ nav.querySelectorAll(".menu-dropdown div").forEach(item => {
     item.classList.add("active");
   }
 });
+
+}
