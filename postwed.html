@@ -1327,11 +1327,11 @@ h1 {
   position: absolute;
   top: 120%;
   left: 0;
-z-index: 99999; /* 👈 добавь */
+  z-index: 99999;
 
   background: white;
   border-radius: 14px;
-  padding: 0;
+  padding: 6px 0; /* 🔥 добавили воздух */
 
   display: none;
 
@@ -1339,28 +1339,33 @@ z-index: 99999; /* 👈 добавь */
   min-width: 220px;
 }
 
-/* открытие через JS */
+/* открытие */
 .menu-dropdown.open {
   display: block;
 }
 
-/* все пункты */
-.menu-dropdown div {
-  padding: 12px 16px;
-  cursor: pointer;
-  border-radius: 8px;
-  margin: 2px 6px;
+/* 🔥 ВАЖНО: теперь для <a>, не div */
+.menu-dropdown a {
+  display: block;
+  padding: 12px 18px;
 
-  display: flex;
-  justify-content: center;   /* 👈 центр по горизонтали */
+  text-decoration: none;
+  color: #9c1818;
+  font-weight: 600;
+
+  transition: 0.2s;
 }
 
-
 /* hover */
-.menu-dropdown div:hover {
+.menu-dropdown a:hover {
   background: #ffeef3;
 }
 
+/* активная страница */
+.menu-dropdown a.active {
+  background: #ffeef3;
+  font-weight: 700;
+}
 /* 🔥 Back to Dash (верхний пункт) */
 .menu-back {
   padding: 12px 16px;
@@ -3727,10 +3732,18 @@ document.getElementById("backBtn").onclick = () => {
 
 <script>
 
-const trigger = document.querySelector(".menu-trigger");
-const dropdown = document.querySelector(".menu-dropdown");
+document.addEventListener("DOMContentLoaded", () => {
 
-if (trigger && dropdown) {
+  const trigger = document.querySelector(".menu-trigger");
+  const dropdown = document.getElementById("menuDropdown");
+  const sourceNav = document.querySelector(".top-nav");
+
+  if (!trigger || !dropdown || !sourceNav) return;
+
+  // 🔥 копируем меню
+  dropdown.innerHTML = sourceNav.innerHTML;
+
+  // 🔥 открытие/закрытие
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("open");
@@ -3739,20 +3752,8 @@ if (trigger && dropdown) {
   document.addEventListener("click", () => {
     dropdown.classList.remove("open");
   });
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  const sourceNav = document.querySelector(".top-nav");
-  const dropdown = document.getElementById("menuDropdown");
-
-  if (!sourceNav || !dropdown) return;
-
-  dropdown.innerHTML = sourceNav.innerHTML;
 
 });
-
 
 </script>
 
