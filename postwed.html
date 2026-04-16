@@ -1373,6 +1373,9 @@ z-index: 99999; /* 👈 добавь */
   display: none;
 }
 
+.top-nav {
+  display: none;
+}
 
 
 </style>
@@ -1386,15 +1389,26 @@ z-index: 99999; /* 👈 добавь */
   <div class="menu-trigger">☰ Menu</div>
 
   <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
-  <div class="menu-dropdown">
-    <div>Dashboard</div>
-    <div>Settings</div>
-  </div>
-</div>
+<div class="menu-dropdown" id="menuDropdown"></div></div>
 
 <h1>RSVP</h1>
 
 <div></div>
+
+
+  <div class="top-nav">
+  <a href="/photo-gallery.html">Photo Gallery</a>
+  <a href="/gift-registry.html">Gift Registry</a>
+  <a href="/our-story.html">Our Story</a>
+  <a href="/updates.html">Updates</a>
+  <a href="/wedding-party.html">Wedding Party</a>
+  <a href="/wedding-info.html">Wedding Info</a>
+  <a href="/venue-map.html">Venue & Map</a>
+  <a href="/travel-info.html">Travel Info</a>
+  <a href="/just_married.html">Just Married</a>
+</div>
+
+
 
 
 <div class="ios-banner">
@@ -3726,6 +3740,19 @@ if (trigger && dropdown) {
     dropdown.classList.remove("open");
   });
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const sourceNav = document.querySelector(".top-nav");
+  const dropdown = document.getElementById("menuDropdown");
+
+  if (!sourceNav || !dropdown) return;
+
+  dropdown.innerHTML = sourceNav.innerHTML;
+
+});
+
 
 </script>
 

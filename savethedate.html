@@ -1589,6 +1589,9 @@ z-index: 99999; /* 👈 добавь */
 }
 
 
+.top-nav {
+  display: none;
+}
 
 
 
@@ -1603,17 +1606,32 @@ z-index: 99999; /* 👈 добавь */
 <div class="mini-menu">
   <div class="menu-trigger">☰ Menu</div>
 
-  <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
-  <div class="menu-dropdown">
-    <div>Dashboard</div>
-    <div>Settings</div>
-  </div>
-</div>
+<div class="menu-dropdown" id="menuDropdown"></div></div>
 
 <h1>Save The Date</h1>
 
 <div></div>
 
+  <div class="top-nav">
+  <a href="/photo-gallery.html">Photo Gallery</a>
+  <a href="/gift-registry.html">Gift Registry</a>
+  <a href="/our-story.html">Our Story</a>
+  <a href="/updates.html">Updates</a>
+  <a href="/wedding-party.html">Wedding Party</a>
+  <a href="/wedding-info.html">Wedding Info</a>
+  <a href="/venue-map.html">Venue & Map</a>
+  <a href="/travel-info.html">Travel Info</a>
+  <a href="/just_married.html">Just Married</a>
+</div>
+
+
+
+
+<div class="ios-banner">
+<span class="info-icon">i</span>
+  Complete the blue fields and send the RSVP form to your guests via email or SMS. Check the Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>
+</div>
 
 
 
@@ -3631,13 +3649,20 @@ document.getElementById("backBtn").onclick = () => {
   loadNavbar();
 </script>
 
-
 <script>
 
-const trigger = document.querySelector(".menu-trigger");
-const dropdown = document.querySelector(".menu-dropdown");
+document.addEventListener("DOMContentLoaded", () => {
 
-if (trigger && dropdown) {
+  const trigger = document.querySelector(".menu-trigger");
+  const dropdown = document.getElementById("menuDropdown");
+  const sourceNav = document.querySelector(".top-nav");
+
+  if (!trigger || !dropdown || !sourceNav) return;
+
+  // 🔥 копируем меню
+  dropdown.innerHTML = sourceNav.innerHTML;
+
+  // 🔥 открытие/закрытие
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("open");
@@ -3646,7 +3671,8 @@ if (trigger && dropdown) {
   document.addEventListener("click", () => {
     dropdown.classList.remove("open");
   });
-}
+
+});
 
 </script>
 
