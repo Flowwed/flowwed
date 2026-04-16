@@ -1299,14 +1299,15 @@ h1 {
 
 
 .mini-menu {
-  position: absolute;
-left: -100px;   /* 👈 отступ от края */
-  top: 14px;    /* 👈 опустить чуть ниже */
-  z-index: 999999;  
-width: fit-content;
+  position: fixed;   /* 👈 ВАЖНО: не absolute */
+  top: 20px;
+  left: 20px;
+  width: fit-content;
 
-
+  z-index: 9999999;  /* 👈 выше ВСЕГО */
 }
+
+
 
 .menu-trigger {
   background: #9c1818;
