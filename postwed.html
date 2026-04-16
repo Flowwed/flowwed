@@ -1317,6 +1317,7 @@ h1 {
   position: absolute;
   top: 120%;
   left: 0;
+z-index: 99999; /* 👈 добавь */
 
   background: white;
   border-radius: 14px;
@@ -1335,10 +1336,15 @@ h1 {
 
 /* все пункты */
 .menu-dropdown div {
-  padding: 10px 16px;
+  padding: 12px 16px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  border-radius: 8px;
+  margin: 2px 6px;
+
+  display: flex;
+  justify-content: center;   /* 👈 центр по горизонтали */
 }
+
 
 /* hover */
 .menu-dropdown div:hover {
@@ -1353,7 +1359,9 @@ h1 {
   border-radius: 10px 10px 0 0;
 }
 
-
+.back-btn {
+  display: none;
+}
 
 
 
