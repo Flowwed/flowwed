@@ -3698,12 +3698,6 @@ document.getElementById("backBtn").onclick = () => {
 };
 </script>
 
-
-<script type="module">
-  import { loadNavbar } from "./navbar.js";
-  loadNavbar();
-</script>
-
 <script>
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -3715,7 +3709,16 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!trigger || !dropdown || !sourceNav) return;
 
   // 🔥 копируем меню
-  dropdown.innerHTML = sourceNav.innerHTML;
+  
+const token = new URLSearchParams(location.search).get("t") || "";
+
+dropdown.innerHTML =
+  `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
+  `<div class="menu-divider"></div>` +
+  sourceNav.innerHTML;
+
+
+
 
   // 🔥 открытие/закрытие
   trigger.addEventListener("click", (e) => {
@@ -3730,8 +3733,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
-
 
 
 </body>
