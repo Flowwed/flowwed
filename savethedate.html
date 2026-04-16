@@ -1517,94 +1517,104 @@ box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
 }
 
 
+.mini-menu {
+  position: fixed;   /* 👈 ВАЖНО: не absolute */
+  top: 50px;
+  left: 100px;
+  width: fit-content;
+
+  z-index: 9999999;  /* 👈 выше ВСЕГО */
+}
+
+
+
+.menu-trigger {
+  background: #9c1818;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.3),
+    inset 0 2px 6px rgba(255,255,255,0.25);
+}
+
+/* dropdown */
+.menu-dropdown {
+  position: absolute;
+  top: 120%;
+  left: 0;
+z-index: 99999; /* 👈 добавь */
+
+  background: white;
+  border-radius: 14px;
+  padding: 0;
+
+  display: none;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  min-width: 220px;
+}
+
+/* открытие через JS */
+.menu-dropdown.open {
+  display: block;
+}
+
+/* все пункты */
+.menu-dropdown div {
+  padding: 12px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 2px 6px;
+
+  display: flex;
+  justify-content: center;   /* 👈 центр по горизонтали */
+}
+
+
+/* hover */
+.menu-dropdown div:hover {
+  background: #ffeef3;
+}
+
+/* 🔥 Back to Dash (верхний пункт) */
+.menu-back {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #9c1818;
+  border-radius: 10px 10px 0 0;
+}
+
+
+
+
+
 </style>
 </head>
 
 <body>
 
-<div class="top-nav-wrapper">
-  <button id="backBtn" class="back-btn" type="button">
-    <span class="back-arrow">‹</span>
-    Back to Dash
-  </button>
-</div>
 
+<div class="top-header">
 
-<!--
-<div id="navbar-container"></div>
+<div class="mini-menu">
+  <div class="menu-trigger">☰ Menu</div>
 
-<script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
-}
-
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => {
-    const container = document.getElementById("navbar-container");
-    container.innerHTML = html;
-
-    const token = getToken();
-
-    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
-    const links = container.querySelectorAll(".nav-links a");
-
-    // ================= CLICK =================
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        const page = link.dataset.page;
-        if (!page) return;
-
-        const url = token
-          ? `${page}.html?t=${encodeURIComponent(token)}`
-          : `${page}.html`;
-
-        window.location.href = url;
-      });
-    });
-
-    // ================= ACTIVE (FIXED) =================
-    let current = window.location.pathname;
-
-    // убираем trailing slash
-    if (current.endsWith("/")) {
-      current = current.slice(0, -1);
-    }
-
-    current = current.split("/").pop().toLowerCase();
-
-    links.forEach(link => {
-      const page = (link.dataset.page || "") + ".html";
-
-      if (current === page.toLowerCase()) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
--->
-
-
-<div class="top-logo-title" style="gap:16px;">
-  <h1 id="topMainTitle">RSVP</h1>
-
-  <!-- mini info bubble -->
-  <div class="ios-banner-inline">
-    ℹ️ This is the cinematic invitation and RSVP form your guests will receive.
-Fill in the blue fields, select your guests, and reach them by email and SMS.
+  <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
+  <div class="menu-dropdown">
+    <div>Dashboard</div>
+    <div>Settings</div>
   </div>
-
-  <div id="coupleSmallName"></div>
 </div>
+
+<h1>Save The Date</h1>
+
+<div></div>
+
+
 
 
 <div class="top-divider-line"></div>

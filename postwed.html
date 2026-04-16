@@ -1300,8 +1300,8 @@ h1 {
 
 .mini-menu {
   position: fixed;   /* 👈 ВАЖНО: не absolute */
-  top: 20px;
-  left: 20px;
+  top: 50px;
+  left: 150px;
   width: fit-content;
 
   z-index: 9999999;  /* 👈 выше ВСЕГО */
@@ -1382,15 +1382,20 @@ z-index: 99999; /* 👈 добавь */
 
 <div class="top-header">
 
-  <div class="mini-menu">
-    <div class="menu-trigger">☰ Menu</div>
+<div class="mini-menu">
+  <div class="menu-trigger">☰ Menu</div>
+
+  <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
+  <div class="menu-dropdown">
+    <div>Dashboard</div>
+    <div>Settings</div>
   </div>
-
-  <h1>RSVP</h1>
-
-  <div></div> <!-- заглушка справа -->
-
 </div>
+
+<h1>RSVP</h1>
+
+<div></div>
+
 
 <div class="ios-banner">
 <span class="info-icon">i</span>
