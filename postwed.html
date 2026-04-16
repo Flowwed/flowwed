@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-<body data-page="RSVP">
+<body data-page="postwed">
 
 
   <meta charset="UTF-8">
@@ -1234,6 +1234,7 @@ h1 {
 }
 
 .top-header {
+position: relative;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
@@ -1297,10 +1298,13 @@ h1 {
 
 
 .mini-menu {
-  margin-top: 20px;
-  margin-left: 40px;
-  position: relative;
   width: fit-content;
+}
+
+.mini-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .menu-trigger {
