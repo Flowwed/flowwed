@@ -26,15 +26,13 @@ padding: 30px 40px 80px 40px;
     /* HEADER: TITLE + INFO BUBBLE */
 
 .page-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;   /* центр по горизонтали */
-  gap: 12px;             /* расстояние между заголовком и bubble */
+  display: grid;
+  grid-template-columns: 1fr; /* 420 = ширина uploader */
+  align-items: center;
 
   max-width: 1500px;
-  margin: 30px auto 28px;
+margin: 30px auto 28px;  
 }
-
 
 .page-title {
       font-size: 32px;
@@ -48,9 +46,9 @@ padding: 30px 40px 80px 40px;
     /* INFO BUBBLE — FIXED VERSION */
 
 .info-bubble {
-  /* центрирование */
-  margin: 0 auto;
-  transform: none;
+  /* позиционирование */
+  justify-self: end;
+  transform: translateX(-100px) translateY(2px);
 
   /* внешний вид */
   background: #ffffff;
@@ -63,12 +61,10 @@ padding: 30px 40px 80px 40px;
 
   display: flex;
   align-items: center;
-  justify-content: center;   /* 👈 центр содержимого */
   gap: 12px;
 
   min-width: 720px;
-  max-width: 900px;          /* 👈 чтобы не растягивался слишком */
-  width: fit-content;        /* 👈 аккуратная ширина под текст */
+  height: 12px;
 
   /* текст */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -80,9 +76,6 @@ padding: 30px 40px 80px 40px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-
-
 
 .info-text {
   font-size: 15px;
@@ -945,8 +938,6 @@ z-index: 99999; /* 👈 добавь */
 
 <!-- HEADER -->
 <div class="page-header">
-
-<h1 class="page-title">Photo Gallery</h1>
 
   <div class="info-bubble info-bubble--top">
     <div class="info-icon">i</div>
