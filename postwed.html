@@ -1234,10 +1234,11 @@ h1 {
 }
 
 .top-header {
-position: relative;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
+  position: relative;
+}
+
+h1 {
+  text-align: center;
 }
 
 .back-btn {
@@ -1298,13 +1299,12 @@ h1 {
 
 
 .mini-menu {
-  width: fit-content;
-}
-
-.mini-menu {
   position: absolute;
-  top: 0;
-  left: 0;
+  left: 10px;
+  top: 10px;
+  width: fit-content;
+
+
 }
 
 .menu-trigger {
@@ -1379,19 +1379,16 @@ z-index: 99999; /* 👈 добавь */
 <body>
 
 <div class="top-header">
-  <button id="backBtn" class="back-btn" type="button">
-    <span class="back-arrow">‹</span>
-    Back to Dash
-  </button>
 
-
-
+  <div class="mini-menu">
+    <div class="menu-trigger">☰ Menu</div>
+  </div>
 
   <h1>RSVP</h1>
+
+  <div></div> <!-- заглушка справа -->
+
 </div>
-
-
-
 
 <div class="ios-banner">
 <span class="info-icon">i</span>
