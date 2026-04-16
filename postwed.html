@@ -3695,6 +3695,7 @@ if (shareBtn) {
 </script>
 
 
+
 <script id="backfix1">
 document.getElementById("backBtn").onclick = () => {
   const params = new URLSearchParams(location.search);
@@ -3708,6 +3709,24 @@ document.getElementById("backBtn").onclick = () => {
 <script type="module">
   import { loadNavbar } from "./navbar.js";
   loadNavbar();
+</script>
+
+<script>
+
+const trigger = document.querySelector(".menu-trigger");
+const dropdown = document.querySelector(".menu-dropdown");
+
+if (trigger && dropdown) {
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", () => {
+    dropdown.classList.remove("open");
+  });
+}
+
 </script>
 
 
