@@ -779,43 +779,6 @@ contain: content; /* 🔥 ВОТ ЭТО */
   margin-bottom: 10px;
 }
 
-.back-btn {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 6px 14px;
-
-  border-radius: 999px;
-
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
-    #9c1818;
-
-  color: white;
-
-  font-size: 13px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  border: 1px solid rgba(255,255,255,0.35);
-
-  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.38),
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 3px 6px rgba(255,255,255,0.22),
-    inset 0 -6px 14px rgba(70,0,20,0.35);
-}
 
 
 
@@ -886,98 +849,206 @@ contain: content; /* 🔥 ВОТ ЭТО */
 }
 
 
-</style>
+.mini-menu {
+  position: fixed;
+  top: 50px;
+  left: 110px;  width: fit-content;
 
-
-</head>
-
-<body>
-
-<div class="top-nav-wrapper">
-  <button id="backBtn" class="back-btn" type="button">
-    <span class="back-arrow">‹</span>
-    Back to Dash
-  </button>
-</div>
-
-
-<!--
-<div id="navbar-container"></div>
-
-<script>
-function getToken() {
-  const params = new URLSearchParams(window.location.search);
-  return (
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T") ||
-    ""
-  );
+  z-index: 9999999;  /* 👈 выше ВСЕГО */
 }
 
-fetch("/navbar.html")
-  .then(res => res.text())
-  .then(html => {
-    const container = document.getElementById("navbar-container");
-    container.innerHTML = html;
+.menu-trigger {
+  background: #9c1818;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
 
-    const token = getToken();
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.3),
+    inset 0 2px 6px rgba(255,255,255,0.25);
+}
 
-    // 🔥 ВАЖНО: ищем ТОЛЬКО ВНУТРИ navbar
-    const links = container.querySelectorAll(".nav-links a");
+/* dropdown */
+.menu-dropdown {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  z-index: 99999;
 
-    // ================= CLICK =================
-    links.forEach(link => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
+  background: white;
+  border-radius: 14px;
+  padding: 6px 0; /* 🔥 добавили воздух */
 
-        const page = link.dataset.page;
-        if (!page) return;
+  display: none;
 
-        const url = token
-          ? `${page}.html?t=${encodeURIComponent(token)}`
-          : `${page}.html`;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  min-width: 220px;
+}
 
-        window.location.href = url;
-      });
-    });
+/* открытие */
+.menu-dropdown.open {
+  display: block;
+}
 
-    // ================= ACTIVE (FIXED) =================
-    let current = window.location.pathname;
+/* 🔥 ВАЖНО: теперь для <a>, не div */
+.menu-dropdown a {
+  display: block;
+  padding: 12px 18px;
 
-    // убираем trailing slash
-    if (current.endsWith("/")) {
-      current = current.slice(0, -1);
-    }
+  text-decoration: none;
+  color: #9c1818;
+  font-weight: 600;
 
-    current = current.split("/").pop().toLowerCase();
+  transition: 0.2s;
+}
 
-    links.forEach(link => {
-      const page = (link.dataset.page || "") + ".html";
+/* hover */
+.menu-dropdown a:hover {
+  background: #ffeef3;
+}
 
-      if (current === page.toLowerCase()) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
--->
+/* активная страница */
+.menu-dropdown a.active {
+  background: #ffeef3;
+  font-weight: 700;
+}
+/* 🔥 Back to Dash (верхний пункт) */
+.menu-back {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #9c1818;
+  border-radius: 10px 10px 0 0;
+}
+
+.back-btn {
+  display: none;
+}
+
+.top-nav {
+  display: none;
+}
+
+
+.top-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 10px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 600;
+
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+
+  margin-top: 28px;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.ios-banner {
+  margin: 0 auto 36px auto;
+padding: 12px 18px;
+max-width: 640px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 17.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10),
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
 
 
 
-<!-- HEADER -->
-<div class="page-header">
 
-  <div class="info-bubble info-bubble--top">
-  <div class="info-icon">i</div>
-  <div class="info-text">
-   Customize your <span class="mini-pill">Just Married Album</span> page. Share with friends, update anytime. View the Quick User Guide for this page
-    <span id="openGuide" class="guide-link">here</span>
-  </div>
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(180deg, #ff4d4d, #b41111);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+
+  flex-shrink: 0;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="top-header">
+
+<div class="mini-menu">
+  <div class="menu-trigger">☰ Menu</div>
+
+  <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
+<div class="menu-dropdown" id="menuDropdown"></div></div>
+
+<h1>'Just Married' Album</h1>
+
 </div>
 
+
+<div class="top-nav">
+
+  <a href="videouploader.html">Web Video</a>
+  <a href="Guests.html">Guest Hub</a>
+  <a href="upload.html">Photo Gallery</a>
+  <a href="savethedate.html">Save the Date</a>
+  <a href="postwed.html">RSVP</a>
+  <a href="SeatingChart.html">Seating</a>
+  <a href="gift_registry.html">Gifts</a>
+  <a href="Budget.html">Budget</a>
+  <a href="traveldetails.html">Travel & Event</a>
+  <a href="postwed2.html">Memories</a>
+  <a href="just_married.html">Album</a>
+  <a href="story.html">Our Story</a>
+  <a href="dash-updates.html">Updates</a>
+  <a href="wedparty.html">Wedding Party</a>
+
 </div>
+
+
+<div class="ios-banner">
+<span class="info-icon">i</span>
+  Manage and organize your guests.  Check the Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>
+</div>
+
+
+
+
 
 <!-- MAIN CONTENT -->
 <div class="page-wrapper">
@@ -2067,6 +2138,45 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 });
 </script>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const trigger = document.querySelector(".menu-trigger");
+  const dropdown = document.getElementById("menuDropdown");
+  const sourceNav = document.querySelector(".top-nav");
+
+  if (!trigger || !dropdown || !sourceNav) return;
+
+  // 🔥 копируем меню
+  
+const token = window.APP_TOKEN;
+
+dropdown.innerHTML =
+  `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
+  `<div class="menu-divider"></div>` +
+  sourceNav.innerHTML;
+
+
+
+
+  // 🔥 открытие/закрытие
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", () => {
+    dropdown.classList.remove("open");
+  });
+
+});
+
+</script>
+
+
 
 
 </body>
