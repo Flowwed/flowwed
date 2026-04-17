@@ -920,6 +920,22 @@ cursor: pointer;   /* ← добавь это */
   <div id="greenToast">Message Sent!</div>
 
 
+<script>
+const params = new URLSearchParams(window.location.search);
+
+let token =
+  params.get("t") ||
+  localStorage.getItem("verified_token") ||
+  "";
+
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
+}
+
+window.APP_TOKEN = token;
+</script>
+
+
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -935,7 +951,7 @@ const tbody = document.querySelector("#guestTable tbody");
 // LOAD GUESTS
 // ======================================================
 async function loadGuests() {
-  const token = new URLSearchParams(location.search).get("t");
+  const token = window.APP_TOKEN;
   if (!token) return;
 
   const { data } = await supabase
@@ -1177,7 +1193,7 @@ const last = parts.slice(1).join(" ");
 const emailValue = emailInput.value.trim();
 const phoneValue = countryCodeInput.value + phoneInput.value.trim();
 
-  const token = new URLSearchParams(location.search).get("t");
+  const token = window.APP_TOKEN;
 
   if (!name || !emailValue) {
   return alert("Fill required fields!");
@@ -1278,7 +1294,7 @@ document.getElementById("deleteCancelBtn").onclick = () => {
 
 document.getElementById("deleteYesBtn").onclick = async () => {
 
-  const token = new URLSearchParams(location.search).get("t");
+  const token = window.APP_TOKEN;
 
   const res = await fetch("/.netlify/functions/delete-guests", {
     method: "POST",
@@ -1359,9 +1375,7 @@ document.getElementById("composerClose").onclick = () => {
 
 // ---------- LOAD FOOTER EMAIL ----------
 async function loadSenderEmail() {
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t") || window.token || "";
-
+const token = window.APP_TOKEN;
   if (!token) return;
 
   const { data, error } = await supabase
@@ -1804,7 +1818,7 @@ document.getElementById("closeGuide").addEventListener("click", () => {
 
 <script>
 document.getElementById("rsvpStatsBtn").onclick = () => {
-  const token = new URLSearchParams(location.search).get("t") || "";
+  const token = window.APP_TOKEN;
   const modal = document.getElementById("reportsModal");
   const frame = document.getElementById("reportsFrame");
 
@@ -1829,17 +1843,6 @@ document.getElementById("reportsModal").onclick = (e) => {
 </script>
 
 
-
-<script id="backfix1">
-document.getElementById("backBtn").onclick = () => {
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t") || "";
-
-  window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
-};
-</script>
-
-
 <script>
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -1852,7 +1855,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔥 копируем меню
   
-const token = new URLSearchParams(location.search).get("t") || "";
+const token = window.APP_TOKEN;
 
 dropdown.innerHTML =
   `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
