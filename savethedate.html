@@ -1649,6 +1649,21 @@ box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
 
 <body>
 
+<script>
+const params = new URLSearchParams(window.location.search);
+
+let token =
+  params.get("t") ||
+  localStorage.getItem("verified_token") ||
+  "";
+
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
+}
+
+window.APP_TOKEN = token;
+</script>
+
 
 <div class="top-header">
 
@@ -1847,7 +1862,7 @@ if (rsvpDateInput) {
 
   rsvpDateInput.addEventListener("change", async () => {
 
-    const token = new URLSearchParams(location.search).get("t");
+    const token = window.APP_TOKEN;
     const date = rsvpDateInput.value;
 
     await supabase
@@ -1873,7 +1888,7 @@ document.querySelectorAll("[data-sync]").forEach(field => {
 
 field.addEventListener("change", async () => {
 
-const token = new URLSearchParams(location.search).get("t");
+const token = window.APP_TOKEN;
 
 const columnMap = {
 deadline: "rsvp_date",
@@ -1900,7 +1915,7 @@ await supabase
 
 async function loadWeddingData(){
 
-const token = new URLSearchParams(location.search).get("t");
+const token = window.APP_TOKEN;
 
 console.log("TOKEN:", token);
 
@@ -1965,8 +1980,7 @@ loadWeddingData();
 // ======================================================
 async function loadCoupleName() {
 
-const token = new URLSearchParams(location.search).get("t");
-
+const token = window.APP_TOKEN;
 const { data } = await supabase
 .from("sites")
 .select("couple_name")
@@ -1991,7 +2005,7 @@ loadPostWeddingVideo();
 // ======================================
 async function loadPostWeddingVideo() {
 
-  const token = new URLSearchParams(location.search).get("t");
+  const token = window.APP_TOKEN;
   if (!token) return;
 
   const { data, error } = await supabase
@@ -2029,7 +2043,7 @@ function getIcon(status) {
 // LOAD GUESTS
 // ======================================================
 async function loadGuests() {
-  const token = new URLSearchParams(location.search).get("t");
+  const token = window.APP_TOKEN;
   if (!token) return;
 
   const { data } = await supabase
@@ -2238,7 +2252,7 @@ if (addBtn && guestForm) {
     const last = lastName.value.trim();
     const emailValue = email.value.trim();
     const phoneValue = countryCode.value + phone.value.trim();
-    const token = new URLSearchParams(location.search).get("t");
+    const token = window.APP_TOKEN;
 
     if (!first || !last || !emailValue || !phone.value.trim() || !countryCode.value)
       return alert("Fill all fields and select country code!");
@@ -2425,7 +2439,7 @@ function openComposer() {
 
   refreshComposerFields();
 
-  const token = new URLSearchParams(location.search).get("t");
+  const token = window.APP_TOKEN;
   const firstGuest = selected[0];
 
   if(firstGuest){
@@ -2482,7 +2496,7 @@ const body = document.getElementById("composerBody").value.trim();
 const footer = document.getElementById("composerFooter").innerHTML;
 const htmlBody = body + "<br><br>" + footer;
 
-const token = new URLSearchParams(location.search).get("t");
+const token = window.APP_TOKEN;
 
 
 // Проверка выбранных гостей
@@ -3664,7 +3678,7 @@ const shareBtn = document.getElementById("shareBtn");
 if (shareBtn) {
   shareBtn.onclick = () => {
 
-    const token = new URLSearchParams(location.search).get("t");
+    const token = window.APP_TOKEN;
 
     // ✅ ВСЕГДА универсальная ссылка (без гостей)
     const link = `${window.location.origin}/std_preview.html?t=${token}&mode=admin`;
@@ -3710,7 +3724,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔥 копируем меню
   
-const token = new URLSearchParams(location.search).get("t") || "";
+const token = window.APP_TOKEN;
 
 dropdown.innerHTML =
   `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +

@@ -1065,6 +1065,7 @@ const supabase = createClient(
 );
 
 window.supabase = supabase;
+
 const params = new URLSearchParams(window.location.search);
 
 let token =
@@ -1077,12 +1078,11 @@ if (params.get("t")) {
   localStorage.setItem("verified_token", params.get("t"));
 }
 
-// 🔥 делаем глобальным
+// 🔥 теперь делаем глобальным
 window.APP_TOKEN = token;
 
+console.log("TOKEN:", token);
 
-
-console.log("TOKEN:", token);   // ← ВОТ ЭТО ОБЯЗАТЕЛЬНО
 
 /***************************************************
  *  GLOBAL STATE
