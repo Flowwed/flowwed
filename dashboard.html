@@ -829,21 +829,23 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
 
-// ----------------------------
-// CORRECT TOKEN DETECTION
-// ----------------------------
+// 🔥 ЕДИНЫЙ TOKEN (ГЛАВНОЕ)
 const params = new URLSearchParams(window.location.search);
-const token =
+
+let token =
   params.get("t") ||
   params.get("token") ||
   params.get("TOKEN") ||
-  params.get("T");
+  params.get("T") ||
+  localStorage.getItem("verified_token") ||
+  "";
+
+// сохранить если пришёл новый
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
+}
 
 const hName = document.getElementById("coupleHeader");
-
-function cap(s) {
-  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
-}
 
 // ----------------------------
 // LOAD COUPLE NAME
@@ -868,124 +870,56 @@ async function loadCouple() {
   const access = await res.json();
 
   if (access.couple_name) {
-
     hName.innerHTML = access.couple_name;
-
   } else {
-
     hName.innerHTML = "Your Names Here";
-
   }
-
 }
 
 loadCouple();
+
+// 👉 ДЕЛАЕМ TOKEN ДОСТУПНЫМ ВЕЗДЕ
+window.APP_TOKEN = token;
 
 </script>
 
 
 <script>
 
-// ----------------------------
-// UNIVERSAL OPEN FUNCTION
-// ----------------------------
-
-
 function openPage(page) {
 
-  const params = new URLSearchParams(window.location.search);
-
-  const token =
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T");
+  const token = window.APP_TOKEN || "";
 
   let file = "";
 
   switch (page) {
-    case "guestbook":
-      file = "Guests.html";
-      break;
-
-    case "upload":
-      file = "upload.html";
-      break;
-
-    case "std":
-      file = "savethedate.html";
-      break;
-
-    case "rsvp":
-      file = "postwed.html";
-      break;
-
-    case "seating":
-      file = "SeatingChart.html";
-      break;
-
-    case "registry":
-      file = "gift_registry.html";
-      break;
-
-    case "budget":
-      file = "Budget.html";
-      break;
-
-    case "reports":
-       file = "traveldetails.html";
-      break;
-
-    case "memories":
-      file = "postwed2.html";
-      break;
-
-    case "album":
-      file = "just_married.html";
-      break;
-
-    case "story":
-      file = "story.html";
-      break;
-
-    case "updates":
-      file = "dash-updates.html";
-      break;
-
-    case "party":
-     file = "wedparty.html";
-      break;
-
-    case "yourweb":
-      file = "videouploader.html";
-      break;
-
-    case "wedreports":
-      file = "wed_reports.html";
-      break;
-
-case "feedback":
-  file = "guest_memory.html";
-  break;
-
-
-
+    case "guestbook": file = "Guests.html"; break;
+    case "upload": file = "upload.html"; break;
+    case "std": file = "savethedate.html"; break;
+    case "rsvp": file = "postwed.html"; break;
+    case "seating": file = "SeatingChart.html"; break;
+    case "registry": file = "gift_registry.html"; break;
+    case "budget": file = "Budget.html"; break;
+    case "reports": file = "traveldetails.html"; break;
+    case "memories": file = "postwed2.html"; break;
+    case "album": file = "just_married.html"; break;
+    case "story": file = "story.html"; break;
+    case "updates": file = "dash-updates.html"; break;
+    case "party": file = "wedparty.html"; break;
+    case "yourweb": file = "videouploader.html"; break;
+    case "wedreports": file = "wed_reports.html"; break;
+    case "feedback": file = "guest_memory.html"; break;
     default:
       alert("Not connected: " + page);
       return;
   }
-
-
 
   document.body.classList.add("fade-out");
 
   setTimeout(() => {
     window.location.href = `${file}?t=${token}`;
   }, 300);
-
-
 }
-
 
 </script>
 
@@ -996,16 +930,11 @@ function goBack() {
 }
 
 function visitSite() {
-  const params = new URLSearchParams(window.location.search);
-  const token =
-    params.get("t") ||
-    params.get("token") ||
-    params.get("TOKEN") ||
-    params.get("T");
+
+  const token = window.APP_TOKEN || "";
 
   window.open(`https://flowwed.netlify.app/index.html?t=${token}`, "_blank");
 }
-
 
 </script>
 
