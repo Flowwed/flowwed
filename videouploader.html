@@ -541,9 +541,18 @@ const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const progressContainer = document.getElementById("progressContainer");
 const progressBar = document.getElementById("progressBar");
 
-
 const params = new URLSearchParams(window.location.search);
-const token = params.get("t");
+
+let token =
+  params.get("t") ||
+  localStorage.getItem("verified_token") ||
+  "";
+
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
+}
+
+window.APP_TOKEN = token;
 
 const fileInput = document.getElementById("fileInput");
 const uploadBtn = document.getElementById("uploadBtn");
@@ -915,16 +924,6 @@ guideModal.onclick = (e) => {
     guideModal.style.display = "none";
     guideIframe.src = "";
   }
-};
-</script>
-
-
-<script id="backfix1">
-document.getElementById("backBtn").onclick = () => {
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t") || "";
-
-  window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
 };
 </script>
 
