@@ -1066,11 +1066,21 @@ const supabase = createClient(
 
 window.supabase = supabase;
 const params = new URLSearchParams(window.location.search);
-const token =
+
+let token =
   params.get("t") ||
-  params.get("token") ||
-  params.get("TOKEN") ||
-  params.get("T");
+  localStorage.getItem("verified_token") ||
+  "";
+
+// сохранить если пришёл новый
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
+}
+
+// 🔥 делаем глобальным
+window.APP_TOKEN = token;
+
+
 
 console.log("TOKEN:", token);   // ← ВОТ ЭТО ОБЯЗАТЕЛЬНО
 
@@ -1699,41 +1709,6 @@ console.log("%cSeating Chart loaded successfully!", "color:#b41111;font-size:16p
 
 </script>
 
-<script>
-
-async function loadCoupleName() {
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t");
-  if (!token) return;
-
-  const { data } = await window.supabase
-    .from("sites")
-    .select("slug")
-    .eq("edit_token", token)
-    .single();
-
-  if (!data?.slug) return;
-
-  const parts = data.slug.split("-");
-  const bride = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-  const groom = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-
-  document.getElementById("coupleSmallName").textContent =
-    `${bride} & ${groom}`;
-}
-
-// ждём, пока module-скрипт создаст window.supabase
-function waitForSupabaseAndLoad() {
-  if (window.supabase) {
-    loadCoupleName();
-  } else {
-    setTimeout(waitForSupabaseAndLoad, 50);
-  }
-}
-
-waitForSupabaseAndLoad();
-
-</script>
 
 <!-- GUIDE MODAL -->
 <div id="guideModal" style="
@@ -1785,18 +1760,6 @@ document.getElementById("closeGuide")?.addEventListener("click", () => {
 });
 </script>
 
-<script>
-
-document.getElementById("backBtn").onclick = () => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get("t") || localStorage.getItem("verified_token") || "";
-
-    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
-};
-
-</script>
-
-
 
 <script>
 
@@ -1810,7 +1773,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔥 копируем меню
   
-const token = new URLSearchParams(location.search).get("t") || "";
+const token = window.APP_TOKEN;
 
 dropdown.innerHTML =
   `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
