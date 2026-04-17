@@ -1251,6 +1251,23 @@ max-width: 640px;
     </div>
 
 
+<script>
+const params = new URLSearchParams(window.location.search);
+
+let token =
+  params.get("t") ||
+  localStorage.getItem("verified_token") ||
+  "";
+
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
+}
+
+window.APP_TOKEN = token;
+</script>
+
+
+
 <select id="slotSelect"></select>
 
 <script>
@@ -1508,9 +1525,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!sendEmailBtn || !modal || !iframe) return;
 
-  // берём ТОТ ЖЕ token, что используется везде
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("t") || params.get("token");
+const token = window.APP_TOKEN;
 
   sendEmailBtn.addEventListener("click", () => {
     if (!token) {
@@ -1535,8 +1550,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const SUPABASE_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("t") || params.get("token");
+const token = window.APP_TOKEN;
 
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
@@ -2142,22 +2156,18 @@ async function loadMiniGallery() {
 
 
 <script>
+
 /* ===============================
    TOP NAV — TOKEN + BACK
 ================================ */
 
-const tokenNav = new URLSearchParams(location.search).get("t") || "";
+const tokenNav = window.APP_TOKEN;
 
 /* прокинуть token во все ссылки меню */
 document.querySelectorAll(".top-nav a").forEach(a => {
   if (tokenNav) {
     a.href = a.href + "?t=" + tokenNav;
   }
-});
-
-/* back button */
-document.getElementById("backBtn")?.addEventListener("click", () => {
-  window.location.href = "/dashboard.html?t=" + tokenNav;
 });
 
 /* active nav link */
@@ -2170,6 +2180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
 </script>
 
 <script>
