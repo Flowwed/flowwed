@@ -885,7 +885,7 @@ async function loadCoupleName(){
 
   if (!data) return;
   const [a,b] = (data.slug || "").split("-");
-  document.getElementById("coupleName").textContent =
+  document.getElementById("coupleSmallName").textContent =
     `${cap(a)} & ${cap(b)}`;
 }
 
