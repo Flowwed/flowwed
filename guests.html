@@ -1396,6 +1396,260 @@ const token = window.APP_TOKEN;
   }
 }
 
+document.getElementById("sendEmailBtn").onclick = () => {
+  openComposer();
+};
+
+// загрузка email отправителя
+loadSenderEmail();
+
+/* ----------------------------------------
+   ШАГ 1 — функция пересборки email/phones
+-----------------------------------------*/
+function refreshComposerFields() {
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  const emails = [];
+  // const phones = [];
+
+  selected.forEach(ch => {
+    if (ch.dataset.email) emails.push(ch.dataset.email);
+    // if (ch.dataset.phone) phones.push(ch.dataset.phone);
+  });
+
+  document.getElementById("composerEmails").value = [...new Set(emails)].join(", ");
+  // document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
+}
+/* ----------------------------------------
+   OPEN COMPOSER
+-----------------------------------------*/
+function openComposer() {
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+  if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
+
+
+  refreshComposerFields(); // ← ВАЖНО! вызываем при открытии
+
+  // Auto Subject
+document.getElementById("composerSubject").value =
+  "Wedding Update";
+
+  emailComposer.style.display = "block";
+}
+
+// ===== EXPAND / SHRINK EMAIL COMPOSER =====
+
+let expanded = false;
+
+document.getElementById("composerExpand").onclick = () => {
+
+  expanded = !expanded;
+
+  if (expanded) {
+    emailComposer.style.width = "min(600px, 90vw)";
+    emailComposer.style.height = "80vh";
+    emailComposer.style.right = "20px";
+    emailComposer.style.bottom = "20px";
+
+    document.getElementById("composerBody").style.height = "200px";
+
+  } else {
+    emailComposer.style.width = "360px";
+    emailComposer.style.height = "auto";
+
+    document.getElementById("composerBody").style.height = "80px";
+  }
+
+};
+
+// ======================================================
+// SEND EMAIL → SEND TO BATCH WORKER
+// ======================================================
+
+document.getElementById("composerSend").onclick = async () => {
+
+// ----------------------------------------------------
+// NEW: формируем письмо (message + footer)
+// ----------------------------------------------------
+const body = document.getElementById("composerBody").value.trim();
+const footer = document.getElementById("composerFooter").innerHTML;
+const htmlBody = body + "<br><br>" + footer;
+
+// Проверка выбранных гостей
+const selected = [...document.querySelectorAll(".rowCheck:checked")];
+if (!selected.length)
+  return showToastBox("Select at least one guest!", "error");
+
+const subject = document.getElementById("composerSubject").value.trim();
+
+// Prepare guest objects
+const batchGuests = selected.map(ch => ({
+  email: ch.dataset.email,
+  name: "Guest"
+}));
+
+const overlay = document.getElementById("sendProgressOverlay");
+const bar = document.getElementById("progressBar");
+const text = document.getElementById("progressText");
+
+overlay.style.display = "flex";
+bar.style.width = "0%";
+text.textContent = `Sending 0 / ${batchGuests.length}`;
+document.getElementById("sendingNote").classList.add("pulse");
+
+let failures = 0;
+
+for (let i = 0; i < batchGuests.length; i++) {
+  const g = batchGuests[i];
+  let ok = true;
+
+  try {
+    const res = await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        subject,
+        html: htmlBody,   // ← ИСПОЛЬЗУЕМ УЖЕ ГОТОВОЕ
+        guests: [g]
+      })
+    });
+
+    const json = await res.json();
+    ok = json?.ok === true;
+
+  } catch (e) {
+    ok = false;
+  }
+
+  if (!ok) {
+    failures++;
+    markRowError(g.email);
+  }
+
+  const done = i + 1;
+  const percent = Math.round((done / batchGuests.length) * 100);
+
+  bar.style.width = percent + "%";
+  text.textContent = `Sending ${done} / ${batchGuests.length}`;
+
+  await new Promise(r => setTimeout(r, 900));
+}
+
+
+// Hide overlay smoothly
+setTimeout(() => {
+  document.getElementById("sendingNote").classList.remove("pulse");
+  overlay.style.display = "none";
+}, 500);
+
+// Close composer
+emailComposer.style.display = "none";
+
+// Uncheck boxes
+document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
+document.getElementById("selectAll").checked = false;
+
+// Final messaging
+if (failures > 0) {
+  showDeliveryNotice();
+  showToastBox(`${failures} email(s) failed to deliver`, "error");
+} else {
+  showToastBox("All emails sent successfully!", "success");
+}
+
+};
+
+</script>
+
+<!-- PROGRESS OVERLAY START -->
+<div id="sendProgressOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 22px 26px;
+    border-radius:14px;
+    width: 320px;
+    text-align:center;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  ">
+    <div id="progressText">Sending…</div>
+
+    <div style="margin-top:16px; height:8px; background:#eee; border-radius:6px; overflow:hidden;">
+      <div id="progressBar" style="
+        width:0%;
+        height:100%;
+        background:#b41111;
+        transition: width 0.3s ease;
+      "></div>
+    </div>
+
+    <div id="sendingNote" style="margin-top:10px; font-size:13px; color:#777;">
+      Please do not close this window or turn off your device until the sending process is complete.
+    </div>
+  </div>
+</div>
+<!-- PROGRESS OVERLAY END -->
+
+<!-- DELETE CONFIRM POPUP -->
+<div id="deleteConfirmOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 22px 26px;
+    border-radius:14px;
+    width: 340px;
+    text-align:center;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  ">
+    <div style="font-size:18px; margin-bottom:12px; color:#b41111;">
+      Are you sure you want to delete the selected guest(s)?
+    </div>
+
+    <div style="font-size:13px; color:#7e2a2a; margin-bottom:20px;">
+      This action cannot be undone.
+    </div>
+
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button id="deleteYesBtn" style="
+        background:#b41111;
+        color:#fff;
+        padding:10px 20px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">Yes</button>
+
+      <button id="deleteCancelBtn" style="
+        background:#ccc;
+        color:#333;
+        padding:10px 20px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <!-- TOAST BOX -->
 <div id="toastBox" style="
