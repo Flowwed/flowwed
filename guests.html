@@ -643,10 +643,17 @@ cursor: pointer;   /* ← добавь это */
 
 
 .guide-link {
-  color: #2a6bff !important;
-  text-decoration: underline !important;
+  color: #2a6bff;
+  text-decoration: underline;
   font-weight: 700;
-  cursor: pointer !important;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+
+.guide-link:hover {
+  color: #1a4fd6;
+  text-decoration: underline;
 }
 
 .mini-menu {
@@ -1699,14 +1706,6 @@ if (failures > 0) {
 </div>
 
 <script>
-
-document.getElementById("backBtn").onclick = () => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get("t") || localStorage.getItem("verified_token") || "";
-
-    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
-};
-
 
 
 document.addEventListener("DOMContentLoaded", () => {

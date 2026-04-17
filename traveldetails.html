@@ -157,43 +157,6 @@ button{
   margin-bottom: 8px;   /* 🔥 вместо 100px */
 }
 
-.back-btn {
-  position: absolute;
-  left: -270px;
-  top: 20px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 6px 14px;
-
-  border-radius: 999px;
-
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
-    #9c1818;
-
-  color: white;
-
-  font-size: 13px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  border: 1px solid rgba(255,255,255,0.35);
-
-  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.38),
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 3px 6px rgba(255,255,255,0.22),
-    inset 0 -6px 14px rgba(70,0,20,0.35);
-}
 
 .step:hover{
   background:#d94b4b;
@@ -618,7 +581,8 @@ th {
   width: 520px;          /* меньше */
   height: 70vh;          /* 💥 НЕ НА ВСЮ ВЫСОТУ */
   
-  margin-right: 24px;    /* отступ от края */
+  margin-right: 72px;    /* отступ от края */
+  margin-top: -60px;
 
   background: rgba(255,255,255,0.95);
   border-radius: 18px;
@@ -670,6 +634,21 @@ th {
   to {
     transform: translateX(0);
   }
+}
+
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+
+.guide-link:hover {
+  color: #1a4fd6;
+  text-decoration: underline;
 }
 
 
@@ -739,7 +718,7 @@ window.APP_TOKEN = token;
 <div class="ios-banner">
 <span class="info-icon">i</span>
   Complete the blue fields and send the RSVP form to your guests via email or SMS. Check the Quick User Guide
-  <span id="openGuide" class="guide-link">here</span>
+  <a id="openGuide" class="guide-link">here</a>
 </div>
 
 
