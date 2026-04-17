@@ -863,8 +863,6 @@ async function loadGuests() {
 }
 
 
-
-
 /* TOKEN */
 const token = window.APP_TOKEN;
 
@@ -872,22 +870,6 @@ const token = window.APP_TOKEN;
 let editingId = null;
 let deleteId = null;
 
-/* LOAD COUPLE NAME */
-function cap(s){ return s ? s[0].toUpperCase() + s.slice(1) : ""; }
-
-async function loadCoupleName(){
-  if (!token) return;
-  const { data } = await supabase
-    .from("sites")
-    .select("slug")
-    .eq("edit_token", token)
-    .single();
-
-  if (!data) return;
-  const [a,b] = (data.slug || "").split("-");
-  document.getElementById("coupleName").textContent =
-    `${cap(a)} & ${cap(b)}`;
-}
 
 /* LOAD GIFTS */
 async function loadGifts() {
