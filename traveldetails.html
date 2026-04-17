@@ -602,6 +602,77 @@ th {
   transform: translateY(-4px);
 }
 
+.side-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+
+  display: none;
+  justify-content: flex-end;
+  align-items: center; /* 💥 ВАЖНО — по центру по вертикали */
+
+  z-index: 999999;
+}
+
+.side-modal-content {
+  width: 520px;          /* меньше */
+  height: 70vh;          /* 💥 НЕ НА ВСЮ ВЫСОТУ */
+  
+  margin-right: 24px;    /* отступ от края */
+
+  background: rgba(255,255,255,0.95);
+  border-radius: 18px;
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.25),
+    0 10px 25px rgba(0,0,0,0.18);
+
+  overflow: hidden;
+
+  animation: modalFloatIn 0.25s ease;
+}
+
+.side-modal-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 18px;
+}
+
+@keyframes modalFloatIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+
 </style>
 
 <script>
@@ -1723,6 +1794,40 @@ dropdown.innerHTML =
 
 </script>
 
+
+<div id="guideModal" class="side-modal">
+  <div class="side-modal-content">
+    
+    <span id="closeGuide" class="close-modal">&times;</span>
+
+    <iframe src="tttmap.html"></iframe>
+
+  </div>
+</div>
+
+<script>
+
+const openGuide = document.getElementById("openGuide");
+const guideModal = document.getElementById("guideModal");
+const closeGuide = document.getElementById("closeGuide");
+
+openGuide.onclick = () => {
+  guideModal.style.display = "flex";
+};
+
+closeGuide.onclick = () => {
+  guideModal.style.display = "none";
+};
+
+guideModal.onclick = (e) => {
+  if (e.target === guideModal) {
+    guideModal.style.display = "none";
+  }
+};
+
+</script>
+
+</script>
 
 
 
