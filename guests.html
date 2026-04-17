@@ -866,17 +866,59 @@ function render() {
 
 
 // 🔽 Реагируем на выбор одиночных чекбоксов
-document.addEventListener("change", (e) => {
-  if (e.target.classList.contains("rowCheck")) {
-    refreshComposerFields();
+
+tbody.addEventListener("blur", async (e) => {
+  if (!e.target.matches("[contenteditable]")) return;
+
+  const row = e.target.closest("tr");
+  const id = row.dataset.id;
+  const field = e.target.dataset.field;
+  const newValue = e.target.innerText.trim();
+
+  const guest = guests.find(g => g.id == id);
+
+  if (field === "name") {
+    const parts = newValue.split(" ");
+    const first = parts[0] || "";
+    const last = parts.slice(1).join(" ") || "";
+
+    const { error } = await supabase
+      .from("guests")
+      .update({
+        first_name: first,
+        last_name: last
+      })
+      .eq("id", id);
+
+    if (error) {
+      showToastBox(error.message || "Update failed", "error");
+      e.target.innerText = guest.first + " " + guest.last;
+    } else {
+      guest.first = first;
+      guest.last = last;
+    }
+
+    return;
   }
 
-  // 🔽 Реагируем на master checkbox (#selectAll)
-  if (e.target.id === "selectAll") {
-    // ждём, пока таблица отметит все чекбоксы
-    setTimeout(() => refreshComposerFields(), 10);
+  const { error } = await supabase
+    .from("guests")
+    .update({ [field]: newValue })
+    .eq("id", id);
+
+  if (error) {
+    e.target.style.background = "#ffcccc";
+    showToastBox(error.message || "Update failed", "error");
+    e.target.innerText = guest[field];
+  } else {
+    guest[field] = newValue;
+    e.target.style.background = "#d9ffe2";
+    setTimeout(() => (e.target.style.background = ""), 400);
   }
-});
+
+}, true);
+
+
 
 // ======================================================
 // REMOVE ERROR ON INLINE EDIT
