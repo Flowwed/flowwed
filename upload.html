@@ -1027,11 +1027,11 @@ max-width: 640px;
 <script>
 const params = new URLSearchParams(window.location.search);
 
-let token =
+window.APP_TOKEN =
   params.get("t") ||
+  params.get("token") ||
   localStorage.getItem("verified_token") ||
   "";
-
 if (params.get("t")) {
   localStorage.setItem("verified_token", params.get("t"));
 }
