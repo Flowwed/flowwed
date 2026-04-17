@@ -388,19 +388,28 @@ h1 {
 .guide-link {
   color: #2a6bff;
   text-decoration: underline;
-  cursor: pointer;
   font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+
+.guide-link:hover {
+  color: #1a4fd6;
+  text-decoration: underline;
 }
 
 
 .mini-menu {
   position: fixed;   /* 👈 ВАЖНО: не absolute */
-  top: 80px;
-  left: 200px;
+  top: 50px;
+  left: 150px;
   width: fit-content;
 
   z-index: 9999999;  /* 👈 выше ВСЕГО */
 }
+
+
 
 .menu-trigger {
   background: #9c1818;
@@ -420,10 +429,11 @@ h1 {
   position: absolute;
   top: 120%;
   left: 0;
+  z-index: 99999;
 
   background: white;
   border-radius: 14px;
-  padding: 0;
+  padding: 6px 0; /* 🔥 добавили воздух */
 
   display: none;
 
@@ -431,23 +441,33 @@ h1 {
   min-width: 220px;
 }
 
-/* открытие через JS */
+/* открытие */
 .menu-dropdown.open {
   display: block;
 }
 
-/* все пункты */
-.menu-dropdown div {
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: background 0.15s ease;
+/* 🔥 ВАЖНО: теперь для <a>, не div */
+.menu-dropdown a {
+  display: block;
+  padding: 12px 18px;
+
+  text-decoration: none;
+  color: #9c1818;
+  font-weight: 600;
+
+  transition: 0.2s;
 }
 
 /* hover */
-.menu-dropdown div:hover {
+.menu-dropdown a:hover {
   background: #ffeef3;
 }
 
+/* активная страница */
+.menu-dropdown a.active {
+  background: #ffeef3;
+  font-weight: 700;
+}
 /* 🔥 Back to Dash (верхний пункт) */
 .menu-back {
   padding: 12px 16px;
@@ -456,9 +476,11 @@ h1 {
   border-radius: 10px 10px 0 0;
 }
 
-
-
 .back-btn {
+  display: none;
+}
+
+.top-nav {
   display: none;
 }
 
@@ -470,25 +492,52 @@ h1 {
 <body>
 
 <div class="top-header">
-  <button id="backBtn" class="back-btn" type="button">
-    <span class="back-arrow">‹</span>
-    Back to Dash
-  </button>
+
+<div class="mini-menu">
+  <div class="menu-trigger">☰ Menu</div>
+
+  <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
+<div class="menu-dropdown" id="menuDropdown"></div></div>
+
+<h1>Web Video</h1>
+
+<div></div>
 
 
+<div class="top-nav">
 
+  <a href="videouploader.html">Web Video</a>
+  <a href="Guests.html">Guest Hub</a>
+  <a href="upload.html">Photo Gallery</a>
+  <a href="savethedate.html">Save the Date</a>
+  <a href="postwed.html">RSVP</a>
+  <a href="SeatingChart.html">Seating</a>
+  <a href="gift_registry.html">Gifts</a>
+  <a href="Budget.html">Budget</a>
+  <a href="traveldetails.html">Travel & Event</a>
+  <a href="postwed2.html">Memories</a>
+  <a href="just_married.html">Album</a>
+  <a href="story.html">Our Story</a>
+  <a href="dash-updates.html">Updates</a>
+  <a href="wedparty.html">Wedding Party</a>
 
-  <h1>Web Video</h1>
 </div>
-
 
 
 <div class="ios-banner">
 <span class="info-icon">i</span>
-  Add a video to your landing page. Check the Quick User Guide
+  Complete the blue fields and send the RSVP form to your guests via email or SMS. Check the Quick User Guide
   <span id="openGuide" class="guide-link">here</span>
 </div>
 
+
+  <div id="coupleSmallName"></div>
+</div>
+
+
+<div class="top-divider-line"></div>
+
+<div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
 
 
 <div class="uploader-container">
@@ -928,9 +977,42 @@ guideModal.onclick = (e) => {
 </script>
 
 
-<script type="module">
-  import { loadNavbar } from "./navbar.js";
-  loadNavbar();
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const trigger = document.querySelector(".menu-trigger");
+  const dropdown = document.getElementById("menuDropdown");
+  const sourceNav = document.querySelector(".top-nav");
+
+  if (!trigger || !dropdown || !sourceNav) return;
+
+  // 🔥 копируем меню
+  
+const token = window.APP_TOKEN;
+
+dropdown.innerHTML =
+  `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
+  `<div class="menu-divider"></div>` +
+  sourceNav.innerHTML;
+
+
+
+
+  // 🔥 открытие/закрытие
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", () => {
+    dropdown.classList.remove("open");
+  });
+
+});
+
 </script>
 
 
