@@ -582,7 +582,25 @@ th {
   font-weight: bold;
 }
 
+.main-card {
+  max-width: 980px;
+  margin: 20px auto 40px auto;
 
+  background: rgba(255,255,255,0.88);
+  border-radius: 22px;
+  padding: 24px;
+
+  /* 💥 ВОТ ГЛАВНОЕ */
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.18),   /* большая мягкая тень */
+    0 10px 25px rgba(0,0,0,0.12),   /* вторая глубина */
+    inset 0 2px 6px rgba(255,255,255,0.3);
+
+  backdrop-filter: blur(20px);
+
+  /* 💥 микро-поднятие */
+  transform: translateY(-4px);
+}
 
 </style>
 
@@ -661,6 +679,8 @@ window.APP_TOKEN = token;
 <div class="top-divider-line"></div>
 
 <div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
+
+<div class="main-card">
 
 
 
@@ -794,6 +814,9 @@ window.APP_TOKEN = token;
 <button id="previewBtn" style="margin-top:12px;">
   Preview your webpage update
 </button>
+
+</div> <!-- main-card -->
+
 
 <!-- 👇 ВСТАВЛЯЕШЬ ЗДЕСЬ -->
 <div class="table-section">
