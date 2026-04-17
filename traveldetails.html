@@ -657,19 +657,16 @@ th {
 <script>
 const params = new URLSearchParams(window.location.search);
 
-let token =
+window.APP_TOKEN =
   params.get("t") ||
+  params.get("token") ||
   localStorage.getItem("verified_token") ||
   "";
-
 if (params.get("t")) {
   localStorage.setItem("verified_token", params.get("t"));
 }
 
-window.APP_TOKEN = token;
 </script>
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
