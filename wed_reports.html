@@ -1764,8 +1764,9 @@ if (group === "rsvpNoResponse") {
 const smsLink =
     `sms:?body=${encodeURIComponent(link)}`;
 
-  const qrUrl =
-    `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(smsLink)}`;
+const qrUrl =
+  `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
+
 
   const modal = document.getElementById("qrModal");
   const img = document.getElementById("qrImage");
