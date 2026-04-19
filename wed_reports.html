@@ -1461,49 +1461,50 @@ document.querySelectorAll(".composer-send").forEach(btn => {
       document.getElementById(`composerReply_${group}`)?.textContent || "";
 
     // 🔥 ГОТОВЫЙ HTML ШАБЛОН
-const html = `
-<div style="font-family:sans-serif;line-height:1.5;">
+    const html = `
+    <div style="font-family:sans-serif;line-height:1.5;">
 
-  <p>${(bodyField?.value || "").replace(/\n/g,"<br>")}</p>
+      <p>${(bodyField?.value || "").replace(/\n/g,"<br>")}</p>
 
-  <br>
+      <br>
 
-  <a href="${window.location.origin}/rsvpresponse.html?t=${window.APP_TOKEN}&group=${group}" style="
-    display:inline-block;
-    padding:12px 18px;
-    background:#b41111;
-    color:white;
-    text-decoration:none;
-    border-radius:6px;
-    font-weight:700;
-  ">
-    Open RSVP Form
-  </a>
+      <a href="${link}" style="
+        display:inline-block;
+        padding:12px 18px;
+        background:#b41111;
+        color:white;
+        text-decoration:none;
+        border-radius:6px;
+        font-weight:700;
+      ">
+        Confirm your attendance
+      </a>
 
-  <br><br><br>
+      <br><br><br>
 
-  <div style="
-    font-size:13px;
-    color:#666;
-    background:#fff7f9;
-    padding:12px;
-    border-radius:8px;
-    border:1px solid #ffd6e2;
-  ">
-    This message is sent from a notification-only address.<br>
-    If you'd like to contact us, please write to:
-    <strong>${footer}</strong>
-  </div>
+      <div style="
+        font-size:13px;
+        color:#666;
+        background:#fff7f9;
+        padding:12px;
+        border-radius:8px;
+        border:1px solid #ffd6e2;
+      ">
+        This message is sent from a notification-only address.<br>
+        If you'd like to contact us, please write to:
+        <strong>${footer}</strong>
+      </div>
 
-</div>
-`;
+    </div>
+    `;
 
-sendEmails(emails, subject, html, group);
+    sendEmails(emails, subject, html, group);
   };
 
 });
 
 }
+
 
 
 
