@@ -871,6 +871,33 @@ if (params.get("t")) {
   <label class="composer-label">Message:</label>
   <textarea id="body_rsvpYes" class="composer-textarea">Hello, here is the latest update…</textarea>
 
+
+<!-- 🔽 ВОТ СЮДА ВСТАВЛЯЕШЬ -->
+<div id="previewLinkBlock" style="
+  margin-top:12px;
+  padding:12px;
+  border-radius:10px;
+  background:#fff7f7;
+  border:1px solid #ffd0d0;
+">
+
+  <div style="
+    font-weight:700;
+    color:#9c1818;
+    margin-bottom:6px;
+  ">
+    RSVP Form Link
+  </div>
+
+  <div id="previewLinkText" style="
+    font-size:13px;
+    color:#7a2a2a;
+    word-break:break-all;
+  "></div>
+
+</div>
+
+
 <!-- FOOTER ✨ -->
   <div class="composer-footer" data-group="rsvpYes">
   <p style="font-size:12px;color:#666;margin-top:12px;">
@@ -1036,6 +1063,7 @@ const greenToast = document.getElementById("greenToast");
 
 let groupsGlobal = null;
 let totalGuestsCount = 0;
+let coupleFullName = "";
 
 
 /* ====================================================== */
@@ -1070,7 +1098,7 @@ async function loadCoupleName() {
   const parts = data.slug.split("-");
   const bride = cap(parts[0]);
   const groom = cap(parts[1]);
-
+coupleFullName = `${bride} & ${groom}`;
 }
 
 loadCoupleName();
@@ -1657,6 +1685,7 @@ function exportCSVForGroup(group) {
 /* OPEN COMPOSER FOR GROUP                                */
 /* ====================================================== */
 function openComposerForGroup(group) {
+
   const block = document.querySelector(`.table-block[data-group="${group}"]`);
   if (!block) return;
 
@@ -1679,22 +1708,52 @@ function openComposerForGroup(group) {
     return;
   }
 
+  // 👉 composer
   const comp = document.getElementById(`composer_${group}`);
   if (!comp) return;
 
-  const emailField = document.getElementById(`toEmail_${group}`);
-  const phoneField = document.getElementById(`toPhone_${group}`);
+  const emailField   = document.getElementById(`toEmail_${group}`);
+  const phoneField   = document.getElementById(`toPhone_${group}`);
+  const subjectField = document.getElementById(`subject_${group}`);
+  const bodyField    = document.getElementById(`body_${group}`);
 
+  // 👉 вставляем получателей
   if (emailField) emailField.value = [...new Set(emails)].join(", ");
   if (phoneField) phoneField.value = [...new Set(phones)].join(", ");
 
-// <<< ВОТ ЭТО ДОБАВИЛИ >>>
-  const coupleName = document.getElementById("coupleSmallName")?.textContent.trim() || "";
-  const subjectField = document.getElementById(`subject_${group}`);
-  if (subjectField && coupleName) {
-    subjectField.value = `Wedding Update: ${coupleName}`;
+  // 👉 SUBJECT (имя пары)
+  if (subjectField && coupleFullName) {
+    subjectField.value = `Wedding Update: ${coupleFullName}`;
   }
 
+  // 👉 BODY (только если пусто)
+  if (bodyField && !bodyField.value.trim()) {
+
+    if (group === "rsvpNoResponse") {
+      bodyField.value =
+`Hello!
+
+${coupleFullName} are happy to invite you to celebrate their wedding.
+
+We haven’t received your RSVP yet.
+
+We hope you can join us for our special day.
+Please confirm your attendance at your earliest convenience.`;
+    }
+
+  }
+
+const preview = comp.querySelector("#previewLinkText");
+
+if (preview) {
+  const link =
+    `${window.location.origin}/rsvpresponse.html?t=${window.APP_TOKEN}&group=${group}`;
+
+  preview.textContent = link;
+}
+
+
+  // 👉 показать composer
   comp.style.display = "block";
 }
 
