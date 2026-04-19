@@ -1428,12 +1428,15 @@ document.querySelectorAll(".btn-sms").forEach(btn => {
   });
 });
 
-  // Send button INSIDE composer  
+
+// Send button INSIDE composer  
 document.querySelectorAll(".composer-send").forEach(btn => {
+
   btn.onclick = () => {
+
     const group = btn.dataset.group;
 
-    const emailField  = document.getElementById(`toEmail_${group}`);
+    const emailField   = document.getElementById(`toEmail_${group}`);
     const subjectField = document.getElementById(`subject_${group}`);
     const bodyField    = document.getElementById(`body_${group}`);
 
@@ -1442,16 +1445,68 @@ document.querySelectorAll(".composer-send").forEach(btn => {
       .map(x => x.trim())
       .filter(x => x);
 
+    if (emails.length === 0) {
+      showRedToast("Select at least one guest!");
+      return;
+    }
+
     const subject = subjectField?.value?.trim() || "Wedding Update";
 
-    const html = (bodyField?.value || "")
-      .trim()
-      .replace(/\n/g, "<br>");
+    // 🔥 ССЫЛКА (можешь потом сделать персональную)
+    const link =
+      `${window.location.origin}/rsvpresponse.html?t=${token}&group=${group}`;
+
+    // 🔥 FOOTER EMAIL
+    const footer =
+      document.getElementById(`composerReply_${group}`)?.textContent || "";
+
+    // 🔥 ГОТОВЫЙ HTML ШАБЛОН
+    const html = `
+    <div style="font-family:sans-serif;line-height:1.5;">
+
+      <p>${(bodyField?.value || "").replace(/\n/g,"<br>")}</p>
+
+      <br>
+
+      <a href="${link}" style="
+        display:inline-block;
+        padding:12px 18px;
+        background:#b41111;
+        color:white;
+        text-decoration:none;
+        border-radius:6px;
+        font-weight:700;
+      ">
+        Open RSVP Form
+      </a>
+
+      <br><br><br>
+
+      <div style="
+        font-size:13px;
+        color:#666;
+        background:#fff7f9;
+        padding:12px;
+        border-radius:8px;
+        border:1px solid #ffd6e2;
+      ">
+        This message is sent from a notification-only address.<br>
+        If you'd like to contact us, please write to:
+        <strong>${footer}</strong>
+      </div>
+
+    </div>
+    `;
 
     sendEmails(emails, subject, html, group);
   };
+
 });
+
 }
+
+
+
 
 function initMasterCheckboxes() {
   document.querySelectorAll(".master-checkbox").forEach(master => {
