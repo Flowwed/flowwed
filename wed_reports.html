@@ -1114,25 +1114,24 @@ function showRedToast(msg = "Error!") {
 }
 
 //------------------------------------------------------
-// LOAD COUPLE NAME (same logic as dashboard)
+// LOAD COUPLE NAME (FIXED VERSION)
 //------------------------------------------------------
-function cap(s) {
-  return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
-}
-
 async function loadCoupleName() {
+
   const { data } = await supabase
     .from("sites")
-    .select("slug")
+    .select("couple_name")
     .eq("edit_token", token)
     .single();
 
-  if (!data || !data.slug) return;
+  // если нет данных — fallback
+  if (!data || !data.couple_name) {
+    coupleFullName = "Our Wedding";
+    return;
+  }
 
-  const parts = data.slug.split("-");
-  const bride = cap(parts[0]);
-  const groom = cap(parts[1]);
-coupleFullName = `${bride} & ${groom}`;
+  // нормальное значение из базы
+  coupleFullName = data.couple_name.trim();
 }
 
 loadCoupleName();
