@@ -9,13 +9,33 @@
 body{
   font-family:'Segoe UI',sans-serif;
   background:linear-gradient(180deg,#fff1f4,#ffffff);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
   margin:0;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+
+  min-height:100vh;
+  padding-top:40px;
 }
 
+/* NOTIFY BLOCK */
+#notifyBlock{
+  max-width:380px;
+  width:90%;
+  margin-bottom:16px;
+  padding:14px;
+  border-radius:14px;
+  background:#fff7f7;
+  border:1px solid #ffd0d0;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* CARD */
 .card{
   background:white;
   padding:28px;
@@ -51,17 +71,39 @@ button{
   border-radius:10px;
   font-weight:700;
   cursor:pointer;
-  transition:.25s;
-}
-
-button:hover{
-  transform:translateY(-2px);
 }
 </style>
 </head>
 
 <body>
 
+<!-- NOTIFY BLOCK (ADMIN ONLY) -->
+<div id="notifyBlock">
+
+  <div style="
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#b41111;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:13px;
+    font-weight:700;
+  ">i</div>
+
+  <div style="flex:1;font-size:13px;color:#7e2a2a;font-weight:600;">
+    Send this reminder to your guests via SMS
+  </div>
+
+  <button id="notifyBtn" style="padding:8px 14px;font-size:13px;">
+    Notify
+  </button>
+
+</div>
+
+<!-- CARD -->
 <div class="card">
 
   <h2>We haven’t received your RSVP yet</h2>
@@ -76,18 +118,56 @@ button:hover{
 </div>
 
 <script>
+
+// =============================
+// PARAMS
+// =============================
 const params = new URLSearchParams(window.location.search);
-
 const token = params.get("t");
-const guest = params.get("g");
 
+// 👉 если есть shared=1 → это гость
+const isShared = params.get("shared") === "1";
+
+
+// =============================
+// RSVP BUTTON
+// =============================
 document.getElementById("goRSVP").onclick = () => {
+  window.location.href =
+    `${window.location.origin}/rsvpresponse.html?t=${token}`;
+};
+
+
+// =============================
+// NOTIFY BUTTON (ADMIN ONLY)
+// =============================
+document.getElementById("notifyBtn").onclick = async () => {
 
   const link =
-    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guest}`;
+    `${window.location.origin}/rsvp-reminder.html?t=${token}&shared=1`;
 
-  window.location.href = link;
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "RSVP Reminder",
+        text: "Please confirm your attendance",
+        url: link
+      });
+    } catch(e){}
+  } else {
+    alert("Sharing not supported on this device");
+  }
+
 };
+
+
+// =============================
+// HIDE NOTIFY FOR GUEST
+// =============================
+if (isShared) {
+  document.getElementById("notifyBlock").style.display = "none";
+}
+
 </script>
 
 </body>

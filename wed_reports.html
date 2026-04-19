@@ -1784,21 +1784,20 @@ function generateQRForSMS(group) {
 
   const token = window.APP_TOKEN;
 
-let link;
+  let link;
 
-if (group === "rsvpNoResponse") {
-  link = `${window.location.origin}/rsvp-reminder.html?t=${token}`;
-} else {
-  link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=${group}`;
-}
-  
+  // 👉 NO RESPONSE → ведёт на reminder (с Notify)
+  if (group === "rsvpNoResponse") {
+    link = `${window.location.origin}/rsvp-reminder.html?t=${token}`;
+  } 
+  // 👉 остальные → как было
+  else {
+    link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=${group}`;
+  }
 
-const smsLink =
-    `sms:?body=${encodeURIComponent(link)}`;
-
-const qrUrl =
-  `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
-
+  // ❗ ТОЛЬКО URL (никаких sms:)
+  const qrUrl =
+    `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
 
   const modal = document.getElementById("qrModal");
   const img = document.getElementById("qrImage");
@@ -1806,7 +1805,6 @@ const qrUrl =
   img.src = qrUrl;
   modal.style.display = "flex";
 }
-
 
 window.closeQRModal = function() {
   document.getElementById("qrModal").style.display = "none";
