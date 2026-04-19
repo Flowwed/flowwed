@@ -899,13 +899,12 @@ if (!g) {
 }
 
 
-if (g.responded_at) {
-  showToast("You already submitted RSVP", true);
-  btn.classList.remove("loading");
-  sending = false;
-  return;
-}
-
+// if (g.responded_at) {
+//   showToast("You already submitted RSVP", true);
+//   btn.classList.remove("loading");
+//   sending = false;
+//   return;
+// }
 
 const { error: updateError } = await supabase
   .from("guests")
