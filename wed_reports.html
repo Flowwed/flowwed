@@ -12,23 +12,19 @@ body{
   font-family:'Segoe UI',sans-serif;
   background:linear-gradient(180deg,#fff1f4,#ffffff);
   margin:0;
+  padding:40px 26px;
   color:#5a1a1a;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  min-height:100vh;
 }
 
-/* КАРТОЧКА */
 .card{
   background:white;
   padding:28px;
   border-radius:18px;
 
-  width:calc(100% - 32px); /* ← ВОТ КЛЮЧ */
+  width:100%;
   max-width:380px;
+
+  margin:0 auto;
 
   border:2px solid #b41111;
 
@@ -37,15 +33,19 @@ body{
     inset 0 0 6px rgba(255,255,255,0.5);
 }
 
-/* ===== MOBILE ===== */
+/* ===== MOBILE FIX ===== */
 @media (max-width: 600px){
 
   body{
-    align-items:flex-start;
-    padding-top:40px;
+    padding:20px 16px;
+  }
+
+  .card{
+    margin-top:40px;
   }
 
 }
+
 
 
 h1 {
