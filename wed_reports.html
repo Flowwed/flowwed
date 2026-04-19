@@ -1461,13 +1461,6 @@ document.querySelectorAll(".composer-send").forEach(btn => {
       document.getElementById(`composerReply_${group}`)?.textContent || "";
 
     // 🔥 ГОТОВЫЙ HTML ШАБЛОН
-    const html = `
-    <div style="font-family:sans-serif;line-height:1.5;">
-
-      <p>${(bodyField?.value || "").replace(/\n/g,"<br>")}</p>
-
-      <br>
-
 const html = `
 <div style="font-family:sans-serif;line-height:1.5;">
 
@@ -1475,54 +1468,20 @@ const html = `
 
   <br>
 
-  <!-- 🔥 CARD -->
-  <div style="
-    background:white;
-    padding:24px;
-    border-radius:16px;
-    max-width:380px;
-    border:2px solid #b41111;
-    box-shadow:0 10px 24px rgba(0,0,0,0.2);
-    text-align:center;
-    margin:0 auto;
+  <a href="${window.location.origin}/rsvpresponse.html?t=${window.APP_TOKEN}&group=${group}" style="
+    display:inline-block;
+    padding:12px 18px;
+    background:#b41111;
+    color:white;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:700;
   ">
+    Open RSVP Form
+  </a>
 
-    <div style="
-      font-size:20px;
-      font-weight:700;
-      color:#9c1818;
-      margin-bottom:10px;
-    ">
-      We haven’t received your RSVP yet
-    </div>
+  <br><br><br>
 
-    <div style="
-      font-size:14px;
-      color:#6a2a2a;
-      margin-bottom:18px;
-      line-height:1.5;
-    ">
-      We hope you can join us for our special day.<br>
-      Please confirm your attendance at your earliest convenience.
-    </div>
-
-    <a href="${link}" style="
-      display:inline-block;
-      padding:12px 18px;
-      background:#b41111;
-      color:white;
-      text-decoration:none;
-      border-radius:10px;
-      font-weight:700;
-    ">
-      Confirm RSVP
-    </a>
-
-  </div>
-
-  <br><br>
-
-  <!-- FOOTER -->
   <div style="
     font-size:13px;
     color:#666;
@@ -1538,31 +1497,13 @@ const html = `
 
 </div>
 `;
-      <br><br><br>
 
-      <div style="
-        font-size:13px;
-        color:#666;
-        background:#fff7f9;
-        padding:12px;
-        border-radius:8px;
-        border:1px solid #ffd6e2;
-      ">
-        This message is sent from a notification-only address.<br>
-        If you'd like to contact us, please write to:
-        <strong>${footer}</strong>
-      </div>
-
-    </div>
-    `;
-
-    sendEmails(emails, subject, html, group);
+sendEmails(emails, subject, html, group);
   };
 
 });
 
 }
-
 
 
 
