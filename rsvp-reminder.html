@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RSVP Reminder</title>
+
+<style>
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#fff1f4,#ffffff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  margin:0;
+}
+
+.card{
+  background:white;
+  padding:28px;
+  border-radius:18px;
+  max-width:380px;
+  width:90%;
+  text-align:center;
+
+  border:2px solid #b41111;
+
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.25),
+    inset 0 0 6px rgba(255,255,255,0.5);
+}
+
+h2{
+  color:#9c1818;
+  margin-bottom:12px;
+}
+
+p{
+  color:#6a2a2a;
+  font-size:15px;
+  line-height:1.5;
+  margin-bottom:20px;
+}
+
+button{
+  background:#b41111;
+  color:white;
+  border:none;
+  padding:12px 18px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s;
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>We haven’t received your RSVP yet</h2>
+
+  <p>
+    We hope you can join us for our special day.<br>
+    Please confirm your attendance at your earliest convenience.
+  </p>
+
+  <button id="goRSVP">Confirm RSVP</button>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+const token = params.get("t");
+const guest = params.get("g");
+
+document.getElementById("goRSVP").onclick = () => {
+
+  const link =
+    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guest}`;
+
+  window.location.href = link;
+};
+</script>
+
+</body>
+</html>

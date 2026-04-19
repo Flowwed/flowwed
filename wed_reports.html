@@ -1752,10 +1752,16 @@ function generateQRForSMS(group) {
 
   const token = window.APP_TOKEN;
 
-  const link =
-    `${window.location.origin}/rsvpresponse.html?t=${token}&group=${group}`;
+let link;
 
-  const smsLink =
+if (group === "rsvpNoResponse") {
+  link = `${window.location.origin}/rsvp-reminder.html?t=${token}`;
+} else {
+  link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=${group}`;
+}
+  
+
+const smsLink =
     `sms:?body=${encodeURIComponent(link)}`;
 
   const qrUrl =
