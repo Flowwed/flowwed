@@ -554,11 +554,21 @@
 }
 
 .guide-link {
-  color: #1e63ff;
+  color: #2a6bff;
   text-decoration: underline;
   font-weight: 700;
   cursor: pointer;
+  transition: 0.2s ease;
 }
+
+
+.guide-link:hover {
+  color: #1a4fd6;
+  text-decoration: underline;
+}
+
+
+
 
 .toolbar-row {
   display: flex;
@@ -629,65 +639,239 @@
   transform: scale(0.96);
 }
 
-.back-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-
-  box-shadow:
-    0 14px 28px rgba(0,0,0,0.48),
-    0 6px 14px rgba(0,0,0,0.32),
-    inset 0 4px 10px rgba(255,255,255,0.28),
-    inset 0 -10px 18px rgba(60,0,20,0.38);
-}
-
-.back-btn:active {
-  transform: scale(0.96);
-}
 
 .editor-btn.ruby-btn {
   padding: 8px 14px;
   font-size: 14px;
   font-weight: 600;
 }
+
+
+.mini-menu {
+  position: fixed;
+  top: 50px;
+  left: 110px;  width: fit-content;
+
+  z-index: 9999999;  /* 👈 выше ВСЕГО */
+}
+
+.menu-trigger {
+  background: #9c1818;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.3),
+    inset 0 2px 6px rgba(255,255,255,0.25);
+}
+
+/* dropdown */
+.menu-dropdown {
+  position: absolute;
+  top: 120%;
+  left: 0;
+  z-index: 99999;
+
+  background: white;
+  border-radius: 14px;
+  padding: 6px 0; /* 🔥 добавили воздух */
+
+  display: none;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  min-width: 220px;
+}
+
+/* открытие */
+.menu-dropdown.open {
+  display: block;
+}
+
+/* 🔥 ВАЖНО: теперь для <a>, не div */
+.menu-dropdown a {
+  display: block;
+  padding: 12px 18px;
+
+  text-decoration: none;
+  color: #9c1818;
+  font-weight: 600;
+
+  transition: 0.2s;
+}
+
+/* hover */
+.menu-dropdown a:hover {
+  background: #ffeef3;
+}
+
+/* активная страница */
+.menu-dropdown a.active {
+  background: #ffeef3;
+  font-weight: 700;
+}
+/* 🔥 Back to Dash (верхний пункт) */
+.menu-back {
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #9c1818;
+  border-radius: 10px 10px 0 0;
+}
+
+.back-btn {
+  display: none;
+}
+
+.top-nav {
+  display: none;
+}
+
+
+.top-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 10px;
+  margin-bottom: 18px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 600;
+
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+
+  margin-top: 28px;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.ios-banner {
+  margin: 0 auto 36px auto;
+padding: 12px 18px;
+max-width: 800px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 17.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10),
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
+
+
+
+
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+
+  background: linear-gradient(180deg, #ff4d4d, #b41111);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+
+  flex-shrink: 0;
+}
+
+
+
+
+
+
 </style>
 </head>
 
-<body data-page="updates">
-  <div class="top-nav-wrapper">
-    <button id="backBtn" class="back-btn" type="button">
-      <span class="back-arrow">‹</span>
-      Back to Dash
-    </button>
+<body>
 
-    <div class="top-nav">
-      <a href="/photo-gallery.html">Photo Gallery</a>
-      <a href="/gift-registry.html">Gift Registry</a>
-      <a href="/our-story.html">Our Story</a>
-      <a href="/wedding-party.html">Wedding Party</a>
-      <a href="/wedding-info.html">Wedding Info</a>
-      <a href="/venue-map.html">Venue &amp; Map</a>
-      <a href="/travel-info.html">Travel Info</a>
-      <a href="/updates.html">Updates</a>
-      <a href="/faq.html">FAQ</a>
-    </div>
-  </div>
+<div class="top-header">
 
-  <div class="page-header">
+<div class="mini-menu">
+  <div class="menu-trigger">☰ Menu</div>
 
-    <div class="info-bubble info-bubble--top">
-      <div class="info-icon">i</div>
-      <div class="info-text">
-        Customize your <span class="mini-pill">Updates</span> page and keep your guests informed about your wedding plans.
-      </div>
-    </div>
-  </div>
+  <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
+<div class="menu-dropdown" id="menuDropdown"></div></div>
+
+<h1>Updates</h1>
+
+</div>
+
+
+<div class="top-nav">
+
+  <a href="videouploader.html">Web Video</a>
+  <a href="Guests.html">Guest Hub</a>
+  <a href="upload.html">Photo Gallery</a>
+  <a href="savethedate.html">Save the Date</a>
+  <a href="postwed.html">RSVP</a>
+  <a href="SeatingChart.html">Seating</a>
+  <a href="gift_registry.html">Gifts</a>
+  <a href="Budget.html">Budget</a>
+  <a href="traveldetails.html">Travel & Event</a>
+  <a href="postwed2.html">Memories</a>
+  <a href="just_married.html">Album</a>
+  <a href="story.html">Our Story</a>
+  <a href="dash-updates.html">Updates</a>
+  <a href="wedparty.html">Wedding Party</a>
+
+</div>
+
+
+<div class="ios-banner">
+<span class="info-icon">i</span>
+  Keep your guests updated on your wedding plans. Check the Quick User Guide
+  <span id="openGuide" class="guide-link">here</span>
+</div>
+
+
+
 
   <div class="page-wrapper">
     <div class="editor-column">
       <div class="text-editor-box">
 
-<div class="editor-guide-bubble">
-  View the Quick User Guide for this page <span id="openGuide" class="guide-link">here</span>
-</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+
+window.APP_TOKEN =
+  params.get("t") ||
+  params.get("token") ||
+  localStorage.getItem("verified_token") ||
+  "";
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
+}
+
+</script>
+
+
 
 <div class="toolbar-row">
 
@@ -748,8 +932,7 @@
     const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("t") || params.get("token") || "";
+const token = window.APP_TOKEN;
 
     let quill = null;
 
@@ -1048,6 +1231,43 @@ document.getElementById("openGuide")?.addEventListener("click", () => {
 
 
   </script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const trigger = document.querySelector(".menu-trigger");
+  const dropdown = document.getElementById("menuDropdown");
+  const sourceNav = document.querySelector(".top-nav");
+
+  if (!trigger || !dropdown || !sourceNav) return;
+
+  // 🔥 копируем меню
+  
+const token = window.APP_TOKEN;
+
+dropdown.innerHTML =
+  `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
+  `<div class="menu-divider"></div>` +
+  sourceNav.innerHTML;
+
+
+
+
+  // 🔥 открытие/закрытие
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+
+  document.addEventListener("click", () => {
+    dropdown.classList.remove("open");
+  });
+
+});
+
+</script>
+
 
 
 </body>
