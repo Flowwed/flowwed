@@ -1223,7 +1223,7 @@ modal.classList.add("is-open");
           return;
         }
 
-        openModal(`https://flowwed.netlify.app/notifyupdates?token=${token}`, "large");
+        openModal(`https://flowwed.netlify.app/web-updates?token=${token}`, "large");
         const iframe = document.getElementById("storyIframe");
 iframe.onload = sendTextToIframe;
       });
@@ -1271,7 +1271,7 @@ sendSmsBtn?.addEventListener("click", () => {
 
 function openSMSQRModal(token) {
 
-  const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
+  const link = `https://flowwed.netlify.app/notifyupdates?t=${token}`;
 
 
   const qr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
