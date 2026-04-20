@@ -1522,26 +1522,53 @@ document.querySelectorAll(".composer-send").forEach(btn => {
       document.getElementById(`composerReply_${group}`)?.textContent || "";
 
     // 🔥 ГОТОВЫЙ HTML ШАБЛОН
-    const html = `
-    <div style="font-family:sans-serif;line-height:1.5;">
+    
+const showButton =
+  group === "rsvpNoResponse" || group === "rsvpMaybe";
 
-      <p>${(bodyField?.value || "").replace(/\n/g,"<br>")}</p>
+const buttonHTML = showButton
+  ? `
+  <br>
+  <a href="${link}" style="
+    display:inline-block;
+    padding:12px 18px;
+    background:#b41111;
+    color:white;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:700;
+  ">
+    Confirm your attendance
+  </a>
+  `
+  : "";
 
-      <br>
+const html = `
+<div style="font-family:sans-serif;line-height:1.5;">
 
-      <a href="${link}" style="
-        display:inline-block;
-        padding:12px 18px;
-        background:#b41111;
-        color:white;
-        text-decoration:none;
-        border-radius:6px;
-        font-weight:700;
-      ">
-        Confirm your attendance
-      </a>
+  <p>${(bodyField?.value || "").replace(/\n/g,"<br>")}</p>
 
-      <br><br><br>
+  ${buttonHTML}
+
+  <br><br><br>
+
+  <div style="
+    font-size:13px;
+    color:#666;
+    background:#fff7f9;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ffd6e2;
+  ">
+    This message is sent from a notification-only address.<br>
+    If you'd like to contact us, please write to:
+    <strong>${footer}</strong>
+  </div>
+
+</div>
+`;
+      
+       <br><br><br>
 
       <div style="
         font-size:13px;
@@ -1760,11 +1787,36 @@ function openComposerForGroup(group) {
   }
 
   // 👉 BODY (только если пусто)
-  if (bodyField && !bodyField.value.trim()) {
+  
+if (bodyField && !bodyField.value.trim()) {
 
-    if (group === "rsvpNoResponse") {
-      bodyField.value =
-`Hello!
+  if (group === "rsvpYes") {
+    bodyField.value = `Hello!
+
+${coupleFullName} are so happy that you will be joining us to celebrate our wedding.
+
+We truly appreciate your response and can't wait to share this special day with you!`;
+  }
+
+  if (group === "rsvpNo") {
+    bodyField.value = `Hello!
+
+${coupleFullName} are very sorry to hear that you won’t be able to attend the wedding.
+
+You will be missed, but we completely understand and hope to celebrate together another time.`;
+  }
+
+  if (group === "rsvpMaybe") {
+    bodyField.value = `Hello!
+
+${coupleFullName} are happy to invite you to celebrate their wedding.
+
+You previously responded that you might attend.  
+We would really appreciate it if you could confirm your final decision.`;
+  }
+
+  if (group === "rsvpNoResponse") {
+    bodyField.value = `Hello!
 
 ${coupleFullName} are happy to invite you to celebrate their wedding.
 
@@ -1772,9 +1824,12 @@ We haven’t received your RSVP yet.
 
 We hope you can join us for our special day.
 Please confirm your attendance at your earliest convenience.`;
-    }
-
   }
+
+}
+
+
+
 
 const preview = comp.querySelector("#previewLinkText");
 
