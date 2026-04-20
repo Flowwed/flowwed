@@ -3169,7 +3169,7 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
   Scan with your phone
 </div>
 
-<img id="qrImage" style="width:220px;height:220px;">
+<canvas id="qrCanvas"></canvas>
   </div>
 </div>
 
@@ -3205,7 +3205,6 @@ if (shareBtn) {
 
     const token = window.APP_TOKEN;
 
-    // ✅ ВСЕГДА универсальная ссылка (без гостей)
     const link = `${window.location.origin}/std_preview.html?t=${token}&mode=admin`;
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
@@ -3225,7 +3224,6 @@ if (shareBtn) {
     QRCode.toCanvas(canvas, link, { width: 220 });
   };
 }
-
 </script>
 
 
