@@ -1338,7 +1338,7 @@ function renderTable(name, arr, key) {
                   </th>
                    <th>Name</th>
                     <th>Email</th>
-                       <th>Phone</th>
+                       <th>Guest Message</th>
                        </tr>
                    </thead>
             <tbody>
@@ -1354,7 +1354,7 @@ function renderTable(name, arr, key) {
                 </td>
                 <td>${g.first_name || ""} ${g.last_name || ""}</td>
                 <td>${g.email || ""}</td>
-                <td>${g.phone || ""}</td>
+                <td>${g.message || ""}</td>
               </tr>`
                 )
                 .join("")}

@@ -742,7 +742,7 @@ white-space: nowrap;
 <body>
 
 <div class="top-logo-title">
-  <h1 id="topMainTitle">Send Email & SMS</h1>
+  <h1 id="topMainTitle">Send Email</h1>
   <div id="coupleSmallName"></div>
 </div>
 
@@ -792,19 +792,8 @@ white-space: nowrap;
 
     <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
-      <button id="sendEmailBtn" class="footer-btn">Send Email &amp; SMS</button>
+      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
 
-<!--
-  <button id="previewFormBtn" class="footer-btn">
-    See the Form Your Guests Will Fill
-  </button>
-
-  <button id="previewJustMarried" class="footer-btn">
-    “Just Married” Sample Page
-  </button>
-
-  <button id="sendTestEmailFooter" class="footer-btn">Send Test Email</button>
-  -->  
 
 </div>
 
@@ -812,7 +801,7 @@ white-space: nowrap;
   <div class="email-composer" id="emailComposer">
 
     <div class="composer-header">
-  <span>Send Email & SMS</span>
+  <span>Send Email</span>
 
   <div style="display:flex;align-items:center;gap:10px;">
     <span id="composerExpand" class="expand-btn">⤢</span>
@@ -823,7 +812,8 @@ white-space: nowrap;
     <input type="text" id="composerEmails" class="composer-input">
 
     <label class="composer-label">To Phone(s):</label>
-    <input type="text" id="composerPhones" class="composer-input">
+          <input type="text" id="toPhone_rsvpYes" style="display:none;">
+
 
     <label class="composer-label">Subject:</label>
     <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
@@ -836,7 +826,7 @@ white-space: nowrap;
    If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
   </div>
 
-    <button id="composerSend" class="composer-send">Send Email & SMS</button>
+    <button id="composerSend" class="composer-send">Send Email</button>
   </div>
 
   <!-- TOAST -->
