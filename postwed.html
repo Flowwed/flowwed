@@ -1338,17 +1338,29 @@ h1 {
   margin-top:10px;
 }
 
-.qr-close-btn{
-  margin-top:14px;
-  padding:8px 16px;
-  border:none;
-  border-radius:10px;
-  background:#b41111;
-  color:white;
-  font-weight:600;
-  cursor:pointer;
-}
+.qr-close{
+  position:absolute;
+  top:12px;
+  right:14px;
 
+  width:30px;
+  height:30px;
+  border-radius:50%;
+
+  background:#ffe6ec;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:18px;
+  font-weight:700;
+  color:#b41111;
+
+  cursor:pointer;
+
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
 
 </style>
 </head>
@@ -3152,6 +3164,8 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
 
   <div class="qr-box">
 
+    <div id="qrClose" class="qr-close">×</div>
+
     <div class="qr-title">
       Notify Your Guests
     </div>
@@ -3161,11 +3175,6 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
     <div class="qr-subtitle">
       Scan with your phone
     </div>
-
-    <button class="qr-close-btn"
-      onclick="document.getElementById('qrModal').style.display='none'">
-      Close
-    </button>
 
   </div>
 
