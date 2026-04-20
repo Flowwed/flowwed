@@ -1568,23 +1568,6 @@ const html = `
 </div>
 `;
       
-       <br><br><br>
-
-      <div style="
-        font-size:13px;
-        color:#666;
-        background:#fff7f9;
-        padding:12px;
-        border-radius:8px;
-        border:1px solid #ffd6e2;
-      ">
-        This message is sent from a notification-only address.<br>
-        If you'd like to contact us, please write to:
-        <strong>${footer}</strong>
-      </div>
-
-    </div>
-    `;
 
     sendEmails(emails, subject, html, group);
   };
@@ -2079,10 +2062,6 @@ document.querySelectorAll(".top-nav a").forEach(a => {
   a.href = a.href + "?t=" + tokenNav;
 });
 
-// back button logic
-document.getElementById("backBtn").addEventListener("click", () => {
-  window.location.href = "/dashboard.html?t=" + tokenNav;
-});
 </script>
 
 <script>
