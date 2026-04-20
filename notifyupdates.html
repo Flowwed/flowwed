@@ -6,71 +6,70 @@
 <title>Notify Guests</title>
 
 <style>
-  body {
-    margin:0;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #fff5f7;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-  }
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  background:#fff5f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
 
-  .card {
-    max-width: 420px;
-    width: 90%;
-    background: white;
-    border-radius: 24px;
-    padding: 28px 26px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-  }
+.card {
+  max-width:420px;
+  width:90%;
+  background:white;
+  border-radius:24px;
+  padding:28px 26px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,0.2);
+}
 
-  .title {
-    font-size: 22px;
-    font-weight: 700;
-    color: #a52126;
-    margin-bottom: 12px;
-  }
+.title {
+  font-size:22px;
+  font-weight:700;
+  color:#a52126;
+  margin-bottom:12px;
+}
 
-  .text {
-    font-size: 15px;
-    line-height: 1.5;
-    color: #555;
-  }
+.text {
+  font-size:15px;
+  line-height:1.5;
+  color:#555;
+}
 
-  .btn {
-    margin-top: 22px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 999px;
-    font-weight: 700;
-    color: white;
-    cursor: pointer;
-    background: linear-gradient(#c71c1c, #9f1111);
-    box-shadow: 0 8px 18px rgba(0,0,0,0.25);
-  }
+.btn {
+  margin-top:22px;
+  padding:12px 20px;
+  border:none;
+  border-radius:999px;
+  font-weight:700;
+  color:white;
+  cursor:pointer;
+  background:linear-gradient(#c71c1c,#9f1111);
+  box-shadow:0 8px 18px rgba(0,0,0,0.25);
+}
 </style>
 </head>
 
 <body>
 
 <div class="card">
-
   <div class="title">
     Share your latest wedding updates
   </div>
 
   <div class="text">
-   Notify your guests
-    
+    Notify your guests
   </div>
 
   <button class="btn" id="notifyBtn">
-    Notify 
+    Notify
   </button>
-
 </div>
+
+<script src="https://esm.sh/@supabase/supabase-js"></script>
 
 <script>
 const params = new URLSearchParams(location.search);
@@ -86,25 +85,12 @@ const supabase = window.supabase.createClient(
 
 let coupleName = "We";
 
-// 👉 загрузка имени пары
-async function loadCoupleName() {
-  if (!token) return;
-
-  const { data } = await supabase
-    .from("sites")
-    .select("couple_name")
-    .eq("edit_token", token)
-    .single();
-
-  if (data && data.couple_name) {
-    coupleName = data.couple_name.trim();
-  }
-}
-
-// 👉 кнопка Notify (ПРАВИЛЬНАЯ логика)
+// кнопка работает сразу
 function initNotify() {
 
-  document.getElementById("notifyBtn").addEventListener("click", () => {
+  const btn = document.getElementById("notifyBtn");
+
+  btn.addEventListener("click", () => {
 
     const message =
 `${coupleName} have shared a new wedding update.
@@ -112,24 +98,12 @@ function initNotify() {
 View here:
 ${link}`;
 
-    // 📱 SMS
     const sms = `sms:?body=${encodeURIComponent(message)}`;
+    const wa  = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-    // 💬 WhatsApp
-    const wa = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    const useSMS = confirm("OK = SMS\nCancel = WhatsApp");
 
-    // 📧 Email
-    const email = `mailto:?subject=Wedding Update&body=${encodeURIComponent(message)}`;
-
-    // 🔥 НОРМАЛЬНЫЙ UX (как в первом коде)
-    const choice = confirm(
-`Send update via:
-
-OK = SMS
-Cancel = WhatsApp`
-    );
-
-    if (choice) {
+    if (useSMS) {
       window.location.href = sms;
     } else {
       window.open(wa, "_blank");
@@ -138,10 +112,30 @@ Cancel = WhatsApp`
   });
 }
 
-// 👉 запуск
-loadCoupleName().then(initNotify);
-</script>
+// загрузка имени пары
+async function loadCoupleName() {
+  if (!token) return;
 
+  try {
+    const { data } = await supabase
+      .from("sites")
+      .select("couple_name")
+      .eq("edit_token", token)
+      .single();
+
+    if (data && data.couple_name) {
+      coupleName = data.couple_name.trim();
+    }
+
+  } catch (e) {
+    console.log("No couple name");
+  }
+}
+
+// запуск
+initNotify();
+loadCoupleName();
+</script>
 
 </body>
 </html>
