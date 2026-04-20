@@ -3251,6 +3251,23 @@ dropdown.innerHTML =
 
 </script>
 
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.getElementById("qrClose")?.addEventListener("click", () => {
+    document.getElementById("qrOverlay").style.display = "none";
+  });
+
+  document.getElementById("qrOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "qrOverlay") {
+      e.currentTarget.style.display = "none";
+    }
+  });
+
+});
+
+</script>
 
 
 
