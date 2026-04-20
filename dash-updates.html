@@ -1145,12 +1145,7 @@ modal.classList.add("is-open");
     function initButtons() {
       const saveBtn = $(".save-btn");
       const previewBtn = $(".update-btn");
-      const buttons = document.querySelectorAll(".info-action-btn");
-
-      const sendEmailBtn = buttons[0];
-      const sendSmsBtn = buttons[1];
-
-
+      const sendEmailBtn = $(".info-action-btn");
       const closeBtn = $("#closeModal");
 
       saveBtn?.addEventListener("click", saveUpdate);
@@ -1164,21 +1159,13 @@ modal.classList.add("is-open");
 
         openModal(`https://flowwed.netlify.app/web-updates?token=${token}`, "large");
         const iframe = document.getElementById("storyIframe");
-        iframe.onload = sendTextToIframe;
+iframe.onload = sendTextToIframe;
       });
 
       sendEmailBtn?.addEventListener("click", () => {
         if (!ensureToken()) return;
         openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
       });
-
-     // 👇 ВОТ ЭТО ТЫ ДОБАВЛЯЕШЬ
-  sendSmsBtn?.addEventListener("click", () => {
-    if (!ensureToken()) return;
-
-    openSMSQRModal(token);
-  });
-      
 
       closeBtn?.addEventListener("click", closeModal);
     }
@@ -1205,57 +1192,6 @@ modal.classList.add("is-open");
         }
       });
     }
-
-
-
-function openSMSQRModal(token) {
-
-  const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
-
-  const modal = document.getElementById("storyModal");
-  const iframe = document.getElementById("storyIframe");
-
-  // 👇 генерим QR через API
-  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
-
-  iframe.srcdoc = `
-    <html>
-      <body style="font-family:sans-serif;text-align:center;padding:30px">
-
-        <h2>Notify your guests</h2>
-
-        <p>Scan or send this link:</p>
-
-        <img src="${qr}" />
-
-        <p style="margin-top:15px;font-size:14px;color:#555;">
-          ${link}
-        </p>
-
-        <br>
-
-        <button onclick="
-          navigator.clipboard.writeText('${link}');
-          alert('Link copied!');
-        " style="
-          padding:12px 18px;
-          background:#b41111;
-          color:white;
-          border:none;
-          border-radius:6px;
-          font-weight:700;
-          cursor:pointer;
-        ">
-          Copy Link
-        </button>
-
-      </body>
-    </html>
-  `;
-
-  modal.classList.add("is-open");
-}
-
 
 
     async function initPage() {
