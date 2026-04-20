@@ -50,12 +50,6 @@ body {
   background:linear-gradient(#c71c1c,#9f1111);
   box-shadow:0 8px 18px rgba(0,0,0,0.25);
 }
-
-#notifyBtn {
-  position: relative;
-  z-index: 9999999;
-}
-
 </style>
 </head>
 
@@ -86,40 +80,33 @@ const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
 const supabase = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-
 );
 
 let coupleName = "We";
 
-// кнопка работает сразу
-function initNotify() {
+document.getElementById("notifyBtn").addEventListener("click", () => {
 
-  const btn = document.getElementById("notifyBtn");
-
-  btn.addEventListener("click", () => {
-
-    const message =
+  const message =
 `${coupleName} have shared a new wedding update.
 
 View here:
 ${link}`;
 
-    const sms = `sms:?body=${encodeURIComponent(message)}`;
-    const wa  = `https://wa.me/?text=${encodeURIComponent(message)}`;
+  const sms = `sms:?body=${encodeURIComponent(message)}`;
+  const wa  = `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-    const useSMS = confirm("OK = SMS\nCancel = WhatsApp");
+  const useSMS = confirm("OK = SMS\nCancel = WhatsApp");
 
-    if (useSMS) {
-      window.location.href = sms;
-    } else {
-      window.open(wa, "_blank");
-    }
+  if (useSMS) {
+    window.location.href = sms;
+  } else {
+    window.open(wa, "_blank");
+  }
 
-  });
-}
+});
 
-// загрузка имени пары
-async function loadCoupleName() {
+(async () => {
+
   if (!token) return;
 
   try {
@@ -136,17 +123,8 @@ async function loadCoupleName() {
   } catch (e) {
     console.log("No couple name");
   }
-}
 
-// запуск
-initNotify();
-loadCoupleName();
-
-document.addEventListener("click", (e) => {
-  console.log("CLICK:", e.target);
-});
-
-
+})();
 </script>
 
 </body>
