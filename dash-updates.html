@@ -949,17 +949,24 @@ if (params.get("t")) {
   box-shadow:0 2px 6px rgba(0,0,0,0.2);
 ">×</div>
 
-    <div style="
-      font-size:18px;
-      font-weight:700;
-      color:#9c1818;
-      margin-bottom:14px;
-    ">
-      Notify your guests
-    </div>
+<div style="
+  font-size:18px;
+  font-weight:700;
+  color:#9c1818;
+  margin-bottom:8px;
+">
+  Notify your guests
+</div>
 
-    <img id="qrImage" style="width:220px;height:220px;" />
+<div style="
+  font-size:13px;
+  color:#666;
+  margin-bottom:12px;
+">
+  Scan with your phone
+</div>
 
+<img id="qrImage" style="width:220px;height:220px;">
   </div>
 </div>
 
@@ -1331,7 +1338,20 @@ dropdown.innerHTML =
 
 </script>
 
+<script>
 
+document.getElementById("qrClose")?.addEventListener("click", () => {
+  document.getElementById("qrOverlay").style.display = "none";
+});
+
+document.getElementById("qrOverlay")?.addEventListener("click", (e) => {
+  if (e.target.id === "qrOverlay") {
+    e.currentTarget.style.display = "none";
+  }
+});
+
+
+</script>
 
 </body>
 </html>
