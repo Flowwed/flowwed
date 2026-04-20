@@ -1728,7 +1728,11 @@ border-top:3px solid #b41111;
 <div class="footer-buttons">
       <button id="deleteSelected" class="footer-btn">Delete Selected</button>
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
+
+
       <button id="shareBtn" class="footer-btn">Send SMS</button>
+
+
 
       <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
 
@@ -1794,10 +1798,64 @@ Link will appear automatically
     <button id="composerSend" class="composer-send">Send Email</button>
   </div>
 
+
+
   <!-- TOAST -->
   <div id="greenToast">Message Sent!</div>
 
+  <!-- SHARE POPUP -->
+  <div id="shareModal" style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999999;
+  ">
+    <div style="
+      background:#fff;
+      width:320px;
+      padding:22px 20px;
+      border-radius:14px;
+      text-align:center;
+      box-shadow:0 10px 28px rgba(0,0,0,0.35);
+    ">
+      <div style="
+        font-size:18px;
+        font-weight:700;
+        color:#9c1818;
+        margin-bottom:8px;
+      ">
+        Share update
+      </div>
+
+      <div style="
+        font-size:14px;
+        color:#666;
+        margin-bottom:16px;
+      ">
+        Choose how to send it
+      </div>
+
+      <button id="smsBtn" class="footer-btn">SMS</button>
+      <button id="waBtn" class="footer-btn" style="margin-top:10px;">WhatsApp</button>
+
+      <div id="closeShareModal" style="
+        margin-top:14px;
+        color:#888;
+        cursor:pointer;
+        font-size:14px;
+      ">
+        Cancel
+      </div>
+    </div>
+  </div>
+
 <script type="module">
+
+
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 const supabase = createClient(
@@ -2361,6 +2419,18 @@ if(!validateBlueFields()) return;
 
 // загрузка email отправителя
 loadSenderEmail();
+
+const shareModal = document.getElementById("shareModal");
+
+document.getElementById("shareBtn").onclick = () => {
+  shareModal.style.display = "flex";
+};
+
+document.getElementById("closeShareModal").onclick = () => {
+  shareModal.style.display = "none";
+};
+
+
 
 /* ----------------------------------------
    ШАГ 1 — функция пересборки email/phones
