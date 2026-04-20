@@ -1519,6 +1519,7 @@ document.getElementById("sendEmailBtn").addEventListener("click", () => {
     return;
   }
 
+  iframe.src = `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`;
 
   modal.style.display = "flex";
 });
