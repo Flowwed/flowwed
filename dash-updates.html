@@ -1223,7 +1223,7 @@ modal.classList.add("is-open");
           return;
         }
 
-        openModal(`https://flowwed.netlify.app/web-updates?token=${token}`, "large");
+        openModal(`https://flowwed.netlify.app/notifyupdates?token=${token}`, "large");
         const iframe = document.getElementById("storyIframe");
 iframe.onload = sendTextToIframe;
       });
