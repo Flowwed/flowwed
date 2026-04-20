@@ -2277,7 +2277,27 @@ dropdown.innerHTML =
     text-align:center;
     box-shadow:0 10px 26px rgba(0,0,0,0.3);
     width: 240px;
+    position: relative; /* 🔥 важно */
   ">
+
+    <!-- ❌ КРЕСТИК -->
+    <div onclick="closeQRModal()" style="
+      position:absolute;
+      top:10px;
+      right:12px;
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      background:#ffe6ec;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:16px;
+      cursor:pointer;
+      color:#b41111;
+      font-weight:700;
+      box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    ">×</div>
 
     <div style="
       font-weight:700;
@@ -2303,21 +2323,10 @@ dropdown.innerHTML =
       Scan with your phone
     </div>
 
-    <button onclick="closeQRModal()" style="
-      background:#b41111;
-      color:white;
-      border:none;
-      padding:8px 14px;
-      border-radius:8px;
-      font-weight:600;
-      font-size:13px;
-      cursor:pointer;
-    ">
-      Close
-    </button>
-
   </div>
 </div>
+
+
 </body>
 </html>
 
