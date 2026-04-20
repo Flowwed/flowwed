@@ -95,11 +95,12 @@ ${link}`;
 
   if (navigator.share) {
     try {
-      await navigator.share({
-        title: "Wedding Update",
-        text: message,
-        url: link
-      });
+      
+  await navigator.share({
+  title: "Wedding Update",
+  text: `${coupleName} have shared a new wedding update.`,
+  url: link
+});
     } catch (err) {
       console.log("Share cancelled");
     }
