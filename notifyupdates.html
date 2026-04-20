@@ -50,6 +50,12 @@ body {
   background:linear-gradient(#c71c1c,#9f1111);
   box-shadow:0 8px 18px rgba(0,0,0,0.25);
 }
+
+#notifyBtn {
+  position: relative;
+  z-index: 9999999;
+}
+
 </style>
 </head>
 
@@ -135,6 +141,12 @@ async function loadCoupleName() {
 // запуск
 initNotify();
 loadCoupleName();
+
+document.addEventListener("click", (e) => {
+  console.log("CLICK:", e.target);
+});
+
+
 </script>
 
 </body>
