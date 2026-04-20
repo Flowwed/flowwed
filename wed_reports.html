@@ -1698,15 +1698,17 @@ function updateComposerRecipients(group) {
 /* ====================================================== */
 /* EXPORT CSV                                             */
 /* ====================================================== */
+
 function exportCSVForGroup(group) {
   if (!groupsGlobal) return;
   const arr = groupsGlobal[group] || [];
 
   let csv = ["Name,Email,Guest Message"];
+
   arr.forEach(g => {
     const name = `${g.first_name || ""} ${g.last_name || ""}`.trim();
     const email = g.email || "";
-    const phone = g.message || "";
+    const message = g.message || "";
 
     const safeName = `"${name.replace(/"/g, '""')}"`;
     const safeEmail = `"${email.replace(/"/g, '""')}"`;
@@ -1717,10 +1719,12 @@ function exportCSVForGroup(group) {
 
   const blob = new Blob([csv.join("\n")], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
+
   const a = document.createElement("a");
   a.href = url;
   a.download = `${group}_guests.csv`;
   a.click();
+
   URL.revokeObjectURL(url);
 }
 
