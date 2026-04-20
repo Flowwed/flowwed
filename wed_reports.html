@@ -2326,6 +2326,14 @@ dropdown.innerHTML =
   </div>
 </div>
 
+<script>
+document.getElementById("qrModal")?.addEventListener("click", (e) => {
+  if (e.target.id === "qrModal") {
+    e.currentTarget.style.display = "none";
+  }
+});
+</script>
+
 
 </body>
 </html>
