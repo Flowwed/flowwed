@@ -1304,47 +1304,48 @@ h1 {
 }
 
 
-    <!-- ❌ красивый close -->
-    
-<div id="qrClose" style="
-  position:absolute;
-  top:12px;
-  right:14px;
-  width:30px;
-  height:30px;
-  border-radius:50%;
-  background:#ffe6ec;
-  display:flex;
-  align-items:center;
+.qr-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
   justify-content:center;
-  font-size:18px;
-  cursor:pointer;
-  color:#b41111;
-  font-weight:700;
-  box-shadow:0 2px 6px rgba(0,0,0,0.2);
-">×</div>
+  align-items:center;
+  z-index:999999;
+}
 
-<div style="
-  font-size:17px;
+.qr-box{
+  background:#fff;
+  padding:22px 26px;
+  border-radius:14px;
+  width:320px;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.35);
+}
+
+.qr-title{
+  font-size:20px;
   font-weight:700;
   color:#9c1818;
-  margin-bottom:8px;
-">
-  Notify your guests
-</div>
+  margin-bottom:10px;
+}
 
-<div style="
-  font-size:13px;
+.qr-subtitle{
+  font-size:14px;
   color:#666;
-  margin-bottom:12px;
-">
-  Scan with your phone
-</div>
+  margin-top:10px;
+}
 
-<img id="qrImage" style="width:220px;height:220px;">
-  </div>
-</div>
-
+.qr-close-btn{
+  margin-top:14px;
+  padding:8px 16px;
+  border:none;
+  border-radius:10px;
+  background:#b41111;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
 
 
 </style>
@@ -3144,42 +3145,28 @@ update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
 
 </script>
 
-<!-- QR MODAL -->
-<div id="qrModal" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-">
+<!-- QR MODAL CLEAN -->
+<div id="qrModal" class="qr-overlay">
 
+  <div class="qr-box">
 
-  <div style="
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    text-align: center;
-  ">
-
-
-    <div style="margin-bottom:10px;font-size:16px;font-weight:700;">
+    <div class="qr-title">
       Notify Your Guests
     </div>
 
     <canvas id="qrCanvas"></canvas>
 
-    <div style="margin-top:10px;font-size:13px;color:#666;">
+    <div class="qr-subtitle">
       Scan with your phone
     </div>
 
-    <div style="margin-top:12px;">
-      <button onclick="document.getElementById('qrModal').style.display='none'">
-        Close
-      </button>
-    </div>
+    <button class="qr-close-btn"
+      onclick="document.getElementById('qrModal').style.display='none'">
+      Close
+    </button>
+
   </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
@@ -3195,18 +3182,15 @@ if (shareBtn) {
 
     const token = window.APP_TOKEN;
 
-    // ✅ ВСЕГДА универсальная ссылка (без гостей)
     const link = `${window.location.origin}/rsvpresponse.html?t=${token}&mode=admin`;
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
-    // 📱 MOBILE → SMS
     if (isMobile) {
       window.location.href = `sms:?body=${encodeURIComponent(link)}`;
       return;
     }
 
-    // 💻 DESKTOP → QR
     const modal = document.getElementById("qrModal");
     const canvas = document.getElementById("qrCanvas");
 
@@ -3217,7 +3201,6 @@ if (shareBtn) {
 }
 
 </script>
-
 
 
 <script>
