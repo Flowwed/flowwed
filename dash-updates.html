@@ -1145,7 +1145,13 @@ modal.classList.add("is-open");
     function initButtons() {
       const saveBtn = $(".save-btn");
       const previewBtn = $(".update-btn");
-      const sendEmailBtn = $(".info-action-btn");
+
+      const buttons = document.querySelectorAll(".info-action-btn");
+
+      const sendEmailBtn = buttons[0];
+      const sendSmsBtn = buttons[1];
+     
+
       const closeBtn = $("#closeModal");
 
       saveBtn?.addEventListener("click", saveUpdate);
@@ -1166,6 +1172,13 @@ iframe.onload = sendTextToIframe;
         if (!ensureToken()) return;
         openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
       });
+
+sendSmsBtn?.addEventListener("click", () => {
+  if (!ensureToken()) return;
+
+  openSMSQRModal(token);
+});
+
 
       closeBtn?.addEventListener("click", closeModal);
     }
@@ -1192,6 +1205,54 @@ iframe.onload = sendTextToIframe;
         }
       });
     }
+
+
+function openSMSQRModal(token) {
+
+  const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
+
+  const modal = document.getElementById("storyModal");
+  const iframe = document.getElementById("storyIframe");
+  const windowEl = modal.querySelector(".modal-window");
+
+  // делаем modal маленьким
+  windowEl.classList.remove("large");
+  windowEl.classList.add("small");
+
+  const qr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
+
+  iframe.srcdoc = `
+    <html>
+      <body style="font-family:sans-serif;text-align:center;padding:20px">
+
+        <h2>Notify your guests</h2>
+
+        <img src="${qr}" style="margin:10px 0;" />
+
+        <p style="font-size:13px;word-break:break-all;">
+          ${link}
+        </p>
+
+        <button onclick="
+          navigator.clipboard.writeText('${link}');
+          alert('Link copied!');
+        " style="
+          padding:10px 14px;
+          background:#b41111;
+          color:white;
+          border:none;
+          border-radius:6px;
+          font-weight:700;
+        ">
+          Copy Link
+        </button>
+
+      </body>
+    </html>
+  `;
+
+  modal.classList.add("is-open");
+}
 
 
     async function initPage() {
