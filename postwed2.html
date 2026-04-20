@@ -191,22 +191,6 @@ text-align: center;
   height: 140px;
 }
 
-/* SCROLL CONTAINER */
-.scroll-container {
-  position: relative;
-  height: 260px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 4px;
-  scrollbar-gutter: stable;
-}
-
-/* Хак чтобы скролл был всегда */
-.scroll-container::after {
-  content: "";
-  display: block;
-  height: 140px;
-}
 
 /* ===== Чистый RUBY Scrollbar ===== */
 
@@ -228,50 +212,56 @@ text-align: center;
 .scroll-container::-webkit-scrollbar-thumb:hover {
   background: #9c1818;     /* чуть темнее при hover */
 }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 6px;
-    }
+    #guestTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  table-layout: fixed;
+}
 
-    /* MAKE TABLE HEADER STICKY */
-    #guestTable thead th {
-    position: sticky;
-    top: 0;
-    background: #faf4f6;
-    z-index: 20;
-  }
+/* STICKY HEADER */
+#guestTable thead th {
+  position: sticky;
+  top: 0;
+  background: #faf4f6;
+  z-index: 20;
+}
 
-    th, td {
-      padding: 10px 6px;
-      border-bottom: 1px solid #e9d4d4;
-      font-size: 15px;
-      text-align: center;
-    }
+/* CELLS */
+#guestTable th,
+#guestTable td {
+  padding: 10px 6px;
+  border-bottom: 1px solid #e9d4d4;
+  font-size: 15px;
+  text-align: center;
+  word-break: break-word;
+}
 
-    th {
-      color: #9c1818;
-      font-weight: 800;
-    }
+/* HEADER STYLE */
+#guestTable th {
+  color: #9c1818;
+  font-weight: 800;
+}
 
- .footer-buttons {
+/* COLUMN WIDTHS */
+#guestTable th:nth-child(1),
+#guestTable td:nth-child(1) {
+  width: 40px;
+}
+
+#guestTable th:nth-child(2),
+#guestTable td:nth-child(2) {
+  width: 60px;
+}
+
+/* BUTTONS UNDER TABLE */
+.table-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 12px;     /* было 20px — уменьшили */
-  flex-wrap: wrap;
-  justify-content: flex-start; /* или flex-start если хочешь слева */
+  justify-content: flex-start;
+  margin-top: 16px;
 }
 
-
-
-
-.footer-buttons .footer-btn {
-  padding: 10px 18px;   /* уменьшено */
-  font-size: 14px;      /* уменьшено */
-  border-radius: 12px;  /* плавнее и компактнее */
-  transform: scale(0.96);
-}
-
+/* ERROR ROW */
 .row-error {
   background: #ffe6ec !important;
   box-shadow: inset 0 0 0 3px #ff0033 !important;
@@ -618,6 +608,50 @@ gap: 10px;
 
 }
 
+.table-actions .footer-btn {
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 12px;
+  transform: scale(0.95);
+}
+
+
+.submit-preview-btn {
+  width: 100%;
+  margin-top: 14px;
+
+  padding: 10px 18px;
+  font-size: 14px;
+  border-radius: 12px;
+
+  background: linear-gradient(to bottom, #c94a4a, #9c1818);
+  color: white;
+
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+  cursor: default;
+  pointer-events: none;   /* ❌ полностью отключает клики */
+  opacity: 0.9;
+}
+
+/* УБИВАЕМ hover эффект */
+.submit-preview-btn:hover {
+  transform: none !important;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+}
+
+
+textarea {
+  width: 92%;
+  height: 80px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+
+
  </style>
 
  <style>
@@ -727,21 +761,21 @@ input[type="file"] {
 
 .form-table-layout {
   display: flex;
-  gap: 40px;
+  gap: 24px;
   align-items: flex-start;
-  justify-content: center;   /* 🔥 центрируем ВСЁ */
 }
 
-
 .form-left {
-  width: 420px;      /* фикс норм ширины */
-  flex: none;
+  width: 300px;
+  flex-shrink: 0;
 }
 
 .ruby-frame-outer {
-  width: 520px;      /* таблица НЕ раздувается */
-  flex: none;
+  flex: 1;
+  min-width: 0;
+  width: auto;
 }
+
 
 .mini-menu {
   position: fixed;   /* 👈 ВАЖНО: не absolute */
@@ -751,8 +785,6 @@ input[type="file"] {
 
   z-index: 9999999;  /* 👈 выше ВСЕГО */
 }
-
-
 
 .menu-trigger {
   background: #9c1818;
@@ -819,9 +851,6 @@ input[type="file"] {
   border-radius: 10px 10px 0 0;
 }
 
-.back-btn {
-  display: none;
-}
 
 .top-nav {
   display: none;
@@ -1003,104 +1032,44 @@ if (params.get("t")) {
 
         </div>
 
-        <button style="width:100%;margin-top:16px;">
-          Submit Memory
-        </button>
-
+<button class="submit-preview-btn" disabled>
+  Submit Memory
+</button>
       </div>
 
     </div>
 
   </div>
 
-  <!-- RIGHT CARD -->
-  <div class="section ruby-frame-outer">
+<!-- RIGHT CARD -->
+<div class="section ruby-frame-outer">
 
-    <div class="ruby-frame-inner">
+  <div class="ruby-frame-inner">
 
-      <div class="scroll-container">
+    <div class="scroll-container">
 
-        <table id="guestTable">
-          <thead>
-            <tr>
-              <th><input type="checkbox" id="selectAll"></th>
-              <th>#</th>
-              <th>First</th>
-              <th>Last</th>
-              <th>Email</th>
-              <th>Phone</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-
-      </div>
-
-    </div>
-
-    <div class="actions" style="margin-top:16px;display:flex;gap:12px;">
-      <button>Send Email</button>
-      <button>Send SMS</button>
-    </div>
-
-  </div>
-
-
-
-</div>
-    <div class="footer-buttons">
-      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
-<button id="sendSmsBtn" class="footer-btn">Send SMS</button>
-
-
-<div id="qrBox"></div>
-
-
-  </div>
-
+      <table id="guestTable">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAll"></th>
+             <th>#</th>
+             <th>Name</th>
+             <th>Email</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
     </div>
 
   </div>
 
-</div>
-
-
-  <!-- UNIVERSAL EMAIL COMPOSER -->
-  <div class="email-composer" id="emailComposer">
-
-    <div class="composer-header">
-  <span>Send Email & SMS</span>
-
-  <div style="display:flex;align-items:center;gap:10px;">
-    <span id="composerExpand" class="expand-btn">⤢</span>
-    <span id="composerClose" class="close-btn">&times;</span>
-  </div>
-</div>
-    <label class="composer-label">To Email(s):</label>
-    <input type="text" id="composerEmails" class="composer-input">
-
-    <label class="composer-label">To Phone(s):</label>
-    <input type="text" id="composerPhones" class="composer-input">
-
-    <label class="composer-label">Subject:</label>
-    <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
-
-    <label class="composer-label">Message:</label>
-
-<textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
-
-
-   <div id="composerFooter" class="composer-footer">
-   This message is sent from a notification-only address.<br>
-   If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
+  <!-- 🔥 КНОПКИ ПОД ТАБЛИЦЕЙ -->
+  <div class="table-actions">
+    <button id="sendEmailBtn" class="footer-btn">Send Email</button>
   </div>
 
-    <button id="composerSend" class="composer-send">Send Email & SMS</button>
-  </div>
 
-  <!-- TOAST -->
-  <div id="greenToast">Message Sent!</div>
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
@@ -1193,14 +1162,15 @@ function render() {
                  data-phone="${g.phone}">
         </td>
 
-        <td>${i + 1}</td>
+<td>${i + 1}</td>
 
-        <!-- Editable Fields -->
-        <td contenteditable="true" data-field="first">${g.first}</td>
-        <td contenteditable="true" data-field="last">${g.last}</td>
-        <td contenteditable="true" data-field="email">${g.email}</td>
-        <td contenteditable="true" data-field="phone">${g.phone}</td>
+<td contenteditable="true" data-field="name">
+  ${g.first} ${g.last}
+</td>
 
+<td contenteditable="true" data-field="email">
+  ${g.email}
+</td>
       </tr>
     `;
   });
@@ -1235,6 +1205,8 @@ tbody.addEventListener("input", (e) => {
 // ======================================================
 // INLINE EDIT HANDLER — SAVE ON BLUR
 // ======================================================
+
+
 tbody.addEventListener("blur", async (e) => {
   if (!e.target.matches("[contenteditable]")) return;
 
@@ -1243,30 +1215,38 @@ tbody.addEventListener("blur", async (e) => {
   const field = e.target.dataset.field;
   const newValue = e.target.innerText.trim();
 
-  const guest = guests.find(g => g.id == id);
-  guest[field] = newValue;
+  // 👉 ОБРАБОТКА NAME (главное)
+  if (field === "name") {
+    const parts = newValue.split(" ");
+    const first = parts[0] || "";
+    const last = parts.slice(1).join(" ") || "";
 
+    await supabase
+      .from("guests")
+      .update({
+        first_name: first,
+        last_name: last
+      })
+      .eq("id", id);
+
+    return;
+  }
+
+  // 👉 ОСТАЛЬНОЕ (email и т.д.)
   const map = {
-    first: "first_name",
-    last: "last_name",
-    email: "email",
-    phone: "phone"
+    email: "email"
   };
 
   const sbColumn = map[field];
+  if (!sbColumn) return;
 
-  const { error } = await supabase
+  await supabase
     .from("guests")
     .update({ [sbColumn]: newValue })
     .eq("id", id);
 
-  if (error) {
-    e.target.style.background = "#ffcccc";
-  } else {
-    e.target.style.background = "#d9ffe2";
-    setTimeout(() => (e.target.style.background = ""), 400);
-  }
 }, true);
+
 
 // ======================================================
 // SAVE ON ENTER
@@ -1315,546 +1295,7 @@ window.showToastBox = function (msg, type = "success") {
   }, 2600);
 }
 
-/* ============================
-   DELIVERY NOTICE POPUP
-============================ */
-function showDeliveryNotice() {
-  document.getElementById("deliveryNoticeOverlay").style.display = "flex";
-}
 
-function markRowError(email) {
-  const row = document.querySelector(`.rowCheck[data-email="${email}"]`)?.closest("tr");
-  if (row) {
-    row.classList.add("row-error");
-  }
-}
-
-// ======================================================
-// ADD GUEST (SAFE)
-// ======================================================
-
-const addBtn = document.getElementById("addGuestTopBtn");
-const guestForm = document.getElementById("guestForm");
-
-if (addBtn && guestForm) {
-
-  addBtn.onclick = () => {
-    guestForm.requestSubmit();
-  };
-
-  guestForm.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const first = firstName.value.trim();
-    const last = lastName.value.trim();
-    const emailValue = email.value.trim();
-    const phoneValue = countryCode.value + phone.value.trim();
-    const token = window.APP_TOKEN;
-
-    if (!first || !last || !emailValue || !phone.value.trim() || !countryCode.value)
-      return alert("Fill all fields and select country code!");
-
-    const emailExists = guests.some(g => g.email.toLowerCase() === emailValue.toLowerCase());
-    if (emailExists) {
-      showToastBox("This email already exists!", "error");
-      email.classList.add("input-error");
-      setTimeout(() => email.classList.remove("input-error"), 2000);
-      return;
-    }
-
-    const phoneExists = guests.some(g => g.phone === phoneValue);
-    if (phoneExists) {
-      showToastBox("This phone number already exists!", "error");
-      phone.classList.add("input-error");
-      setTimeout(() => phone.classList.remove("input-error"), 2000);
-      return;
-    }
-
-    const { data } = await supabase
-      .from("guests")
-      .insert([{ first_name:first, last_name:last, email:emailValue, phone:phoneValue, token }])
-      .select();
-
-    guests.push({
-      id: data[0].id,
-      first,
-      last,
-      email: emailValue,
-      phone: phoneValue,
-      std: "",
-      rsvp: ""
-    });
-
-    render();
-    e.target.reset();
-    countryCode.value = "";
-
-    const toast = document.getElementById("greenToast");
-    toast.textContent = "Guest added & saved!";
-    toast.classList.add("show");
-
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 1500);
-  });
-
-}
-
-// ======================================================
-// SELECT ALL
-// ======================================================
-document.getElementById("selectAll").onclick = e => {
-  const all = document.querySelectorAll(".rowCheck");
-  all.forEach(ch => (ch.checked = e.target.checked));
-};
-
-// ================================
-// DELETE SELECTED — WITH CONFIRM
-// ================================
-
-const deleteOverlay = document.getElementById("deleteConfirmOverlay");
-let idsToDelete = [];
-
-document.getElementById("deleteSelected").onclick = () => {
-  const checked = [...document.querySelectorAll(".rowCheck:checked")];
-
-  if (!checked.length) return alert("Nothing selected");
-
-  idsToDelete = checked.map(ch => ch.dataset.id);
-
-  deleteOverlay.style.display = "flex"; // show popup
-};
-
-// Cancel button
-document.getElementById("deleteCancelBtn").onclick = () => {
-  deleteOverlay.style.display = "none";
-};
-
-// Yes button — delete from DB
-document.getElementById("deleteYesBtn").onclick = async () => {
-  await supabase.from("guests").delete().in("id", idsToDelete);
-
-  guests = guests.filter(g => !idsToDelete.includes(g.id));
-  render();
-
-  deleteOverlay.style.display = "none";
-
-  // Clean checkboxes after delete
-  document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
-  document.getElementById("selectAll").checked = false;
-};
-
-// ======================================================
-// PREVIEW GUEST FORM
-// ======================================================
-document.getElementById("previewFormBtn").onclick = () => {
-  const params = new URLSearchParams(location.search);
-  const token = window.APP_TOKEN;
-
-  window.open(
-    `/postwed-preview.html?t=${encodeURIComponent(token)}`,
-    "_blank"
-  );
-};
-
-// ======================================================
-// JUST MARRIED SAMPLE PAGE
-// ======================================================
-document.getElementById("previewJustMarried").onclick = () => {
-  window.open(
-    "https://flowwed.netlify.app/just_married?token=29GE67HAAZ",
-    "_blank"
-  );
-};
-
-
-// ======================================================
-// EMAIL COMPOSER UI
-// ======================================================
-const emailComposer = document.getElementById("emailComposer");
-document.getElementById("composerClose").onclick = () => {
-  emailComposer.style.display = "none";
-};
-
-// ---------- LOAD FOOTER EMAIL ----------
-async function loadSenderEmail() {
-  const params = new URLSearchParams(location.search);
-  const token = window.APP_TOKEN;
-
-  if (!token) return;
-
-  const { data, error } = await supabase
-    .from("sites")
-    .select("email")
-    .eq("edit_token", token)
-    .single();
-
-  if (!error && data?.email) {
-    document.getElementById("footerEmail").textContent = data.email;
-    window.senderEmail = data.email;
-  }
-}
-
-document.getElementById("sendEmailBtn").onclick = () => {
-  openComposer();
-};
-
-// загрузка email отправителя
-loadSenderEmail();
-
-/* ----------------------------------------
-   ШАГ 1 — функция пересборки email/phones
------------------------------------------*/
-function refreshComposerFields() {
-  const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-  const emails = [];
-  const phones = [];
-
-  selected.forEach(ch => {
-    if (ch.dataset.email) emails.push(ch.dataset.email);
-    if (ch.dataset.phone) phones.push(ch.dataset.phone);
-  });
-
-  document.getElementById("composerEmails").value = [...new Set(emails)].join(", ");
-  document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
-}
-
-/* ----------------------------------------
-   OPEN COMPOSER
------------------------------------------*/
-
-
-function openComposer() {
-
-  const selected = [...document.querySelectorAll(".rowCheck:checked")];
-  if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
-
-  refreshComposerFields();
-
-  const token = window.APP_TOKEN;
-
-  // Subject
-  document.getElementById("composerSubject").value =
-    `Wedding Update: ${coupleFullName}`;
-
-  // Message with Post-Wedding form link
-  document.getElementById("composerBody").value =
-`The celebration may be over, but the memories live on!
-
-We would love to see your favorite wedding moments.
-
-Please share your photos and a short message here:
-
-https://coruscating-pika-435f9a.netlify.app/postwed-form?t=${token}`;
-
-  emailComposer.style.display = "block";
-}
-
-
-// ===== EXPAND / SHRINK EMAIL COMPOSER =====
-
-let expanded = false;
-
-document.getElementById("composerExpand").onclick = () => {
-
-  expanded = !expanded;
-
-  if (expanded) {
-    emailComposer.style.width = "600px";
-    emailComposer.style.height = "80vh";
-    emailComposer.style.right = "20px";
-    emailComposer.style.bottom = "20px";
-
-    document.getElementById("composerBody").style.height = "200px";
-
-  } else {
-    emailComposer.style.width = "360px";
-    emailComposer.style.height = "auto";
-
-    document.getElementById("composerBody").style.height = "80px";
-  }
-
-};
-
-
-// ======================================================
-// SEND EMAIL → SEND TO BATCH WORKER
-// ======================================================
-
-document.getElementById("composerSend").onclick = async () => {
-
-// ----------------------------------------------------
-// NEW: формируем письмо (message + footer)
-// ----------------------------------------------------
-const body = document.getElementById("composerBody").value.trim();
-const footer = document.getElementById("composerFooter").innerHTML;
-const htmlBody = body + "<br><br>" + footer;
-
-// Проверка выбранных гостей
-const selected = [...document.querySelectorAll(".rowCheck:checked")];
-if (!selected.length)
-  return showToastBox("Select at least one guest!", "error");
-
-const subject = document.getElementById("composerSubject").value.trim();
-
-// Prepare guest objects
-const batchGuests = selected.map(ch => ({
-  email: ch.dataset.email,
-  name: "Guest"
-}));
-
-const overlay = document.getElementById("sendProgressOverlay");
-const bar = document.getElementById("progressBar");
-const text = document.getElementById("progressText");
-
-overlay.style.display = "flex";
-bar.style.width = "0%";
-text.textContent = `Sending 0 / ${batchGuests.length}`;
-document.getElementById("sendingNote").classList.add("pulse");
-
-let failures = 0;
-
-for (let i = 0; i < batchGuests.length; i++) {
-  const g = batchGuests[i];
-  let ok = true;
-
-  try {
-    const res = await fetch("/.netlify/functions/send-invites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        subject,
-        html: htmlBody,   // ← ИСПОЛЬЗУЕМ УЖЕ ГОТОВОЕ
-        guests: [g]
-      })
-    });
-
-    const json = await res.json();
-    ok = json?.results?.[0]?.ok === true;
-
-  } catch (e) {
-    ok = false;
-  }
-
-  if (!ok) {
-    failures++;
-    markRowError(g.email);
-  }
-
-  const done = i + 1;
-  const percent = Math.round((done / batchGuests.length) * 100);
-
-  bar.style.width = percent + "%";
-  text.textContent = `Sending ${done} / ${batchGuests.length}`;
-
-  await new Promise(r => setTimeout(r, 900));
-}
-
-
-// Hide overlay smoothly
-setTimeout(() => {
-  document.getElementById("sendingNote").classList.remove("pulse");
-  overlay.style.display = "none";
-}, 500);
-
-// Close composer
-emailComposer.style.display = "none";
-
-// Uncheck boxes
-document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
-document.getElementById("selectAll").checked = false;
-
-// Final messaging
-if (failures > 0) {
-  showDeliveryNotice();
-  showToastBox(`${failures} email(s) failed to deliver`, "error");
-} else {
-  showToastBox("All emails sent successfully!", "success");
-}
-
-};
-/* ============================
-   FILTER FUNCTION
-============================ */
-let currentFilter = "all";
-
-function applyGuestFilters() {
-  const rows = document.querySelectorAll("#guestTable tbody tr");
-
-  rows.forEach(row => {
-    const std = row.children[6].innerText.trim();  // STD column
-    const rsvp = row.children[7].innerText.trim(); // RSVP column
-
-    let show = true;
-
-    switch (currentFilter) {
-      case "std-yes":   show = std === "✔"; break;
-      case "std-no":    show = std === "✘"; break;
-      case "std-maybe": show = std === "❔"; break;
-      case "std-none":  show = std === "⚠️"; break;
-
-      case "rsvp-yes":   show = rsvp === "✔"; break;
-      case "rsvp-no":    show = rsvp === "✘"; break;
-      case "rsvp-maybe": show = rsvp === "❔"; break;
-      case "rsvp-none":  show = rsvp === "⚠️"; break;
-
-      case "all": break;
-
-      default: break;
-    }
-
-    row.style.display = show ? "" : "none";
-  });
-}
-
-/* ============================
-   COLUMN VISIBILITY
-============================ */
-function updateColumnVisibility() {
-  const stdCol = document.querySelectorAll("#guestTable th:nth-child(7), #guestTable td:nth-child(7)");
-  const rsvpCol = document.querySelectorAll("#guestTable th:nth-child(8), #guestTable td:nth-child(8)");
-
-  if (currentFilter.startsWith("std-")) {
-    rsvpCol.forEach(c => c.style.display = "none");
-    stdCol.forEach(c => c.style.display = "");
-  }
-  else if (currentFilter.startsWith("rsvp-")) {
-    stdCol.forEach(c => c.style.display = "none");
-    rsvpCol.forEach(c => c.style.display = "");
-  }
-  else {
-    stdCol.forEach(c => c.style.display = "");
-    rsvpCol.forEach(c => c.style.display = "");
-  }
-}
-
-
-/* ============================
-   FILTER BUTTON HANDLERS
-============================ */
-document.querySelectorAll(".filter-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const filter = btn.dataset.filter;
-
-    if (filter === "clear") {
-      currentFilter = "all";
-
-      document.querySelectorAll(".filter-btn")
-        .forEach(b => b.classList.remove("active"));
-
-      document.querySelector('[data-filter="all"]').classList.add("active");
-
-      applyGuestFilters();
-      updateColumnVisibility(); // ← добавлено
-      return;
-    }
-
-    currentFilter = filter;
-
-    document.querySelectorAll(".filter-btn")
-      .forEach(b => b.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    applyGuestFilters();
-    updateColumnVisibility(); // ← добавлено
-  });
-});
-
-
-
-</script>
-
-<!-- PROGRESS OVERLAY START -->
-<div id="sendProgressOverlay" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-">
-  <div style="
-    background:#fff;
-    padding: 22px 26px;
-    border-radius:14px;
-    width: 320px;
-    text-align:center;
-    font-size:16px;
-    font-weight:600;
-    box-shadow:0 10px 28px rgba(0,0,0,0.35);
-  ">
-    <div id="progressText">Sending…</div>
-
-    <div style="margin-top:16px; height:8px; background:#eee; border-radius:6px; overflow:hidden;">
-      <div id="progressBar" style="
-        width:0%;
-        height:100%;
-        background:#b41111;
-        transition: width 0.3s ease;
-      "></div>
-    </div>
-
-    <div id="sendingNote" style="margin-top:10px; font-size:13px; color:#777;">
-      Please do not close this window or turn off your device until the sending process is complete.
-    </div>
-  </div>
-</div>
-<!-- PROGRESS OVERLAY END -->
-
-<!-- DELETE CONFIRM POPUP -->
-<div id="deleteConfirmOverlay" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-">
-  <div style="
-    background:#fff;
-    padding: 22px 26px;
-    border-radius:14px;
-    width: 340px;
-    text-align:center;
-    font-size:16px;
-    font-weight:600;
-    box-shadow:0 10px 28px rgba(0,0,0,0.35);
-  ">
-    <div style="font-size:18px; margin-bottom:12px; color:#b41111;">
-      Are you sure you want to delete the selected guest(s)?
-    </div>
-
-    <div style="font-size:13px; color:#7e2a2a; margin-bottom:20px;">
-      This action cannot be undone.
-    </div>
-
-    <div style="display:flex; gap:10px; justify-content:center;">
-      <button id="deleteYesBtn" style="
-        background:#b41111;
-        color:#fff;
-        padding:10px 20px;
-        border-radius:10px;
-        border:none;
-        font-weight:700;
-        cursor:pointer;
-      ">Yes</button>
-
-      <button id="deleteCancelBtn" style="
-        background:#ccc;
-        color:#333;
-        padding:10px 20px;
-        border-radius:10px;
-        border:none;
-        font-weight:700;
-        cursor:pointer;
-      ">Cancel</button>
-    </div>
-  </div>
-</div>
 
 <!-- TOAST BOX -->
 <div id="toastBox" style="
@@ -1918,475 +1359,6 @@ document.getElementById("backBtn").onclick = () => {
     window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
 };
 
-</script>
-
-<!-- TEST EMAIL MODAL -->
-<div id="testEmailOverlay" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-">
-  <div style="
-    background: #fff;
-    padding: 22px;
-    border-radius: 14px;
-    width: 320px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  ">
-    <div style="font-size:18px; font-weight:600; margin-bottom:12px;">
-      Send Test Email
-    </div>
-
-    <input id="testEmailInput" type="email"
-           placeholder="Your Email"
-           style="width:95%; padding:10px; font-size:15px;
-                  border:1px solid #ccc; border-radius:8px;">
-
-    <button id="sendTestEmailBtn" style="
-      margin-top:16px;
-      padding:10px 16px;
-      background:#d6003d;
-      color:white;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-      width:100%;
-    ">Send</button>
-
-    <button id="closeTestEmail" style="
-      margin-top:10px;
-      background:none;
-      border:none;
-      font-size:14px;
-      text-decoration:underline;
-      color:#666;
-      cursor:pointer;
-    ">Cancel</button>
-  </div>
-</div>
-
-<script>
-// OPEN modal
-document.getElementById("sendTestEmailFooter").onclick = () => {
-    document.getElementById("testEmailOverlay").style.display = "flex";
-};
-
-// CLOSE modal
-document.getElementById("closeTestEmail").onclick = () => {
-    document.getElementById("testEmailOverlay").style.display = "none";
-};
-
-// SEND test email
-document.getElementById("sendTestEmailBtn").onclick = async (e) => {
-  const btn = e.target;
-  const email = document.getElementById("testEmailInput").value.trim();
-
-  if (!email) return showToastBox("Please enter your email.", "error");
-
-  btn.disabled = true;
-  btn.textContent = "Sending…";
-
-  const overlay = document.getElementById("testEmailOverlay");
-  const emailInput = document.getElementById("testEmailInput");
-
-  const payload = {
-    type: "STD",
-    html: `
-      <div style="font-family:Arial;padding:20px;">
-        <h2 style="color:#b41111;">Test Email</h2>
-        <p>This is a test message sent from your Guest Manager.</p>
-      </div>
-    `,
-    subject: "Test Email",
-    token: window.APP_TOKEN,
-    guests: [
-      {
-        name: "Test Recipient",
-        email: email,
-        guest_id: "TEST_" + Date.now()
-      }
-    ]
-  };
-
-  try {
-    const resp = await fetch("/.netlify/functions/send-invites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    let data = null;
-    try { data = await resp.json(); } catch {}
-
-    console.log("TEST EMAIL RESULT:", data);
-
-    if (resp.ok) {
-
-      // показать тост
-      showToastBox("Test email sent!", "success");
-
-      // подготовка к fade-out
-      overlay.style.transition = "opacity 0.5s ease";
-      overlay.style.opacity = "1";
-
-      setTimeout(() => {
-        overlay.style.opacity = "0";
-
-        setTimeout(() => {
-          // скрыть окно
-          overlay.style.display = "none";
-          overlay.style.opacity = "1"; 
-
-          // 🔥 АВТО-ОЧИСТКА EMAIL ПОЛЯ
-          emailInput.value = "";
-
-        }, 500);
-
-      }, 900);
-
-    } else {
-      showToastBox("Error sending test email.", "error");
-    }
-
-  } catch (err) {
-    console.error(err);
-    showToastBox("Network error.", "error");
-  }
-
-  btn.disabled = false;
-  btn.textContent = "Send";
-};
-</script>
-
-<script>
-const aiInput = document.getElementById("aiInput");
-const aiChatBody = document.getElementById("aiChatBody");
-const aiSendBtn = document.getElementById("aiSendBtn");
-let isEmilySpeaking = false;
-let currentEmilyAudio = null;
-
-
-// Send on Enter
-aiInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();   // чтобы не было переноса строки
-    aiSendBtn.click();    // нажимаем Send программно
-  }
-});
-
-
-const params = new URLSearchParams(location.search);
-const siteToken = params.get("t") || "dev";
-
-const AI_API = `/chat?token=${siteToken}`;
-
-aiSendBtn.onclick = async () => {
-  const text = aiInput.value.trim();
-  if (!text) return;
-
-
-  // show user message
-  aiChatBody.innerHTML += `
-    <div class="ai-msg ai-msg-user">${text}</div>
-  `;
-  aiInput.value = "";
-  aiChatBody.scrollTop = aiChatBody.scrollHeight;
-
-  try {
-    const res = await fetch(AI_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text })
-    });
-
-    const data = await res.json();
-
-    aiChatBody.innerHTML += `
-      <div class="ai-msg ai-msg-bot">${data.reply}</div>
-    `;
-    aiChatBody.scrollTop = aiChatBody.scrollHeight;
-
-    speakEmily(data.reply);
-
-
-  } catch (err) {
-    aiChatBody.innerHTML += `
-      <div class="ai-msg ai-msg-bot">
-        ⚠️ Sorry, I’m temporarily unavailable.
-      </div>
-    `;
-  }
-
-  
-};
-
-</script>
-
-
-<script>
-(() => {
-
-/* =========================
-   SPEECH RECOGNITION
-========================= */
-let restartTimer = null;
-let ttsActive = false;   // ← объявить ПЕРЕД использованием
-
-const recognition = new SpeechRecognition();
-
-/* guard: recover WebSpeech if permanently dead */
-window.forceSpeechReset = function () {
-  try { recognition.stop(); } catch {}
-  try { recognition.abort(); } catch {}
-
-  setTimeout(() => {
-    try {
-      recognition.start();
-      console.log("♻️ SpeechRecognition hard-reset done");
-    } catch(e) {}
-  }, 1500);
-};
-
-recognition.lang = "en-US";
-recognition.interimResults = false;
-
-/* IMPORTANT FIX */
-recognition.continuous = true;
-
-// prevent echo — ignore audio if TTS is speaking
-recognition.onaudiostart = () => {
-  if (ttsActive) {
-    try { recognition.stop(); } catch {}
-  }
-};
-
-
-/* =========================
-   DOM
-========================= */
-const voiceBtn = document.getElementById("aiVoiceBtn");
-const speakerBtn = document.getElementById("aiSpeakerBtn");
-const aiInput = document.getElementById("aiInput");
-const aiSendBtn = document.getElementById("aiSendBtn"); // ← ЭТО ВАЖНО
-const listeningText = document.getElementById("listeningText");
-
-voiceBtn.classList.add("mic-off");
-
-window.currentEmilyAudio = null;
-window.isEmilyMuted = false;
-
-/* =========================
-   FSM STATES
-========================= */
-const VoiceState = {
-  IDLE: "IDLE",
-  LISTENING: "LISTENING",
-  PROCESSING: "PROCESSING",
-  SPEAKING: "SPEAKING"
-};
-let voiceState = VoiceState.IDLE;
-
-/* =========================
-   FSM CORE
-========================= */
-function setVoiceState(next) {
-  if (voiceState === next) return;
-
-  if (window._fsmBlocked) return;
-  window._fsmBlocked = true;
-  setTimeout(() => (window._fsmBlocked = false), 200);
-
-  console.log("🎙 FSM:", voiceState, "→", next);
-  voiceState = next;
-
-
-  switch (next) {
-  case VoiceState.IDLE:
-    try { recognition.stop(); }
-    catch(e) { console.warn("⚠ already stopped"); }
-
-    listeningText?.classList.remove("active");
-    voiceBtn.classList.remove("mic-on");
-    voiceBtn.classList.add("mic-off");
-    break;
-
-  case VoiceState.LISTENING:
-  clearTimeout(restartTimer);
-
-  // protect from double-start
-  if (!recognition._starting) {
-    recognition._starting = true;
-
-    try { recognition.start(); }
-    catch(e) {}
-
-    setTimeout(() => {
-      recognition._starting = false;
-    }, 900);
-  }
-
-  listeningText?.classList.add("active");
-  voiceBtn.classList.add("mic-on");
-  voiceBtn.classList.remove("mic-off");
-  break;
-
-
-  case VoiceState.PROCESSING:
-    // prevent multiple stop calls
-  if (!recognition._stopping) {
-  recognition._stopping = true;
-
-  try { recognition.stop(); } catch(e) {}
-
-  setTimeout(() => {
-    recognition._stopping = false;
-  }, 800);
-}
-
-
-    listeningText?.classList.remove("active");
-    break;
-
-  case VoiceState.SPEAKING:
-   // prevent multiple stop calls
-  if (!recognition._stopping) {
-  recognition._stopping = true;
-
-  try { recognition.stop(); } catch(e) {}
-
-  setTimeout(() => {
-    recognition._stopping = false;
-  }, 800);
-}
-
-    break;
-}
-
-}
-
-/* =========================
-   RESULT
-========================= */
-recognition.onresult = (event) => {
-  const text = event.results[0][0].transcript;
-
-  aiInput.value = text;
-  aiSendBtn.click();
-
-  setVoiceState(VoiceState.PROCESSING);
-};
-
-/* =========================
-   MIC BUTTON
-========================= */
-voiceBtn.onclick = () => {
-
-  // ⛔ защита от двойного клика
-  if (voiceBtn.disabled) return;
-
-  voiceBtn.disabled = true;
-  setTimeout(() => {
-    voiceBtn.disabled = false;
-  }, 450); // эта пауза ровно соответствует restart циклу
-
-  if (voiceState === VoiceState.IDLE) {
-    setVoiceState(VoiceState.LISTENING);
-  } else {
-    setVoiceState(VoiceState.IDLE);
-  }
-};
-
-/* =========================
-   SPEAKER / MUTE
-========================= */
-if (speakerBtn) {
-  speakerBtn.addEventListener("click", () => {
-    window.isEmilyMuted = !window.isEmilyMuted;
-
-    if (window.isEmilyMuted && window.currentEmilyAudio) {
-      window.currentEmilyAudio.pause();
-      window.currentEmilyAudio.currentTime = 0;
-      window.currentEmilyAudio = null;
-    } else if (!window.isEmilyMuted && window.lastEmilyText) {
-      speakEmily(window.lastEmilyText);   // 💥 ВОССТАНОВЛЕНИЕ
-    }
-
-    speakerBtn.textContent = window.isEmilyMuted ? "🔇" : "🔊";
-  });
-}
-
-/* =========================
-   TTS + FSM handshake
-========================= */
-window.speakEmily = async function(text) {
-  if (!text) return;
-  window.lastEmilyText = text;
-  if (window.isEmilyMuted) return;
-
-  //
-  // 1) фиксированная последовательность FSM
-  //
-  setVoiceState(VoiceState.SPEAKING); // стоп recognition
-  ttsActive = true;                    // включаем защиту от echo
-
-  try {
-
-    // запрос на API
-    const res = await fetch("/.netlify/functions/tts", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({ text })
-    });
-
-    const audioBlob = await res.blob();
-    const audioUrl = URL.createObjectURL(audioBlob);
-
-    // убиваем предыдущий звук
-    if (window.currentEmilyAudio) {
-      window.currentEmilyAudio.pause();
-      window.currentEmilyAudio.currentTime = 0;
-    }
-
-    // создаём новый аудиопоток
-    const audio = new Audio(audioUrl);
-    window.currentEmilyAudio = audio;
-
-    //
-    // 2) на время воспроизведения — FSM в SPEAKING
-    //    (а не IDLE, как раньше — это был баг)
-    //
-
-    audio.onended = () => {
-  URL.revokeObjectURL(audioUrl);
-  window.currentEmilyAudio = null;
-
-  ttsActive = false;
-
-  // вернуться в LISTENING только если пользователь не выключил сам
-  if (voiceState === VoiceState.SPEAKING || voiceState === VoiceState.IDLE) {
-    setVoiceState(VoiceState.LISTENING);
-  }
-};
-
-
-    audio.play();
-
-  } catch(err) {
-
-    console.error("TTS error:", err);
-
-    ttsActive = false;
-    setVoiceState(VoiceState.IDLE);
-  }
-};
-
-})();
 </script>
 
 <script>
@@ -2472,142 +1444,6 @@ document.getElementById("closeGuide")?.addEventListener("click", () => {
 });
 </script>
 
-<script>
-
-const photoInput = document.getElementById("photoUpload");
-const preview = document.getElementById("photoPreview");
-
-photoInput.addEventListener("change", () => {
-
-preview.innerHTML = "";
-
-const files = [...photoInput.files].slice(0,3);
-
-files.forEach(file => {
-
-const reader = new FileReader();
-
-reader.onload = e => {
-
-const img = document.createElement("img");
-img.src = e.target.result;
-
-img.style.width = "90px";
-img.style.height = "90px";
-img.style.objectFit = "cover";
-img.style.borderRadius = "10px";
-
-preview.appendChild(img);
-
-};
-
-reader.readAsDataURL(file);
-
-});
-
-});
-
-function generateQR() {
-  const container = document.getElementById("qrCodePopup");
-
-  const token = new URLSearchParams(window.location.search).get("t") || "";
-  const url = `https://coruscating-pika-435f9a.netlify.app/postwed-form?t=${token}`;
-
-  container.innerHTML = "";
-
-  QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    container.appendChild(canvas);
-  });
-}
-
-// ✅ ОДИН обработчик
-document.getElementById("sendSmsBtn").onclick = () => {
-  document.getElementById("qrPopup").style.display = "flex";
-  generateQR();
-};
-
-// закрытие popup
-document.getElementById("closeQrPopup").onclick = () => {
-  document.getElementById("qrPopup").style.display = "none";
-};
-
-
-
-</script>
-
-<div id="photoModal" style="
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.8);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
-">
-
-<img id="photoModalImg"
-onclick="event.stopPropagation()"
-style="max-width:90%;max-height:90%;border-radius:12px;">
-</div>
-
-
-<div id="qrPopup" style="
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-">
-
-  <div style="
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    text-align: center;
-  ">
-
-    <div style="font-weight:700; margin-bottom:10px;">
-      Scan QR Code
-    </div>
-
-    <div id="qrCodePopup"></div>
-
-    <div style="margin-top:10px;">
-      <button id="closeQrPopup">Close</button>
-    </div>
-
-  </div>
-
-</div>
-
-<script>
-
-document.getElementById("sendSmsBtn").onclick = () => {
-
-  const token = new URLSearchParams(location.search).get("t") || "";
-  const url = `https://coruscating-pika-435f9a.netlify.app/postwed-form?t=${token}`;
-
-  const container = document.getElementById("qrCodePopup");
-  container.innerHTML = "";
-
-  QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
-    if (!err) container.appendChild(canvas);
-  });
-
-  document.getElementById("qrPopup").style.display = "flex";
-};
-
-document.getElementById("closeQrPopup").onclick = () => {
-  document.getElementById("qrPopup").style.display = "none";
-};
-
-</script>
 
 
 <script>
@@ -2646,6 +1482,48 @@ dropdown.innerHTML =
 
 </script>
 
+<div class="modal-backdrop" id="emailModal">
+  <div class="modal-window">
+
+    <div id="closeEmailModal" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999999;
+    ">×</div>
+
+    <iframe id="emailIframe" class="modal-iframe"></iframe>
+
+  </div>
+</div>
+
+<script>
+
+document.getElementById("sendEmailBtn").addEventListener("click", () => {
+  const modal = document.getElementById("emailModal");
+  const iframe = document.getElementById("emailIframe");
+
+  const token = window.APP_TOKEN;
+
+  if (!token) {
+    alert("Missing token");
+    return;
+  }
+
+  iframe.src = `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`;
+
+  modal.style.display = "flex";
+});
+
+document.getElementById("closeEmailModal").addEventListener("click", () => {
+  document.getElementById("emailModal").style.display = "none";
+});
+
+
+</script>
 
 </body>
 </html>
