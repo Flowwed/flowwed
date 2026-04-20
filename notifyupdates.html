@@ -82,24 +82,33 @@ const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
 let coupleName = "We";
 
 // кнопка
+
 const btn = document.getElementById("notifyBtn");
 
-btn.addEventListener("click", () => {
+btn.addEventListener("click", async () => {
+
   const message =
 `${coupleName} have shared a new wedding update.
 
 View here:
 ${link}`;
 
-  const sms = `sms:?body=${encodeURIComponent(message)}`;
-  const wa  = `https://wa.me/?text=${encodeURIComponent(message)}`;
-
-  if (confirm("OK = SMS\nCancel = WhatsApp")) {
-    location.href = sms;
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Wedding Update",
+        text: message,
+        url: link
+      });
+    } catch (err) {
+      console.log("Share cancelled");
+    }
   } else {
-    window.open(wa, "_blank");
+    alert("Sharing not supported on this device");
   }
+
 });
+
 
 // загрузка имени
 (async () => {
