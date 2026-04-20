@@ -910,6 +910,59 @@ if (params.get("t")) {
 
   <div id="toast" class="toast">Message saved!</div>
 
+<div id="qrOverlay" style="
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999999;
+">
+
+  <div style="
+    background:white;
+    padding:26px 28px;
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 14px 40px rgba(0,0,0,0.35);
+    position:relative;
+  ">
+
+    <!-- ❌ красивый close -->
+    
+<div id="qrClose" style="
+  position:absolute;
+  top:12px;
+  right:14px;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#ffe6ec;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  cursor:pointer;
+  color:#b41111;
+  font-weight:700;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+">×</div>
+
+    <div style="
+      font-size:18px;
+      font-weight:700;
+      color:#9c1818;
+      margin-bottom:14px;
+    ">
+      Notify your guests
+    </div>
+
+    <img id="qrImage" style="width:220px;height:220px;" />
+
+  </div>
+</div>
+
 
   <script>
     const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
@@ -1211,49 +1264,15 @@ function openSMSQRModal(token) {
 
   const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
 
-  const modal = document.getElementById("storyModal");
-  const iframe = document.getElementById("storyIframe");
-  const windowEl = modal.querySelector(".modal-window");
-
-  // делаем modal маленьким
-  windowEl.classList.remove("large");
-  windowEl.classList.add("small");
-
   const qr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
 
-  iframe.srcdoc = `
-    <html>
-      <body style="font-family:sans-serif;text-align:center;padding:20px">
+  const overlay = document.getElementById("qrOverlay");
+  const img = document.getElementById("qrImage");
 
-        <h2>Notify your guests</h2>
+  if (img) img.src = qr;
 
-        <img src="${qr}" style="margin:10px 0;" />
-
-        <p style="font-size:13px;word-break:break-all;">
-          ${link}
-        </p>
-
-        <button onclick="
-          navigator.clipboard.writeText('${link}');
-          alert('Link copied!');
-        " style="
-          padding:10px 14px;
-          background:#b41111;
-          color:white;
-          border:none;
-          border-radius:6px;
-          font-weight:700;
-        ">
-          Copy Link
-        </button>
-
-      </body>
-    </html>
-  `;
-
-  modal.classList.add("is-open");
+  overlay.style.display = "flex";
 }
-
 
     async function initPage() {
       initQuill();
