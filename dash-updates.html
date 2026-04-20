@@ -1234,11 +1234,13 @@ iframe.onload = sendTextToIframe;
       });
 
 sendSmsBtn?.addEventListener("click", () => {
+
+  console.log("SMS CLICKED");  // 👈 ДОБАВИЛИ
+
   if (!ensureToken()) return;
 
   openSMSQRModal(token);
 });
-
 
       closeBtn?.addEventListener("click", closeModal);
     }
@@ -1269,7 +1271,8 @@ sendSmsBtn?.addEventListener("click", () => {
 
 function openSMSQRModal(token) {
 
-const link = `https://flowwed.netlify.app/notifyupdates?t=${token}&n=${slug}`;
+  const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
+
 
   const qr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(link)}`;
 
@@ -1340,16 +1343,19 @@ dropdown.innerHTML =
 
 <script>
 
-document.getElementById("qrClose")?.addEventListener("click", () => {
-  document.getElementById("qrOverlay").style.display = "none";
-});
+document.addEventListener("DOMContentLoaded", () => {
 
-document.getElementById("qrOverlay")?.addEventListener("click", (e) => {
-  if (e.target.id === "qrOverlay") {
-    e.currentTarget.style.display = "none";
-  }
-});
+  document.getElementById("qrClose")?.addEventListener("click", () => {
+    document.getElementById("qrOverlay").style.display = "none";
+  });
 
+  document.getElementById("qrOverlay")?.addEventListener("click", (e) => {
+    if (e.target.id === "qrOverlay") {
+      e.currentTarget.style.display = "none";
+    }
+  });
+
+});
 
 </script>
 
