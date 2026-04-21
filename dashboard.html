@@ -847,7 +847,10 @@ if (params.get("t")) {
   localStorage.setItem("verified_token", params.get("t"));
 }
 
-// 🔥 TRIAL CHECK (ГЛАВНОЕ)
+
+
+// 🔥 TRIAL CHECK (ФИНАЛЬНЫЙ)
+
 if (!token) {
   document.body.innerHTML = "No access";
   throw new Error("No token");
@@ -877,13 +880,47 @@ if (trial.is_trial) {
   const expires = new Date(trial.trial_expires_at);
 
   if (expires < now) {
+
     document.body.innerHTML = `
-      <h1>Trial expired</h1>
-      <p>Please start again.</p>
+      <div style="
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        font-family:Inter, sans-serif;
+        text-align:center;
+        background:#fff7fa;
+        color:#7a3a4a;
+        padding:20px;
+      ">
+        <h1 style="font-size:28px;margin-bottom:10px;">
+          Your trial has ended
+        </h1>
+
+        <p style="font-size:16px;margin-bottom:30px;max-width:400px;">
+          Continue planning your wedding with full access.
+        </p>
+
+        <a href="https://flowweds.netlify.app" style="
+          background:#9c1818;
+          color:white;
+          padding:14px 28px;
+          border-radius:12px;
+          text-decoration:none;
+          font-weight:600;
+          box-shadow:0 8px 20px rgba(0,0,0,0.25);
+        ">
+          Buy your FloWWed
+        </a>
+      </div>
     `;
+
     throw new Error("Expired");
   }
 }
+
+
 
 // ----------------------------
 // LOAD COUPLE NAME
