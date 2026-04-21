@@ -1497,48 +1497,103 @@ dropdown.innerHTML =
 
 </script>
 
-<div class="modal-backdrop" id="emailModal">
-  <div class="modal-window">
+<!-- EMAIL COMPOSER -->
+<div class="email-composer" id="emailComposer">
 
-    <div id="closeEmailModal" style="
-      position:absolute;
-      top:10px;
-      right:16px;
-      font-size:32px;
-      font-weight:bold;
-      cursor:pointer;
-      z-index:9999999;
-    ">×</div>
-
-    <iframe id="emailIframe" class="modal-iframe"></iframe>
-
+  <div class="composer-header">
+    <span>Send Email</span>
+    <span id="composerClose" class="close-btn">&times;</span>
   </div>
+
+  <label class="composer-label">To:</label>
+  <input id="composerEmails" class="composer-input">
+
+  <label class="composer-label">Subject:</label>
+  <input id="composerSubject" class="composer-input">
+
+  <label class="composer-label">Message:</label>
+  <textarea id="composerBody" class="composer-textarea"></textarea>
+
+  <button id="composerSend" class="composer-send">Send</button>
+
 </div>
 
 <script>
 
-document.getElementById("sendEmailBtn").addEventListener("click", () => {
-  const modal = document.getElementById("emailModal");
-  const iframe = document.getElementById("emailIframe");
+document.addEventListener("DOMContentLoaded", () => {
 
-  const token = window.APP_TOKEN;
+  // Открытие
+  document.getElementById("sendEmailBtn").onclick = () => {
+    openComposer();
+  };
 
-  if (!token) {
-    alert("Missing token");
-    return;
+  function openComposer() {
+
+    const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+    if (selected.length === 0) {
+      alert("Select at least one guest");
+      return;
+    }
+
+    const emails = selected.map(ch => ch.dataset.email);
+
+    document.getElementById("composerEmails").value =
+      [...new Set(emails)].join(", ");
+
+    document.getElementById("composerSubject").value =
+      "Wedding Invitation";
+
+    document.getElementById("composerBody").value =
+      "Hello! You are invited...";
+
+    document.getElementById("emailComposer").style.display = "block";
   }
 
-  iframe.src = `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`;
+  // Закрытие
+  document.getElementById("composerClose").onclick = () => {
+    document.getElementById("emailComposer").style.display = "none";
+  };
 
-  modal.style.display = "flex";
+  // Отправка
+  document.getElementById("composerSend").onclick = async () => {
+
+    const subject = document.getElementById("composerSubject").value;
+    const body = document.getElementById("composerBody").value;
+
+    const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+    if (selected.length === 0) {
+      alert("No guests selected");
+      return;
+    }
+
+    for (const ch of selected) {
+
+      await fetch("/.netlify/functions/send-invites", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          subject,
+          html: body,
+          guests: [{
+            email: ch.dataset.email
+          }]
+        })
+      });
+
+    }
+
+    alert("Emails sent!");
+
+  };
+
 });
-
-document.getElementById("closeEmailModal").addEventListener("click", () => {
-  document.getElementById("emailModal").style.display = "none";
-});
-
 
 </script>
+
 
 </body>
 </html>
