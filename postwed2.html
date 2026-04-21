@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<body data-page="postwed">
+
+
   <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Guest Manager — Ruby Edition</title>
 
   <style>
@@ -9,30 +14,23 @@
     /* ======================== */
     /* GLOBAL PAGE BACKGROUND  */
     /* ======================== */
+
+
     body {
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(180deg, #fff1f4, #ffffff);
       color: #6a2a2a;
       margin: 40px auto;
-      max-width: 1120px;
+      max-width: 1020px;
     }
 
 
-    /* ============================= */
-    /*  RUBY 3D TITLE                */
-    /* ============================= */
-
-h1 {
-  font-size: 36px !important;
-  font-weight: 600 !important;
-  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202) !important;
-  -webkit-background-clip: text !important;
-  color: transparent !important;
-
-text-align: center;
-  width: 100%;
+#topMainTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #9c1818;
+  margin: 0;
 }
-
 
 .top-divider-line {
   height: 2px;
@@ -41,77 +39,40 @@ text-align: center;
   border-radius: 2px;
 }
 
-    /* ============================= */
-    /* RUBY GLASS BUTTON STYLE       */
-    /* ============================= */
-
-    button,
-    .footer-btn {
-      padding: 14px 22px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.35);
-
-      font-size: 16px;
-      font-weight: 700;
-      color: white;
-
-      cursor: pointer;
-      transition: 0.28s ease;
-
-      background: linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.18),
-          rgba(255,255,255,0.05)
-        ),
-        #9c1818;
-
-      box-shadow:
-        0 8px 20px rgba(0,0,0,0.38),
-        0 3px 8px rgba(0,0,0,0.25),
-        inset 0 3px 6px rgba(255,255,255,0.22),
-        inset 0 -6px 14px rgba(70,0,20,0.35);
-
-      backdrop-filter: blur(14px) saturate(160%);
-    }
-
-    button:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow:
-        0 14px 28px rgba(0,0,0,0.48),
-        0 6px 14px rgba(0,0,0,0.32),
-        inset 0 4px 10px rgba(255,255,255,0.28),
-        inset 0 -10px 18px rgba(60,0,20,0.38);
-    }
-
-    button:active {
-      transform: scale(0.96);
-    }
 
     /* ============================= */
     /* FORM + TABLE SECTIONS         */
     /* ============================= */
 
-    .section,
-    .table-section {
-      background: rgba(255,255,255,0.75);
-      padding: 18px 18px 28px 18px;
-      border-radius: 18px;
-      margin-bottom: 26px;
+   .section {
+  background: rgba(255,255,255,0.75);
+  padding: 18px 18px 28px 18px;
+  border-radius: 18px;
+  margin-bottom: 26px;
+}
 
-      box-shadow:
-        0 18px 40px rgba(0,0,0,0.18),
-        0 8px 20px rgba(0,0,0,0.12),
-        inset 0 2px 6px rgba(255,255,255,0.25);
+.table-section {
+  width: 93%;
+  margin: 40px auto;
+  padding: 18px;
 
-      backdrop-filter: blur(18px) saturate(180%);
-    }
+  background: rgba(255,255,255,0.75);
+  border-radius: 18px;
 
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.12),
+    inset 0 2px 6px rgba(255,255,255,0.25);
+
+  backdrop-filter: blur(18px) saturate(180%);
+}
     /* RUBY FRAME AROUND TABLE */
     .ruby-frame-outer {
       border: 3px solid #b41111;
       border-radius: 16px;
       padding: 10px;
       margin-top: 14px;
+
       box-shadow:
         0 0 12px rgba(180,17,17,0.18),
         inset 0 0 6px rgba(255,255,255,0.45);
@@ -122,6 +83,8 @@ text-align: center;
       border-radius: 14px;
       padding: 6px;
     }
+
+
 
      .addGuestHeader {
   display: flex;
@@ -191,6 +154,22 @@ text-align: center;
   height: 140px;
 }
 
+/* SCROLL CONTAINER */
+.scroll-container {
+  position: relative;
+  height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+
+/* Хак чтобы скролл был всегда */
+.scroll-container::after {
+  content: "";
+  display: block;
+  height: 140px;
+}
 
 /* ===== Чистый RUBY Scrollbar ===== */
 
@@ -212,56 +191,78 @@ text-align: center;
 .scroll-container::-webkit-scrollbar-thumb:hover {
   background: #9c1818;     /* чуть темнее при hover */
 }
-    #guestTable {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 6px;
-  table-layout: fixed;
-}
 
-/* STICKY HEADER */
-#guestTable thead th {
-  position: sticky;
-  top: 0;
-  background: #faf4f6;
-  z-index: 20;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+    }
 
-/* CELLS */
-#guestTable th,
-#guestTable td {
-  padding: 10px 6px;
-  border-bottom: 1px solid #e9d4d4;
-  font-size: 15px;
-  text-align: center;
-  word-break: break-word;
-}
 
-/* HEADER STYLE */
-#guestTable th {
-  color: #9c1818;
-  font-weight: 800;
-}
+    /* MAKE TABLE HEADER STICKY */
+    #guestTable thead th {
+    position: sticky;
+    top: 0;
+    background: #faf4f6;
+    z-index: 20;
+  }
 
-/* COLUMN WIDTHS */
-#guestTable th:nth-child(1),
-#guestTable td:nth-child(1) {
-  width: 40px;
-}
+    th, td {
+      padding: 10px 6px;
+      border-bottom: 1px solid #e9d4d4;
+      font-size: 15px;
+      text-align: center;
+    }
 
-#guestTable th:nth-child(2),
-#guestTable td:nth-child(2) {
-  width: 60px;
-}
+    th {
+      color: #9c1818;
+      font-weight: 800;
+    }
 
-/* BUTTONS UNDER TABLE */
-.table-actions {
+ .footer-buttons {
   display: flex;
-  justify-content: flex-start;
-  margin-top: 16px;
+  gap: 10px;
+  margin-top: 12px;     /* было 20px — уменьшили */
+  flex-wrap: wrap;
 }
 
-/* ERROR ROW */
+.footer-buttons .footer-btn {
+  padding: 10px 18px;   /* уменьшено */
+  font-size: 15px;      /* уменьшено */
+  font-weight: 600;
+  border-radius: 12px;  /* плавнее и компактнее */
+  transform: scale(0.96);
+}
+
+.footer-btn {
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.15),
+      rgba(255,255,255,0.04)
+    ),
+    #b41111;
+
+  color: white;
+  border: none;
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    inset 0 -4px 10px rgba(60,0,20,0.3);
+
+  transition: 0.25s ease;
+}
+
+.footer-btn:hover {
+  transform: translateY(-2px);
+}
+
+
+#sendTestEmailFooter {
+  display: none;
+}
+
+
 .row-error {
   background: #ffe6ec !important;
   box-shadow: inset 0 0 0 3px #ff0033 !important;
@@ -272,12 +273,9 @@ text-align: center;
     /* ============================= */
 
     .email-composer {
-   position: fixed !important;
-   bottom: 20px !important;
-   right: 20px !important;
-   top: auto !important;
-   left: auto !important;
-   margin: 0 !important;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
       width: 380px;
       background: #ffffff;
       border-radius: 14px;
@@ -482,21 +480,21 @@ text-align: center;
 /* Ruby “i” icon */
 .info-icon-inline {
   min-width: 24px;
-  width: 24px;
   height: 24px;
-gap: 10px;
-
   border-radius: 50%;
+
   background: #b41111;
   color: white;
-
+  font-size: 13px;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  flex-shrink: 0;   /* ← ВОТ ЭТО КЛЮЧ */
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 2px 3px rgba(255,255,255,0.25);
 }
-
 
 /* Main text */
 .info-text-inline {
@@ -519,10 +517,11 @@ gap: 10px;
 }
 
 
-.info-bubble-inline {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.info-bubble-inline{
+display:flex;
+align-items:flex-start;
+gap:18px;
+margin-top:18px;
 }
 
 /* ТЕКСТ */
@@ -563,10 +562,12 @@ gap: 10px;
   font-weight: 700;  /* по желанию */
  }
 
-.field input, 
-.field select {
+.field input,
+.field select,
+textarea {
   border: 1px solid rgba(160,0,40,0.25);
   transition: 0.25s ease;
+  background:#eef4ff !important;
 }
 
 .scroll-container table thead th {
@@ -578,47 +579,61 @@ gap: 10px;
 
 }
 
-.table-actions .footer-btn {
-  padding: 10px 18px;
-  font-size: 14px;
-  border-radius: 12px;
-  transform: scale(0.95);
+
+
+/* info bubble */
+.ios-banner {
+  margin: 0 auto 36px auto;
+  padding: 16px 24px;
+  max-width: 880px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 15.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10); 
+    inset 0 3px 8px rgba(255,255,255,0.25);
 }
 
 
-.submit-preview-btn {
-  width: 100%;
-  margin-top: 14px;
 
-  padding: 10px 18px;
-  font-size: 14px;
-  border-radius: 12px;
+/* bubble — строго центр экрана */
+.ios-banner {
+  justify-self: center;
+  text-align: center;
+}
 
-  background: linear-gradient(to bottom, #c94a4a, #9c1818);
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  margin-right: 8px;
+
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ff4d4d, #b41111);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   color: white;
 
-  border: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  font-size: 12px;
+  font-weight: bold;
 
-  cursor: default;
-  pointer-events: none;   /* ❌ полностью отключает клики */
-  opacity: 0.9;
-}
-
-/* УБИВАЕМ hover эффект */
-.submit-preview-btn:hover {
-  transform: none !important;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important;
+  flex-shrink: 0;
 }
 
 
-textarea {
-  width: 92%;
-  height: 80px;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 10px;
-}
 
 
 
@@ -714,36 +729,403 @@ textarea {
   margin-left: auto !important;
 }
 
+/* === Narrow Add Guest form === */
 
+.add-guest-section {
+  flex: 0 0 34%;
+  max-width: 34%;
+}
 
-.guide-link {
-  color: #1e63ff;
-  font-weight: 700;
-  text-decoration: underline;
-  cursor: pointer;
+.add-guest-ai-layout {
+  display: flex;
+  align-items: stretch; /* 🔥 КЛЮЧЕВОЕ */
 }
 
 
-input[type="file"] {
+.ios-banner-inline {
+  padding: 8px 14px;
+  background: rgba(255,255,255,0.75);
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7e2a2a;
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.12),
+    inset 0 1px 3px rgba(255,255,255,0.6);
+}
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+
+.guide-link:hover {
+  color: #1a4fd6;
+  text-decoration: underline;
+}
+
+
+.highlight-field {
+  background:#ffe6ec;
+  animation: highlightFade 1.6s ease;
+}
+
+@keyframes highlightFade {
+  0% {
+    background:#ffe6ec;
+  }
+  100% {
+    background:white;
+  }
+}
+
+.slide-down {
+  animation: slideDown 0.35s ease;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity:0;
+    transform:translateY(-8px);
+  }
+  100% {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+</style>
+
+<style>
+
+/* ============================
+   MOBILE VIDEO + FORM LAYOUT
+============================ */
+
+@media (max-width: 768px) {
+
+  body {
+    margin: 16px;
+    max-width: 100%;
+  }
+
+  .info-bubble-inline {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+
+  /* RSVP FORM MOBILE FIX */
+
+  .info-bubble-inline > div {
+    padding: 14px !important;
+  }
+
+  .field input,
+  .field select,
+  textarea {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+
+/* MOBILE NAVBAR FIX */
+
+.top-nav {
+  overflow-x: auto;
+  white-space: nowrap;
+  justify-content: flex-start;
+  padding-left: 12px;
+  gap: 22px;
+  -webkit-overflow-scrolling: touch;
+}
+.top-nav::-webkit-scrollbar {
   display: none;
 }
 
+}
 
-.form-table-layout {
+#previewFormBtn,
+#previewJustMarried{
+display:none;
+}
+
+#previewSubmitBtn{
+opacity:0.55;
+cursor:not-allowed;
+filter:grayscale(30%);
+pointer-events:none;
+}
+
+#previewSubmitBtn:hover{
+transform:none !important;
+box-shadow:none !important;
+}
+
+.preview-submit-row{
+display:flex;
+align-items:center;
+gap:12px;
+margin-top:12px;
+}
+
+#previewSubmitBtn{
+opacity:0.55;
+cursor:not-allowed;
+filter:grayscale(30%);
+pointer-events:none;
+}
+
+#previewSubmitBtn:hover{
+transform:none !important;
+box-shadow:none !important;
+}
+
+.preview-info{
+position:relative;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:10px;
+padding:8px 12px;
+display:flex;
+align-items:center;
+gap:8px;
+font-size:13px;
+color:#7e2a2a;
+}
+
+.preview-info-icon{
+width:18px;
+height:18px;
+border-radius:50%;
+background:#b41111;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+font-weight:700;
+}
+
+.preview-info::before{
+content:"";
+position:absolute;
+left:-8px;
+top:12px;
+border-top:6px solid transparent;
+border-bottom:6px solid transparent;
+border-right:8px solid #ffd0d0;
+}
+
+.preview-info::after{
+content:"";
+position:absolute;
+left:-7px;
+top:12px;
+border-top:6px solid transparent;
+border-bottom:6px solid transparent;
+border-right:8px solid #fff7f7;
+}
+.date-info{
+position:relative;
+display:flex;
+align-items:center;
+gap:8px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:10px;
+padding:6px 10px;
+font-size:12px;
+color:#7e2a2a;
+max-width:240px;
+}
+
+/* icon */
+
+.date-info-icon{
+width:18px;
+height:18px;
+border-radius:50%;
+background:#b41111;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+font-weight:700;
+flex-shrink:0;
+}
+
+/* bubble tail */
+
+.date-info::before{
+content:"";
+position:absolute;
+left:-8px;
+top:10px;
+border-top:6px solid transparent;
+border-bottom:6px solid transparent;
+border-right:8px solid #ffd0d0;
+}
+
+.date-info::after{
+content:"";
+position:absolute;
+left:-7px;
+top:10px;
+border-top:6px solid transparent;
+border-bottom:6px solid transparent;
+border-right:8px solid #fff7f7;
+}
+
+#rsvpFormTitle{
+font-size:24px;
+font-weight:700;
+color:#9c1818;
+margin-bottom:20px;
+letter-spacing:0.4px;
+}
+
+.couple-field{
+background:#eef4ff !important;
+}
+
+.field{
+border-bottom:1px solid rgba(180,17,17,0.15);
+padding-bottom:6px;
+margin-bottom:10px;
+}
+.field label{
+min-width:140px;
+font-weight:700;
+}
+
+
+.preview-line{
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+
+.preview-line label{
+  white-space:nowrap;
+}
+
+.preview-line .dot{
+  white-space:nowrap;
+}
+
+.preview-line [data-preview="address"]{
+  flex:1;
+}
+
+.map-link-box{
+  margin-top:12px;
+  margin-bottom:18px;
+}
+
+.map-link-box a{
+  font-size:12px;
+  font-weight:500;
+  color:#1e63ff;
+  text-decoration:none;
+  border-bottom:1px dashed rgba(180,17,17,0.35);
+  padding-bottom:2px;
+
+  transition:0.2s;
+}
+
+.map-link-box a:hover{
+  text-decoration:underline;
+}
+
+
+.required-error{
+border:3px solid #ff0033 !important;
+background:#ffe6ec !important;
+box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
+}
+
+.top-nav-wrapper {
+  position: relative;
   display: flex;
-  gap: 24px;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+
+  margin-bottom: 8px;   /* 🔥 вместо 100px */
 }
 
-.form-left {
-  width: 300px;
-  flex-shrink: 0;
+
+
+
+/* ================= HEADER (same as Reports) ================= */
+
+h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 600;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-top: 28px;
+  margin-bottom: 36px;
+  letter-spacing: -1px;
 }
 
-.ruby-frame-outer {
-  flex: 1;
-  min-width: 0;
-  width: auto;
+
+/* info bubble */
+.ios-banner {
+  margin: 0 auto 36px auto;
+  padding: 16px 24px;
+  max-width: 880px;
+  text-align: center;
+
+  background: rgba(250, 250, 250, 0.65);
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
+  color: #555;
+  font-size: 15.5px;
+  font-weight: 550;
+  line-height: 1.45;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10); 
+    inset 0 3px 8px rgba(255,255,255,0.25);
+}
+
+.top-header {
+  position: relative;
+}
+
+h1 {
+  text-align: center;
+}
+
+
+h1 {
+  justify-self: center;
+}
+
+
+
+#deleteSelected {
+  display: none;
 }
 
 
@@ -755,6 +1137,8 @@ input[type="file"] {
 
   z-index: 9999999;  /* 👈 выше ВСЕГО */
 }
+
+
 
 .menu-trigger {
   background: #9c1818;
@@ -821,98 +1205,90 @@ input[type="file"] {
   border-radius: 10px 10px 0 0;
 }
 
+.back-btn {
+  display: none;
+}
 
 .top-nav {
   display: none;
 }
 
 
-.ios-banner {
-  margin: 0 auto 36px auto;
-  padding: 16px 24px;
-  max-width: 880px;
-  text-align: center;
-
-  background: rgba(250, 250, 250, 0.65);
-  border-radius: 18px;
-
-  border: 1px solid rgba(255,255,255,0.55);
-  backdrop-filter: blur(18px);
-
-  color: #555;
-  font-size: 15.5px;
-  font-weight: 550;
-  line-height: 1.45;
-
-  box-shadow:
-    0 6px 16px rgba(0,0,0,0.10),
-    inset 0 3px 8px rgba(255,255,255,0.25);
+.qr-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999999;
 }
 
-.info-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  width: 18px;
-  height: 18px;
-
-  margin-right: 8px;
-
-  border-radius: 50%;
-  background: linear-gradient(180deg, #ff4d4d, #b41111);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  color: white;
-
-  font-size: 12px;
-  font-weight: bold;
-
-  flex-shrink: 0;
+.qr-box{
+  background:#fff;
+  padding:22px 26px;
+  border-radius:14px;
+  width:276px;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.35);
+position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
 }
 
 
-.ios-banner {
-  margin: 0 auto 36px auto;
+.qr-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:999999;
 }
 
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
+.qr-box{
+  background:#fff;
+  padding:22px 26px;
+  border-radius:14px;
+  width:276px;
+  text-align:center;
+  box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  position: relative; /* 🔥 важно */
 }
 
-.modal-window {
-  position: relative;
-  background: white;
-
-  width: 75vw;     /* 🔥 как в первом */
-  height: 75vh;    /* 🔥 как в первом */
-
-  border-radius: 18px;
-  overflow: hidden;
-
-  z-index: 9999999;
-
-  display: flex;
-  flex-direction: column;
+.qr-title{
+  font-size:18px;
+  font-weight:700;
+  color:#9c1818;
+  margin-bottom:8px;
 }
 
-
-.modal-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  position: relative;
-  z-index: 1;
+.qr-subtitle{
+  font-size:13px;
+  color:#666;
+  margin-top:10px;
 }
 
+.qr-close{
+  position:absolute;
+  top:12px;
+  right:14px;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#ffe6ec;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  cursor:pointer;
+  color:#b41111;
+  font-weight:700;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
 </style>
+</head>
 
+<body>
 
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -930,13 +1306,6 @@ if (params.get("t")) {
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
-</head>
-
-<body>
-
-
 <div class="top-header">
 
 <div class="mini-menu">
@@ -945,7 +1314,7 @@ if (params.get("t")) {
   <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
 <div class="menu-dropdown" id="menuDropdown"></div></div>
 
-<h1>Guest Memories</h1>
+<h1>RSVP</h1>
 
 <div></div>
 
@@ -989,91 +1358,273 @@ if (params.get("t")) {
 
 
 
-<!-- POST WEDDING FORM PREVIEW -->
+<!-- FORM -->
 
-<div class="form-table-layout">
+<div class="field">
 
-  <!-- LEFT CARD -->
-  <div class="section form-left">
+<div style="
+margin-top:24px;
+margin-bottom:10px;
+font-size:15px;
+font-weight:700;
+color:#9c1818;
+">
 
-    <h2 style="margin-top:0;color:#9c1818;">Guest Memories Form</h2>
+<div style="
+border:2px solid #b41111;
+border-radius:14px;
+padding:18px;
+margin-bottom:20px;
+background:rgba(255,255,255,0.9);
+">
 
-    <div style="max-width:760px;margin:0 auto;">
+<div id="guestFormTitle" style="
+font-size:22px;
+font-weight:700;
+color:#9c1818;
+margin-bottom:18px;
+"></div>
 
-      <div class="form-box">
 
-        <div class="field">
-          <label>Your Name</label>
-          <input>
-        </div>
+<div class="field" style="display:flex; gap:8px;">
+<label>Wedding Date</label>
+<span class="dot">·</span>
+<div data-preview="date"></div>
+</div>
 
-        <div class="field">
-          <label>Your Email</label>
-          <input type="email">
-        </div>
 
-        <div class="field">
-          <label>Your Message</label>
-          <textarea placeholder="Max 30 words please"></textarea>
-        </div>
+<div class="field" style="display:flex; gap:8px;">
+<label>Wedding Time</label>
+<span class="dot">·</span>
+<div data-preview="time"></div>
+</div>
 
-        <div style="font-size:14px;color:#a05a5a;margin-top:6px;text-align:right;font-weight:500;">
-          30 words left
-        </div>
 
-        <div class="upload-box">
+<div class="field" style="display:flex; gap:8px;">
+<label>Venue</label>
+<span class="dot">·</span>
+<div data-preview="venue"></div>
+</div>
 
-          <label class="upload-tile">
-            <div class="upload-icon">📷</div>
-            <div class="upload-text">Add Photos</div>
-            <input type="file" multiple accept="image/*">
-          </label>
+<div class="field preview-line">
+  <label>Address</label>
+  <span class="dot">·</span>
+  <span data-preview="address"></span>
+</div>
 
-          <div class="upload-hint" style="font-size:13px;color:#7a3a3a;margin-top:6px;">
-            Max 5 photos
-          </div>
+<div class="map-link-box">
+  <a id="previewMapLink" href="#" target="_blank">
+    Check this address on map
+  </a>
 
-          <div class="preview"></div>
+</div>
+<div class="field" style="display:flex; gap:8px;">
+<label>RSVP Deadline</label>
+<span class="dot">·</span>
+<div data-preview="deadline"></div>
+</div>
 
-        </div>
 
-<button class="submit-preview-btn" disabled>
-  Submit Memory
-</button>
-      </div>
-
-    </div>
-
+<hr style="
+margin:18px 0 20px 0;
+border:none;
+border-top:3px solid #b41111;
+">
+  <div class="field">
+    <label style="margin-top:6px;">Name</label>
+    <input type="text" placeholder="Your name" disabled>
   </div>
 
-<!-- RIGHT CARD -->
-<div class="section ruby-frame-outer">
+  <div class="field">
+    <label>Number of guests</label>
 
+    <select id="guestCountSelect" style="
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid rgba(160,0,40,0.25);
+    ">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="more">More than 2</option>
+    </select>
+  </div>
+
+  <div class="field" id="extraGuestsField" style="display:none;">
+    <label>Names of additional guests</label>
+
+    <input type="text"
+    placeholder="Enter names separated by commas"
+    style="
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid rgba(160,0,40,0.25);
+    ">
+  </div>
+
+  <div class="field">
+    <label>Email</label>
+    <input type="text" placeholder="your@email.com" disabled>
+  </div>
+
+  <div class="field" id="rsvpField">
+    <label>RSVP</label>
+
+    <select id="rsvpSelect" style="
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid rgba(160,0,40,0.25);
+    ">
+      <option value="">Select response</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+      <option value="maybe">Maybe</option>
+    </select>
+  </div>
+
+  <div id="missYouBox" style="
+  display:none;
+  margin-top:12px;
+  padding:12px 14px;
+  border:1px solid #ffd0d0;
+  border-radius:10px;
+  background:#fff7f7;
+  color:#8b1a1a;
+  font-size:14px;
+  ">
+    We’ll miss you!  
+    Feel free to leave a message for the couple below.
+  </div>
+
+  <div class="field">
+    <label>Leave a message</label>
+    <textarea disabled style="
+    width:95%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid rgba(160,0,40,0.25);
+    height:70px;
+    "></textarea>
+  </div>
+
+  <div class="preview-submit-row">
+    <button id="previewSubmitBtn" disabled>
+      Submit RSVP
+    </button>
+
+    <div class="preview-info">
+      <div class="preview-info-icon">i</div>
+      <div class="preview-info-text">
+        This is the RSVP form your guests will receive<br>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="table-section">
+
+<div class="ruby-frame-outer">
   <div class="ruby-frame-inner">
-
     <div class="scroll-container">
 
       <table id="guestTable">
         <thead>
           <tr>
             <th><input type="checkbox" id="selectAll"></th>
-             <th>#</th>
-             <th>Name</th>
-             <th>Email</th>
+            <th>#</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Email</th>
+            <th>Phone</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
 
     </div>
+  </div>
+</div>    
 
+
+<div class="footer-buttons">
+      <button id="deleteSelected" class="footer-btn">Delete Selected</button>
+      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
+      <button id="shareBtn" class="footer-btn">Send SMS</button>
+
+      <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
+
+
+<!-- Новая кнопка -->
+  <button id="previewJustMarried" class="footer-btn">
+    “Just Married” Sample Page
+  </button>
+
+      <button id="sendTestEmailFooter"class="footer-btn">Send Test Email</button>
+    </div>
   </div>
 
-  <!-- 🔥 КНОПКИ ПОД ТАБЛИЦЕЙ -->
-  <div class="table-actions">
-    <button id="sendEmailBtn" class="footer-btn">Send Email</button>
+  <!-- UNIVERSAL EMAIL COMPOSER -->
+  <div class="email-composer" id="emailComposer">
+
+    <div class="composer-header">
+  <span>Send Email</span>
+
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span id="composerExpand" class="expand-btn">⤢</span>
+    <span id="composerClose" class="close-btn">&times;</span>
+  </div>
+</div>
+    <label class="composer-label">To Email(s):</label>
+    <input type="text" id="composerEmails" class="composer-input">
+
+<!--
+<label class="composer-label">To Phone(s):</label>
+<input type="text" id="composerPhones" class="composer-input">
+-->
+    <label class="composer-label">Subject:</label>
+    <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
+
+    <label class="composer-label">Message:</label>
+    <textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
+
+<div id="rsvpPreviewBlock" style="
+margin-top:10px;
+padding:10px;
+border-radius:8px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+font-size:13px;
+">
+
+<div style="font-weight:700;color:#9c1818;margin-bottom:6px;">
+RSVP Form Link
+</div>
+
+<div id="rsvpPreviewLink"
+style="word-break:break-all;">
+Link will appear automatically
+</div>
+
+</div>
+
+   <div id="composerFooter" class="composer-footer">
+   This message is sent from a notification-only address.<br>
+   If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
   </div>
 
+    <button id="composerSend" class="composer-send">Send Email</button>
+  </div>
+
+  <!-- TOAST -->
+  <div id="greenToast">Message Sent!</div>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
@@ -1087,6 +1638,124 @@ let guests = [];
 let coupleFullName = "";
 const tbody = document.querySelector("#guestTable tbody");
 
+const rsvpDateInput = document.getElementById("rsvpDate");
+
+if (rsvpDateInput) {
+
+  rsvpDateInput.addEventListener("change", async () => {
+
+    const token = window.APP_TOKEN;
+    const date = rsvpDateInput.value;
+
+    await supabase
+      .from("sites")
+      .update({ rsvp_date: date })
+      .eq("edit_token", token);
+
+const saved = document.getElementById("rsvpSaved");
+    if (saved) {
+      saved.style.display = "inline";
+      setTimeout(() => saved.style.display = "none", 2000);
+    }
+
+  });
+
+}
+
+
+
+/* UNIVERSAL AUTOSAVE */
+
+document.querySelectorAll("[data-sync]").forEach(field => {
+
+field.addEventListener("change", async () => {
+
+const token = window.APP_TOKEN;
+
+const columnMap = {
+deadline: "rsvp_date",
+date: "wedding_date",
+time: "wedding_time",
+venue: "venue",
+address: "address"
+};
+
+const column = columnMap[field.dataset.sync];
+if(!column) return;
+
+let value = field.value;
+
+await supabase
+.from("sites")
+.update({ [column]: value })
+.eq("edit_token", token);
+
+});
+
+});
+
+
+async function loadWeddingData(){
+
+const token = window.APP_TOKEN;
+
+console.log("TOKEN:", token);
+
+const { data, error } = await supabase
+  .from("sites")
+  .select("rsvp_date, wedding_date, wedding_time, venue, address")
+  .eq("edit_token", token)
+  .single();
+
+console.log("SUPABASE DATA:", data);
+console.log("SUPABASE ERROR:", error);
+
+if(error || !data) return;
+
+/* inputs */
+
+const rsvp = document.getElementById("rsvpDate");
+const date = document.getElementById("weddingDateInput");
+const time = document.getElementById("weddingTimeInput");
+const venue = document.getElementById("venueInput");
+const address = document.getElementById("venueAddressInput");
+
+/* заполнение */
+
+if(rsvp) rsvp.value = data.rsvp_date || "";
+if(date && data.wedding_date)
+date.value = data.wedding_date.split("T")[0];
+if(time) time.value = data.wedding_time || "";
+if(venue) venue.value = data.venue || "";
+if(address) address.value = data.address || "";
+
+/* preview sync */
+
+document.querySelectorAll("[data-sync]").forEach(field => {
+
+const key = field.dataset.sync;
+const preview = document.querySelector(`[data-preview="${key}"]`);
+if(!preview) return;
+
+let value = field.value;
+
+if(field.type === "date" && value){
+
+const months = [
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+
+const [y,m,d] = value.split("-");
+value = `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+
+}
+preview.textContent = value;
+
+});
+
+}
+loadWeddingData();
 
 // ======================================================
 // LOAD COUPLE NAME (dashboard style)
@@ -1112,7 +1781,6 @@ guestTitle.textContent = coupleFullName + " · RSVP";
 
 }
 loadCoupleName();
-
 
 
 // ======================================================
@@ -1142,13 +1810,6 @@ async function loadGuests() {
 }
 loadGuests();
 
-
-// 👇 ВСТАВЬ ВОТ ЭТО ЗДЕСЬ
-document.getElementById("selectAll").onclick = e => {
-  const all = document.querySelectorAll(".rowCheck");
-  all.forEach(ch => (ch.checked = e.target.checked));
-};
-
 // ======================================================
 // RENDER TABLE
 // ======================================================
@@ -1166,37 +1827,36 @@ function render() {
                  data-phone="${g.phone}">
         </td>
 
-<td>${i + 1}</td>
+        <td>${i + 1}</td>
 
-<td contenteditable="true" data-field="name">
-  ${g.first} ${g.last}
-</td>
+        <!-- Editable Fields -->
+        <td contenteditable="true" data-field="first">${g.first}</td>
+        <td contenteditable="true" data-field="last">${g.last}</td>
+        <td contenteditable="true" data-field="email">${g.email}</td>
+        <td contenteditable="true" data-field="phone">${g.phone}</td>
 
-<td contenteditable="true" data-field="email">
-  ${g.email}
-</td>
       </tr>
     `;
   });
-}
-
-function refreshComposerFields() {
-  const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-  const emails = [];
-
-  selected.forEach(ch => {
-    if (ch.dataset.email) emails.push(ch.dataset.email);
-  });
-
-  document.getElementById("composerEmails").value =
-    [...new Set(emails)].join(", ");
 }
 
 // 🔽 Реагируем на выбор одиночных чекбоксов
 document.addEventListener("change", (e) => {
   if (e.target.classList.contains("rowCheck")) {
     refreshComposerFields();
+
+document.getElementById("composerBody").value =
+`Hello!
+
+${coupleFullName} are happy to invite you to celebrate their wedding.
+
+Please find their official invitation and RSVP form using the link below.
+
+We would be grateful if you could confirm your attendance.
+
+Thank you!`;
+
+
   }
 
   // 🔽 Реагируем на master checkbox (#selectAll)
@@ -1222,8 +1882,6 @@ tbody.addEventListener("input", (e) => {
 // ======================================================
 // INLINE EDIT HANDLER — SAVE ON BLUR
 // ======================================================
-
-
 tbody.addEventListener("blur", async (e) => {
   if (!e.target.matches("[contenteditable]")) return;
 
@@ -1232,38 +1890,30 @@ tbody.addEventListener("blur", async (e) => {
   const field = e.target.dataset.field;
   const newValue = e.target.innerText.trim();
 
-  // 👉 ОБРАБОТКА NAME (главное)
-  if (field === "name") {
-    const parts = newValue.split(" ");
-    const first = parts[0] || "";
-    const last = parts.slice(1).join(" ") || "";
+  const guest = guests.find(g => g.id == id);
+  guest[field] = newValue;
 
-    await supabase
-      .from("guests")
-      .update({
-        first_name: first,
-        last_name: last
-      })
-      .eq("id", id);
-
-    return;
-  }
-
-  // 👉 ОСТАЛЬНОЕ (email и т.д.)
   const map = {
-    email: "email"
+    first: "first_name",
+    last: "last_name",
+    email: "email",
+    phone: "phone"
   };
 
   const sbColumn = map[field];
-  if (!sbColumn) return;
 
-  await supabase
+  const { error } = await supabase
     .from("guests")
     .update({ [sbColumn]: newValue })
     .eq("id", id);
 
+  if (error) {
+    e.target.style.background = "#ffcccc";
+  } else {
+    e.target.style.background = "#d9ffe2";
+    setTimeout(() => (e.target.style.background = ""), 400);
+  }
 }, true);
-
 
 // ======================================================
 // SAVE ON ENTER
@@ -1312,8 +1962,449 @@ window.showToastBox = function (msg, type = "success") {
   }, 2600);
 }
 
+/* ============================
+   DELIVERY NOTICE POPUP
+============================ */
+function showDeliveryNotice() {
+  document.getElementById("deliveryNoticeOverlay").style.display = "flex";
+}
+
+function markRowError(email) {
+  const row = document.querySelector(`.rowCheck[data-email="${email}"]`)?.closest("tr");
+  if (row) {
+    row.classList.add("row-error");
+  }
+}
+
+
+// ======================================================
+// SELECT ALL
+// ======================================================
+document.getElementById("selectAll").onclick = e => {
+  const all = document.querySelectorAll(".rowCheck");
+  all.forEach(ch => (ch.checked = e.target.checked));
+};
+
+// ================================
+// DELETE SELECTED — WITH CONFIRM
+// ================================
+
+const deleteOverlay = document.getElementById("deleteConfirmOverlay");
+let idsToDelete = [];
+
+document.getElementById("deleteSelected").onclick = () => {
+  const checked = [...document.querySelectorAll(".rowCheck:checked")];
+
+  if (!checked.length) return alert("Nothing selected");
+
+  idsToDelete = checked.map(ch => ch.dataset.id);
+
+  deleteOverlay.style.display = "flex"; // show popup
+};
+
+// Cancel button
+document.getElementById("deleteCancelBtn").onclick = () => {
+  deleteOverlay.style.display = "none";
+};
+
+// Yes button — delete from DB
+document.getElementById("deleteYesBtn").onclick = async () => {
+  await supabase.from("guests").delete().in("id", idsToDelete);
+
+  guests = guests.filter(g => !idsToDelete.includes(g.id));
+  render();
+
+  deleteOverlay.style.display = "none";
+
+  // Clean checkboxes after delete
+  document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
+  document.getElementById("selectAll").checked = false;
+};
+
+
+// ======================================================
+// EMAIL COMPOSER UI
+// ======================================================
+const emailComposer = document.getElementById("emailComposer");
+document.getElementById("composerClose").onclick = () => {
+  emailComposer.style.display = "none";
+};
+
+// ---------- LOAD FOOTER EMAIL ----------
+async function loadSenderEmail() {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || window.token || "";
+
+  if (!token) return;
+
+  const { data, error } = await supabase
+    .from("sites")
+    .select("email")
+    .eq("edit_token", token)
+    .single();
+
+  if (!error && data?.email) {
+    document.getElementById("footerEmail").textContent = data.email;
+    window.senderEmail = data.email;
+  }
+}
+
+document.getElementById("sendEmailBtn").onclick = () => {
+
+if(!validateBlueFields()) return;
+
+  openComposer();
+};
+
+// загрузка email отправителя
+loadSenderEmail();
+
+/* ----------------------------------------
+   ШАГ 1 — функция пересборки email/phones
+-----------------------------------------*/
+
+
+function refreshComposerFields() {
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  const emails = [];
+  // const phones = [];
+
+  selected.forEach(ch => {
+    if (ch.dataset.email) emails.push(ch.dataset.email);
+    // if (ch.dataset.phone) phones.push(ch.dataset.phone);
+  });
+
+  document.getElementById("composerEmails").value = [...new Set(emails)].join(", ");
+  // document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
+}
+
+
+/* ----------------------------------------
+   OPEN COMPOSER
+-----------------------------------------*/
+function openComposer() {
+
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+  if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
+
+  refreshComposerFields();
+
+  const token = window.APP_TOKEN;
+  const firstGuest = selected[0];
+
+  if(firstGuest){
+    const guestId = firstGuest.dataset.id;
+
+    const link =
+    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}&mode=admin`;
+
+currentRsvpLink = link;
+
+    document.getElementById("rsvpPreviewLink").textContent = link;
+  }
+
+  document.getElementById("composerSubject").value =
+    `${coupleFullName || "Wedding"} — RSVP Request`;
+
+  emailComposer.style.display = "block";
+}
+// ===== EXPAND / SHRINK EMAIL COMPOSER =====
+
+let expanded = false;
+
+document.getElementById("composerExpand").onclick = () => {
+
+  expanded = !expanded;
+
+  if (expanded) {
+    emailComposer.style.width = "600px";
+    emailComposer.style.height = "80vh";
+    emailComposer.style.right = "20px";
+    emailComposer.style.bottom = "20px";
+
+    document.getElementById("composerBody").style.height = "200px";
+
+  } else {
+    emailComposer.style.width = "360px";
+    emailComposer.style.height = "auto";
+
+    document.getElementById("composerBody").style.height = "80px";
+  }
+
+};
+
+// ======================================================
+// SEND EMAIL → SEND TO BATCH WORKER
+// ======================================================
+
+document.getElementById("composerSend").onclick = async () => {
+
+// ----------------------------------------------------
+// NEW: формируем письмо (message + footer)
+// ----------------------------------------------------
+const body = document.getElementById("composerBody").value.trim();
+const footer = document.getElementById("composerFooter").innerHTML;
+const htmlBody = body + "<br><br>" + footer;
+
+const token = window.APP_TOKEN;
+
+
+// Проверка выбранных гостей
+const selected = [...document.querySelectorAll(".rowCheck:checked")];
+if (!selected.length)
+  return showToastBox("Select at least one guest!", "error");
+
+const subject = document.getElementById("composerSubject").value.trim();
+
+// Prepare guest objects
+const batchGuests = selected.map(ch => ({
+  email: ch.dataset.email,
+  name: "Guest",
+  guest_id: ch.dataset.id
+}));
+const overlay = document.getElementById("sendProgressOverlay");
+const bar = document.getElementById("progressBar");
+const text = document.getElementById("progressText");
+
+overlay.style.display = "flex";
+bar.style.width = "0%";
+text.textContent = `Sending 0 / ${batchGuests.length}`;
+document.getElementById("sendingNote").classList.add("pulse");
+
+let failures = 0;
+
+for (let i = 0; i < batchGuests.length; i++) {
+
+  const g = batchGuests[i];
+  let ok = true;
+
+  const rsvpLink =
+  `${window.location.origin}/rsvpresponse.html?t=${token}&g=${g.guest_id}`;
+
+  try {
+
+const res = await fetch("/.netlify/functions/send-invites", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    subject,
+
+    html:
+      htmlBody +
+      `
+<br><br>
+<hr style="margin:18px 0;border:none;border-top:1px solid #eee;">
+
+<div style="font-weight:700;color:#9c1818;margin-bottom:8px;">
+RSVP Form
+</div>
+
+<a href="${rsvpLink}" style="
+display:inline-block;
+padding:12px 18px;
+background:#b41111;
+color:white;
+text-decoration:none;
+border-radius:6px;
+font-weight:700;
+">
+Open RSVP Form
+</a>
+`,
+
+    guests: [g]
+  })
+});
+    const json = await res.json();
+    ok = json?.results?.[0]?.ok === true;
+
+  } catch (e) {
+    ok = false;
+  }
+  if (!ok) {
+    failures++;
+    markRowError(g.email);
+  }
+
+  const done = i + 1;
+  const percent = Math.round((done / batchGuests.length) * 100);
+
+  bar.style.width = percent + "%";
+  text.textContent = `Sending ${done} / ${batchGuests.length}`;
+
+  await new Promise(r => setTimeout(r, 900));
+}
+
+
+// Hide overlay smoothly
+setTimeout(() => {
+  document.getElementById("sendingNote").classList.remove("pulse");
+  overlay.style.display = "none";
+}, 500);
+
+// Close composer
+emailComposer.style.display = "none";
+
+// Uncheck boxes
+document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
+document.getElementById("selectAll").checked = false;
+
+// Final messaging
+if (failures > 0) {
+  showDeliveryNotice();
+  showToastBox(`${failures} email(s) failed to deliver`, "error");
+} else {
+  showToastBox("All emails sent successfully!", "success");
+}
+
+};
+
+
+
+function validateBlueFields(){
+
+const fields = document.querySelectorAll(".couple-field");
+let firstEmpty = null;
+
+fields.forEach(field => {
+
+field.classList.remove("required-error");
+
+if(!field.value.trim()){
+
+field.classList.add("required-error");
+
+if(!firstEmpty){
+firstEmpty = field;
+}
+
+}
+
+});
+
+if(firstEmpty){
+
+firstEmpty.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+firstEmpty.focus();
+
+return false;
+}
+
+return true;
+
+}
+
+/* УБИРАЕМ КРАСНУЮ РАМКУ ПРИ ВВОДЕ */
+document.querySelectorAll(".couple-field").forEach(field => {
+
+field.addEventListener("input", () => {
+field.classList.remove("required-error");
+});
+
+});
+
 </script>
 
+<!-- PROGRESS OVERLAY START -->
+<div id="sendProgressOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+
+
+  <div style="
+
+    background:#fff;
+    padding: 22px 26px;
+    border-radius:14px;
+    width: 320px;
+    text-align:center;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+
+  ">
+
+
+    <div id="progressText">Sending…</div>
+
+    <div style="margin-top:16px; height:8px; background:#eee; border-radius:6px; overflow:hidden;">
+      <div id="progressBar" style="
+        width:0%;
+        height:100%;
+        background:#b41111;
+        transition: width 0.3s ease;
+      "></div>
+    </div>
+
+    <div id="sendingNote" style="margin-top:10px; font-size:13px; color:#777;">
+      Please do not close this window or turn off your device until the sending process is complete.
+    </div>
+  </div>
+</div>
+<!-- PROGRESS OVERLAY END -->
+
+<!-- DELETE CONFIRM POPUP -->
+<div id="deleteConfirmOverlay" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+">
+  <div style="
+    background:#fff;
+    padding: 22px 26px;
+    border-radius:14px;
+    width: 340px;
+    text-align:center;
+    font-size:16px;
+    font-weight:600;
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+  ">
+    <div style="font-size:18px; margin-bottom:12px; color:#b41111;">
+      Are you sure you want to delete the selected guest(s)?
+    </div>
+
+    <div style="font-size:13px; color:#7e2a2a; margin-bottom:20px;">
+      This action cannot be undone.
+    </div>
+
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button id="deleteYesBtn" style="
+        background:#b41111;
+        color:#fff;
+        padding:10px 20px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">Yes</button>
+
+      <button id="deleteCancelBtn" style="
+        background:#ccc;
+        color:#333;
+        padding:10px 20px;
+        border-radius:10px;
+        border:none;
+        font-weight:700;
+        cursor:pointer;
+      ">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <!-- TOAST BOX -->
 <div id="toastBox" style="
@@ -1369,20 +2460,27 @@ window.showToastBox = function (msg, type = "success") {
 </div>
 
 
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // Если страница открыта внутри iframe
+  if (window.self !== window.top) {
 
-  const pageTitle = document.getElementById("topMainTitle")
-    ?.textContent.trim().toLowerCase();
+    // 1. Прокрутка к таблице гостей
+    const table = document.getElementById("guestTable");
+    if (table) {
+      table.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
 
-  document.querySelectorAll(".top-nav a").forEach(link => {
-    const txt = link.textContent.trim().toLowerCase();
-    if (txt === pageTitle) link.classList.add("active");
-  });
-
+    // 2. С небольшой задержкой открыть Email Composer
+    setTimeout(() => {
+      if (typeof openComposer === "function") {
+        openComposer();
+      }
+    }, 600);
+  }
 });
 </script>
-
 
 <div id="guideModal" style="
   position: fixed;
@@ -1414,7 +2512,7 @@ document.addEventListener("DOMContentLoaded", () => {
       z-index:10;
     ">×</div>
 
-    <iframe src="tttpostwed.html?embed=1" style="
+    <iframe src="tttrsvp.html?embed=1" style="
       width:100%;
       height:100%;
       border:none;
@@ -1432,6 +2530,239 @@ document.getElementById("closeGuide")?.addEventListener("click", () => {
 });
 </script>
 
+
+<script>
+
+const rsvpSelect = document.getElementById("rsvpSelect");
+const missYou = document.getElementById("missYouBox");
+
+rsvpSelect.addEventListener("change", () => {
+
+if (rsvpSelect.value === "no") {
+
+missYou.style.display = "block";
+
+} else {
+
+missYou.style.display = "none";
+
+}
+
+});
+
+</script>
+
+<script>
+
+const guestCount = document.getElementById("guestCountSelect");
+const extraGuests = document.getElementById("extraGuestsField");
+
+guestCount.addEventListener("change", () => {
+
+if (guestCount.value === "more") {
+
+  extraGuests.style.display = "block";
+
+  extraGuests.classList.add("slide-down");
+  extraGuests.classList.add("highlight-field");
+
+  setTimeout(() => {
+    extraGuests.classList.remove("highlight-field");
+  }, 1600);
+
+} else {
+
+  extraGuests.style.display = "none";
+
+}
+
+});
+
+</script>
+
+
+<div id="mapModal" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.45);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:999999;
+">
+
+<div style="
+background:white;
+width:700px;
+max-width:90%;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 20px 50px rgba(0,0,0,0.35);
+position:relative;
+">
+
+<button id="closeMapModal" style="
+position:absolute;
+top:10px;
+right:14px;
+border:none;
+background:rgba(0,0,0,0.15);
+width:30px;
+height:30px;
+border-radius:50%;
+font-size:18px;
+cursor:pointer;
+
+display:flex;
+align-items:center;
+justify-content:center;
+">×</button>
+
+
+<iframe id="mapModalFrame"
+style="
+width:100%;
+height:420px;
+border:0;
+"></iframe>
+
+</div>
+</div>
+
+
+<script>
+
+const addressInput = document.getElementById("venueAddressInput");
+
+const mapModal = document.getElementById("mapModal");
+const mapFrame = document.getElementById("mapModalFrame");
+const closeMap = document.getElementById("closeMapModal");
+
+/* обе ссылки */
+document.querySelectorAll("#checkMapLink, #previewMapLink").forEach(link => {
+
+  link.addEventListener("click", (e) => {
+
+    e.preventDefault();
+
+    const address = addressInput.value.trim();
+
+    if (!address) {
+      alert("Please enter the venue address first.");
+      return;
+    }
+
+    mapFrame.src =
+      `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+
+    mapModal.style.display = "flex";
+
+  });
+
+});
+
+closeMap.onclick = () => {
+  mapModal.style.display = "none";
+};
+
+</script>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+const fields = document.querySelectorAll("[data-sync]");
+
+fields.forEach(field => {
+
+const key = field.dataset.sync;
+const preview = document.querySelector(`[data-preview="${key}"]`);
+
+if(!preview) return;
+
+const update = () => {
+
+let value = field.value;
+
+if(field.type === "date" && value){
+
+const months = [
+"January","February","March","April","May","June",
+"July","August","September","October","November","December"
+];
+
+const [y,m,d] = value.split("-");
+value = `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+
+}
+preview.textContent = value;
+
+};
+
+field.addEventListener("input", update);
+field.addEventListener("change", update);
+
+update(); // ← ВОТ ЭТОЙ СТРОКИ НЕ ХВАТАЛО
+
+});
+
+});
+
+
+</script>
+
+<!-- QR MODAL CLEAN -->
+<div id="qrModal" class="qr-overlay">
+
+  <div class="qr-box">
+
+    <div id="qrClose" class="qr-close">×</div>
+
+    <div class="qr-title">
+      Notify Your Guests
+    </div>
+
+    <canvas id="qrCanvas"></canvas>
+
+    <div class="qr-subtitle">
+      Scan with your phone
+    </div>
+
+  </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
+<script>
+
+let currentRsvpLink = "";
+
+const shareBtn = document.getElementById("shareBtn");
+
+if (shareBtn) {
+  shareBtn.onclick = () => {
+
+    const token = window.APP_TOKEN;
+
+    const link = `${window.location.origin}/rsvpresponse.html?t=${token}&mode=admin`;
+
+    const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = `sms:?body=${encodeURIComponent(link)}`;
+      return;
+    }
+
+    const modal = document.getElementById("qrModal");
+    const canvas = document.getElementById("qrCanvas");
+
+    modal.style.display = "flex";
+
+    QRCode.toCanvas(canvas, link, { width: 220 });
+  };
+}
+
+</script>
 
 
 <script>
@@ -1470,104 +2801,22 @@ dropdown.innerHTML =
 
 </script>
 
-<!-- EMAIL COMPOSER -->
-<div class="email-composer" id="emailComposer">
-
-  <div class="composer-header">
-    <span>Send Email</span>
-    <span id="composerClose" class="close-btn">&times;</span>
-  </div>
-
-  <label class="composer-label">To:</label>
-  <input id="composerEmails" class="composer-input">
-
-  <label class="composer-label">Subject:</label>
-  <input id="composerSubject" class="composer-input">
-
-  <label class="composer-label">Message:</label>
-  <textarea id="composerBody" class="composer-textarea"></textarea>
-
-  <button id="composerSend" class="composer-send">Send</button>
-
-</div>
-
 <script>
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Открытие
-  document.getElementById("sendEmailBtn").onclick = () => {
-    openComposer();
-  };
+  // ❌ крестик
+  document.getElementById("qrClose")?.addEventListener("click", () => {
+    document.getElementById("qrModal").style.display = "none";
+  });
 
-  function openComposer() {
-
-    const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-    if (selected.length === 0) {
-      alert("Select at least one guest");
-      return;
+  // ❌ клик по фону
+  document.getElementById("qrModal")?.addEventListener("click", (e) => {
+    if (e.target.id === "qrModal") {
+      e.currentTarget.style.display = "none";
     }
-
-    const emails = selected.map(ch => ch.dataset.email);
-
-    document.getElementById("composerEmails").value =
-      [...new Set(emails)].join(", ");
-
-    document.getElementById("composerSubject").value =
-      "Wedding Invitation";
-
-    document.getElementById("composerBody").value =
-      "Hello! You are invited...";
-
-    document.getElementById("emailComposer").style.display = "block";
-  }
-
-  // Закрытие
-  document.getElementById("composerClose").onclick = () => {
-    document.getElementById("emailComposer").style.display = "none";
-  };
-
-  // Отправка
-  document.getElementById("composerSend").onclick = async () => {
-
-    const subject = document.getElementById("composerSubject").value;
-    const body = document.getElementById("composerBody").value;
-
-    const selected = [...document.querySelectorAll(".rowCheck:checked")];
-
-    if (selected.length === 0) {
-      alert("No guests selected");
-      return;
-    }
-
-    for (const ch of selected) {
-
-      await fetch("/.netlify/functions/send-invites", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          subject,
-          html: body,
-          guests: [{
-            email: ch.dataset.email
-          }]
-        })
-      });
-
-    }
-
-    alert("Emails sent!");
-
-  };
+  });
 
 });
-
-
-
-
 </script>
 
 
