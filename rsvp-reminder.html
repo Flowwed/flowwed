@@ -38,17 +38,28 @@ body{
 /* CARD */
 .card{
   background:white;
-  padding:28px;
+
+  padding:32px 22px;        /* ↑ больше вертикали, меньше ширины */
+
   border-radius:18px;
-  max-width:380px;
+
+  max-width:320px;          /* ← СУЖАЕМ карточку */
   width:90%;
+
   text-align:center;
 
-  border:2px solid #b41111;
+  display:flex;             /* ↓ делаем вертикальный layout */
+  flex-direction:column;
+  justify-content:center;
+}
+.card h2 {
+  max-width:260px;
+  margin:0 auto 12px auto;
+}
 
-  box-shadow:
-    0 14px 30px rgba(0,0,0,0.25),
-    inset 0 0 6px rgba(255,255,255,0.5);
+.card p {
+  max-width:260px;          /* ← СУЖАЕМ ТЕКСТ */
+  margin:0 auto 20px auto;
 }
 
 h2{
