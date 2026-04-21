@@ -7,7 +7,7 @@
 
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Guest Manager — Ruby Edition</title>
+  <title>Guest Memories</title>
 
   <style>
 
@@ -1285,6 +1285,206 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
   font-weight:700;
   box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
+
+
+
+/* ===== MAIN LAYOUT ===== */
+
+.info-bubble-inline {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start; /* ровная линия сверху */
+}
+
+/* левая колонка (форма) */
+.form-box {
+  flex: 0 0 260px;   /* фикс ширина */
+  max-width: 260px;
+
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  border: 2px solid #b41111;
+  box-shadow: 0 16px 38px rgba(0,0,0,0.18);
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* правая колонка (таблица) */
+.table-section {
+  flex: 1;
+  margin-top: 0 !important;
+}
+
+/* ===== FORM ===== */
+
+/* 2 колонки */
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-row .field {
+  flex: 1;
+}
+
+/* убираем старые конфликты */
+.form-box .field {
+  margin-bottom: 12px;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+/* label */
+.form-box label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7e2a2a;
+  margin-bottom: 4px;
+}
+
+/* input / textarea */
+.form-box input,
+.form-box textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(160,0,40,0.25);
+  font-size: 13px;
+  background: white;
+  box-sizing: border-box;
+}
+
+/* textarea */
+.form-box textarea {
+  height: 90px;
+  resize: vertical;
+}
+
+/* word count */
+#wordCount {
+  font-size: 12px;
+  color: #a05a5a;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* ===== BOTTOM ROW ===== */
+
+.bottom-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+/* upload */
+.upload-box {
+  flex: 1;
+  border: 2px dashed #e0a8a8;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  background: #fff7f9;
+}
+
+/* upload tile */
+.upload-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  cursor: pointer;
+}
+
+.upload-tile input {
+  display: none;
+}
+
+.upload-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a3a3a;
+}
+
+.upload-hint {
+  font-size: 12px;
+  margin-top: 6px;
+  color: #a05a5a;
+}
+
+/* кнопка */
+.form-box button {
+  height: 42px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: #9c1818;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-box button:hover {
+  background: #7e1212;
+}
+
+.form-row .field {
+  flex: 1;
+  min-width: 0;   /* 🔥 ВОТ ЭТО КЛЮЧ */
+}
+
+/* info block under form */
+
+.form-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 10px;
+
+  background: #fff7f7;
+  border: 1px solid #ffd0d0;
+  border-radius: 10px;
+
+  padding: 8px 10px;
+
+  font-size: 12px;
+  color: #7e2a2a;
+  font-weight: 700;
+
+  max-width: 260px; /* под ширину формы */
+}
+
+/* иконка */
+
+.form-info-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+
+  background: #b41111;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+
 </style>
 </head>
 
@@ -1314,7 +1514,7 @@ if (params.get("t")) {
   <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
 <div class="menu-dropdown" id="menuDropdown"></div></div>
 
-<h1>RSVP</h1>
+<h1>Guest Memories</h1>
 
 <div></div>
 
@@ -1339,8 +1539,6 @@ if (params.get("t")) {
 </div>
 
 
-
-
 <div class="ios-banner">
 <span class="info-icon">i</span>
   Collect your guests' messages and photos as lasting memories of your wedding. Check the Quick User Guide
@@ -1357,177 +1555,62 @@ if (params.get("t")) {
 <div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
 
 
+<div class="form-box">
 
-<!-- FORM -->
+<div class="form-row">
+  <div class="field">
+    <label>Your Name</label>
+    <input id="guestName">
+  </div>
+
+  <div class="field">
+    <label>Your Email</label>
+    <input id="guestEmail" type="email">
+  </div>
+</div>
 
 <div class="field">
+<label>Your Message</label>
+<textarea id="guestMessage" placeholder="Max 30 words please"></textarea>
+</div>
 
-<div style="
-margin-top:24px;
-margin-bottom:10px;
-font-size:15px;
-font-weight:700;
-color:#9c1818;
+<div id="wordCount" style="
+font-size:12px;
+color:#a05a5a;
+margin-top:4px;
+text-align:right;
 ">
-
-<div style="
-border:2px solid #b41111;
-border-radius:14px;
-padding:18px;
-margin-bottom:20px;
-background:rgba(255,255,255,0.9);
-">
-
-<div id="guestFormTitle" style="
-font-size:22px;
-font-weight:700;
-color:#9c1818;
-margin-bottom:18px;
-"></div>
-
-
-<div class="field" style="display:flex; gap:8px;">
-<label>Wedding Date</label>
-<span class="dot">·</span>
-<div data-preview="date"></div>
 </div>
 
+<div class="bottom-row">
 
-<div class="field" style="display:flex; gap:8px;">
-<label>Wedding Time</label>
-<span class="dot">·</span>
-<div data-preview="time"></div>
+  <div class="upload-box">
+    <label class="upload-tile">
+      <div class="upload-icon">📷</div>
+      <div class="upload-text">Add Photos</div>
+      <input type="file" id="photoUpload" multiple accept="image/*">
+    </label>
+
+    <div class="upload-hint">Max 5 photos</div>
+    <div id="photoPreview" class="preview"></div>
+  </div>
+
+  <button id="submitBtn">Submit</button>
+
 </div>
 
-
-<div class="field" style="display:flex; gap:8px;">
-<label>Venue</label>
-<span class="dot">·</span>
-<div data-preview="venue"></div>
-</div>
-
-<div class="field preview-line">
-  <label>Address</label>
-  <span class="dot">·</span>
-  <span data-preview="address"></span>
-</div>
-
-<div class="map-link-box">
-  <a id="previewMapLink" href="#" target="_blank">
-    Check this address on map
-  </a>
-
-</div>
-<div class="field" style="display:flex; gap:8px;">
-<label>RSVP Deadline</label>
-<span class="dot">·</span>
-<div data-preview="deadline"></div>
-</div>
-
-
-<hr style="
-margin:18px 0 20px 0;
-border:none;
-border-top:3px solid #b41111;
-">
-  <div class="field">
-    <label style="margin-top:6px;">Name</label>
-    <input type="text" placeholder="Your name" disabled>
-  </div>
-
-  <div class="field">
-    <label>Number of guests</label>
-
-    <select id="guestCountSelect" style="
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    ">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="more">More than 2</option>
-    </select>
-  </div>
-
-  <div class="field" id="extraGuestsField" style="display:none;">
-    <label>Names of additional guests</label>
-
-    <input type="text"
-    placeholder="Enter names separated by commas"
-    style="
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    ">
-  </div>
-
-  <div class="field">
-    <label>Email</label>
-    <input type="text" placeholder="your@email.com" disabled>
-  </div>
-
-  <div class="field" id="rsvpField">
-    <label>RSVP</label>
-
-    <select id="rsvpSelect" style="
-    width:100%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    ">
-      <option value="">Select response</option>
-      <option value="yes">Yes</option>
-      <option value="no">No</option>
-      <option value="maybe">Maybe</option>
-    </select>
-  </div>
-
-  <div id="missYouBox" style="
-  display:none;
-  margin-top:12px;
-  padding:12px 14px;
-  border:1px solid #ffd0d0;
-  border-radius:10px;
-  background:#fff7f7;
-  color:#8b1a1a;
-  font-size:14px;
-  ">
-    We’ll miss you!  
-    Feel free to leave a message for the couple below.
-  </div>
-
-  <div class="field">
-    <label>Leave a message</label>
-    <textarea disabled style="
-    width:95%;
-    padding:10px;
-    border-radius:10px;
-    border:1px solid rgba(160,0,40,0.25);
-    height:70px;
-    "></textarea>
-  </div>
-
-  <div class="preview-submit-row">
-    <button id="previewSubmitBtn" disabled>
-      Submit RSVP
-    </button>
-
-    <div class="preview-info">
-      <div class="preview-info-icon">i</div>
-      <div class="preview-info-text">
-        This is the RSVP form your guests will receive<br>
-      </div>
+<!-- ✅ ВОТ ТУТ ПРАВИЛЬНО -->
+  <div class="form-info">
+    <div class="form-info-icon">i</div>
+    <div class="form-info-text">
+      Guests will receive this form
     </div>
   </div>
 
 </div>
-</div>
 
-</div>
-</div>
-</div>
+
+
 
 <div class="table-section">
 
