@@ -1749,10 +1749,8 @@ border-top:3px solid #b41111;
           <tr>
             <th><input type="checkbox" id="selectAll"></th>
             <th>#</th>
-            <th>First</th>
-            <th>Last</th>
+            <th>Name</th>
             <th>Email</th>
-            <th>Phone</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -2051,6 +2049,7 @@ loadGuests();
 // ======================================================
 // RENDER TABLE
 // ======================================================
+
 function render() {
   tbody.innerHTML = "";
 
@@ -2061,22 +2060,27 @@ function render() {
           <input type="checkbox"
                  class="rowCheck"
                  data-id="${g.id}"
-                 data-email="${g.email}"
-                 data-phone="${g.phone}">
+                 data-email="${g.email}">
         </td>
 
         <td>${i + 1}</td>
 
-        <!-- Editable Fields -->
-        <td contenteditable="true" data-field="first">${g.first}</td>
-        <td contenteditable="true" data-field="last">${g.last}</td>
-        <td contenteditable="true" data-field="email">${g.email}</td>
-        <td contenteditable="true" data-field="phone">${g.phone}</td>
+        <!-- Name (First + Last together) -->
+        <td contenteditable="true" data-field="name">
+          ${g.first} ${g.last}
+        </td>
+
+        <!-- Email -->
+        <td contenteditable="true" data-field="email">
+          ${g.email}
+        </td>
 
       </tr>
     `;
   });
 }
+
+
 
 // 🔽 Реагируем на выбор одиночных чекбоксов
 document.addEventListener("change", (e) => {
