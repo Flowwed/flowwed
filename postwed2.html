@@ -1162,7 +1162,7 @@ async function loadGuests() {
   const { data } = await supabase
     .from("guests")
     .select("*")
-    .eq("token", token)
+    .eq("edit_token", token)
     .order("created_at");
 
   guests = data.map(g => ({
