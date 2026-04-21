@@ -272,9 +272,12 @@ text-align: center;
     /* ============================= */
 
     .email-composer {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
+   position: fixed !important;
+   bottom: 20px !important;
+   right: 20px !important;
+   top: auto !important;
+   left: auto !important;
+   margin: 0 !important;
       width: 380px;
       background: #ffffff;
       border-radius: 14px;
@@ -393,39 +396,6 @@ text-align: center;
       transform: translateY(0);
     }
 
-/* ====== FILTER BUTTONS (small ruby controls) ====== */
-.filter-btn {
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.15),
-      rgba(255,255,255,0.04)
-    ),
-    #b41111;
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.22s ease;
-  box-shadow:
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 2px 4px rgba(255,255,255,0.18),
-    inset 0 -4px 10px rgba(60,0,20,0.3);
-}
-
-.filter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 6px 12px rgba(0,0,0,0.28),
-    inset 0 2px 6px rgba(255,255,255,0.22),
-    inset 0 -5px 12px rgba(60,0,20,0.32);
-}
-
-.filter-btn.active {
-  outline: 2px solid #fff;
-}
 
 .table-action-btn {
   background: #b41111;
@@ -1116,6 +1086,33 @@ const supabase = createClient(
 let guests = [];
 let coupleFullName = "";
 const tbody = document.querySelector("#guestTable tbody");
+
+
+// ======================================================
+// LOAD COUPLE NAME (dashboard style)
+// ======================================================
+async function loadCoupleName() {
+
+const token = window.APP_TOKEN;
+
+const { data } = await supabase
+.from("sites")
+.select("couple_name")
+.eq("edit_token", token)
+.single();
+
+if(!data) return;
+
+coupleFullName = data.couple_name;
+
+const guestTitle = document.getElementById("guestFormTitle");
+if(guestTitle){
+guestTitle.textContent = coupleFullName + " · RSVP";
+}
+
+}
+loadCoupleName();
+
 
 
 // ======================================================
