@@ -2257,76 +2257,6 @@ function markRowError(email) {
   }
 }
 
-// ======================================================
-// ADD GUEST (SAFE)
-// ======================================================
-
-const addBtn = document.getElementById("addGuestTopBtn");
-const guestForm = document.getElementById("guestForm");
-
-if (addBtn && guestForm) {
-
-  addBtn.onclick = () => {
-    guestForm.requestSubmit();
-  };
-
-  guestForm.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const first = firstName.value.trim();
-    const last = lastName.value.trim();
-    const emailValue = email.value.trim();
-    const phoneValue = countryCode.value + phone.value.trim();
-    const token = window.APP_TOKEN;
-
-    if (!first || !last || !emailValue || !phone.value.trim() || !countryCode.value)
-      return alert("Fill all fields and select country code!");
-
-    const emailExists = guests.some(g => g.email.toLowerCase() === emailValue.toLowerCase());
-    if (emailExists) {
-      showToastBox("This email already exists!", "error");
-      email.classList.add("input-error");
-      setTimeout(() => email.classList.remove("input-error"), 2000);
-      return;
-    }
-
-    const phoneExists = guests.some(g => g.phone === phoneValue);
-    if (phoneExists) {
-      showToastBox("This phone number already exists!", "error");
-      phone.classList.add("input-error");
-      setTimeout(() => phone.classList.remove("input-error"), 2000);
-      return;
-    }
-
-    const { data } = await supabase
-      .from("guests")
-      .insert([{ first_name:first, last_name:last, email:emailValue, phone:phoneValue, token }])
-      .select();
-
-    guests.push({
-      id: data[0].id,
-      first,
-      last,
-      email: emailValue,
-      phone: phoneValue,
-      std: "",
-      rsvp: ""
-    });
-
-    render();
-    e.target.reset();
-    countryCode.value = "";
-
-    const toast = document.getElementById("greenToast");
-    toast.textContent = "Guest added & saved!";
-    toast.classList.add("show");
-
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 1500);
-  });
-
-}
 
 // ======================================================
 // SELECT ALL
@@ -2370,29 +2300,6 @@ document.getElementById("deleteYesBtn").onclick = async () => {
   // Clean checkboxes after delete
   document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
   document.getElementById("selectAll").checked = false;
-};
-
-// ======================================================
-// PREVIEW GUEST FORM
-// ======================================================
-document.getElementById("previewFormBtn").onclick = () => {
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t") || "";
-
-  window.open(
-    `/postwed-preview.html?t=${encodeURIComponent(token)}`,
-    "_blank"
-  );
-};
-
-// ======================================================
-// JUST MARRIED SAMPLE PAGE
-// ======================================================
-document.getElementById("previewJustMarried").onclick = () => {
-  window.open(
-    "https://flowwed.netlify.app/just_married?token=29GE67HAAZ",
-    "_blank"
-  );
 };
 
 
@@ -2633,93 +2540,7 @@ if (failures > 0) {
 }
 
 };
-/* ============================
-   FILTER FUNCTION
-============================ */
-let currentFilter = "all";
 
-function applyGuestFilters() {
-  const rows = document.querySelectorAll("#guestTable tbody tr");
-
-  rows.forEach(row => {
-    const std = row.children[6].innerText.trim();  // STD column
-    const rsvp = row.children[7].innerText.trim(); // RSVP column
-
-    let show = true;
-
-    switch (currentFilter) {
-      case "std-yes":   show = std === "✔"; break;
-      case "std-no":    show = std === "✘"; break;
-      case "std-maybe": show = std === "❔"; break;
-      case "std-none":  show = std === "⚠️"; break;
-
-      case "rsvp-yes":   show = rsvp === "✔"; break;
-      case "rsvp-no":    show = rsvp === "✘"; break;
-      case "rsvp-maybe": show = rsvp === "❔"; break;
-      case "rsvp-none":  show = rsvp === "⚠️"; break;
-
-      case "all": break;
-
-      default: break;
-    }
-
-    row.style.display = show ? "" : "none";
-  });
-}
-
-/* ============================
-   COLUMN VISIBILITY
-============================ */
-function updateColumnVisibility() {
-  const stdCol = document.querySelectorAll("#guestTable th:nth-child(7), #guestTable td:nth-child(7)");
-  const rsvpCol = document.querySelectorAll("#guestTable th:nth-child(8), #guestTable td:nth-child(8)");
-
-  if (currentFilter.startsWith("std-")) {
-    rsvpCol.forEach(c => c.style.display = "none");
-    stdCol.forEach(c => c.style.display = "");
-  }
-  else if (currentFilter.startsWith("rsvp-")) {
-    stdCol.forEach(c => c.style.display = "none");
-    rsvpCol.forEach(c => c.style.display = "");
-  }
-  else {
-    stdCol.forEach(c => c.style.display = "");
-    rsvpCol.forEach(c => c.style.display = "");
-  }
-}
-
-
-/* ============================
-   FILTER BUTTON HANDLERS
-============================ */
-document.querySelectorAll(".filter-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const filter = btn.dataset.filter;
-
-    if (filter === "clear") {
-      currentFilter = "all";
-
-      document.querySelectorAll(".filter-btn")
-        .forEach(b => b.classList.remove("active"));
-
-      document.querySelector('[data-filter="all"]').classList.add("active");
-
-      applyGuestFilters();
-      updateColumnVisibility(); // ← добавлено
-      return;
-    }
-
-    currentFilter = filter;
-
-    document.querySelectorAll(".filter-btn")
-      .forEach(b => b.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    applyGuestFilters();
-    updateColumnVisibility(); // ← добавлено
-  });
-});
 
 
 function validateBlueFields(){
