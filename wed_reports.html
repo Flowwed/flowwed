@@ -1970,16 +1970,23 @@ function generateQRForSMS(group) {
 
   const token = window.APP_TOKEN;
 
-  let link;
+let link;
 
-  // 👉 NO RESPONSE → ведёт на reminder (с Notify)
-  if (group === "rsvpNoResponse") {
-    link = `${window.location.origin}/rsvp-reminder.html?t=${token}`;
-  } 
-  // 👉 остальные → как было
-  else {
-    link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=${group}`;
-  }
+// 👉 NO RESPONSE
+if (group === "rsvpNoResponse") {
+  link = `${window.location.origin}/rsvp-reminder.html?t=${token}&type=noresponse`;
+} 
+
+// 👉 MAYBE (новое)
+else if (group === "rsvpMaybe") {
+  link = `${window.location.origin}/rsvp-reminder.html?t=${token}&type=maybe`;
+} 
+
+// 👉 остальные
+else {
+  link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=${group}`;
+}
+
 
   // ❗ ТОЛЬКО URL (никаких sms:)
   const qrUrl =

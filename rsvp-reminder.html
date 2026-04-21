@@ -77,7 +77,7 @@ button{
 
 <body>
 
-<!-- NOTIFY BLOCK (ADMIN ONLY) -->
+<!-- NOTIFY BLOCK -->
 <div id="notifyBlock">
 
   <div style="
@@ -106,14 +106,11 @@ button{
 <!-- CARD -->
 <div class="card">
 
-  <h2>We haven’t received your RSVP yet</h2>
+  <h2 id="reminderTitle"></h2>
 
-  <p>
-    We hope you can join us for our special day.<br>
-    Please confirm your attendance at your earliest convenience.
-  </p>
+  <p id="reminderText"></p>
 
-  <button id="goRSVP">Confirm RSVP</button>
+  <button id="goRSVP"></button>
 
 </div>
 
@@ -124,33 +121,76 @@ button{
 // =============================
 const params = new URLSearchParams(window.location.search);
 const token = params.get("t");
-
-// 👉 если есть shared=1 → это гость
+const type = params.get("type");   // 🔥 ВАЖНО
 const isShared = params.get("shared") === "1";
+
+
+// =============================
+// DYNAMIC CONTENT
+// =============================
+const titleEl = document.getElementById("reminderTitle");
+const textEl  = document.getElementById("reminderText");
+const btnEl   = document.getElementById("goRSVP");
+
+if (type === "maybe") {
+
+  titleEl.textContent = "Final Confirmation Needed";
+
+  textEl.innerHTML = `
+    You previously responded that you might attend.<br><br>
+    We would really appreciate it if you could confirm your final decision.
+  `;
+
+  btnEl.textContent = "Confirm Final Decision";
+
+} else {
+
+  // default = NO RESPONSE
+
+  titleEl.textContent = "We haven’t received your RSVP yet";
+
+  textEl.innerHTML = `
+    We hope you can join us for our special day.<br><br>
+    Please confirm your attendance at your earliest convenience.
+  `;
+
+  btnEl.textContent = "Confirm RSVP";
+}
 
 
 // =============================
 // RSVP BUTTON
 // =============================
-document.getElementById("goRSVP").onclick = () => {
-  window.location.href =
+btnEl.onclick = () => {
+
+  let link =
     `${window.location.origin}/rsvpresponse.html?t=${token}`;
+
+  // 👉 если это MAYBE → передаём group
+  if (type === "maybe") {
+    link += "&group=rsvpMaybe";
+  }
+
+  window.location.href = link;
 };
 
 
 // =============================
-// NOTIFY BUTTON (ADMIN ONLY)
+// NOTIFY BUTTON (ADMIN)
 // =============================
 document.getElementById("notifyBtn").onclick = async () => {
 
   const link =
-    `${window.location.origin}/rsvp-reminder.html?t=${token}&shared=1`;
+    `${window.location.origin}/rsvp-reminder.html?t=${token}&type=${type}&shared=1`;
 
   if (navigator.share) {
     try {
       await navigator.share({
         title: "RSVP Reminder",
-        text: "Please confirm your attendance",
+        text:
+          type === "maybe"
+            ? "Please confirm your final decision"
+            : "Please confirm your attendance",
         url: link
       });
     } catch(e){}
