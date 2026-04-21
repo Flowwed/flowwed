@@ -1117,40 +1117,6 @@ let guests = [];
 let coupleFullName = "";
 const tbody = document.querySelector("#guestTable tbody");
 
-// ======================================================
-// LOAD COUPLE NAME (dashboard style)
-// ======================================================
-async function loadCoupleName() {
-  const token = window.APP_TOKEN;
-
-  const { data } = await supabase
-    .from("sites")
-    .select("slug")
-    .eq("edit_token", token)
-    .single();
-
-  if (!data || !data.slug) return;
-
-  const parts = data.slug.split("-");
-  const bride = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-  const groom = parts[1].charAt(0).toUpperCase() + parts[1].slice(1);
-
-  coupleFullName = `${bride} & ${groom}`;
-  document.getElementById("coupleSmallName").textContent = coupleFullName;
-
- }
- loadCoupleName();
-
-// ======================================================
-// GET ICON
-// ======================================================
-function getIcon(status) {
-  const s = (status || "").toLowerCase();
-  if (s === "yes") return `<span style="color:green;font-size:20px;">✔</span>`;
-  if (s === "no") return `<span style="color:red;font-size:20px;">✘</span>`;
-  if (s === "maybe") return `<span style="color:#ffd400;font-size:20px;">❔</span>`;
-  return `<span style="color:#ff9800;font-size:20px;">⚠️</span>`;
-}
 
 // ======================================================
 // LOAD GUESTS
@@ -1386,16 +1352,6 @@ window.showToastBox = function (msg, type = "success") {
   </div>
 </div>
 
-<script>
-
-document.getElementById("backBtn").onclick = () => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get("t") || localStorage.getItem("verified_token") || "";
-
-    window.location.href = "/dashboard.html?t=" + encodeURIComponent(token);
-};
-
-</script>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
