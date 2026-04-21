@@ -94,6 +94,18 @@ button{
   font-weight:700;
   cursor:pointer;
 }
+
+#signature{
+  margin-top:18px;
+  font-size:14px;
+  color:#7a2a2a;
+  font-weight:600;
+  opacity:0.85;
+  font-style: italic;
+
+}
+
+
 </style>
 </head>
 
@@ -134,10 +146,13 @@ button{
 
   <button id="goRSVP"></button>
 
+<div id="signature"></div>
+
+
+
 </div>
 
-<script>
-
+<script type="module">
 // =============================
 // PARAMS
 // =============================
@@ -218,19 +233,17 @@ if (state.showBtn) {
 // =============================
 // RSVP BUTTON
 // =============================
+
 btnEl.onclick = () => {
 
-  let link =
-    `${window.location.origin}/rsvpresponse.html?t=${token}`;
+  let link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
 
-  // 👉 если это MAYBE → передаём group
   if (type === "maybe") {
     link += "&group=rsvpMaybe";
   }
 
   window.location.href = link;
 };
-
 
 // =============================
 // NOTIFY BUTTON (ADMIN)
@@ -264,6 +277,47 @@ document.getElementById("notifyBtn").onclick = async () => {
 if (isShared) {
   document.getElementById("notifyBlock").style.display = "none";
 }
+
+
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+
+);
+
+let coupleName = "";
+
+async function loadCoupleName() {
+
+  const { data } = await supabase
+    .from("sites")
+    .select("couple_name")
+    .eq("edit_token", token)
+    .single();
+
+  if (data?.couple_name) {
+    coupleName = data.couple_name.trim();
+  }
+
+  renderSignature();
+}
+
+function renderSignature() {
+  const el = document.getElementById("signature");
+  if (!el) return;
+
+  el.innerHTML = `
+    With love,<br>
+    <strong>${coupleName || "The Couple"}</strong>
+  `;
+}
+
+// 🔥 вызов
+loadCoupleName();
+
+
 
 </script>
 
