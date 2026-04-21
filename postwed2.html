@@ -1146,6 +1146,12 @@ async function loadGuests() {
 loadGuests();
 
 
+// 👇 ВСТАВЬ ВОТ ЭТО ЗДЕСЬ
+document.getElementById("selectAll").onclick = e => {
+  const all = document.querySelectorAll(".rowCheck");
+  all.forEach(ch => (ch.checked = e.target.checked));
+};
+
 // ======================================================
 // RENDER TABLE
 // ======================================================
