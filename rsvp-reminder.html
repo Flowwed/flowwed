@@ -128,63 +128,70 @@ const isShared = params.get("shared") === "1";
 // =============================
 // DYNAMIC CONTENT
 // =============================
+
 const titleEl = document.getElementById("reminderTitle");
 const textEl  = document.getElementById("reminderText");
 const btnEl   = document.getElementById("goRSVP");
 
-// 🔥 reset (важно)
-btnEl.style.display = "inline-block";
+// 🔥 конфиг всех состояний
+const CONFIG = {
 
-if (type === "maybe") {
+  maybe: {
+    title: "Still deciding?",
+    text: `
+      Please confirm your final decision.<br><br>
+      We’d love to celebrate together.
+    `,
+    btnText: "Confirm Decision",
+    showBtn: true
+  },
 
-titleEl.textContent = "Still deciding?";
+  yes: {
+    title: "You’re coming!",
+    text: `
+      We’re so happy you’ll be joining us.<br><br>
+      Can’t wait to celebrate together.
+    `,
+    showBtn: false
+  },
 
-textEl.innerHTML = `
-Please confirm your final decision.<br><br>
-We’d love to celebrate together.
-`;
+  no: {
+    title: "We’ll miss you",
+    text: `
+      Sorry you won’t be able to join us.<br><br>
+      Wishing you all the best and hope to see you soon.
+    `,
+    showBtn: false
+  },
 
-btnEl.textContent = "Confirm Decision";
+  noresponse: {
+    title: "RSVP needed",
+    text: `
+      We haven’t received your response yet.<br><br>
+      Please let us know if you’ll be joining us.
+    `,
+    btnText: "Confirm RSVP",
+    showBtn: true
+  }
 
-} 
+};
+
+// 🔥 fallback если type пустой
+const state = CONFIG[type] || CONFIG.noresponse;
 
 
-else if (type === "yes") {
+// =============================
+// APPLY UI
+// =============================
+titleEl.textContent = state.title;
+textEl.innerHTML    = state.text;
 
-titleEl.textContent = "You’re coming!";
-
-textEl.innerHTML = `
-We’re so happy you’ll be joining us.<br><br>
-Can’t wait to celebrate together.
-`;
-
-btnEl.style.display = "none";
-} 
-
-else if (type === "no") {
-
-titleEl.textContent = "We’ll miss you";
-
-textEl.innerHTML = `
-Sorry you won’t be able to join us.<br><br>
-Wishing you all the best and hope to see you soon.
-`;
-
-btnEl.style.display = "none";
-
-else {
-
-  // NO RESPONSE
-
-titleEl.textContent = "RSVP needed";
-
-textEl.innerHTML = `
-We haven’t received your response yet.<br><br>
-Please let us know if you’ll be joining us.
-`;
-
-btnEl.textContent = "Confirm RSVP";
-
+if (state.showBtn) {
+  btnEl.style.display = "inline-block";
+  btnEl.textContent = state.btnText || "Confirm";
+} else {
+  btnEl.style.display = "none";
+}
 
 // =============================
 // RSVP BUTTON
