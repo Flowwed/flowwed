@@ -1030,44 +1030,12 @@ font-weight:700;
   flex:1;
 }
 
-.map-link-box{
-  margin-top:12px;
-  margin-bottom:18px;
-}
-
-.map-link-box a{
-  font-size:12px;
-  font-weight:500;
-  color:#1e63ff;
-  text-decoration:none;
-  border-bottom:1px dashed rgba(180,17,17,0.35);
-  padding-bottom:2px;
-
-  transition:0.2s;
-}
-
-.map-link-box a:hover{
-  text-decoration:underline;
-}
-
 
 .required-error{
 border:3px solid #ff0033 !important;
 background:#ffe6ec !important;
 box-shadow:0 0 0 3px rgba(255,0,50,0.25) !important;
 }
-
-.top-nav-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
-
-  margin-bottom: 8px;   /* 🔥 вместо 100px */
-}
-
 
 
 
@@ -1485,6 +1453,15 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
 }
 
 
+.form-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #9c1818;
+
+  margin-bottom: 12px;
+  text-align: left;
+}
+
 </style>
 </head>
 
@@ -1556,6 +1533,8 @@ if (params.get("t")) {
 
 
 <div class="form-box">
+
+<div class="form-title">Guest Memories</div>
 
 <div class="form-row">
   <div class="field">
