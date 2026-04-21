@@ -137,53 +137,53 @@ btnEl.style.display = "inline-block";
 
 if (type === "maybe") {
 
-  titleEl.textContent = "Final Confirmation Needed";
+titleEl.textContent = "Still deciding?";
 
-  textEl.innerHTML = `
-    You previously responded that you might attend.<br><br>
-    We would really appreciate it if you could confirm your final decision.
-  `;
+textEl.innerHTML = `
+Please confirm your final decision.<br><br>
+We’d love to celebrate together.
+`;
 
-  btnEl.textContent = "Confirm Final Decision";
+btnEl.textContent = "Confirm Decision";
 
 } 
+
+
 else if (type === "yes") {
 
-  titleEl.textContent = "We’re excited to celebrate with you!";
+titleEl.textContent = "You’re coming!";
 
-  textEl.innerHTML = `
-    We are so happy that you will be joining us to celebrate our wedding.<br><br>
-    We can't wait to share this special day with you!
-  `;
+textEl.innerHTML = `
+We’re so happy you’ll be joining us.<br><br>
+Can’t wait to celebrate together.
+`;
 
-  btnEl.style.display = "none";
-
+btnEl.style.display = "none";
 } 
+
 else if (type === "no") {
 
-  titleEl.textContent = "We’ll miss you";
+titleEl.textContent = "We’ll miss you";
 
-  textEl.innerHTML = `
-    We are very sorry to hear that you won’t be able to attend the wedding.<br><br>
-    You will be missed.
-  `;
+textEl.innerHTML = `
+Sorry you won’t be able to join us.<br><br>
+Wishing you all the best and hope to see you soon.
+`;
 
-  btnEl.style.display = "none";
+btnEl.style.display = "none";
 
-} 
 else {
 
   // NO RESPONSE
 
-  titleEl.textContent = "We haven’t received your RSVP yet";
+titleEl.textContent = "RSVP needed";
 
-  textEl.innerHTML = `
-    We hope you can join us for our special day.<br><br>
-    Please confirm your attendance at your earliest convenience.
-  `;
+textEl.innerHTML = `
+We haven’t received your response yet.<br><br>
+Please let us know if you’ll be joining us.
+`;
 
-  btnEl.textContent = "Confirm RSVP";
-}
+btnEl.textContent = "Confirm RSVP";
 
 
 // =============================
