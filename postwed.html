@@ -2053,16 +2053,6 @@ async function loadPostWeddingVideo() {
 
 }
 
-// ======================================================
-// GET ICON
-// ======================================================
-function getIcon(status) {
-  const s = (status || "").toLowerCase();
-  if (s === "yes") return `<span style="color:green;font-size:20px;">✔</span>`;
-  if (s === "no") return `<span style="color:red;font-size:20px;">✘</span>`;
-  if (s === "maybe") return `<span style="color:#ffd400;font-size:20px;">❔</span>`;
-  return `<span style="color:#ff9800;font-size:20px;">⚠️</span>`;
-}
 
 // ======================================================
 // LOAD GUESTS

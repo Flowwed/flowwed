@@ -1503,29 +1503,25 @@ document.addEventListener("DOMContentLoaded", () => {
     openComposer();
   };
 
-  function openComposer() {
+function openComposer() {
 
-    const selected = [...document.querySelectorAll(".rowCheck:checked")];
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
-    if (selected.length === 0) {
-      alert("Select at least one guest");
-      return;
-    }
-
-    const emails = selected.map(ch => ch.dataset.email);
-
-    document.getElementById("composerEmails").value =
-      [...new Set(emails)].join(", ");
-
-    document.getElementById("composerSubject").value =
-      "Wedding Invitation";
-
-    document.getElementById("composerBody").value =
-      "Hello! You are invited...";
-
-    document.getElementById("emailComposer").style.display = "block";
+  if (selected.length === 0) {
+    alert("Select at least one guest");
+    return;
   }
 
+  refreshComposerFields(); // ← ВСТАВИЛ
+
+  document.getElementById("composerSubject").value =
+    "Wedding Invitation";
+
+  document.getElementById("composerBody").value =
+    "Hello! You are invited...";
+
+  document.getElementById("emailComposer").style.display = "block";
+}
   // Закрытие
   document.getElementById("composerClose").onclick = () => {
     document.getElementById("emailComposer").style.display = "none";
@@ -1567,6 +1563,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 });
+
+
+
 
 </script>
 
