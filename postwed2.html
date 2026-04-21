@@ -1183,6 +1183,19 @@ function render() {
   });
 }
 
+function refreshComposerFields() {
+  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+
+  const emails = [];
+
+  selected.forEach(ch => {
+    if (ch.dataset.email) emails.push(ch.dataset.email);
+  });
+
+  document.getElementById("composerEmails").value =
+    [...new Set(emails)].join(", ");
+}
+
 // 🔽 Реагируем на выбор одиночных чекбоксов
 document.addEventListener("change", (e) => {
   if (e.target.classList.contains("rowCheck")) {
