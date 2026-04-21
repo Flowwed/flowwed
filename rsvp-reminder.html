@@ -132,6 +132,9 @@ const titleEl = document.getElementById("reminderTitle");
 const textEl  = document.getElementById("reminderText");
 const btnEl   = document.getElementById("goRSVP");
 
+// 🔥 reset (важно)
+btnEl.style.display = "inline-block";
+
 if (type === "maybe") {
 
   titleEl.textContent = "Final Confirmation Needed";
@@ -143,9 +146,34 @@ if (type === "maybe") {
 
   btnEl.textContent = "Confirm Final Decision";
 
-} else {
+} 
+else if (type === "yes") {
 
-  // default = NO RESPONSE
+  titleEl.textContent = "We’re excited to celebrate with you!";
+
+  textEl.innerHTML = `
+    We are so happy that you will be joining us to celebrate our wedding.<br><br>
+    We can't wait to share this special day with you!
+  `;
+
+  btnEl.style.display = "none";
+
+} 
+else if (type === "no") {
+
+  titleEl.textContent = "We’ll miss you";
+
+  textEl.innerHTML = `
+    We are very sorry to hear that you won’t be able to attend the wedding.<br><br>
+    You will be missed.
+  `;
+
+  btnEl.style.display = "none";
+
+} 
+else {
+
+  // NO RESPONSE
 
   titleEl.textContent = "We haven’t received your RSVP yet";
 
