@@ -1932,7 +1932,7 @@ const saved = document.getElementById("rsvpSaved");
 
 document.querySelectorAll("[data-sync]").forEach(field => {
 
-field.addEventListener("blur", async () => {
+field.addEventListener("input", async () => {
 
 const token = window.APP_TOKEN;
 
