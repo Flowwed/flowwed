@@ -2139,10 +2139,10 @@ loadGuests();
 // ======================================================
 
 function render() {
-  tbody.innerHTML = "";
+  let html = "";
 
   guests.forEach((g, i) => {
-    tbody.innerHTML += `
+    html += `
       <tr data-id="${g.id}">
         <td>
           <input type="checkbox"
@@ -2153,22 +2153,19 @@ function render() {
 
         <td>${i + 1}</td>
 
-        <!-- Name (First + Last together) -->
         <td contenteditable="true" data-field="name">
           ${g.first} ${g.last}
         </td>
 
-        <!-- Email -->
         <td contenteditable="true" data-field="email">
           ${g.email}
         </td>
-
       </tr>
     `;
   });
+
+  tbody.innerHTML = html;
 }
-
-
 
 // 🔽 Реагируем на выбор одиночных чекбоксов
 document.addEventListener("change", (e) => {
