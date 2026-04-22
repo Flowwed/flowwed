@@ -656,6 +656,15 @@ th {
 }
 
 
+.steps .step:first-child {
+  display: none;
+}
+
+.section:first-of-type {
+  display: none !important;
+}
+
+
 </style>
 
 <script>
@@ -762,7 +771,7 @@ window.APP_TOKEN = token;
 </div>
 
 <!-- STEP 1 -->
-<div class="section active">
+<div class="section active" style="display:none;">
 <div class="section-box">
 <h2>Basic</h2>
 <div class="grid">
