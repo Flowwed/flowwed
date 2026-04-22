@@ -280,15 +280,36 @@ const btnEl   = document.getElementById("goRSVP");
 // =============================
 // APPLY UI
 // =============================
-titleEl.textContent = state.title;
-textEl.innerHTML    = state.text;
 
-if (state.showBtn) {
-  btnEl.style.display = "inline-block";
-  btnEl.textContent = state.btnText || "Confirm";
+
+if (!state || !titleEl || !textEl || !btnEl) {
+  console.error("UI ERROR:", { state, titleEl, textEl, btnEl });
+
+  document.body.innerHTML = `
+    <div style="
+      font-family:sans-serif;
+      padding:40px;
+      text-align:center;
+    ">
+      <h2>Something went wrong</h2>
+      <p>Please reopen the link or contact the host.</p>
+    </div>
+  `;
+
 } else {
-  btnEl.style.display = "none";
+
+  titleEl.textContent = state.title;
+  textEl.innerHTML    = state.text;
+
+  if (state.showBtn) {
+    btnEl.style.display = "inline-block";
+    btnEl.textContent = state.btnText || "Confirm";
+  } else {
+    btnEl.style.display = "none";
+  }
+
 }
+
 
 // =============================
 // RSVP BUTTON
