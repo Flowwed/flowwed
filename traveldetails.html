@@ -1864,6 +1864,8 @@ function updateMapLink() {
   }
 }
 
+document.addEventListener("DOMContentLoaded", updateMapLink);
+
 
 </script>
 
@@ -2169,26 +2171,36 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 
 });
 
+document.addEventListener("DOMContentLoaded", () => {
 
-document.getElementById("mapLink").onclick = function(e) {
+  const mapLink = document.getElementById("mapLink");
+  const venueInput = document.getElementById("venueAddress");
 
-  e.preventDefault();
+  if (!mapLink || !venueInput) return; // 💥 ВАЖНО
 
-  var address = document.getElementById("venueAddress").value;
+  function openMap(e) {
+    e.preventDefault();
 
-  // 🔥 КАК В ОБРАЗЦЕ — ПРОСТО ОТКРЫВАЕМ
-  window.open("https://maps.google.com/?q=" + address);
+    const address = venueInput.value.trim();
 
-};
+    if (!address) {
+      alert("Enter address first");
+      return;
+    }
 
+    const url = "https://maps.google.com/?q=" + encodeURIComponent(address);
 
-  e.preventDefault();
+    window.open(url, "_blank");
+  }
 
-  var address = document.getElementById("venueAddress").value;
+  venueInput.addEventListener("input", () => {
+    mapLink.href = "https://maps.google.com/?q=" + encodeURIComponent(venueInput.value);
+  });
 
-  window.open("https://maps.google.com/?q=" + address, "_blank");
+  mapLink.addEventListener("click", openMap);
 
-};
+});
+
 
 </script>
 
