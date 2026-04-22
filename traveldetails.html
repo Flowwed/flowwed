@@ -75,7 +75,7 @@ h1{
 }
 
 .section.active{
-  display:block;
+  display:block !important;
 }
 
 .section-box{
@@ -1324,7 +1324,7 @@ if(openPreviewBtn){
   }
 
 // 🔥 ВОССТАНОВЛЕНИЕ SCHEDULE
-if (data.schedule && Array.isArray(data.schedule)) {
+if (data && data.schedule && Array.isArray(data.schedule)) {
 
   const container = document.querySelectorAll(".section")[0].querySelector(".grid");
 
@@ -1361,7 +1361,7 @@ if (data.schedule && Array.isArray(data.schedule)) {
 
 
  // 🔥 ВОССТАНОВЛЕНИЕ FAQ
-if (data.faq && Array.isArray(data.faq)) {
+if (data && data.faq && Array.isArray(data.faq)) {
 
   const container = document.querySelectorAll(".section")[4].querySelector(".grid");
 
