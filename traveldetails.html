@@ -1099,6 +1099,58 @@ const sb = window.supabase.createClient(
       return `${parseInt(d,10)} ${months[parseInt(m,10)-1]} ${y}`;
     }
 
+function getScheduleData() {
+  const items = [];
+
+  let i = 1;
+
+  while (true) {
+    const timeEl = document.getElementById(`scheduleTime${i}`);
+    const textEl = document.getElementById(`scheduleText${i}`);
+
+    if (!timeEl && !textEl) break;
+
+    if (timeEl || textEl) {
+      items.push({
+        time: timeEl?.value || "",
+        text: textEl?.value || ""
+      });
+    }
+
+    i++;
+  }
+
+  return items;
+}
+
+
+function getFaqData() {
+  const items = [];
+
+  let i = 1;
+
+  while (true) {
+    const qEl = document.getElementById(`faqQ${i}`);
+    const aEl = document.getElementById(`faqA${i}`);
+
+    if (!qEl && !aEl) break;
+
+    if (qEl || aEl) {
+      items.push({
+        q: qEl?.value || "",
+        a: aEl?.value || ""
+      });
+    }
+
+    i++;
+  }
+
+  return items;
+}
+
+
+
+
 
 fieldIds.forEach(id => {
   const el = document.getElementById(id);
@@ -1130,6 +1182,9 @@ fieldIds.forEach(id => {
 
 document.getElementById("saveDraftBtn").addEventListener("click", async () => {
   const f = getFormData();
+
+const schedule = getScheduleData();
+const faq = getFaqData();
 
   const data = {
 
@@ -1175,6 +1230,10 @@ document.getElementById("saveDraftBtn").addEventListener("click", async () => {
     faq_a3: f.faqA3,
     faq_q4: f.faqQ4,
     faq_a4: f.faqA4
+
+    schedule: schedule,
+    faq: faq,
+
   };
 
   await saveToSupabase(data);
