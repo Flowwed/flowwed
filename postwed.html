@@ -1927,39 +1927,43 @@ const saved = document.getElementById("rsvpSaved");
 }
 
 
-
 /* UNIVERSAL AUTOSAVE */
 
 document.querySelectorAll("[data-sync]").forEach(field => {
 
-field.addEventListener("change", async () => {
-const token = window.APP_TOKEN;
+  field.addEventListener("change", async () => {
 
-console.log("TOKEN:", token);  // 👈 ВСТАВЬ ЭТУ СТРОКУ
+    const token = window.APP_TOKEN;
 
-const columnMap = {
-deadline: "rsvp_date",
-date: "wedding_date",
-time: "wedding_time",
-venue: "venue",
-address: "address"
-};
+    console.log("TOKEN:", token);
 
-const column = columnMap[field.dataset.sync];
-if(!column) return;
+    const columnMap = {
+      deadline: "rsvp_date",
+      date: "wedding_date",
+      time: "wedding_time",
+      venue: "venue",
+      address: "address"
+    };
 
-let value = field.value;
+    const column = columnMap[field.dataset.sync];
+    if (!column) return;
 
-await supabase
-.from("sites")
-.update({ [column]: value })
-.eq("edit_token", token);
+    const value = field.value;
+
+    const { data, error } = await supabase
+      .from("sites")
+      .upsert(
+        [{ edit_token: token, [column]: value }],
+        { onConflict: "edit_token" }
+      )
+      .select();
+
+    console.log("UPSERT RESULT:", data);
+    console.log("UPSERT ERROR:", error);
+
+  });
 
 });
-
-});
-
-
 async function loadWeddingData(){
 
 const token = window.APP_TOKEN;
