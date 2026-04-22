@@ -1072,19 +1072,17 @@ const sb = window.supabase.createClient(
 
     const storageKey = `venueMapDraft:${token || "no-token"}`;
 
-
-    const fieldIds = [
-      "coupleName","weddingDate",
-      "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
-      "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
-      "airport","transferTime","flightsText",
-      "hotel1","hotel2","hotel3",
-      "venueName","mapLink","venueAddress","venueNote",
-      "gettingAround","dressCode","weather","weatherNote",
-      "trip1","trip2","trip3",
-      "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4"
-    ];
-
+const fieldIds = [
+  "coupleName","weddingDate",
+  "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
+  "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
+  "airport","transferTime","flightsText",
+  "hotel1","hotel2","hotel3",
+  "venueName","venueAddress","venueNote",
+  "gettingAround","dressCode","weather","weatherNote",
+  "trip1","trip2","trip3",
+  "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4"
+];
     function getFormData(){
       const data = {};
       fieldIds.forEach(id => {
@@ -1176,20 +1174,19 @@ function getFaqData() {
 }
 
 
-
-
-
 fieldIds.forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
 
   el.addEventListener("input", () => {
 
-if (id === "mapLink") {
-  const linkEl = document.getElementById("mapLinkText");
-  linkEl.href = el.value;
-  linkEl.textContent = el.value || "—";
-}
+    // ✅ обновление карты от адреса
+    if (id === "venueAddress") {
+      const mapLink = document.getElementById("mapLink");
+      if (mapLink) {
+        mapLink.href = "https://maps.google.com/?q=" + encodeURIComponent(el.value);
+      }
+    }
 
     if (id === "coupleName") {
       document.getElementById("coupleNameDisplay").textContent = el.value || "—";
@@ -1212,6 +1209,7 @@ if (id === "mapLink") {
 
   });
 });
+
 
 document.getElementById("saveDraftBtn").addEventListener("click", async () => {
   const f = getFormData();
@@ -1347,14 +1345,17 @@ if(openPreviewBtn){
       faqA4: data.faq_a4
     };
 
-    setFormData(mapped);
+setFormData(mapped);
 
-const linkEl = document.getElementById("mapLinkText");
+// ✅ правильная инициализация карты
+const mapLink = document.getElementById("mapLink");
+const venueInput = document.getElementById("venueAddress");
 
-linkEl.href = data.map_link || "#";
-linkEl.textContent = data.map_link || "—";
+if (mapLink && venueInput && venueInput.value) {
+  mapLink.href = "https://maps.google.com/?q=" + encodeURIComponent(venueInput.value);
+}
 
-  }
+
 
 // 🔥 ВОССТАНОВЛЕНИЕ SCHEDULE
 if (data.schedule && Array.isArray(data.schedule)) {
