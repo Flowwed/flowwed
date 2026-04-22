@@ -866,19 +866,21 @@ window.APP_TOKEN = token;
         <input id="venueName" placeholder="The Grand Garden">
       </div>
 
-      <div class="field">
-        <label>Map Link</label>
-        <a id="mapLinkText" target="_blank">—</a>
-      </div>
-
       <div class="field full">
         <label>Venue Address</label>
-        <textarea id="venueAddress"></textarea>
-      </div>
+        <input id="venueAddress" type="text" placeholder="Enter venue address">
 
-      <div class="field full">
-        <label>Venue Note</label>
-        <input id="venueNote" placeholder="Please use the main entrance.">
+        <div class="field full">
+          <label>Venue Note</label>
+          <input id="venueNote" placeholder="Please use the main entrance.">
+        </div>
+
+        <a id="mapLink"
+           href="https://maps.google.com"
+           target="_blank"
+           style="color:#2a6bff; text-decoration:underline;">
+           Open map
+        </a>
       </div>
 
     </div>
