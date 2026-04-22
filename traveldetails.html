@@ -904,6 +904,18 @@ window.APP_TOKEN = token;
       <div class="field"><label>Question 4</label><input id="faqQ4"></div>
       <div class="field"><label>Answer 4</label><input id="faqA4"></div>
 
+<div id="addFaqBtn" style="
+  margin-top:10px;
+  color:#2a6bff;
+  font-weight:600;
+  cursor:pointer;
+  text-decoration: underline;
+">
+  + Add another FAQ
+</div>
+
+
+
     </div>
   </div>
 </div>
@@ -1931,14 +1943,15 @@ guideModal.onclick = (e) => {
 
 <script>
 
-
 let scheduleCount = 4;
 
 document.getElementById("addScheduleBtn").addEventListener("click", () => {
 
   scheduleCount++;
 
-  const container = document.querySelector(".section:nth-child(2) .grid");
+  const container = document.querySelectorAll(".section")[1].querySelector(".grid");
+
+  if (!container) return;
 
   const timeField = document.createElement("div");
   timeField.className = "field";
@@ -1957,11 +1970,48 @@ document.getElementById("addScheduleBtn").addEventListener("click", () => {
   container.appendChild(timeField);
   container.appendChild(textField);
 
+  // 🔥 ВСЕГДА ВНИЗ
+  const addBtn = document.getElementById("addScheduleBtn");
+  container.appendChild(addBtn);
+
+});
+
+let faqCount = 4;
+
+document.getElementById("addFaqBtn").addEventListener("click", () => {
+
+  faqCount++;
+
+  const container = document.querySelectorAll(".section")[5].querySelector(".grid");
+
+  if (!container) return;
+
+  const qField = document.createElement("div");
+  qField.className = "field";
+  qField.innerHTML = `
+    <label>Question ${faqCount}</label>
+    <input id="faqQ${faqCount}" placeholder="Question">
+  `;
+
+  const aField = document.createElement("div");
+  aField.className = "field";
+  aField.innerHTML = `
+    <label>Answer ${faqCount}</label>
+    <input id="faqA${faqCount}" placeholder="Answer">
+  `;
+
+  container.appendChild(qField);
+  container.appendChild(aField);
+
+  // 🔥 двигаем кнопку вниз
+  const btn = document.getElementById("addFaqBtn");
+  container.appendChild(btn);
+
 });
 
 
-</script>
 
+</script>
 
 
 </body>
