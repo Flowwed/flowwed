@@ -161,6 +161,12 @@ button{
 
 }
 
+.card {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.35s ease;
+}
+
 
 </style>
 </head>
@@ -281,7 +287,6 @@ const btnEl   = document.getElementById("goRSVP");
 // APPLY UI
 // =============================
 
-
 if (!state || !titleEl || !textEl || !btnEl) {
   console.error("UI ERROR:", { state, titleEl, textEl, btnEl });
 
@@ -308,8 +313,14 @@ if (!state || !titleEl || !textEl || !btnEl) {
     btnEl.style.display = "none";
   }
 
-}
+  // ✅ ВАЖНО: только здесь показываем карточку
+  const card = document.querySelector(".card");
+  if (card) {
+    card.style.opacity = "1";
+    card.style.transform = "translateY(0)";
+  }
 
+}
 
 // =============================
 // RSVP BUTTON
