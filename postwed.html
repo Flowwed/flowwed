@@ -1909,6 +1909,8 @@ if (rsvpDateInput) {
     const token = window.APP_TOKEN;
     const date = rsvpDateInput.value;
 
+console.log("SAVING:", column, value);
+
     await supabase
       .from("sites")
       .update({ rsvp_date: date })
