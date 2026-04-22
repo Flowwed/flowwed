@@ -1317,6 +1317,81 @@ if(openPreviewBtn){
     setFormData(mapped);
   }
 
+// 🔥 ВОССТАНОВЛЕНИЕ SCHEDULE
+if (data.schedule && Array.isArray(data.schedule)) {
+
+  const container = document.querySelectorAll(".section")[1].querySelector(".grid");
+
+  // очищаем старые (кроме первых 4 — они уже есть)
+  for (let i = 5; i <= data.schedule.length; i++) {
+
+    const item = data.schedule[i - 1];
+
+    const timeField = document.createElement("div");
+    timeField.className = "field";
+    timeField.innerHTML = `
+      <label>Time ${i}</label>
+      <input id="scheduleTime${i}" value="${item.time || ""}">
+    `;
+
+    const textField = document.createElement("div");
+    textField.className = "field";
+    textField.innerHTML = `
+      <label>Event ${i}</label>
+      <input id="scheduleText${i}" value="${item.text || ""}">
+    `;
+
+    container.appendChild(timeField);
+    container.appendChild(textField);
+  }
+
+  // вернуть кнопку вниз
+  const btn = document.getElementById("addScheduleBtn");
+  container.appendChild(btn);
+
+  // обновить счётчик
+  scheduleCount = data.schedule.length;
+}
+
+
+ // 🔥 ВОССТАНОВЛЕНИЕ FAQ
+if (data.faq && Array.isArray(data.faq)) {
+
+  const container = document.querySelectorAll(".section")[5].querySelector(".grid");
+
+  for (let i = 5; i <= data.faq.length; i++) {
+
+    const item = data.faq[i - 1];
+
+    const qField = document.createElement("div");
+    qField.className = "field";
+    qField.innerHTML = `
+      <label>Question ${i}</label>
+      <input id="faqQ${i}" value="${item.q || ""}">
+    `;
+
+    const aField = document.createElement("div");
+    aField.className = "field";
+    aField.innerHTML = `
+      <label>Answer ${i}</label>
+      <input id="faqA${i}" value="${item.a || ""}">
+    `;
+
+    container.appendChild(qField);
+    container.appendChild(aField);
+  }
+
+  // кнопка вниз
+  const btn = document.getElementById("addFaqBtn");
+  container.appendChild(btn);
+
+  // обновляем счётчик
+  faqCount = data.faq.length;
+}
+
+
+
+
   // 🔹 2. НОВЫЕ ДАННЫЕ (sites — ТОЛЬКО для header)
   const siteData = await loadFromSites();
 
