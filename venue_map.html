@@ -1,6 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+<script>
+console.log("DEBUG START");
+
+// 🔥 БЛОКИРУЕМ ВСЕ РЕДИРЕКТЫ
+Object.defineProperty(window, 'location', {
+  value: window.location,
+  writable: false
+});
+
+const originalAssign = window.location.assign;
+window.location.assign = function(url){
+  alert("REDIRECT assign: " + url);
+};
+
+const originalReplace = window.location.replace;
+window.location.replace = function(url){
+  alert("REDIRECT replace: " + url);
+};
+
+// 🔥 ПЕРЕХВАТ reload
+const originalReload = window.location.reload;
+window.location.reload = function(){
+  alert("RELOAD CALLED");
+};
+
+// 🔥 ПЕРЕХВАТ history
+const originalPush = history.pushState;
+history.pushState = function(){
+  alert("pushState");
+  return originalPush.apply(this, arguments);
+};
+
+const originalReplaceState = history.replaceState;
+history.replaceState = function(){
+  alert("replaceState");
+  return originalReplaceState.apply(this, arguments);
+};
+</script>
+
+
+
   <meta charset="UTF-8">
   <title>Travel & Details</title>
   <link rel="stylesheet" href="/footer.css">
