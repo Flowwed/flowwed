@@ -1952,18 +1952,17 @@ document.querySelectorAll("[data-sync]").forEach(field => {
 
     const { data, error } = await supabase
       .from("sites")
-      .upsert(
-        [{ edit_token: token, [column]: value }],
-        { onConflict: "edit_token" }
-      )
+      .update({ [column]: value })
+      .eq("edit_token", token)
       .select();
 
-    console.log("UPSERT RESULT:", data);
-    console.log("UPSERT ERROR:", error);
+    console.log("UPDATE RESULT:", data);
+    console.log("UPDATE ERROR:", error);
 
   });
 
 });
+
 async function loadWeddingData(){
 
 const token = window.APP_TOKEN;
