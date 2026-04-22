@@ -855,13 +855,20 @@ window.APP_TOKEN = token;
 <div class="grid">
 
 <div class="field"><label>Venue Name</label><input id="venueName" placeholder="The Grand Garden"></div>
-<div class="field"><label>Map Link</label><input id="mapLink" placeholder="https://maps.google.com/..."></div>
 
 <div class="field full"><label>Venue Address</label>
 <textarea id="venueAddress"></textarea></div>
 
 <div class="field full"><label>Venue Note</label>
 <input id="venueNote" placeholder="Please use the main entrance."></div>
+
+
+<a id="mapLink"
+   href="https://maps.google.com"
+   target="_blank"
+   style="color:#2a6bff; text-decoration:underline;">
+   Open map
+</a>
 
 </div>
 </div>
@@ -1157,9 +1164,6 @@ function getFaqData() {
 }
 
 
-
-
-
 fieldIds.forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
@@ -1174,6 +1178,17 @@ fieldIds.forEach(id => {
       document.getElementById("weddingDateDisplay").textContent =
         el.value ? formatDate(el.value) : "—";
     }
+
+    // 🔥 ВОТ ЭТО Я ДОБАВИЛ
+    if (id === "venueAddress") {
+      const link = document.getElementById("mapLink");
+
+      if (link) {
+        const q = encodeURIComponent(el.value);
+        link.href = "https://maps.google.com/?q=" + q;
+      }
+    }
+    // 🔥 КОНЕЦ ДОБАВКИ
 
     saveDraft();
 
@@ -2152,6 +2167,20 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 });
 
 
+
+</script>
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const link = document.getElementById("mapLink");
+
+  if (!link) return;
+
+  // 🔥 ВСТАВЬ СВОЮ РЕАЛЬНУЮ ССЫЛКУ НИЖЕ
+  link.href = "https://maps.google.com/?q=Paris";
+});
 
 </script>
 
