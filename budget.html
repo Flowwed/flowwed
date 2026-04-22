@@ -1343,55 +1343,6 @@ h1 {
   justify-self: end;
 }
 
-.top-nav-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 100%;
- height: 0;   /* 🔥 ключ */
-  margin-bottom: 8px;   /* 🔥 вместо 100px */
-}
-
-.back-btn {
-  position: absolute;
-  left: 90px;
-  top: 50%;
-  transform: translateY(-50%);
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 6px 16px;
-  border-radius: 999px;
-
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0.05)),
-    #9c1818;
-
-  color: white;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.35);
-
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  box-shadow:
-    0 10px 22px rgba(0,0,0,0.35),
-    inset 0 2px 5px rgba(255,255,255,0.25),
-    inset 0 -8px 16px rgba(70,0,20,0.4);
-}
-
-.back-btn:hover {
-  transform: translateY(-50%) translateY(-2px);
-}
-
-.back-btn:active {
-  transform: translateY(-50%) scale(0.96);
-}
 
 #coupleSmallName {
   display: none;
@@ -1450,61 +1401,6 @@ h1 {
     inset 0 2px 6px rgba(255,255,255,0.25);
 }
 
-/* dropdown */
-.menu-dropdown {
-  position: absolute;
-  top: 120%;
-  left: 0;
-  z-index: 99999;
-
-  background: white;
-  border-radius: 14px;
-  padding: 6px 0; /* 🔥 добавили воздух */
-
-  display: none;
-
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  min-width: 220px;
-}
-
-/* открытие */
-.menu-dropdown.open {
-  display: block;
-}
-
-/* 🔥 ВАЖНО: теперь для <a>, не div */
-.menu-dropdown a {
-  display: block;
-  padding: 12px 18px;
-
-  text-decoration: none;
-  color: #9c1818;
-  font-weight: 600;
-
-  transition: 0.2s;
-}
-
-/* hover */
-.menu-dropdown a:hover {
-  background: #ffeef3;
-}
-
-/* активная страница */
-.menu-dropdown a.active {
-  background: #ffeef3;
-  font-weight: 700;
-}
-/* 🔥 Back to Dash (верхний пункт) */
-.menu-back {
-  padding: 12px 16px;
-  font-weight: 600;
-  color: #9c1818;
-  border-radius: 10px 10px 0 0;
-}
-
-.back-btn {
-  display: none;
-}
 
 .top-nav {
   display: none;
@@ -1598,6 +1494,94 @@ max-width: 640px;
 
 
 
+/* контейнер */
+.menu-dropdown {
+  position: absolute;
+  top: 120%;
+  left: 0;
+
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(18px);
+
+  border-radius: 16px;
+  padding: 6px 0;
+
+  min-width: 240px;
+  max-height: 70vh;
+  overflow-y: auto;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+
+  display: none;
+}
+
+.menu-dropdown.open {
+  display: block;
+}
+
+/* пункты */
+.menu-dropdown a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 450;
+
+  color: #9c1818;
+  text-decoration: none;
+
+  position: relative;
+}
+
+/* разделители как в iOS */
+.menu-dropdown a:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.06);
+}
+
+/* hover */
+.menu-dropdown a:hover {
+  background: rgba(255, 0, 40, 0.06);
+}
+
+/* активный */
+.menu-dropdown a.active {
+  background: rgba(255, 0, 40, 0.12);
+  font-weight: 650;
+}
+
+/* стрелочка справа */
+.menu-dropdown a::before {
+  content: "›";
+  position: absolute;
+  right: 14px;
+  color: rgba(0,0,0,0.25);
+  font-size: 18px;
+}
+
+/* Home (верхний пункт) */
+.menu-back {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 16px;
+  color: #9c1818;
+}
+
+/* убираем стрелку у Home */
+.menu-back::before {
+  content: "";
+}
+
+
+
+
 </style>
 </head>
 
@@ -1631,6 +1615,7 @@ if (params.get("t")) {
 </div>
 
 
+
 <div class="top-nav">
 
   <a href="videouploader.html">Web Video</a>
@@ -1647,9 +1632,11 @@ if (params.get("t")) {
   <a href="story.html">Our Story</a>
   <a href="dash-updates.html">Updates</a>
   <a href="wedparty.html">Wedding Party</a>
+  <!-- 🔥 ДОБАВЛЕНО -->
+  <a href="wed_reports.html">Wed Reports</a>
+  <a href="guest_memory.html">Guest Feedback</a>
 
 </div>
-
 
 
 
@@ -3712,8 +3699,8 @@ document.getElementById("closeGuide")?.addEventListener("click", () => {
 });
 </script>
 
-<script>
 
+<script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const trigger = document.querySelector(".menu-trigger");
@@ -3722,19 +3709,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!trigger || !dropdown || !sourceNav) return;
 
-  // 🔥 копируем меню
-  
-const token = window.APP_TOKEN;
+  const token = window.APP_TOKEN;
 
-dropdown.innerHTML =
-  `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
-  `<div class="menu-divider"></div>` +
-  sourceNav.innerHTML;
+  // 🔥 строим меню
+  dropdown.innerHTML =
+    `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
+    `<div class="menu-divider"></div>` +
+    sourceNav.innerHTML;
 
+  // 🔥 ПОДСВЕТКА
+  const currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
+  dropdown.querySelectorAll("a").forEach(link => {
+    const href = link.getAttribute("href");
+    if (!href) return;
 
+    const linkPage = href.split("?")[0].split("/").pop().toLowerCase();
 
-  // 🔥 открытие/закрытие
+    if (linkPage === currentPage) {
+      link.classList.add("active");
+    }
+  });
+
+  // 🔥 open / close
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("open");
@@ -3747,6 +3744,7 @@ dropdown.innerHTML =
 });
 
 </script>
+
 
 </body>
 </html>
