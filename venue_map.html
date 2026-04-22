@@ -357,6 +357,20 @@
 
 <body>
 
+<div id="debug" style="
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  background:black;
+  color:#0f0;
+  font-size:12px;
+  padding:6px;
+  z-index:999999;
+  max-height:120px;
+  overflow:auto;
+"></div>
+
 <nav class="wedding-nav">
   <div class="nav-left">
     <button class="back-btn" onclick="goBack()">← Back</button>
@@ -563,12 +577,25 @@ function toggleMenu(){
 </script>
 
 <script>
+
+function log(msg){
+  const d = document.getElementById("debug");
+  if(d) d.innerHTML += msg + "<br>";
+}
+
+log("START");
+log("supabase: " + typeof supabase);
+
+
 const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
 async function loadCoupleName(){
   const params = new URLSearchParams(location.search);
   const token = params.get("t") || params.get("token") || "";
+
+
+log("TOKEN: " + token);
 
   if(!token) return;
 
@@ -596,6 +623,7 @@ async function loadCoupleName(){
   }
 }
 
+log("creating client...");
 
 const sb = supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
@@ -609,6 +637,7 @@ const sb = supabase.createClient(
   }
 );
 
+log("client created");
 
 async function loadWeddingData(){
   const params = new URLSearchParams(location.search);
