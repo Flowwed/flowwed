@@ -1157,7 +1157,20 @@ function getFaqData() {
 }
 
 
+function generateMapLink() {
+  const name = document.getElementById("venueName")?.value || "";
+  const address = document.getElementById("venueAddress")?.value || "";
 
+  if (!name && !address) return;
+
+  const query = encodeURIComponent(`${name} ${address}`);
+  const link = `https://www.google.com/maps?q=${query}`;
+
+  const mapInput = document.getElementById("mapLink");
+  if (mapInput) {
+    mapInput.value = link;
+  }
+}
 
 
 fieldIds.forEach(id => {
@@ -2158,26 +2171,6 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 });
 
 
-
-</script>
-
-
-<script>
-
-function generateMapLink() {
-  const name = document.getElementById("venueName")?.value || "";
-  const address = document.getElementById("venueAddress")?.value || "";
-
-  if (!name && !address) return;
-
-  const query = encodeURIComponent(`${name} ${address}`);
-  const link = `https://www.google.com/maps?q=${query}`;
-
-  const mapInput = document.getElementById("mapLink");
-  if (mapInput) {
-    mapInput.value = link;
-  }
-}
 
 </script>
 
