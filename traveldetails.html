@@ -855,13 +855,25 @@ window.APP_TOKEN = token;
 <div class="grid">
 
 <div class="field"><label>Venue Name</label><input id="venueName" placeholder="The Grand Garden"></div>
-<div class="field"><label>Map Link</label><input id="mapLink" placeholder="https://maps.google.com/..."></div>
+
 
 <div class="field full"><label>Venue Address</label>
-<textarea id="venueAddress"></textarea></div>
+
+
+<input id="venueAddress" placeholder="Venue address">
 
 <div class="field full"><label>Venue Note</label>
 <input id="venueNote" placeholder="Please use the main entrance."></div>
+
+<div style="margin-top:10px;font-size:14px;font-weight:600;">
+  <a id="mapPreviewLink" href="#" target="_blank"
+     style="color:#1e63ff;text-decoration:underline;">
+    Check this address on map
+  </a>
+</div>
+
+
+
 
 </div>
 </div>
@@ -1166,9 +1178,9 @@ function generateMapLink() {
   const query = encodeURIComponent(`${name} ${address}`);
   const link = `https://www.google.com/maps?q=${query}`;
 
-  const mapInput = document.getElementById("mapLink");
-  if (mapInput) {
-    mapInput.value = link;
+  const a = document.getElementById("mapPreviewLink");
+  if (a) {
+    a.href = link;
   }
 }
 
