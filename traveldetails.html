@@ -1561,20 +1561,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeModal = document.getElementById("closeModal");
 
   const sendSmsBtn = document.getElementById("sendSmsBtn");
-  const closeQrPopup = document.getElementById("closeQrPopup");
-  const qrPopup = document.getElementById("qrPopup");
-  const qrCodePopup = document.getElementById("qrCodePopup");
+
+  // 🔥 НОВЫЕ QR ЭЛЕМЕНТЫ
+  const qrModal = document.getElementById("qrModal");
+  const qrCanvas = document.getElementById("qrCanvas");
+  const qrClose = document.getElementById("qrClose");
 
   if (!previewBtn) {
     console.log("❌ previewBtn not found");
     return;
   }
 
+  // =========================
   // PREVIEW
+  // =========================
   previewBtn.addEventListener("click", () => {
     saveDraft();
 
-const token = window.APP_TOKEN;
+    const token = window.APP_TOKEN;
 
     modalFrame.src =
       `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
@@ -1589,37 +1593,46 @@ const token = window.APP_TOKEN;
     });
   }
 
+  // =========================
   // SEND SMS (QR)
+  // =========================
   if (sendSmsBtn) {
     sendSmsBtn.onclick = () => {
 
-const token = window.APP_TOKEN;
+      const token = window.APP_TOKEN;
 
-      const url = `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
+      const url =
+        `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
 
-      qrCodePopup.innerHTML = "";
+      // 🔥 генерим QR прямо в canvas
+      QRCode.toCanvas(qrCanvas, url, { width: 220 });
 
-      QRCode.toCanvas(url, { width: 200 }, function (err, canvas) {
-        if (err) {
-          console.error(err);
-          return;
-        }
-        qrCodePopup.appendChild(canvas);
-      });
-
-      qrPopup.style.display = "flex";
+      // 🔥 показываем modal
+      qrModal.style.display = "flex";
     };
   }
 
-  // CLOSE QR POPUP
-  if (closeQrPopup) {
-    closeQrPopup.addEventListener("click", () => {
-      qrPopup.style.display = "none";
+  // =========================
+  // CLOSE QR (крестик)
+  // =========================
+  if (qrClose) {
+    qrClose.onclick = () => {
+      qrModal.style.display = "none";
+    };
+  }
+
+  // =========================
+  // CLOSE по клику вне окна
+  // =========================
+  if (qrModal) {
+    qrModal.addEventListener("click", (e) => {
+      if (e.target === qrModal) {
+        qrModal.style.display = "none";
+      }
     });
   }
 
 });
-
 
 // SELECT ALL
 document.getElementById("selectAll").onclick = (e) => {
@@ -2046,14 +2059,14 @@ Hello! Here is the latest update…
   z-index:99999;
 "></div>
 
-
-<div id="qrPopup" style="
+<!-- QR MODAL -->
+<div id="qrModal" style="
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.5);
   display: none;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 999999;
 ">
 
@@ -2062,18 +2075,47 @@ Hello! Here is the latest update…
     padding: 20px;
     border-radius: 16px;
     text-align: center;
+    position: relative;
   ">
 
-    <div style="font-weight:700; margin-bottom:10px;">
-      Scan QR Code
-    </div>
+    <!-- ❌ красивый close -->
+    
+<div id="qrClose" style="
+  position:absolute;
+  top:12px;
+  right:14px;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  background:#ffe6ec;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  cursor:pointer;
+  color:#b41111;
+  font-weight:700;
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+">×</div>
 
-    <div id="qrCodePopup"></div>
+<div style="
+  font-size:17px;
+  font-weight:700;
+  color:#9c1818;
+  margin-bottom:8px;
+">
+  Notify your guests
+</div>
 
-    <button id="closeQrPopup" style="margin-top:10px;">
-      Close
-    </button>
+<div style="
+  font-size:13px;
+  color:#666;
+  margin-bottom:12px;
+">
+  Scan with your phone
+</div>
 
+<canvas id="qrCanvas"></canvas>
   </div>
 </div>
 
