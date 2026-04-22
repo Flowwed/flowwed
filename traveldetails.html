@@ -175,12 +175,16 @@ button{
 }
 
 .modal-content{
-  width:95%;
-  height:95%;
-  background:white;
-  border-radius:20px;
-  overflow:hidden;
-  position:relative;
+  position: relative;
+
+  width: min(1100px, 92vw);
+  height: min(80vh, 900px);
+
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
 }
 
 .modal iframe{
@@ -732,7 +736,21 @@ window.APP_TOKEN = token;
 
 <div class="main-card">
 
-
+<div id="coupleHeader" style="
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+  padding:10px 14px;
+  border-radius:14px;
+  background:#fff5f7;
+  border:1px solid #f3d8de;
+  font-weight:600;
+  color:#9c1818;
+">
+  <div id="coupleNameDisplay">—</div>
+  <div id="weddingDateDisplay">—</div>
+</div>
 
 <!-- STEPS -->
 <div class="steps">
@@ -1021,22 +1039,33 @@ const sb = window.supabase.createClient(
     }
 
 
-    fieldIds.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
+fieldIds.forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
 
-el.addEventListener("input", () => {
-  saveDraft();
+  el.addEventListener("input", () => {
 
-  const iframe = document.getElementById("previewFrame");
+    if (id === "coupleName") {
+      document.getElementById("coupleNameDisplay").textContent = el.value || "—";
+    }
 
-  iframe.contentWindow.postMessage({
-    type: "LIVE_UPDATE",
-field: id,   // 👈 ВОТ ЭТУ СТРОКУ ДОБАВЬ
-    data: getFormData()
-  }, "*");
+    if (id === "weddingDate") {
+      document.getElementById("weddingDateDisplay").textContent =
+        el.value ? formatDate(el.value) : "—";
+    }
+
+    saveDraft();
+
+    const iframe = document.getElementById("previewFrame");
+
+    iframe.contentWindow.postMessage({
+      type: "LIVE_UPDATE",
+      field: id,
+      data: getFormData()
+    }, "*");
+
+  });
 });
-    });
 
 document.getElementById("saveDraftBtn").addEventListener("click", async () => {
   const f = getFormData();
@@ -1119,6 +1148,16 @@ if(openPreviewBtn){
   const data = await loadFromSupabase();
 
   if (data) {
+
+ // 🔥 ВОТ ЭТО ДОБАВИЛ
+    document.getElementById("coupleNameDisplay").textContent =
+      data.couple_name || "—";
+
+    document.getElementById("weddingDateDisplay").textContent =
+      data.wedding_date
+        ? formatDate(data.wedding_date)
+        : "—";
+
     const mapped = {
 
       coupleName: data.couple_name,
