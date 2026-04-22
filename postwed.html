@@ -2139,10 +2139,10 @@ loadGuests();
 // ======================================================
 
 function render() {
-  let html = "";
+  tbody.innerHTML = "";
 
   guests.forEach((g, i) => {
-    html += `
+    tbody.innerHTML += `
       <tr data-id="${g.id}">
         <td>
           <input type="checkbox"
@@ -2153,20 +2153,22 @@ function render() {
 
         <td>${i + 1}</td>
 
-<td contenteditable="true" data-field="name">
-  ${(g.first || "") + " " + (g.last || "")}
-</td>
+        <!-- Name (First + Last together) -->
+        <td contenteditable="true" data-field="name">
+          ${g.first} ${g.last}
+        </td>
 
-
+        <!-- Email -->
         <td contenteditable="true" data-field="email">
           ${g.email}
         </td>
+
       </tr>
     `;
   });
-
-  tbody.innerHTML = html;
 }
+
+
 
 // 🔽 Реагируем на выбор одиночных чекбоксов
 document.addEventListener("change", (e) => {
@@ -2215,53 +2217,11 @@ tbody.addEventListener("blur", async (e) => {
 
   const row = e.target.closest("tr");
   const id = row.dataset.id;
-
-const field = e.target.dataset.field;
-const guest = guests.find(g => g.id == id);
-
-if (field === "name") {
-
-  const clean = e.target.innerText
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const parts = clean.split(" ");
-
-  const first = parts[0] || "";
-  const last = parts.slice(1).join(" ") || "";
-
-  guest.first = first;
-  guest.last = last;
-
-  await supabase
-    .from("guests")
-    .update({
-      first_name: first,
-      last_name: last
-    })
-    .eq("id", id);
-     e.target.innerText = first + " " + last;
-
-} else {
-
+  const field = e.target.dataset.field;
   const newValue = e.target.innerText.trim();
 
+  const guest = guests.find(g => g.id == id);
   guest[field] = newValue;
-
-  const map = {
-    email: "email",
-    phone: "phone"
-  };
-
-  const sbColumn = map[field];
-
-  if (sbColumn) {
-    await supabase
-      .from("guests")
-      .update({ [sbColumn]: newValue })
-      .eq("id", id);
-  }
-}
 
   const map = {
     first: "first_name",
