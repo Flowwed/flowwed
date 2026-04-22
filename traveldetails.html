@@ -965,12 +965,27 @@ steps.forEach((step, index) => {
   step.style.cursor = "pointer";
 
   step.addEventListener("click", () => {
+
+    // 👇 если клик по той же вкладке
+    if (currentStep === index) {
+
+      sections.forEach(s => s.classList.remove("active"));
+      steps.forEach(s => s.classList.remove("active"));
+
+      currentStep = -1;
+      localStorage.removeItem("activeStep");
+
+      return;
+    }
+
+    // 👇 обычное переключение
     currentStep = index;
     showStep(index);
 
     localStorage.setItem("activeStep", index);
   });
 });
+
 
 function showStep(i){
   sections.forEach(s => s.classList.remove("active"));
