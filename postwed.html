@@ -2153,10 +2153,13 @@ function render() {
 
         <td>${i + 1}</td>
 
-        <td contenteditable="true" data-field="name">
-          ${g.first} ${g.last}
-        </td>
+<td contenteditable="true" data-field="first">
+  ${g.first || ""}
+</td>
 
+<td contenteditable="true" data-field="last">
+  ${g.last || ""}
+</td>
         <td contenteditable="true" data-field="email">
           ${g.email}
         </td>
