@@ -1601,9 +1601,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const token = window.APP_TOKEN;
 
-      const url =
-        `https://flowwed.netlify.app/venue_map.html?t=${encodeURIComponent(token)}`;
-
+const url = `${window.location.origin}/std_preview.html?t=${encodeURIComponent(token)}&mode=admin`;
       // 🔥 генерим QR прямо в canvas
       QRCode.toCanvas(qrCanvas, url, { width: 220 });
 
