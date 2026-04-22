@@ -882,7 +882,6 @@ window.APP_TOKEN = token;
               <th>#</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Phone</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -1303,36 +1302,37 @@ const token = window.APP_TOKEN;
 }
 
 
-function renderGuests(){
-
+function renderGuests() {
   const tbody = document.querySelector("#guestTable tbody");
+  if (!tbody) return;
 
-  if (!tbody) {
-    console.log("❌ tbody not found");
-    return;
-  }
+  tbody.innerHTML = "";
 
-tbody.innerHTML = "";
+  guests.forEach((g, i) => {
+    tbody.innerHTML += `
+      <tr data-id="${g.guest_id || g.id}">
+        <td>
+          <input type="checkbox"
+            class="rowCheck"
+            data-id="${g.guest_id || g.id}"
+            data-email="${g.email || ""}">
+        </td>
 
-guests.forEach((g, i) => {
-  tbody.innerHTML += `
-    <tr>
-      <td>
-        <input type="checkbox"
-          class="rowCheck"
-          data-id="${g.guest_id}"              // 🔥 ВОТ ФИКС
-          data-email="${g.email || ""}"
-          data-phone="${g.phone || ""}">
-      </td>
-      <td>${i+1}</td>
-      <td>${g.first_name || ""} ${g.last_name || ""}</td>
-      <td>${g.email || ""}</td>
-      <td>${g.phone || ""}</td>
-    </tr>
-  `;
-});
+        <td>${i + 1}</td>
+
+        <!-- Name -->
+        <td contenteditable="true" data-field="name">
+          ${(g.first || g.first_name || "")} ${(g.last || g.last_name || "")}
+        </td>
+
+        <!-- Email -->
+        <td contenteditable="true" data-field="email">
+          ${g.email || ""}
+        </td>
+      </tr>
+    `;
+  });
 }
-
 
 // 🔥 ВАЖНО — запускаем загрузку
 loadGuests();
