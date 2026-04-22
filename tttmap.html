@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Venue & Map — Quick User Guide</title>
+<title>Travel & Event — Quick User Guide</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
@@ -17,14 +17,14 @@ body {
 }
 
 .wrap {
-  max-width: 960px;
+  max-width: 980px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.75);
   backdrop-filter: blur(20px);
   border-radius: 30px;
   padding: 48px 56px;
   box-shadow:
-    0 36px 90px rgba(40,60,120,0.28),
+    0 36px 90px rgba(110,15,30,0.28),
     inset 0 0 0 1px rgba(255,255,255,0.55);
 }
 
@@ -54,7 +54,9 @@ h2 {
   gap: 28px 24px;
 }
 
-.item { text-align: center; }
+.item {
+  text-align: center;
+}
 
 .btn {
   margin: 0 auto 12px;
@@ -69,11 +71,14 @@ h2 {
     #9b1c31;
   box-shadow:
     inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -12px 24px rgba(0,20,80,0.45),
-    0 18px 36px rgba(40,60,120,0.35);
+    inset 0 -12px 24px rgba(80,0,20,0.45),
+    0 18px 36px rgba(110,15,30,0.35);
 }
 
-.btn i { font-size: 26px; color: #fff; }
+.btn i {
+  font-size: 26px;
+  color: #fff;
+}
 
 .label {
   font-size: 15px;
@@ -90,73 +95,116 @@ h2 {
 </head>
 
 <body>
+
 <div class="wrap">
 
   <p>
-    <strong>Venue &amp; Map</strong> helps your guests know exactly
-    where and when your wedding takes place.
-    Here you set the location, date, and time of your event.
+    The <strong>Travel & Event</strong> page is where you build the full
+    logistics and experience for your wedding guests.
+    Everything you enter here will appear on your public wedding page.
   </p>
 
   <p>
-    Once configured, guests can open the map,
-    get directions, and plan their arrival with confidence.
+    This is your control center for timing, travel details, and venue information —
+    helping guests understand exactly how to plan their trip.
   </p>
 
-  <h2>How to Set It Up</h2>
+  <h2>How This Page Works</h2>
 
   <div class="grid">
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-location-dot"></i></div>
-      <div class="label">
-        <strong>Enter Address</strong><br>
-        <span class="small">Type your venue location.</span>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-map"></i></div>
-      <div class="label">
-        <strong>Generate Map</strong><br>
-        <span class="small">Create a live map link.</span>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-calendar-day"></i></div>
-      <div class="label">
-        <strong>Select Date</strong><br>
-        <span class="small">Choose the wedding day.</span>
-      </div>
-    </div>
 
     <div class="item">
       <div class="btn"><i class="fa-solid fa-clock"></i></div>
       <div class="label">
-        <strong>Set Time</strong><br>
-        <span class="small">Define when guests should arrive.</span>
+        <strong>Build Schedule</strong><br>
+        <span class="small">
+          Add ceremony and event timeline for your guests.
+        </span>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-plane"></i></div>
+      <div class="label">
+        <strong>Travel & Stay</strong><br>
+        <span class="small">
+          Provide airport info, transfers, and hotel options.
+        </span>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-location-dot"></i></div>
+      <div class="label">
+        <strong>Set Venue</strong><br>
+        <span class="small">
+          Enter address — map link is created automatically.
+        </span>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-circle-info"></i></div>
+      <div class="label">
+        <strong>Add Details</strong><br>
+        <span class="small">
+          Include dress code, weather, and extra guidance.
+        </span>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-question"></i></div>
+      <div class="label">
+        <strong>Create FAQ</strong><br>
+        <span class="small">
+          Answer common guest questions in advance.
+        </span>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="btn"><i class="fa-solid fa-eye"></i></div>
+      <div class="label">
+        <strong>Preview Page</strong><br>
+        <span class="small">
+          See exactly what your guests will experience.
+        </span>
       </div>
     </div>
 
     <div class="item">
       <div class="btn"><i class="fa-solid fa-floppy-disk"></i></div>
       <div class="label">
-        <strong>Save Changes</strong><br>
-        <span class="small">Store everything securely.</span>
+        <strong>Auto-Save & Updates</strong><br>
+        <span class="small">
+          All changes are saved and updated instatly for your guests in real time.
+        </span>
       </div>
     </div>
 
   </div>
 
-  <h2>Why It Matters</h2>
+  <h2>What This Controls</h2>
 
   <p>
-    Clear directions prevent confusion and late arrivals.
-    Your guests will feel calm and prepared,
-    knowing exactly where to go and when to be there.
+    All information here feeds directly into your wedding website.
+    Guests will use this page to plan their arrival, understand your schedule,
+    and navigate to your venue.
+  </p>
+
+  <p>
+    The venue address automatically generates a live map link,
+    so guests can open directions instantly.
+  </p>
+
+  <p>
+    Travel & Event ensures your guests feel prepared, informed,
+    and confident about every step of your celebration.
   </p>
 
 </div>
+
 </body>
 </html>
