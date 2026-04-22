@@ -578,6 +578,11 @@ function toggleMenu(){
 
 <script>
 
+window.addEventListener("beforeunload", () => {
+  alert("RELOAD DETECTED");
+});
+
+
 function log(msg){
   const d = document.getElementById("debug");
   if(d) d.innerHTML += msg + "<br>";
@@ -970,7 +975,7 @@ console.log("TARGET:", target);
 
 </script>
 
-<script src="/header-data.js"></script>
+<!-- <script src="/header-data.js"></script> -->
 
 
 </body>
