@@ -1149,15 +1149,6 @@ if(openPreviewBtn){
 
   if (data) {
 
- // 🔥 ВОТ ЭТО ДОБАВИЛ
-    document.getElementById("coupleNameDisplay").textContent =
-      data.couple_name || "—";
-
-    document.getElementById("weddingDateDisplay").textContent =
-      data.wedding_date
-        ? formatDate(data.wedding_date)
-        : "—";
-
     const mapped = {
 
       coupleName: data.couple_name,
@@ -1204,9 +1195,19 @@ if(openPreviewBtn){
     };
 
     setFormData(mapped);
+
+    // ✅ ТОЛЬКО ЗДЕСЬ!
+    document.getElementById("coupleNameDisplay").textContent =
+      data.couple_name || "—";
+
+    document.getElementById("weddingDateDisplay").textContent =
+      data.wedding_date
+        ? formatDate(data.wedding_date)
+        : "—";
   }
 
 })();
+
 
 async function saveToSupabase(data) {
 
