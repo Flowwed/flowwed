@@ -1179,16 +1179,6 @@ fieldIds.forEach(id => {
         el.value ? formatDate(el.value) : "—";
     }
 
-    // 🔥 ВОТ ЭТО Я ДОБАВИЛ
-    if (id === "venueAddress") {
-      const link = document.getElementById("mapLink");
-
-      if (link) {
-        const q = encodeURIComponent(el.value);
-        link.href = "https://maps.google.com/?q=" + q;
-      }
-    }
-    // 🔥 КОНЕЦ ДОБАВКИ
 
     saveDraft();
 
@@ -2180,6 +2170,15 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 });
 
 
+document.getElementById("mapLink").onclick = function(e) {
+
+  e.preventDefault();
+
+  var address = document.getElementById("venueAddress").value;
+
+  window.open("https://maps.google.com/?q=" + address, "_blank");
+
+};
 
 </script>
 
