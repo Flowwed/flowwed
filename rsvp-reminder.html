@@ -256,7 +256,23 @@ const CONFIG = {
     showBtn: true
   }
 
+
+ /* 🔥 ВОТ СЮДА */
+  memories: {
+    title: "Share your memories",
+    text: `
+      We would love to see your photos and messages<br><br>
+      Please take a moment to share your memories with us.
+    `,
+    btnText: "Open Memory Form",
+    showBtn: true
+  }
+
+
+
 };
+
+
 
 // 🔥 fallback если type пустой
 const state = CONFIG[type] || CONFIG.noresponse;
@@ -281,14 +297,26 @@ if (state.showBtn) {
 
 btnEl.onclick = () => {
 
-  let link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
+  let link;
 
-  if (type === "maybe") {
-    link += "&group=rsvpMaybe";
+  // 🔥 Memories → своя форма
+  if (type === "memories") {
+    link = `${window.location.origin}/postwed-form.html?t=${token}`;
+  } 
+  
+  // 🔥 Maybe → RSVP + группа
+  else if (type === "maybe") {
+    link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=rsvpMaybe`;
+  } 
+  
+  // 🔥 Остальные → обычный RSVP
+  else {
+    link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
   }
 
   window.location.href = link;
 };
+
 
 // =============================
 // NOTIFY BUTTON (ADMIN)
