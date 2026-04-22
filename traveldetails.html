@@ -656,13 +656,6 @@ th {
 }
 
 
-.steps .step:first-child {
-  display: none;
-}
-
-.section:first-of-type {
-  display: none !important;
-}
 
 .actions-row {
   display: flex;
@@ -770,7 +763,6 @@ window.APP_TOKEN = token;
 
 <!-- STEPS -->
 <div class="steps">
-<div class="step active">Basic</div>
 <div class="step">Schedule</div>
 <div class="step">Travel</div>
 <div class="step">Venue</div>
@@ -778,22 +770,6 @@ window.APP_TOKEN = token;
 <div class="step">FAQ</div>
 </div>
 
-<!-- STEP 1 -->
-<div class="section active" style="display:none;">
-<div class="section-box">
-<h2>Basic</h2>
-<div class="grid">
-<div class="field">
-<label>Couple Names</label>
-<input id="coupleName" placeholder="Jessica & John">
-</div>
-<div class="field">
-<label>Wedding Date</label>
-<input id="weddingDate" type="date">
-</div>
-</div>
-</div>
-</div>
 
 <!-- STEP 2 -->
 <div class="section">
@@ -1000,6 +976,18 @@ const sections = document.querySelectorAll(".section");
 
 const savedStep = localStorage.getItem("activeStep");
 
+function showStep(i){
+
+console.log("STEP CLICK:", i, sections[i]); // 👈 ДОБАВЬ ЭТУ СТРОКУ
+
+  sections.forEach(s => s.classList.remove("active"));
+  steps.forEach(s => s.classList.remove("active"));
+  sections[i].classList.add("active");
+  steps[i].classList.add("active");
+}
+
+// 👇 ВСЁ ЭТО ДОЛЖНО БЫТЬ ВНУТРИ
+
 if (savedStep !== null) {
   currentStep = parseInt(savedStep);
   showStep(currentStep);
@@ -1010,19 +998,15 @@ steps.forEach((step, index) => {
 
   step.addEventListener("click", () => {
 
-    // 👇 если клик по той же вкладке
     if (currentStep === index) {
-
       sections.forEach(s => s.classList.remove("active"));
       steps.forEach(s => s.classList.remove("active"));
 
       currentStep = -1;
       localStorage.removeItem("activeStep");
-
       return;
     }
 
-    // 👇 обычное переключение
     currentStep = index;
     showStep(index);
 
@@ -1030,24 +1014,7 @@ steps.forEach((step, index) => {
   });
 });
 
-
-function showStep(i){
-  sections.forEach(s => s.classList.remove("active"));
-  steps.forEach(s => s.classList.remove("active"));
-  sections[i].classList.add("active");
-  steps[i].classList.add("active");
-}
-
-});
-
-
-function showStep(i){
-sections.forEach(s=>s.classList.remove("active"));
-steps.forEach(s=>s.classList.remove("active"));
-sections[i].classList.add("active");
-steps[i].classList.add("active");
-}
-
+}); // ✅ ВОТ ТУТ закрываем
 
 // ТВОЙ SUPABASE 1:1
 
@@ -1359,7 +1326,7 @@ if(openPreviewBtn){
 // 🔥 ВОССТАНОВЛЕНИЕ SCHEDULE
 if (data.schedule && Array.isArray(data.schedule)) {
 
-  const container = document.querySelectorAll(".section")[1].querySelector(".grid");
+  const container = document.querySelectorAll(".section")[0].querySelector(".grid");
 
   // очищаем старые (кроме первых 4 — они уже есть)
   for (let i = 5; i <= data.schedule.length; i++) {
@@ -1396,7 +1363,7 @@ if (data.schedule && Array.isArray(data.schedule)) {
  // 🔥 ВОССТАНОВЛЕНИЕ FAQ
 if (data.faq && Array.isArray(data.faq)) {
 
-  const container = document.querySelectorAll(".section")[5].querySelector(".grid");
+  const container = document.querySelectorAll(".section")[4].querySelector(".grid");
 
   for (let i = 5; i <= data.faq.length; i++) {
 
@@ -2122,7 +2089,7 @@ document.getElementById("addScheduleBtn").addEventListener("click", () => {
 
   scheduleCount++;
 
-  const container = document.querySelectorAll(".section")[1].querySelector(".grid");
+  const container = document.querySelectorAll(".section")[0].querySelector(".grid");
 
   if (!container) return;
 
@@ -2155,7 +2122,7 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 
   faqCount++;
 
-  const container = document.querySelectorAll(".section")[5].querySelector(".grid");
+  const container = document.querySelectorAll(".section")[4].querySelector(".grid");
 
   if (!container) return;
 
