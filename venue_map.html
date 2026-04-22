@@ -597,7 +597,7 @@ async function loadCoupleName(){
 }
 
 
-const sb = window.supabase.createClient(
+const sb = supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   SUPABASE_KEY,
   {
@@ -608,7 +608,6 @@ const sb = window.supabase.createClient(
     }
   }
 );
-
 
 
 async function loadWeddingData(){
