@@ -664,6 +664,13 @@ th {
   display: none !important;
 }
 
+.actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
 
 </style>
 
@@ -806,6 +813,17 @@ window.APP_TOKEN = token;
 <div class="field"><label>Time 4</label><input id="scheduleTime4" placeholder="10:00 PM"></div>
 <div class="field"><label>Event 4</label><input id="scheduleText4" placeholder="Dancing continues"></div>
 
+<div id="addScheduleBtn" style="
+  margin-top:10px;
+  color:#2a6bff;
+  font-weight:600;
+  cursor:pointer;
+  text-decoration: underline;
+">
+  + Add another schedule item
+</div>
+
+
 </div>
 </div>
 </div>
@@ -891,11 +909,13 @@ window.APP_TOKEN = token;
 </div>
 
 
-<button id="saveDraftBtn">Save Draft</button>
+<div class="actions-row">
+  <button id="saveDraftBtn">Save</button>
 
-<button id="previewBtn" style="margin-top:12px;">
-  Preview your webpage update
-</button>
+  <button id="previewBtn">
+    Preview your webpage 
+  </button>
+</div>
 
 </div> <!-- main-card -->
 
@@ -1908,6 +1928,37 @@ guideModal.onclick = (e) => {
 };
 
 </script>
+
+<script>
+
+
+let scheduleCount = 4;
+
+document.getElementById("addScheduleBtn").addEventListener("click", () => {
+
+  scheduleCount++;
+
+  const container = document.querySelector(".section:nth-child(2) .grid");
+
+  const timeField = document.createElement("div");
+  timeField.className = "field";
+  timeField.innerHTML = `
+    <label>Time ${scheduleCount}</label>
+    <input id="scheduleTime${scheduleCount}" placeholder="Time">
+  `;
+
+  const textField = document.createElement("div");
+  textField.className = "field";
+  textField.innerHTML = `
+    <label>Event ${scheduleCount}</label>
+    <input id="scheduleText${scheduleCount}" placeholder="Event">
+  `;
+
+  container.appendChild(timeField);
+  container.appendChild(textField);
+
+});
+
 
 </script>
 
