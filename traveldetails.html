@@ -1061,18 +1061,17 @@ const sb = window.supabase.createClient(
     const storageKey = `venueMapDraft:${token || "no-token"}`;
 
 
-    const fieldIds = [
-      "coupleName","weddingDate",
-      "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
-      "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
-      "airport","transferTime","flightsText",
-      "hotel1","hotel2","hotel3",
-      "venueName","mapLink","venueAddress","venueNote",
-      "gettingAround","dressCode","weather","weatherNote",
-      "trip1","trip2","trip3",
-      "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4"
-    ];
-
+const fieldIds = [
+  "coupleName","weddingDate",
+  "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
+  "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
+  "airport","transferTime","flightsText",
+  "hotel1","hotel2","hotel3",
+  "venueName","venueAddress","venueNote",
+  "gettingAround","dressCode","weather","weatherNote",
+  "trip1","trip2","trip3",
+  "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4"
+];
     function getFormData(){
       const data = {};
       fieldIds.forEach(id => {
@@ -1861,6 +1860,19 @@ function showToast(message, type = "success") {
 }
 
 
+function updateMapLink() {
+  const address = document.getElementById("venueAddress")?.value;
+  const link = document.getElementById("mapLink");
+
+  if (!link) return;
+
+  if (address && address.trim() !== "") {
+    link.href = "https://maps.google.com/?q=" + encodeURIComponent(address);
+  } else {
+    link.href = "https://maps.google.com";
+  }
+}
+
 
 </script>
 
@@ -2167,20 +2179,6 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 });
 
 
-
-</script>
-
-<script>
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const link = document.getElementById("mapLink");
-
-  if (!link) return;
-
-  // 🔥 ВСТАВЬ СВОЮ РЕАЛЬНУЮ ССЫЛКУ НИЖЕ
-  link.href = "https://maps.google.com/?q=Paris";
-});
 
 </script>
 
