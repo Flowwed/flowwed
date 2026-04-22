@@ -857,31 +857,33 @@ window.APP_TOKEN = token;
 
 <!-- STEP 4 -->
 <div class="section">
-<div class="section-box">
-<h2>Venue</h2>
-<div class="grid">
+  <div class="section-box">
+    <h2>Venue</h2>
+    <div class="grid">
 
-<div class="field"><label>Venue Name</label><input id="venueName" placeholder="The Grand Garden"></div>
+      <div class="field">
+        <label>Venue Name</label>
+        <input id="venueName" placeholder="The Grand Garden">
+      </div>
 
+      <div class="field">
+        <label>Map Link</label>
+        <a id="mapLinkText" target="_blank">—</a>
+      </div>
 
-<div class="field">
-  <label>Map Link</label>
+      <div class="field full">
+        <label>Venue Address</label>
+        <textarea id="venueAddress"></textarea>
+      </div>
 
-  <input id="mapLink" style="display:none">
+      <div class="field full">
+        <label>Venue Note</label>
+        <input id="venueNote" placeholder="Please use the main entrance.">
+      </div>
 
-  <a id="mapLinkText" target="_blank">—</a>
+    </div>
+  </div>
 </div>
-
-<div class="field full"><label>Venue Address</label>
-<textarea id="venueAddress"></textarea></div>
-
-<div class="field full"><label>Venue Note</label>
-<input id="venueNote" placeholder="Please use the main entrance."></div>
-
-</div>
-</div>
-</div>
-
 <!-- STEP 5 -->
 <div class="section">
 <div class="section-box">
@@ -1346,11 +1348,9 @@ if(openPreviewBtn){
     setFormData(mapped);
 
 const linkEl = document.getElementById("mapLinkText");
-const val = document.getElementById("mapLink").value;
 
-linkEl.href = val;
-linkEl.textContent = val || "—";
-
+linkEl.href = data.map_link || "#";
+linkEl.textContent = data.map_link || "—";
 
   }
 
