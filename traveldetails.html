@@ -2176,6 +2176,16 @@ document.getElementById("mapLink").onclick = function(e) {
 
   var address = document.getElementById("venueAddress").value;
 
+  // 🔥 КАК В ОБРАЗЦЕ — ПРОСТО ОТКРЫВАЕМ
+  window.open("https://maps.google.com/?q=" + address);
+
+};
+
+
+  e.preventDefault();
+
+  var address = document.getElementById("venueAddress").value;
+
   window.open("https://maps.google.com/?q=" + address, "_blank");
 
 };
