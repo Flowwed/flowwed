@@ -855,21 +855,13 @@ window.APP_TOKEN = token;
 <div class="grid">
 
 <div class="field"><label>Venue Name</label><input id="venueName" placeholder="The Grand Garden"></div>
+<div class="field"><label>Map Link</label><input id="mapLink" placeholder="https://maps.google.com/..."></div>
 
 <div class="field full"><label>Venue Address</label>
-
-<input id="venueAddress" type="text" placeholder="Enter venue address">
+<textarea id="venueAddress"></textarea></div>
 
 <div class="field full"><label>Venue Note</label>
 <input id="venueNote" placeholder="Please use the main entrance."></div>
-
-
-<a id="mapLink"
-   href="https://maps.google.com"
-   target="_blank"
-   style="color:#2a6bff; text-decoration:underline;">
-   Open map
-</a>
 
 </div>
 </div>
@@ -1062,17 +1054,18 @@ const sb = window.supabase.createClient(
     const storageKey = `venueMapDraft:${token || "no-token"}`;
 
 
-const fieldIds = [
-  "coupleName","weddingDate",
-  "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
-  "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
-  "airport","transferTime","flightsText",
-  "hotel1","hotel2","hotel3",
-  "venueName","venueAddress","venueNote",
-  "gettingAround","dressCode","weather","weatherNote",
-  "trip1","trip2","trip3",
-  "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4"
-];
+    const fieldIds = [
+      "coupleName","weddingDate",
+      "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
+      "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
+      "airport","transferTime","flightsText",
+      "hotel1","hotel2","hotel3",
+      "venueName","mapLink","venueAddress","venueNote",
+      "gettingAround","dressCode","weather","weatherNote",
+      "trip1","trip2","trip3",
+      "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4"
+    ];
+
     function getFormData(){
       const data = {};
       fieldIds.forEach(id => {
@@ -1164,6 +1157,9 @@ function getFaqData() {
 }
 
 
+
+
+
 fieldIds.forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
@@ -1178,7 +1174,6 @@ fieldIds.forEach(id => {
       document.getElementById("weddingDateDisplay").textContent =
         el.value ? formatDate(el.value) : "—";
     }
-
 
     saveDraft();
 
@@ -1851,21 +1846,6 @@ function showToast(message, type = "success") {
 }
 
 
-function updateMapLink() {
-  const address = document.getElementById("venueAddress")?.value;
-  const link = document.getElementById("mapLink");
-
-  if (!link) return;
-
-  if (address && address.trim() !== "") {
-    link.href = "https://maps.google.com/?q=" + encodeURIComponent(address);
-  } else {
-    link.href = "https://maps.google.com";
-  }
-}
-
-document.addEventListener("DOMContentLoaded", updateMapLink);
-
 
 </script>
 
@@ -2171,35 +2151,6 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-
-  const mapLink = document.getElementById("mapLink");
-  const venueInput = document.getElementById("venueAddress");
-
-  if (!mapLink || !venueInput) return; // 💥 ВАЖНО
-
-  function openMap(e) {
-    e.preventDefault();
-
-    const address = venueInput.value.trim();
-
-    if (!address) {
-      alert("Enter address first");
-      return;
-    }
-
-    const url = "https://maps.google.com/?q=" + encodeURIComponent(address);
-
-    window.open(url, "_blank");
-  }
-
-  venueInput.addEventListener("input", () => {
-    mapLink.href = "https://maps.google.com/?q=" + encodeURIComponent(venueInput.value);
-  });
-
-  mapLink.addEventListener("click", openMap);
-
-});
 
 
 </script>
