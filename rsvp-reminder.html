@@ -203,19 +203,12 @@ button{
 // =============================
 const params = new URLSearchParams(window.location.search);
 const token = params.get("t");
-const type = params.get("type");   // 🔥 ВАЖНО
+const type = params.get("type");
 const isShared = params.get("shared") === "1";
 
-
 // =============================
-// DYNAMIC CONTENT
+// CONFIG (СНАЧАЛА!)
 // =============================
-
-const titleEl = document.getElementById("reminderTitle");
-const textEl  = document.getElementById("reminderText");
-const btnEl   = document.getElementById("goRSVP");
-
-// 🔥 конфиг всех состояний
 const CONFIG = {
 
   maybe: {
@@ -256,7 +249,6 @@ const CONFIG = {
     showBtn: true
   },
 
-  // 🔥 ВОТ ТУТ ДОЛЖЕН БЫТЬ memories
   memories: {
     title: "Share your memories",
     text: `
@@ -268,6 +260,22 @@ const CONFIG = {
   }
 
 };
+
+// =============================
+// SAFE STATE (ПОСЛЕ CONFIG)
+// =============================
+const safeType = type || "noresponse";
+const state = CONFIG[safeType] || CONFIG.noresponse;
+
+console.log("TYPE:", type);
+console.log("STATE:", state);
+
+// =============================
+// DOM
+// =============================
+const titleEl = document.getElementById("reminderTitle");
+const textEl  = document.getElementById("reminderText");
+const btnEl   = document.getElementById("goRSVP");
 
 // =============================
 // APPLY UI
