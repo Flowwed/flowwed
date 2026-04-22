@@ -1145,16 +1145,14 @@ if(openPreviewBtn){
 }
 
 (async () => {
+
+  // 🔹 1. СТАРЫЕ ДАННЫЕ (форма)
   const data = await loadFromSupabase();
 
-console.log("DATA:", data); // 👈 ВОТ ЭТО
-
   if (data) {
-
     const mapped = {
-
-      coupleName: data.couple_name,
-      weddingDate: data.wedding_date,
+      coupleName: "",
+      weddingDate: "",
       scheduleTime1: data.schedule_time_1,
       scheduleText1: data.schedule_text_1,
       scheduleTime2: data.schedule_time_2,
@@ -1197,15 +1195,30 @@ console.log("DATA:", data); // 👈 ВОТ ЭТО
     };
 
     setFormData(mapped);
+  }
 
-    // ✅ ТОЛЬКО ЗДЕСЬ!
+  // 🔹 2. НОВЫЕ ДАННЫЕ (sites — ТОЛЬКО для header)
+  const siteData = await loadFromSites();
+
+  if (siteData) {
+
+    // HEADER
     document.getElementById("coupleNameDisplay").textContent =
-      data.couple_name || "—";
+      siteData.couple_name || "—";
 
     document.getElementById("weddingDateDisplay").textContent =
-      data.wedding_date
-        ? formatDate(data.wedding_date)
+      siteData.wedding_date
+        ? formatDate(siteData.wedding_date)
         : "—";
+
+    // ОБНОВЛЯЕМ ТОЛЬКО 2 ПОЛЯ
+    await sb
+      .from("wedding_info")
+      .update({
+        couple_name: siteData.couple_name,
+        wedding_date: siteData.wedding_date
+      })
+      .eq("site_edit_token", window.APP_TOKEN);
   }
 
 })();
@@ -1244,6 +1257,25 @@ async function loadFromSupabase() {
 
   if (error) {
     console.error("LOAD ERROR:", error);
+    return null;
+  }
+
+  return data;
+}
+
+
+async function loadFromSites() {
+
+  const token = window.APP_TOKEN;
+
+  const { data, error } = await sb
+    .from("sites")
+    .select("couple_name, wedding_date")
+    .eq("edit_token", token)
+    .single();
+
+  if (error) {
+    console.error("SITES LOAD ERROR:", error);
     return null;
   }
 
