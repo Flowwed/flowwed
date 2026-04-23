@@ -45,6 +45,68 @@ h1{
   margin-bottom:8px;
   color:#8f5860;
 }
+
+
+#content{
+  margin-top:20px;
+}
+
+/* контейнер со скроллом */
+.updates-box{
+  background:rgba(255,255,255,0.85);
+  backdrop-filter: blur(14px);
+
+  border-radius:18px;
+  padding:16px;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.08),
+    inset 0 1px 2px rgba(255,255,255,0.6);
+
+  max-height:420px;       /* 🔥 высота */
+  overflow-y:auto;        /* 🔥 СКРОЛЛ */
+}
+
+/* отдельный update */
+.update{
+  padding:14px 12px;
+  border-radius:12px;
+  margin-bottom:12px;
+
+  background:rgba(250,242,242,0.9);
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.06),
+    inset 0 1px 1px rgba(255,255,255,0.5);
+}
+
+/* дата */
+.date{
+  font-size:14px;
+  font-weight:700;
+  color:#8f5860;
+  margin-bottom:6px;
+}
+
+/* текст */
+.update div{
+  font-size:16px;
+  font-weight:500;
+  line-height:1.6;
+  color:#5f4045;
+}
+
+/* скролл (красивый) */
+.updates-box::-webkit-scrollbar{
+  width:8px;
+}
+
+.updates-box::-webkit-scrollbar-thumb{
+  background:#d9bcbc;
+  border-radius:10px;
+}
+
+
 </style>
 </head>
 
@@ -93,25 +155,29 @@ async function load(){
 
 function render(list){
 
-  const html = list.map(i => `
-    <div class="update">
-      <div class="date">${formatDate(i.created_at)}</div>
-      <div>${i.content}</div>
+  if(!list.length){
+    document.getElementById("content").innerHTML = "No updates yet";
+    return;
+  }
+
+  const html = `
+    <div class="updates-box">
+      ${list.map(i => `
+        <div class="update">
+          <div class="date">${formatDate(i.created_at)}</div>
+          <div>${i.content}</div>
+        </div>
+      `).join("")}
     </div>
-  `).join("");
+  `;
 
   document.getElementById("content").innerHTML = html;
 }
 
-function formatDate(d){
-  return new Date(d).toLocaleDateString("en-US", {
-    year:"numeric",
-    month:"long",
-    day:"numeric"
-  });
-}
 
 load();
+
+
 </script>
 
 </body>
