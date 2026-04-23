@@ -17,15 +17,8 @@ body{
   margin:30px auto;
   padding:16px;
 }
-h1{
-  text-align:center;
-  color:#b41111;
-}
-.date{
-  text-align:center;
-  margin-bottom:20px;
-  opacity:.8;
-}
+h1{text-align:center;color:#b41111;}
+.date{text-align:center;margin-bottom:20px;opacity:.8;}
 .section{
   background:#fff;
   border-radius:16px;
@@ -39,15 +32,8 @@ h1{
   cursor:pointer;
   background:#fff5f7;
 }
-.content{
-  display:none;
-  padding:14px;
-}
-.empty{
-  text-align:center;
-  margin-top:50px;
-  color:#999;
-}
+.content{display:none;padding:14px;}
+.empty{text-align:center;margin-top:50px;color:#999;}
 </style>
 </head>
 
@@ -91,39 +77,35 @@ No data found
 
 <script>
 
-// =========================
+// =====================
+// CONFIG
+// =====================
+const URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
+
+// =====================
 // TOKEN
-// =========================
+// =====================
 const params = new URLSearchParams(location.search);
 const token = params.get("t");
 
 console.log("TOKEN:", token);
 
-// =========================
-// SUPABASE CONFIG
-// =========================
-const URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
-
-// =========================
+// =====================
 // ACCORDION
-// =========================
+// =====================
 document.querySelectorAll(".header").forEach(h=>{
   h.onclick = () => {
     const c = h.nextElementSibling;
     const open = c.style.display === "block";
-
-    document.querySelectorAll(".content").forEach(x=>{
-      x.style.display = "none";
-    });
-
-    if(!open) c.style.display = "block";
+    document.querySelectorAll(".content").forEach(x=>x.style.display="none");
+    if(!open) c.style.display="block";
   };
 });
 
-// =========================
-// LOAD DATA (FETCH !!!)
-// =========================
+// =====================
+// LOAD DATA
+// =====================
 async function load(){
 
   if(!token){
@@ -151,11 +133,15 @@ async function load(){
     return;
   }
 
+  // =====================
   // BASIC
+  // =====================
   document.getElementById("couple").textContent = data.couple_name || "";
   document.getElementById("date").textContent = data.wedding_date || "";
 
+  // =====================
   // SCHEDULE
+  // =====================
   const sch = document.getElementById("schedule");
   sch.innerHTML = "";
 
@@ -163,37 +149,67 @@ async function load(){
     data.schedule.forEach(i=>{
       sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
     });
+  } else {
+    for(let i=1;i<=10;i++){
+      const t = data[`schedule_time_${i}`];
+      const txt = data[`schedule_text_${i}`];
+      if(t || txt){
+        sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
+      }
+    }
   }
 
+  // =====================
   // TRAVEL
+  // =====================
   document.getElementById("travel").innerHTML = `
     ${data.flights_text || ""}<br><br>
     Airport: ${data.airport || ""}<br>
-    Transfer: ${data.transfer_time || ""}
+    Transfer: ${data.transfer_time || ""}<br><br>
+    Hotels:<br>
+    ${data.hotel_1 || ""}<br>
+    ${data.hotel_2 || ""}<br>
+    ${data.hotel_3 || ""}
   `;
 
+  // =====================
   // VENUE
+  // =====================
   document.getElementById("venue").innerHTML = `
     ${data.venue_name || ""}<br>
     ${data.venue_address || ""}<br>
+    ${data.venue_note || ""}<br><br>
     ${data.map_link ? `<a href="${data.map_link}" target="_blank">Open Map</a>` : ""}
   `;
 
+  // =====================
   // DETAILS
+  // =====================
   document.getElementById("details").innerHTML = `
     ${data.getting_around || ""}<br><br>
-    Dress code: ${data.dress_code || ""}<br>
-    Weather: ${data.weather || ""}
+    Dress: ${data.dress_code || ""}<br>
+    Weather: ${data.weather || ""}<br>
+    ${data.weather_note || ""}
   `;
 
+  // =====================
   // FAQ
+  // =====================
   const faq = document.getElementById("faq");
   faq.innerHTML = "";
 
   if (data.faq && Array.isArray(data.faq)) {
     data.faq.forEach(i=>{
-      faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
+      faq.innerHTML += `<div><b>${i.q}</b><br>${i.a}</div>`;
     });
+  } else {
+    for(let i=1;i<=10;i++){
+      const q = data[`faq_q${i}`];
+      const a = data[`faq_a${i}`];
+      if(q || a){
+        faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
+      }
+    }
   }
 
 }
