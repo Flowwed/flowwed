@@ -27,15 +27,38 @@ h1{
   margin-bottom:20px;
 }
 
+body{
+  background:#fff6f6;
+  font-family:Arial;
+}
+
+/* ДАТА */
+#weddingDate{
+  text-align:center;
+  margin-top:8px;
+  margin-bottom:14px;
+
+  font-size:20px;
+  font-weight:600;
+  color:#9c3a3a;
+}
+
+/* ПЛАШКИ */
 .acc{
   margin-bottom:14px;
-  border-radius:12px;
+  border-radius:16px;
 
-  background:rgba(255,255,255,0.6);   /* 🔥 прозрачность */
-  backdrop-filter: blur(10px);        /* 💎 стекло */
+  background:rgba(255,255,255,0.75);
+  backdrop-filter: blur(14px);
 
-  border:1px solid rgba(0,0,0,0.06);
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  border:1px solid rgba(255,255,255,0.6);
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.10),
+    0 4px 10px rgba(0,0,0,0.06),
+    inset 0 1px 2px rgba(255,255,255,0.6);
+
+  transition:0.25s ease;
 }
 
 /* HEADER */
@@ -44,30 +67,34 @@ h1{
   font-weight:600;
   cursor:pointer;
 
-  color:#5a2a2a;   /* спокойный текст */
-
+  color:#4a2a2a;
   position:relative;
-  transition:0.2s;
+
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.05);
 }
 
-/* hover — лёгкий */
-.acc-header:hover{
-  background:rgba(0,0,0,0.03);
+/* hover */
+.acc:hover{
+  transform: translateY(-2px);
+}
+
+/* click */
+.acc:active{
+  transform: scale(0.98);
 }
 
 /* стрелка */
 .acc-header::after{
   content:"›";
   position:absolute;
-  right:16px;
+  right:18px;
   top:50%;
   transform:translateY(-50%);
-  transition:0.25s;
   font-size:18px;
-  color:rgba(0,0,0,0.3);
+  color:rgba(0,0,0,0.25);
+  transition:0.25s;
 }
 
-/* поворот */
 .acc.open .acc-header::after{
   transform:translateY(-50%) rotate(90deg);
 }
@@ -76,50 +103,21 @@ h1{
 .acc-body{
   max-height:0;
   overflow:hidden;
-  transition:0.3s ease;
+  transition:0.35s ease;
 
   padding:0 18px;
   color:#6a3a3a;
 }
 
-/* открыто */
 .acc.open .acc-body{
   max-height:600px;
   padding:14px 18px 18px;
 }
-/* отступы внутри */
-.acc-body div{
-  margin-bottom:8px;
-}
 
-/* ссылки */
-.acc-body a{
-  color:#b41111;
-  text-decoration:underline;
-  font-weight:600;
-}
-
-
-#weddingDate{
-  text-align:center;
-  margin-top:8px;
-  margin-bottom:10px;   /* 👈 ВАЖНО (разделяет с блоками) */
-
-  font-size:20px;
-  font-weight:600;     /* 💥 жирнее */
-
-  color:#9c3a3a;
-}
 
 #content{
   margin-top:25px;
 }
-
-
-body{
-  background:#fff6f6;
-}
-
 
 
 </style>
