@@ -45,8 +45,7 @@ h1{
   margin-bottom:14px;
   border-radius:16px;
 
-  /* 💖 мягкий розовый фон */
-  background:rgba(248,226,226,0.7);
+background:rgba(250,242,242,0.9); /* 💎 мягкий, не розовый */
 
   backdrop-filter: blur(14px);
 
@@ -225,41 +224,74 @@ function render(d){
   document.getElementById("weddingDate").innerText =
     formatDate(d.wedding_date);
 
+
+  // 🔥 универсальная функция проверки пустоты
+  function safe(val){
+    if(!val) return "";
+
+    if(typeof val === "string" && val.trim() === "") return "";
+
+    return val;
+  }
+
+
+  // 🔥 SCHEDULE
+  const schedule =
+    (d.schedule && d.schedule.length)
+      ? d.schedule
+          .filter(i => safe(i.time) || safe(i.text))
+          .map(i => `<div>${i.time || ""} — ${i.text || ""}</div>`)
+          .join("")
+      : "No Data";
+
+
+  // 🔥 HOTELS (ВОТ ТУТ БЫЛ КОСЯК)
+  const hotelsArr = [
+    safe(d.hotel_1),
+    safe(d.hotel_2),
+    safe(d.hotel_3)
+  ].filter(Boolean);
+
+  const hotels =
+    hotelsArr.length
+      ? hotelsArr.map(h => `<div>${h}</div>`).join("")
+      : "No Data";
+
+
+  // 🔥 FAQ
+  const faq =
+    (d.faq && d.faq.length)
+      ? d.faq
+          .filter(i => safe(i.q) || safe(i.a))
+          .map(i => `<div><b>${i.q || ""}</b><br>${i.a || ""}</div>`)
+          .join("")
+      : "No Data";
+
+
   const html = `
 
-  ${accordion("Schedule",
-    (d.schedule && d.schedule.length)
-      ? d.schedule.map(i => `<div>${i.time} — ${i.text}</div>`).join("")
-      : "No Data"
-  )}
+  ${accordion("Schedule", schedule)}
 
-  ${accordion("Flights", d.flights_text || "No Data")}
+  ${accordion("Flights", safe(d.flights_text) || "No Data")}
 
-  ${accordion("Hotels", `
-    ${d.hotel_1 || ""}<br>
-    ${d.hotel_2 || ""}<br>
-    ${d.hotel_3 || ""}
-  `)}
+  ${accordion("Hotels", hotels)}
 
   ${accordion("Venue", `
-    ${d.venue_name || ""}<br>
-    ${d.venue_address || ""}<br>
-    <a href="https://maps.google.com/?q=${encodeURIComponent(d.venue_address || "")}" target="_blank">
-      Open Map
-    </a>
-  `)}
+    ${safe(d.venue_name) || ""}
+    ${safe(d.venue_address) ? "<br>"+d.venue_address : ""}
+    ${
+      safe(d.venue_address)
+        ? `<br><a href="https://maps.google.com/?q=${encodeURIComponent(d.venue_address)}" target="_blank">Open Map</a>`
+        : ""
+    }
+  ` || "No Data")}
 
-  ${accordion("FAQ",
-    (d.faq && d.faq.length)
-      ? d.faq.map(i => `<div><b>${i.q}</b><br>${i.a}</div>`).join("")
-      : "No Data"
-  )}
+  ${accordion("FAQ", faq)}
 
   `;
 
   document.getElementById("content").innerHTML = html;
 }
-
 
 // 🖱 CLICK
 document.addEventListener("click", (e)=>{
