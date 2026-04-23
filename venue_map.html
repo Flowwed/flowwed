@@ -3,54 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Travel</title>
+<title>Travel & Event</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 body{
-  font-family:sans-serif;
-  padding:20px;
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#fff1f4,#ffffff);
+  color:#6a2a2a;
 }
-.block{
+.container{
+  max-width:820px;
+  margin:30px auto;
+  padding:16px;
+}
+h1{
+  text-align:center;
+  color:#b41111;
+}
+.date{
+  text-align:center;
   margin-bottom:20px;
+  opacity:.8;
+}
+.section{
+  background:#fff;
+  border-radius:16px;
+  margin-bottom:12px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+.header{
+  padding:14px;
+  font-weight:700;
+  cursor:pointer;
+  background:#fff5f7;
+}
+.content{
+  display:none;
+  padding:14px;
+}
+.empty{
+  text-align:center;
+  margin-top:50px;
+  color:#999;
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="couple"></h1>
-<div id="date"></div>
+<div class="container">
 
-<div class="block">
-  <h3>Schedule</h3>
-  <div id="schedule"></div>
+<h1 id="couple">—</h1>
+<div id="date" class="date"></div>
+
+<div class="section">
+  <div class="header">Schedule</div>
+  <div class="content" id="schedule"></div>
 </div>
 
-<div class="block">
-  <h3>Travel</h3>
-  <div id="travel"></div>
+<div class="section">
+  <div class="header">Travel</div>
+  <div class="content" id="travel"></div>
 </div>
 
-<div class="block">
-  <h3>Venue</h3>
-  <div id="venue"></div>
+<div class="section">
+  <div class="header">Venue</div>
+  <div class="content" id="venue"></div>
 </div>
 
-<div class="block">
-  <h3>Details</h3>
-  <div id="details"></div>
+<div class="section">
+  <div class="header">Details</div>
+  <div class="content" id="details"></div>
 </div>
 
-<div class="block">
-  <h3>FAQ</h3>
-  <div id="faq"></div>
+<div class="section">
+  <div class="header">FAQ</div>
+  <div class="content" id="faq"></div>
+</div>
+
+<div id="empty" class="empty" style="display:none;">
+No data found
+</div>
+
 </div>
 
 <script>
 
-// ===== TOKEN (1:1 КАК В ОБРАЗЦЕ)
+// ===== TOKEN (1:1)
 function getToken(){
   const params = new URLSearchParams(location.search);
   const token =
@@ -66,32 +109,47 @@ function getToken(){
 
 const token = getToken();
 
-// ===== SUPABASE (1:1)
+// ===== SUPABASE
 const sb = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
 
-// ===== NAME (1:1)
-async function loadName(){
+// ===== ACCORDION
+document.querySelectorAll(".header").forEach(h=>{
+  h.onclick = () => {
+    const c = h.nextElementSibling;
+    const open = c.style.display === "block";
+    document.querySelectorAll(".content").forEach(x=>x.style.display="none");
+    if(!open) c.style.display="block";
+  };
+});
+
+// ===== NAME (1:1 через fetch)
+async function loadCoupleName(){
   if(!token) return;
 
-  const { data } = await sb
-    .from("sites")
-    .select("couple_name")
-    .eq("edit_token", token)
-    .maybeSingle();
+  const res = await fetch(
+    `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?select=couple_name&edit_token=eq.${encodeURIComponent(token)}`,
+    {
+      headers:{
+        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+        Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+      }
+    }
+  );
 
-  if(data?.couple_name){
-    document.getElementById("couple").textContent = data.couple_name;
+  const arr = await res.json();
+  if(arr && arr.length){
+    document.getElementById("couple").textContent = arr[0].couple_name;
   }
 }
 
 // ===== MAIN DATA (1:1)
-async function loadData(){
+async function loadWeddingData(){
 
   if(!token){
-    document.body.innerHTML = "NO TOKEN";
+    document.getElementById("empty").style.display = "block";
     return;
   }
 
@@ -105,19 +163,19 @@ async function loadData(){
   console.log("ERROR:", error);
 
   if(error || !data){
-    document.body.innerHTML = "NO DATA";
+    document.getElementById("empty").style.display = "block";
     return;
   }
 
   document.getElementById("date").textContent = data.wedding_date || "";
 
-  // SCHEDULE (как в образце)
+  // SCHEDULE
   const sch = document.getElementById("schedule");
   sch.innerHTML = "";
 
   if (data.schedule && Array.isArray(data.schedule)) {
     data.schedule.forEach(i=>{
-      sch.innerHTML += `<div>${i.time} — ${i.text}</div>`;
+      sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
     });
   } else {
     [
@@ -127,30 +185,33 @@ async function loadData(){
       [data.schedule_time_4, data.schedule_text_4]
     ].forEach(([t,txt])=>{
       if(t||txt){
-        sch.innerHTML += `<div>${t} — ${txt}</div>`;
+        sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
       }
     });
   }
 
   // TRAVEL
   document.getElementById("travel").innerHTML = `
-    ${data.flights_text || ""}<br>
-    ${data.airport || ""}<br>
-    ${data.transfer_time || ""}
+    ${data.flights_text || ""}<br><br>
+    Airport: ${data.airport || ""}<br>
+    Transfer: ${data.transfer_time || ""}<br><br>
+    ${data.hotel_1 || ""}<br>
+    ${data.hotel_2 || ""}<br>
+    ${data.hotel_3 || ""}
   `;
 
   // VENUE
   document.getElementById("venue").innerHTML = `
     ${data.venue_name || ""}<br>
-    ${data.venue_address || ""}<br>
-    <a href="${data.map_link}" target="_blank">MAP</a>
+    ${data.venue_address || ""}<br><br>
+    ${data.map_link ? `<a href="${data.map_link}" target="_blank">Open Map</a>` : ""}
   `;
 
   // DETAILS
   document.getElementById("details").innerHTML = `
-    ${data.getting_around || ""}<br>
-    ${data.dress_code || ""}<br>
-    ${data.weather || ""}
+    ${data.getting_around || ""}<br><br>
+    Dress: ${data.dress_code || ""}<br>
+    Weather: ${data.weather || ""}
   `;
 
   // FAQ
@@ -159,7 +220,7 @@ async function loadData(){
 
   if (data.faq && Array.isArray(data.faq)) {
     data.faq.forEach(i=>{
-      faq.innerHTML += `<div><b>${i.q}</b><br>${i.a}</div>`;
+      faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
     });
   } else {
     [
@@ -169,15 +230,16 @@ async function loadData(){
       [data.faq_q4, data.faq_a4]
     ].forEach(([q,a])=>{
       if(q||a){
-        faq.innerHTML += `<div><b>${q}</b><br>${a}</div>`;
+        faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
       }
     });
   }
 
 }
 
-loadName();
-loadData();
+// ===== START
+loadCoupleName();
+loadWeddingData();
 
 </script>
 
