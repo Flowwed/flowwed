@@ -14,25 +14,20 @@ body{
   background:linear-gradient(180deg,#fff1f4,#ffffff);
   color:#6a2a2a;
 }
-
 .container{
   max-width:820px;
   margin:30px auto;
   padding:16px;
 }
-
 h1{
   text-align:center;
   color:#b41111;
 }
-
 .date{
   text-align:center;
   margin-bottom:20px;
   opacity:.8;
 }
-
-/* ACCORDION */
 .section{
   background:#fff;
   border-radius:16px;
@@ -40,23 +35,16 @@ h1{
   overflow:hidden;
   box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
-
 .header{
   padding:14px;
   font-weight:700;
   cursor:pointer;
   background:#fff5f7;
 }
-
 .content{
   display:none;
   padding:14px;
 }
-
-.item{
-  margin-bottom:10px;
-}
-
 .empty{
   text-align:center;
   margin-top:50px;
@@ -105,20 +93,46 @@ No data found
 
 <script>
 
+// =========================
+// TOKEN (как в рабочем коде)
+// =========================
+const params = new URLSearchParams(location.search);
+
+const token =
+  params.get("t") ||
+  params.get("token") ||
+  params.get("edit_token") ||
+  sessionStorage.getItem("rsvpToken") ||
+  "";
+
+sessionStorage.setItem("rsvpToken", token);
+
+console.log("TOKEN:", token);
+
+// =========================
+// SUPABASE (С HEADER !!!)
+// =========================
 const sb = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+  {
+    global: {
+      headers: {
+        site_edit_token: token
+      }
+    }
+  }
 );
 
-const token = new URLSearchParams(location.search).get("t");
-
-// КЛИК
-document.querySelectorAll(".header, .card-header").forEach(h=>{
+// =========================
+// ACCORDION
+// =========================
+document.querySelectorAll(".header").forEach(h=>{
   h.onclick = () => {
     const c = h.nextElementSibling;
     const open = c.style.display === "block";
 
-    document.querySelectorAll(".content, .card-content").forEach(x=>{
+    document.querySelectorAll(".content").forEach(x=>{
       x.style.display = "none";
     });
 
@@ -126,16 +140,30 @@ document.querySelectorAll(".header, .card-header").forEach(h=>{
   };
 });
 
-// ЗАГРУЗКА
+// =========================
+// LOAD DATA
+// =========================
 async function load(){
 
-  const { data } = await sb
+  if(!token){
+    console.log("❌ NO TOKEN");
+    document.getElementById("empty").style.display = "block";
+    return;
+  }
+
+  const { data, error } = await sb
     .from("wedding_info")
     .select("*")
     .eq("site_edit_token", token)
     .maybeSingle();
 
   console.log("DATA:", data);
+  console.log("ERROR:", error);
+
+  if(error){
+    document.getElementById("empty").style.display = "block";
+    return;
+  }
 
   if(!data){
     document.getElementById("empty").style.display = "block";
@@ -147,32 +175,39 @@ async function load(){
   document.getElementById("date").textContent = data.wedding_date || "";
 
   // =========================
-  // 🔥 SCHEDULE (ЛЮБОЙ ФОРМАТ)
+  // SCHEDULE
   // =========================
   const sch = document.getElementById("schedule");
   sch.innerHTML = "";
 
-  if (data.schedule && Array.isArray(data.schedule)) {
-    data.schedule.forEach(i=>{
-      sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
-    });
+  if (data.schedule && Array.isArray(data.schedule) && data.schedule.length) {
+
+    data.schedule
+      .filter(i => i.time || i.text)
+      .forEach(i=>{
+        sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
+      });
+
   } else {
+
     for(let i=1;i<=6;i++){
       const t = data[`schedule_time_${i}`];
       const txt = data[`schedule_text_${i}`];
+
       if(t || txt){
         sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
       }
     }
+
   }
 
   // =========================
   // TRAVEL
   // =========================
   document.getElementById("travel").innerHTML = `
+    ${data.flights_text || ""}<br><br>
     Airport: ${data.airport || ""}<br>
-    Transfer: ${data.transfer_time || ""}<br>
-    ${data.flights_text || ""}
+    Transfer: ${data.transfer_time || ""}
   `;
 
   // =========================
@@ -188,29 +223,36 @@ async function load(){
   // DETAILS
   // =========================
   document.getElementById("details").innerHTML = `
-    Getting around: ${data.getting_around || ""}<br>
+    ${data.getting_around || ""}<br><br>
     Dress code: ${data.dress_code || ""}<br>
     Weather: ${data.weather || ""}
   `;
 
   // =========================
-  // 🔥 FAQ (ЛЮБОЙ ФОРМАТ)
+  // FAQ
   // =========================
   const faq = document.getElementById("faq");
   faq.innerHTML = "";
 
-  if (data.faq && Array.isArray(data.faq)) {
-    data.faq.forEach(i=>{
-      faq.innerHTML += `<div><b>${i.q}</b><br>${i.a}</div>`;
-    });
+  if (data.faq && Array.isArray(data.faq) && data.faq.length) {
+
+    data.faq
+      .filter(i => i.q || i.a)
+      .forEach(i=>{
+        faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
+      });
+
   } else {
+
     for(let i=1;i<=6;i++){
       const q = data[`faq_q${i}`];
       const a = data[`faq_a${i}`];
+
       if(q || a){
         faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
       }
     }
+
   }
 
 }
