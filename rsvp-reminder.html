@@ -273,7 +273,18 @@ std: {
   `,
   btnText: "View Details",
   showBtn: true
+},
+
+rsvp: {
+  title: "RSVP",
+  text: `
+    We would love to celebrate with you.<br><br>
+    Please confirm your attendance.
+  `,
+  btnText: "View Details",
+  showBtn: true
 }
+
 
 };
 
@@ -354,6 +365,12 @@ btnEl.onclick = () => {
   else if (type === "std") {
     link = `${window.location.origin}/std_preview.html?t=${token}`;
   }
+
+
+else if (type === "rsvp") {
+  link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
+}
+
 
   // 🔥 Остальные → обычный RSVP
   else {

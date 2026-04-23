@@ -1763,7 +1763,7 @@ font-size:13px;
 ">
 
 <div style="font-weight:700;color:#9c1818;margin-bottom:6px;">
-RSVP Form Link
+Guest Memories Form Link
 </div>
 
 <div id="rsvpPreviewLink"
@@ -2285,7 +2285,7 @@ function openComposer() {
     const guestId = firstGuest.dataset.id;
 
     const link =
-    `${window.location.origin}/rsvp-reminder.html?t=${token}&g=${guestId}&mode=admin`;
+    `${window.location.origin}/rsvp-reminder.html?t=${token}&g=${guestId}&type=memories`;
 
 currentRsvpLink = link;
 
@@ -2293,7 +2293,7 @@ currentRsvpLink = link;
   }
 
   document.getElementById("composerSubject").value =
-    `${coupleFullName || "Wedding"} — RSVP Request`;
+    `${coupleFullName || "Wedding"} — Guest Memories Request`;
 
   emailComposer.style.display = "block";
 }

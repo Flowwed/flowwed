@@ -2458,7 +2458,7 @@ function openComposer() {
     const guestId = firstGuest.dataset.id;
 
     const link =
-    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}&mode=admin`;
+    `${window.location.origin}/rsvpresponse.html?t=${token}&g=${guestId}&type=rsvp`;
 
 currentRsvpLink = link;
 
@@ -3106,7 +3106,7 @@ if (shareBtn) {
 
     const token = window.APP_TOKEN;
 
-    const link = `${window.location.origin}/rsvpresponse.html?t=${token}&mode=admin`;
+    const link = `${window.location.origin}/rsvpresponse.html?t=${token}&type=rsvp`;
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
