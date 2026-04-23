@@ -363,62 +363,20 @@ if (!state || !titleEl || !textEl || !btnEl) {
 
 }
 
-
 // =============================
-// SEND BUTTON
-// =============================
-
-function getLinkByType(type, token){
-
-  if (type === "memories") {
-    return `${window.location.origin}/postwed-form.html?t=${token}`;
-  } 
-  else if (type === "maybe") {
-    return `${window.location.origin}/rsvpresponse.html?t=${token}&group=rsvpMaybe`;
-  } 
-  else if (type === "std") {
-    return `${window.location.origin}/std_preview.html?t=${token}`;
-  }
-  else if (type === "rsvp") {
-    return `${window.location.origin}/rsvpresponse.html?t=${token}`;
-  }
-  else if (type === "travel") {
-    return `${window.location.origin}/venue_map.html?t=${token}`;
-  }
-  else if (type === "updates") {
-    return `${window.location.origin}/updates.html?t=${token}`;
-  }
-
-  return `${window.location.origin}/rsvp-reminder.html?t=${token}`;
-}
-
-
-
-
-// =============================
-// RSVP BUTTON
-// =============================
-
-btnEl.onclick = () => {
-  const link = getLinkByType(type, token);
-  window.location.href = link;
-};
-
-
-
-// =============================
-// NOTIFY BUTTON ADM
+// SEND BUTTON (верхняя кнопка)
 // =============================
 
 document.getElementById("notifyBtn").onclick = async () => {
 
-  const link = getLinkByType(type, token);
+  const link =
+    `${window.location.origin}/rsvp-reminder.html?t=${token}&type=${type}&shared=1`;
 
   if (navigator.share) {
     try {
       await navigator.share({
         title: "Wedding Details",
-        text: "Open this link",
+        text: "Open your invitation",
         url: link
       });
     } catch(e){}
