@@ -1601,8 +1601,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const token = window.APP_TOKEN;
 
-const url = `${window.location.origin}/venue_map.html?t=${encodeURIComponent(token)}&mode=admin`;
-
+const url = currentRsvpLink;
 
       // 🔥 генерим QR прямо в canvas
       QRCode.toCanvas(qrCanvas, url, { width: 220 });
@@ -1823,7 +1822,25 @@ if (sendBtn) {
     const subject = document.getElementById("composerSubject").value.trim();
     const message = document.getElementById("composerBody").value.trim();
 
-    const htmlBody = message + "<br><br>" + document.getElementById("composerFooter").innerHTML;
+    const htmlBody =
+  message +
+  `<br><br>
+  <a href="${currentRsvpLink}" target="_blank" style="
+    display:inline-block;
+    padding:12px 18px;
+    background:#b41111;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:700;
+  ">
+    View Details
+  </a>
+  <br><br>` +
+  document.getElementById("composerFooter").innerHTML;
+
+
+
 
     const overlay = document.getElementById("sendProgressOverlay");
     const bar = document.getElementById("progressBar");
