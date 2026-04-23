@@ -1,245 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Travel & Event</title>
+<title>Wedding Details</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:linear-gradient(180deg,#fff1f4,#ffffff);
-  color:#6a2a2a;
+  font-family: Arial;
+  background:#fafafa;
+  padding:30px;
+  max-width:800px;
+  margin:auto;
 }
-.container{
-  max-width:820px;
-  margin:30px auto;
-  padding:16px;
-}
+
 h1{
   text-align:center;
   color:#b41111;
 }
-.date{
-  text-align:center;
+
+.block{
+  background:white;
+  padding:20px;
+  border-radius:12px;
   margin-bottom:20px;
-  opacity:.8;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
-.section{
-  background:#fff;
-  border-radius:16px;
-  margin-bottom:12px;
-  overflow:hidden;
-  box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
-.header{
-  padding:14px;
+
+.title{
   font-weight:700;
-  cursor:pointer;
-  background:#fff5f7;
-}
-.content{
-  display:none;
-  padding:14px;
-}
-.empty{
-  text-align:center;
-  margin-top:50px;
-  color:#999;
+  margin-bottom:10px;
+  color:#b41111;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1 id="couple">Loading...</h1>
+<div id="date"></div>
 
-<h1 id="couple">—</h1>
-<div id="date" class="date"></div>
-
-<div class="section">
-  <div class="header">Schedule</div>
-  <div class="content" id="schedule"></div>
-</div>
-
-<div class="section">
-  <div class="header">Travel</div>
-  <div class="content" id="travel"></div>
-</div>
-
-<div class="section">
-  <div class="header">Venue</div>
-  <div class="content" id="venue"></div>
-</div>
-
-<div class="section">
-  <div class="header">Details</div>
-  <div class="content" id="details"></div>
-</div>
-
-<div class="section">
-  <div class="header">FAQ</div>
-  <div class="content" id="faq"></div>
-</div>
-
-<div id="empty" class="empty" style="display:none;">
-No data found
-</div>
-
-</div>
+<div id="content"></div>
 
 <script>
 
-// ===== TOKEN (1:1)
-function getToken(){
-  const params = new URLSearchParams(location.search);
-  const token =
-    params.get("t") ||
-    params.get("token") ||
-    params.get("edit_token") ||
-    sessionStorage.getItem("rsvpToken") ||
-    "";
+// 🔑 токен из URL
+const params = new URLSearchParams(window.location.search);
+const token = params.get("t");
 
-  sessionStorage.setItem("rsvpToken", token);
-  return token;
-}
-
-const token = getToken();
-
-// ===== SUPABASE
-const sb = window.supabase.createClient(
+// 🔌 Supabase
+const sb = supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+
 );
 
-// ===== ACCORDION
-document.querySelectorAll(".header").forEach(h=>{
-  h.onclick = () => {
-    const c = h.nextElementSibling;
-    const open = c.style.display === "block";
-    document.querySelectorAll(".content").forEach(x=>x.style.display="none");
-    if(!open) c.style.display="block";
-  };
-});
+// 📦 загрузка данных
+async function load(){
 
-// ===== NAME (1:1 через fetch)
-async function loadCoupleName(){
-  if(!token) return;
-
-  const res = await fetch(
-    `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?select=couple_name&edit_token=eq.${encodeURIComponent(token)}`,
-    {
-      headers:{
-        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
-        Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-      }
-    }
-  );
-
-  const arr = await res.json();
-  if(arr && arr.length){
-    document.getElementById("couple").textContent = arr[0].couple_name;
-  }
-}
-
-// ===== MAIN DATA (1:1)
-async function loadWeddingData(){
-
-  if(!token){
-    document.getElementById("empty").style.display = "block";
-    return;
-  }
-
-  const { data, error } = await sb
+  const { data } = await sb
     .from("wedding_info")
     .select("*")
     .eq("site_edit_token", token)
-    .maybeSingle();
+    .single();
 
-  console.log("DATA:", data);
-  console.log("ERROR:", error);
-
-  if(error || !data){
-    document.getElementById("empty").style.display = "block";
+  if(!data){
+    document.body.innerHTML = "Нет данных";
     return;
   }
 
-  document.getElementById("date").textContent = data.wedding_date || "";
-
-  // SCHEDULE
-  const sch = document.getElementById("schedule");
-  sch.innerHTML = "";
-
-  if (data.schedule && Array.isArray(data.schedule)) {
-    data.schedule.forEach(i=>{
-      sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
-    });
-  } else {
-    [
-      [data.schedule_time_1, data.schedule_text_1],
-      [data.schedule_time_2, data.schedule_text_2],
-      [data.schedule_time_3, data.schedule_text_3],
-      [data.schedule_time_4, data.schedule_text_4]
-    ].forEach(([t,txt])=>{
-      if(t||txt){
-        sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
-      }
-    });
-  }
-
-  // TRAVEL
-  document.getElementById("travel").innerHTML = `
-    ${data.flights_text || ""}<br><br>
-    Airport: ${data.airport || ""}<br>
-    Transfer: ${data.transfer_time || ""}<br><br>
-    ${data.hotel_1 || ""}<br>
-    ${data.hotel_2 || ""}<br>
-    ${data.hotel_3 || ""}
-  `;
-
-  // VENUE
-  document.getElementById("venue").innerHTML = `
-    ${data.venue_name || ""}<br>
-    ${data.venue_address || ""}<br><br>
-    ${data.map_link ? `<a href="${data.map_link}" target="_blank">Open Map</a>` : ""}
-  `;
-
-  // DETAILS
-  document.getElementById("details").innerHTML = `
-    ${data.getting_around || ""}<br><br>
-    Dress: ${data.dress_code || ""}<br>
-    Weather: ${data.weather || ""}
-  `;
-
-  // FAQ
-  const faq = document.getElementById("faq");
-  faq.innerHTML = "";
-
-  if (data.faq && Array.isArray(data.faq)) {
-    data.faq.forEach(i=>{
-      faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
-    });
-  } else {
-    [
-      [data.faq_q1, data.faq_a1],
-      [data.faq_q2, data.faq_a2],
-      [data.faq_q3, data.faq_a3],
-      [data.faq_q4, data.faq_a4]
-    ].forEach(([q,a])=>{
-      if(q||a){
-        faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
-      }
-    });
-  }
-
+  render(data);
 }
 
-// ===== START
-loadCoupleName();
-loadWeddingData();
+// 🎨 вывод
+function render(d){
+
+  document.getElementById("couple").innerText =
+    d.couple_name || "Wedding";
+
+  document.getElementById("date").innerText =
+    d.wedding_date || "";
+
+  const html = `
+
+  <div class="block">
+    <div class="title">Schedule</div>
+    ${d.schedule?.map(i => `
+      <div>${i.time} — ${i.text}</div>
+    `).join("")}
+  </div>
+
+  <div class="block">
+    <div class="title">Flights</div>
+    <div>${d.flights_text || ""}</div>
+  </div>
+
+  <div class="block">
+    <div class="title">Hotels</div>
+    <div>${d.hotel_1 || ""}</div>
+    <div>${d.hotel_2 || ""}</div>
+    <div>${d.hotel_3 || ""}</div>
+  </div>
+
+  <div class="block">
+    <div class="title">Venue</div>
+    <div>${d.venue_name || ""}</div>
+    <div>${d.venue_address || ""}</div>
+    <a href="https://maps.google.com/?q=${encodeURIComponent(d.venue_address || "")}" target="_blank">
+      Открыть карту
+    </a>
+  </div>
+
+  <div class="block">
+    <div class="title">Details</div>
+    <div>${d.getting_around || ""}</div>
+    <div>${d.dress_code || ""}</div>
+  </div>
+
+  <div class="block">
+    <div class="title">FAQ</div>
+    ${d.faq?.map(i => `
+      <div><b>${i.q}</b><br>${i.a}</div><br>
+    `).join("")}
+  </div>
+
+  `;
+
+  document.getElementById("content").innerHTML = html;
+}
+
+load();
 
 </script>
 
