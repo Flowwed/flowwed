@@ -92,19 +92,35 @@ No data found
 </div>
 
 <script>
-const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
-// 🔑 TOKEN
+// =====================
+// 🔑 TOKEN (1 в 1 как в образце)
+// =====================
 function getToken(){
-  const p = new URLSearchParams(location.search);
-  return p.get("t") || p.get("token") || p.get("edit_token") || "";
+  const params = new URLSearchParams(location.search);
+  return (
+    params.get("t") ||
+    params.get("token") ||
+    params.get("edit_token") ||
+    sessionStorage.getItem("rsvpToken") ||
+    ""
+  );
 }
 
-// 🧠 SUPABASE
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const token = getToken();
+sessionStorage.setItem("rsvpToken", token);
 
+// =====================
+// 🧠 SUPABASE (1 в 1)
+// =====================
+const sb = window.supabase.createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+);
+
+// =====================
 // 📂 ACCORDION
+// =====================
 document.querySelectorAll(".header").forEach(h=>{
   h.onclick = () => {
     const c = h.nextElementSibling;
@@ -114,28 +130,34 @@ document.querySelectorAll(".header").forEach(h=>{
   };
 });
 
-// 🚀 LOAD
-async function load(){
+// =====================
+// 🚀 LOAD NAME
+// =====================
+async function loadName(){
 
-  const token = getToken();
+  if(!token) return;
+
+  const { data } = await sb
+    .from("sites")
+    .select("couple_name")
+    .eq("edit_token", token)
+    .maybeSingle();
+
+  if(data?.couple_name){
+    document.getElementById("couple").textContent = data.couple_name;
+  }
+}
+
+// =====================
+// 🚀 LOAD MAIN DATA (1 в 1 логика)
+// =====================
+async function loadData(){
 
   if(!token){
     document.getElementById("empty").style.display = "block";
     return;
   }
 
-  // 👇 NAME
-  const { data: nameData } = await sb
-    .from("sites")
-    .select("couple_name")
-    .eq("edit_token", token)
-    .maybeSingle();
-
-  if(nameData?.couple_name){
-    document.getElementById("couple").textContent = nameData.couple_name;
-  }
-
-  // 👇 MAIN DATA
   const { data, error } = await sb
     .from("wedding_info")
     .select("*")
@@ -150,27 +172,38 @@ async function load(){
 
   document.getElementById("date").textContent = data.wedding_date || "";
 
-  // 📅 SCHEDULE
+  // =====================
+  // 📅 SCHEDULE (JSON + fallback)
+  // =====================
   const sch = document.getElementById("schedule");
   sch.innerHTML = "";
 
   if (data.schedule && Array.isArray(data.schedule)) {
+
     data.schedule
-      .filter(x => x.time || x.text)
-      .forEach(x=>{
-        sch.innerHTML += `<div><b>${x.time||""}</b> — ${x.text||""}</div>`;
+      .filter(i => i.time || i.text)
+      .forEach(i=>{
+        sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
       });
+
   } else {
-    for(let i=1;i<=10;i++){
-      const t = data["schedule_time_"+i];
-      const txt = data["schedule_text_"+i];
-      if(t || txt){
-        sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
-      }
-    }
+
+    [
+      [data.schedule_time_1, data.schedule_text_1],
+      [data.schedule_time_2, data.schedule_text_2],
+      [data.schedule_time_3, data.schedule_text_3],
+      [data.schedule_time_4, data.schedule_text_4]
+    ]
+    .filter(([t,txt]) => t || txt)
+    .forEach(([t,txt])=>{
+      sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
+    });
+
   }
 
+  // =====================
   // ✈️ TRAVEL
+  // =====================
   document.getElementById("travel").innerHTML = `
     ${data.flights_text || ""}<br><br>
     Airport: ${data.airport || ""}<br>
@@ -180,43 +213,61 @@ async function load(){
     ${data.hotel_3 || ""}
   `;
 
+  // =====================
   // 📍 VENUE
+  // =====================
   document.getElementById("venue").innerHTML = `
     ${data.venue_name || ""}<br>
     ${data.venue_address || ""}<br><br>
     ${data.map_link ? `<a href="${data.map_link}" target="_blank">Open Map</a>` : ""}
   `;
 
+  // =====================
   // 📄 DETAILS
+  // =====================
   document.getElementById("details").innerHTML = `
     ${data.getting_around || ""}<br><br>
     Dress: ${data.dress_code || ""}<br>
     Weather: ${data.weather || ""}
   `;
 
-  // ❓ FAQ
+  // =====================
+  // ❓ FAQ (JSON + fallback)
+  // =====================
   const faq = document.getElementById("faq");
   faq.innerHTML = "";
 
   if (data.faq && Array.isArray(data.faq)) {
+
     data.faq
-      .filter(x => x.q || x.a)
-      .forEach(x=>{
-        faq.innerHTML += `<div><b>${x.q||""}</b><br>${x.a||""}</div>`;
+      .filter(i => i.q || i.a)
+      .forEach(i=>{
+        faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
       });
+
   } else {
-    for(let i=1;i<=10;i++){
-      const q = data["faq_q"+i];
-      const a = data["faq_a"+i];
-      if(q || a){
-        faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
-      }
-    }
+
+    [
+      [data.faq_q1, data.faq_a1],
+      [data.faq_q2, data.faq_a2],
+      [data.faq_q3, data.faq_a3],
+      [data.faq_q4, data.faq_a4]
+    ]
+    .filter(([q,a]) => q || a)
+    .forEach(([q,a])=>{
+      faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
+    });
+
   }
 
 }
 
-load();
+// =====================
+// START
+// =====================
+loadName();
+loadData();
+
 </script>
 
 </body>
