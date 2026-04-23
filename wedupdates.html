@@ -157,7 +157,7 @@ async function load(){
   // 🔹 sites
   const { data: site } = await sb
     .from("sites")
-    .select("couple_name")
+    .select("couple_name, wedding_date")
     .eq("edit_token", token)
     .maybeSingle();
 
@@ -173,7 +173,7 @@ async function load(){
 
   // дата
   document.getElementById("weddingDate").innerText =
-    info ? formatDate(info.wedding_date) : "";
+   site?.wedding_date ? formatDate(site.wedding_date) : "";
 
   // 💎 UPDATES (⬅️ ВНУТРИ функции!)
   const res = await fetch(
