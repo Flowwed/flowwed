@@ -3106,23 +3106,32 @@ if (shareBtn) {
 
     const token = window.APP_TOKEN;
 
-const link = `${window.location.origin}/rsvp-reminder.html?t=${token}&type=rsvp&shared=1`;
+    // 👉 1. ССЫЛКА ДЛЯ QR (АДМИН)
+    const adminLink =
+      `${window.location.origin}/rsvp-reminder.html?t=${token}&type=rsvp`;
+
+    // 👉 2. ССЫЛКА ДЛЯ ГОСТЯ (SEND)
+    const guestLink =
+      `${window.location.origin}/rsvp-reminder.html?t=${token}&type=rsvp&shared=1`;
 
     const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
     if (isMobile) {
-      window.location.href = `sms:?body=${encodeURIComponent(link)}`;
+      // 👉 SMS отправляет ГОСТЕВУЮ ссылку
+      window.location.href = `sms:?body=${encodeURIComponent(guestLink)}`;
       return;
     }
 
+    // 👉 QR показывает АДМИНСКУЮ ссылку
     const modal = document.getElementById("qrModal");
     const canvas = document.getElementById("qrCanvas");
 
     modal.style.display = "flex";
 
-    QRCode.toCanvas(canvas, link, { width: 220 });
+    QRCode.toCanvas(canvas, adminLink, { width: 220 });
   };
 }
+
 
 </script>
 
