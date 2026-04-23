@@ -3,138 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Travel & Event</title>
+<title>Travel</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:linear-gradient(180deg,#fff1f4,#ffffff);
-  color:#6a2a2a;
+  font-family:sans-serif;
+  padding:20px;
 }
-.container{
-  max-width:820px;
-  margin:30px auto;
-  padding:16px;
-}
-h1{
-  text-align:center;
-  color:#b41111;
-}
-.date{
-  text-align:center;
+.block{
   margin-bottom:20px;
-  opacity:.8;
-}
-.section{
-  background:#fff;
-  border-radius:16px;
-  margin-bottom:12px;
-  overflow:hidden;
-  box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
-.header{
-  padding:14px;
-  font-weight:700;
-  cursor:pointer;
-  background:#fff5f7;
-}
-.content{
-  display:none;
-  padding:14px;
-}
-.empty{
-  text-align:center;
-  margin-top:50px;
-  color:#999;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<h1 id="couple"></h1>
+<div id="date"></div>
 
-<h1 id="couple">—</h1>
-<div id="date" class="date"></div>
-
-<div class="section">
-  <div class="header">Schedule</div>
-  <div class="content" id="schedule"></div>
+<div class="block">
+  <h3>Schedule</h3>
+  <div id="schedule"></div>
 </div>
 
-<div class="section">
-  <div class="header">Travel</div>
-  <div class="content" id="travel"></div>
+<div class="block">
+  <h3>Travel</h3>
+  <div id="travel"></div>
 </div>
 
-<div class="section">
-  <div class="header">Venue</div>
-  <div class="content" id="venue"></div>
+<div class="block">
+  <h3>Venue</h3>
+  <div id="venue"></div>
 </div>
 
-<div class="section">
-  <div class="header">Details</div>
-  <div class="content" id="details"></div>
+<div class="block">
+  <h3>Details</h3>
+  <div id="details"></div>
 </div>
 
-<div class="section">
-  <div class="header">FAQ</div>
-  <div class="content" id="faq"></div>
-</div>
-
-<div id="empty" class="empty" style="display:none;">
-No data found
-</div>
-
+<div class="block">
+  <h3>FAQ</h3>
+  <div id="faq"></div>
 </div>
 
 <script>
 
-// =====================
-// 🔑 TOKEN (1 в 1 как в образце)
-// =====================
+// ===== TOKEN (1:1 КАК В ОБРАЗЦЕ)
 function getToken(){
   const params = new URLSearchParams(location.search);
-  return (
+  const token =
     params.get("t") ||
     params.get("token") ||
     params.get("edit_token") ||
     sessionStorage.getItem("rsvpToken") ||
-    ""
-  );
+    "";
+
+  sessionStorage.setItem("rsvpToken", token);
+  return token;
 }
 
 const token = getToken();
-sessionStorage.setItem("rsvpToken", token);
 
-// =====================
-// 🧠 SUPABASE (1 в 1)
-// =====================
+// ===== SUPABASE (1:1)
 const sb = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
 
-// =====================
-// 📂 ACCORDION
-// =====================
-document.querySelectorAll(".header").forEach(h=>{
-  h.onclick = () => {
-    const c = h.nextElementSibling;
-    const open = c.style.display === "block";
-    document.querySelectorAll(".content").forEach(x=>x.style.display="none");
-    if(!open) c.style.display="block";
-  };
-});
-
-// =====================
-// 🚀 LOAD NAME
-// =====================
+// ===== NAME (1:1)
 async function loadName(){
-
   if(!token) return;
 
   const { data } = await sb
@@ -148,13 +87,11 @@ async function loadName(){
   }
 }
 
-// =====================
-// 🚀 LOAD MAIN DATA (1 в 1 логика)
-// =====================
+// ===== MAIN DATA (1:1)
 async function loadData(){
 
   if(!token){
-    document.getElementById("empty").style.display = "block";
+    document.body.innerHTML = "NO TOKEN";
     return;
   }
 
@@ -164,107 +101,81 @@ async function loadData(){
     .eq("site_edit_token", token)
     .maybeSingle();
 
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
+
   if(error || !data){
-    document.getElementById("empty").style.display = "block";
-    console.log(error);
+    document.body.innerHTML = "NO DATA";
     return;
   }
 
   document.getElementById("date").textContent = data.wedding_date || "";
 
-  // =====================
-  // 📅 SCHEDULE (JSON + fallback)
-  // =====================
+  // SCHEDULE (как в образце)
   const sch = document.getElementById("schedule");
   sch.innerHTML = "";
 
   if (data.schedule && Array.isArray(data.schedule)) {
-
-    data.schedule
-      .filter(i => i.time || i.text)
-      .forEach(i=>{
-        sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
-      });
-
+    data.schedule.forEach(i=>{
+      sch.innerHTML += `<div>${i.time} — ${i.text}</div>`;
+    });
   } else {
-
     [
       [data.schedule_time_1, data.schedule_text_1],
       [data.schedule_time_2, data.schedule_text_2],
       [data.schedule_time_3, data.schedule_text_3],
       [data.schedule_time_4, data.schedule_text_4]
-    ]
-    .filter(([t,txt]) => t || txt)
-    .forEach(([t,txt])=>{
-      sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
+    ].forEach(([t,txt])=>{
+      if(t||txt){
+        sch.innerHTML += `<div>${t} — ${txt}</div>`;
+      }
     });
-
   }
 
-  // =====================
-  // ✈️ TRAVEL
-  // =====================
+  // TRAVEL
   document.getElementById("travel").innerHTML = `
-    ${data.flights_text || ""}<br><br>
-    Airport: ${data.airport || ""}<br>
-    Transfer: ${data.transfer_time || ""}<br><br>
-    ${data.hotel_1 || ""}<br>
-    ${data.hotel_2 || ""}<br>
-    ${data.hotel_3 || ""}
+    ${data.flights_text || ""}<br>
+    ${data.airport || ""}<br>
+    ${data.transfer_time || ""}
   `;
 
-  // =====================
-  // 📍 VENUE
-  // =====================
+  // VENUE
   document.getElementById("venue").innerHTML = `
     ${data.venue_name || ""}<br>
-    ${data.venue_address || ""}<br><br>
-    ${data.map_link ? `<a href="${data.map_link}" target="_blank">Open Map</a>` : ""}
+    ${data.venue_address || ""}<br>
+    <a href="${data.map_link}" target="_blank">MAP</a>
   `;
 
-  // =====================
-  // 📄 DETAILS
-  // =====================
+  // DETAILS
   document.getElementById("details").innerHTML = `
-    ${data.getting_around || ""}<br><br>
-    Dress: ${data.dress_code || ""}<br>
-    Weather: ${data.weather || ""}
+    ${data.getting_around || ""}<br>
+    ${data.dress_code || ""}<br>
+    ${data.weather || ""}
   `;
 
-  // =====================
-  // ❓ FAQ (JSON + fallback)
-  // =====================
+  // FAQ
   const faq = document.getElementById("faq");
   faq.innerHTML = "";
 
   if (data.faq && Array.isArray(data.faq)) {
-
-    data.faq
-      .filter(i => i.q || i.a)
-      .forEach(i=>{
-        faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
-      });
-
+    data.faq.forEach(i=>{
+      faq.innerHTML += `<div><b>${i.q}</b><br>${i.a}</div>`;
+    });
   } else {
-
     [
       [data.faq_q1, data.faq_a1],
       [data.faq_q2, data.faq_a2],
       [data.faq_q3, data.faq_a3],
       [data.faq_q4, data.faq_a4]
-    ]
-    .filter(([q,a]) => q || a)
-    .forEach(([q,a])=>{
-      faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
+    ].forEach(([q,a])=>{
+      if(q||a){
+        faq.innerHTML += `<div><b>${q}</b><br>${a}</div>`;
+      }
     });
-
   }
 
 }
 
-// =====================
-// START
-// =====================
 loadName();
 loadData();
 
