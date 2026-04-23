@@ -154,49 +154,41 @@ async function load(){
     return;
   }
 
-  // 🔹 1. берём имя из sites
-  const { data: site, error: siteError } = await sb
+  // 🔹 sites
+  const { data: site } = await sb
     .from("sites")
     .select("couple_name")
     .eq("edit_token", token)
     .maybeSingle();
 
-  console.log("SITE:", site);
-  console.log("SITE ERROR:", siteError);
-
-  // 🔹 2. берём остальное как было
-  const { data: info, error } = await sb
+  // 🔹 wedding_info
+  const { data: info } = await sb
     .from("wedding_info")
     .select("*")
     .maybeSingle();
 
-  console.log("INFO:", info);
-  console.log("ERROR:", error);
-
-  // 🔹 3. имя (приоритет sites)
+  // имя
   document.getElementById("couple").innerText =
     site?.couple_name || info?.couple_name || "Wedding";
 
-  // 🔹 4. дата
+  // дата
   document.getElementById("weddingDate").innerText =
     info ? formatDate(info.wedding_date) : "";
-}
 
-
-  // 💎 UPDATES
+  // 💎 UPDATES (⬅️ ВНУТРИ функции!)
   const res = await fetch(
     `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
     {
       headers: {
-        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
+        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+,
         Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+
       }
     }
   );
 
   const data = await res.json();
-
-  console.log("UPDATES:", data);
 
   if(!data || !data.length || !data[0].wed_updates){
     document.getElementById("content").innerHTML = "No updates yet";
@@ -205,7 +197,6 @@ async function load(){
 
   render(data[0].wed_updates);
 }
-
 // 🎨 RENDER
 function render(list){
   const html = `
