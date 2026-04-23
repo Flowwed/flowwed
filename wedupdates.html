@@ -21,7 +21,10 @@ h1{
   text-align:center;
   font-size:34px;
   font-weight:800;
-  color:#5f2b33;
+
+  background: linear-gradient(to bottom, #b03036, #5f2b33);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 #weddingDate{
@@ -31,7 +34,7 @@ h1{
 
   font-size:20px;
   font-weight:700;
-  color:#8f5860;
+  color:#a06a73;
 }
 
 /* 💎 ADMIN BLOCK */
@@ -44,7 +47,7 @@ h1{
   box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* 💎 CONTAINER */
+/* 💎 CONTENT */
 #content{
   margin-top:20px;
 }
@@ -65,7 +68,7 @@ h1{
   overflow-y:auto;
 }
 
-/* 💎 CARD */
+/* 💎 UPDATE CARD */
 .update{
   padding:14px 12px;
   border-radius:12px;
@@ -102,37 +105,13 @@ h1{
   background:#d9bcbc;
   border-radius:10px;
 }
-
-
-h1{
-  margin:0;
-  text-align:center;
-  font-size:34px;
-  font-weight:800;
-
-  background: linear-gradient(to bottom, #a9444a, #5f2b33);
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-#weddingDate{
-  text-align:center;
-  margin-top:8px;
-  margin-bottom:20px;
-
-  font-size:20px;
-  font-weight:700;
-  color:#a06a73;
-}
-
-
 </style>
 </head>
 
 <body>
 
-<h1 id="couple">Pari</h1>
-<div id="weddingDate">September 27, 2026</div>
+<h1 id="couple">Loading...</h1>
+<div id="weddingDate"></div>
 
 <div id="notifyBlock">
   Send this page to your guests
@@ -151,15 +130,13 @@ if(isShared){
 }
 
 const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-;
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
-// 🔥 ЗАГРУЗКА ВСЕГО
 async function load(){
 
-  // 1. тянем couple + date
+  // 💎 1. COUPLE + DATE
   const infoRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/wedding_info?select=couple_name,wedding_date&edit_token=eq.${token}`,
+    `${SUPABASE_URL}/rest/v1/wedding_info?select=couple_name,wedding_date&site_edit_token=eq.${token}`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -170,15 +147,19 @@ async function load(){
 
   const info = await infoRes.json();
 
+  console.log("INFO:", info);
+
   if(info && info.length){
     document.getElementById("couple").innerText =
       info[0].couple_name || "Wedding";
 
     document.getElementById("weddingDate").innerText =
       formatDate(info[0].wedding_date);
+  } else {
+    document.getElementById("couple").innerText = "Wedding";
   }
 
-  // 2. тянем updates
+  // 💎 2. UPDATES
   const res = await fetch(
     `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
     {
@@ -190,6 +171,8 @@ async function load(){
   );
 
   const data = await res.json();
+
+  console.log("UPDATES:", data);
 
   if(!data || !data.length || !data[0].wed_updates){
     document.getElementById("content").innerHTML = "No updates yet";
@@ -216,6 +199,7 @@ function render(list){
 }
 
 function formatDate(d){
+  if(!d) return "";
   return new Date(d).toLocaleDateString("en-US", {
     year:"numeric",
     month:"long",
@@ -224,6 +208,7 @@ function formatDate(d){
 }
 
 load();
+
 </script>
 
 </body>
