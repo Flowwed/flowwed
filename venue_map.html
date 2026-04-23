@@ -41,8 +41,8 @@ h1{
   font-weight:700;
   cursor:pointer;
 
-  background:linear-gradient(135deg,#b94b5f,#8e3a4a); /* 💖 мягкий */
-  backdrop-filter: blur(6px);
+  background:linear-gradient(135deg,#e33238,#b3262b); /* 💖 новый */
+
   color:white;
   position:relative;
   transition:0.25s;
@@ -179,7 +179,7 @@ function render(d){
     d.couple_name || "Wedding";
 
 document.getElementById("weddingDate").innerText =
-  d.wedding_date || "";
+   formatDate(d.wedding_date);
 
   const html = `
 
@@ -214,6 +214,19 @@ document.getElementById("weddingDate").innerText =
   `;
 
   document.getElementById("content").innerHTML = html;
+}
+
+
+function formatDate(dateStr){
+  if(!dateStr) return "";
+
+  const date = new Date(dateStr);
+
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
 }
 
 
