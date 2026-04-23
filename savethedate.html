@@ -3187,15 +3187,21 @@ if (shareBtn) {
 
 shareBtn.onclick = () => {
 
-  const link = currentRsvpLink; // ✅ берём уже правильную ссылку
+  const token = window.APP_TOKEN;
+
+  // 🔥 независимая ссылка (как раньше, но правильная)
+  const link =
+    `${window.location.origin}/std_preview.html?t=${token}&type=std`;
 
   const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
+  // 📱 SMS
   if (isMobile) {
     window.location.href = `sms:?body=${encodeURIComponent(link)}`;
     return;
   }
 
+  // 💻 QR
   const modal = document.getElementById("qrModal");
   const canvas = document.getElementById("qrCanvas");
 
@@ -3203,9 +3209,11 @@ shareBtn.onclick = () => {
 
   QRCode.toCanvas(canvas, link, { width: 220 });
 };
+
 }
 
 </script>
+
 
 
 <script>
