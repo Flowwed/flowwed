@@ -28,67 +28,65 @@ h1{
 }
 
 .acc{
-  margin-bottom:16px;
-  border-radius:14px;
-  overflow:hidden;
-  background:white;
-  box-shadow:0 8px 20px rgba(0,0,0,0.12);
+  margin-bottom:14px;
+  border-radius:12px;
+
+  background:rgba(255,255,255,0.6);   /* 🔥 прозрачность */
+  backdrop-filter: blur(10px);        /* 💎 стекло */
+
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
 }
 
 /* HEADER */
 .acc-header{
   padding:16px 18px;
-  font-weight:700;
+  font-weight:600;
   cursor:pointer;
 
-  background:#f8e2e2;   /* 💖 основной цвет */
-  color:#7a2a2a;
+  color:#5a2a2a;   /* спокойный текст */
 
   position:relative;
-  transition:0.25s;
+  transition:0.2s;
 }
 
+/* hover — лёгкий */
 .acc-header:hover{
-  background:#f1cfcf;
+  background:rgba(0,0,0,0.03);
 }
 
 /* стрелка */
 .acc-header::after{
-  content:"▼";
+  content:"›";
   position:absolute;
-  right:18px;
+  right:16px;
   top:50%;
-  color:#e8e6e6;
   transform:translateY(-50%);
   transition:0.25s;
-  font-size:12px;
-  opacity:0.9;
-
+  font-size:18px;
+  color:rgba(0,0,0,0.3);
 }
 
-/* поворот стрелки */
+/* поворот */
 .acc.open .acc-header::after{
-  transform:translateY(-50%) rotate(180deg);
+  transform:translateY(-50%) rotate(90deg);
 }
 
 /* BODY */
 .acc-body{
   max-height:0;
   overflow:hidden;
-  transition:0.35s ease;
+  transition:0.3s ease;
+
   padding:0 18px;
-  background:#fff8f9;
-  color:#6a2a2a;
-  font-size:15px;
-  line-height:1.5;
+  color:#6a3a3a;
 }
 
-/* открытый блок */
+/* открыто */
 .acc.open .acc-body{
   max-height:600px;
-  padding:16px 18px;
+  padding:14px 18px 18px;
 }
-
 /* отступы внутри */
 .acc-body div{
   margin-bottom:8px;
