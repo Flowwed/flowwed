@@ -6,6 +6,9 @@
 
 <title>Wedding Updates</title>
 
+<!-- 🔥 ВАЖНО: supabase библиотека -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 body{
   font-family: Arial;
@@ -15,7 +18,7 @@ body{
   margin:auto;
 }
 
-/* 💎 HEADER */
+/* HEADER */
 h1{
   margin:0;
   text-align:center;
@@ -37,7 +40,7 @@ h1{
   color:#a06a73;
 }
 
-/* 💎 ADMIN BLOCK */
+/* ADMIN BLOCK */
 #notifyBlock{
   background:white;
   padding:14px;
@@ -47,12 +50,12 @@ h1{
   box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* 💎 CONTENT */
+/* CONTENT */
 #content{
   margin-top:20px;
 }
 
-/* 💎 SCROLL BOX */
+/* SCROLL BOX */
 .updates-box{
   background:rgba(255,255,255,0.9);
   backdrop-filter: blur(14px);
@@ -68,7 +71,7 @@ h1{
   overflow-y:auto;
 }
 
-/* 💎 UPDATE CARD */
+/* UPDATE CARD */
 .update{
   padding:14px 12px;
   border-radius:12px;
@@ -81,7 +84,7 @@ h1{
     inset 0 1px 1px rgba(255,255,255,0.5);
 }
 
-/* 💎 DATE */
+/* DATE */
 .date{
   font-size:14px;
   font-weight:700;
@@ -89,7 +92,7 @@ h1{
   margin-bottom:6px;
 }
 
-/* 💎 TEXT */
+/* TEXT */
 .update div{
   font-size:16px;
   font-weight:500;
@@ -97,7 +100,7 @@ h1{
   color:#5f4045;
 }
 
-/* 💎 SCROLLBAR */
+/* SCROLLBAR */
 .updates-box::-webkit-scrollbar{
   width:8px;
 }
@@ -121,6 +124,7 @@ h1{
 
 <script>
 
+// 🔑 TOKEN
 const params = new URLSearchParams(location.search);
 const token = params.get("t");
 const isShared = params.get("shared") === "1";
@@ -129,7 +133,7 @@ if(isShared){
   document.getElementById("notifyBlock").style.display = "none";
 }
 
-// 🔌 SUPABASE КАК В ОБРАЗЦЕ
+// 🔌 SUPABASE (как в твоём рабочем образце)
 const sb = supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
@@ -150,11 +154,13 @@ async function load(){
     return;
   }
 
-  // 💎 1. COUPLE + DATE (ТОЧНО КАК В ОБРАЗЦЕ)
-  const { data: info } = await sb
+  // 💎 1. COUPLE + DATE
+  const { data: info, error } = await sb
     .from("wedding_info")
     .select("*")
     .maybeSingle();
+
+  console.log("INFO:", info);
 
   if(info){
     document.getElementById("couple").innerText =
@@ -162,21 +168,24 @@ async function load(){
 
     document.getElementById("weddingDate").innerText =
       formatDate(info.wedding_date);
+  } else {
+    document.getElementById("couple").innerText = "Wedding";
   }
 
-  // 💎 2. UPDATES (ОСТАВЛЯЕМ FETCH)
+  // 💎 2. UPDATES
   const res = await fetch(
     `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
     {
       headers: {
-        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
         Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-
       }
     }
   );
 
   const data = await res.json();
+
+  console.log("UPDATES:", data);
 
   if(!data || !data.length || !data[0].wed_updates){
     document.getElementById("content").innerHTML = "No updates yet";
@@ -214,6 +223,7 @@ function formatDate(d){
 }
 
 load();
+
 </script>
 
 </body>
