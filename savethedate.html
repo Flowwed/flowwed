@@ -1868,7 +1868,7 @@ font-size:13px;
 ">
 
 <div style="font-weight:700;color:#9c1818;margin-bottom:6px;">
-RSVP Form Link
+Save The Date Link
 </div>
 
 <div id="rsvpPreviewLink"
@@ -2073,16 +2073,6 @@ async function loadPostWeddingVideo() {
 
 }
 
-// ======================================================
-// GET ICON
-// ======================================================
-function getIcon(status) {
-  const s = (status || "").toLowerCase();
-  if (s === "yes") return `<span style="color:green;font-size:20px;">✔</span>`;
-  if (s === "no") return `<span style="color:red;font-size:20px;">✘</span>`;
-  if (s === "maybe") return `<span style="color:#ffd400;font-size:20px;">❔</span>`;
-  return `<span style="color:#ff9800;font-size:20px;">⚠️</span>`;
-}
 
 // ======================================================
 // LOAD GUESTS
@@ -2457,32 +2447,24 @@ document.getElementById("composerClose").onclick = () => {
 };
 
 // ---------- LOAD FOOTER EMAIL ----------
+
 async function loadSenderEmail() {
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t") || window.token || "";
+
+  const token = window.APP_TOKEN;
 
   if (!token) return;
 
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("sites")
     .select("email")
     .eq("edit_token", token)
     .single();
 
-  if (!error && data?.email) {
+  if (data?.email) {
     document.getElementById("footerEmail").textContent = data.email;
-    window.senderEmail = data.email;
   }
 }
 
-document.getElementById("sendEmailBtn").onclick = () => {
-
-if(!validateBlueFields()) return;
-
-  openComposer();
-};
-
-// загрузка email отправителя
 loadSenderEmail();
 
 /* ----------------------------------------
@@ -2531,7 +2513,7 @@ currentRsvpLink = link;
   }
 
   document.getElementById("composerSubject").value =
-    `${coupleFullName || "Wedding"} — RSVP Request`;
+    `${coupleFullName || "Wedding"} — Save The Date`;
 
   emailComposer.style.display = "block";
 }
