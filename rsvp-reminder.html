@@ -283,6 +283,26 @@ rsvp: {
   `,
   btnText: "View Details",
   showBtn: true
+},
+
+travel: {
+  title: "Travel & Event",
+  text: `
+    All travel and event details are ready for you.<br><br>
+    We can’t wait to see you.
+  `,
+  btnText: "View Details",
+  showBtn: true
+},
+
+updates: {
+  title: "Latest Updates",
+  text: `
+    Latest news and updates are here.<br><br>
+    Don’t miss any important details.
+  `,
+  btnText: "View Details",
+  showBtn: true
 }
 
 
@@ -369,6 +389,16 @@ btnEl.onclick = () => {
 
 else if (type === "rsvp") {
   link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
+}
+
+
+else if (type === "travel") {
+  link = `${window.location.origin}/travel.html?t=${token}`;
+}
+
+
+else if (type === "updates") {
+  link = `${window.location.origin}/updates.html?t=${token}`;
 }
 
 

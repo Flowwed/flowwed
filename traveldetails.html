@@ -740,7 +740,6 @@ window.APP_TOKEN = token;
 <body>
 
 
-
 <div class="top-header">
 
 <div class="mini-menu">
@@ -1593,6 +1592,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+
   // =========================
   // SEND SMS (QR)
   // =========================
@@ -1634,6 +1634,10 @@ const url = `${window.location.origin}/venue_map.html?t=${encodeURIComponent(tok
 
 });
 
+
+
+
+
 // SELECT ALL
 document.getElementById("selectAll").onclick = (e) => {
   const all = document.querySelectorAll(".rowCheck");
@@ -1643,6 +1647,9 @@ document.getElementById("selectAll").onclick = (e) => {
 
 
 let guests = [];
+
+let currentRsvpLink = "";
+
 
 async function loadGuests(){
 
@@ -1754,6 +1761,16 @@ openBtn.onclick = () => {
   }
 
   composer.style.display = "block";
+
+const token = window.APP_TOKEN;
+
+const link =
+  `${window.location.origin}/std_preview.html?t=${token}&type=travel`;
+
+currentRsvpLink = link;
+
+document.getElementById("rsvpPreviewLink").textContent = link;
+
 
   refreshComposerFields(); // 🔥 ВОТ КЛЮЧ
 };
