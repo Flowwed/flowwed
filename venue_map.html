@@ -8,42 +8,64 @@
 <style>
 body{
   margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(180deg, #fff1f4, #ffffff);
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#fff1f4,#ffffff);
   color:#6a2a2a;
 }
 
 .container{
-  max-width:800px;
-  margin:40px auto;
-  padding:20px;
+  max-width:820px;
+  margin:30px auto;
+  padding:16px;
 }
 
 h1{
   text-align:center;
   color:#b41111;
+  margin-bottom:6px;
 }
 
+.date{
+  text-align:center;
+  margin-bottom:20px;
+  opacity:0.8;
+}
+
+/* ACCORDION */
 .section{
   background:white;
   border-radius:16px;
-  padding:16px;
-  margin-bottom:16px;
+  margin-bottom:12px;
+  overflow:hidden;
   box-shadow:0 10px 25px rgba(0,0,0,0.1);
 }
 
-.label{
+.header{
+  padding:14px;
   font-weight:700;
   color:#9c1818;
+  cursor:pointer;
+  background:#fff5f7;
+}
+
+.content{
+  display:none;
+  padding:14px;
 }
 
 .item{
   margin-bottom:10px;
 }
 
-a.map{
+.map{
   color:#2a6bff;
   text-decoration:underline;
+}
+
+.empty{
+  text-align:center;
+  margin-top:60px;
+  color:#999;
 }
 </style>
 
@@ -54,77 +76,110 @@ a.map{
 
 <div class="container">
 
-  <h1 id="couple">—</h1>
-  <div id="date" style="text-align:center;margin-bottom:20px;"></div>
+<h1 id="couple">—</h1>
+<div id="date" class="date"></div>
 
-  <div class="section">
-    <div class="label">Schedule</div>
-    <div id="schedule"></div>
-  </div>
+<div class="section">
+  <div class="header">Schedule</div>
+  <div class="content" id="schedule"></div>
+</div>
 
-  <div class="section">
-    <div class="label">Travel</div>
-    <div id="travel"></div>
-  </div>
+<div class="section">
+  <div class="header">Travel</div>
+  <div class="content" id="travel"></div>
+</div>
 
-  <div class="section">
-    <div class="label">Venue</div>
-    <div id="venue"></div>
-  </div>
+<div class="section">
+  <div class="header">Venue</div>
+  <div class="content" id="venue"></div>
+</div>
 
-  <div class="section">
-    <div class="label">Details</div>
-    <div id="details"></div>
-  </div>
+<div class="section">
+  <div class="header">Details</div>
+  <div class="content" id="details"></div>
+</div>
 
-  <div class="section">
-    <div class="label">FAQ</div>
-    <div id="faq"></div>
-  </div>
+<div class="section">
+  <div class="header">FAQ</div>
+  <div class="content" id="faq"></div>
+</div>
+
+<div id="empty" class="empty" style="display:none;">
+No event data found
+</div>
 
 </div>
 
 <script>
 
-const supabase = window.supabase.createClient(
+// ✅ SUPABASE (НЕ трогай)
+const sb = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-
 );
 
+// ✅ TOKEN
 const token = new URLSearchParams(location.search).get("t");
 
+// ✅ ACCORDION
+document.querySelectorAll(".header").forEach(h=>{
+  h.onclick = () => {
+    const c = h.nextElementSibling;
+    const isOpen = c.style.display === "block";
+
+    document.querySelectorAll(".content").forEach(x=>{
+      x.style.display = "none";
+    });
+
+    if(!isOpen){
+      c.style.display = "block";
+    }
+  };
+});
+
+// ✅ LOAD DATA
 async function load(){
 
-  if(!token) return;
+  if(!token){
+    document.getElementById("empty").style.display="block";
+    return;
+  }
 
-  const { data } = await supabase
+  const { data, error } = await sb
     .from("wedding_info")
     .select("*")
     .eq("site_edit_token", token)
-    .single();
+    .maybeSingle();
 
-  if(!data) return;
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
+
+  if(error || !data){
+    document.getElementById("empty").style.display="block";
+    return;
+  }
 
   // BASIC
-  document.getElementById("couple").textContent = data.couple_name || "";
+  document.getElementById("couple").textContent = data.couple_name || "—";
   document.getElementById("date").textContent = data.wedding_date || "";
 
   // SCHEDULE
   const sch = document.getElementById("schedule");
 
-  if(data.schedule){
+  if(data.schedule?.length){
     data.schedule.forEach(i=>{
       sch.innerHTML += `<div class="item"><b>${i.time}</b> — ${i.text}</div>`;
     });
+  } else {
+    sch.innerHTML = "No schedule yet";
   }
 
   // TRAVEL
   document.getElementById("travel").innerHTML = `
-    <div class="item">Airport: ${data.airport || ""}</div>
-    <div class="item">Transfer: ${data.transfer_time || ""}</div>
+    <div class="item">Airport: ${data.airport || "-"}</div>
+    <div class="item">Transfer: ${data.transfer_time || "-"}</div>
     <div class="item">${data.flights_text || ""}</div>
-    <div class="item">Hotels: ${data.hotel_1 || ""}, ${data.hotel_2 || ""}, ${data.hotel_3 || ""}</div>
+    <div class="item">Hotels: ${[data.hotel_1,data.hotel_2,data.hotel_3].filter(Boolean).join(", ") || "-"}</div>
   `;
 
   // VENUE
@@ -132,28 +187,34 @@ async function load(){
     <div class="item">${data.venue_name || ""}</div>
     <div class="item">${data.venue_address || ""}</div>
     <div class="item">${data.venue_note || ""}</div>
-    <a class="map" href="${data.map_link || '#'}" target="_blank">Open Map</a>
+    ${
+      data.map_link
+      ? `<a class="map" href="${data.map_link}" target="_blank">Open Map</a>`
+      : ""
+    }
   `;
 
   // DETAILS
   document.getElementById("details").innerHTML = `
-    <div class="item">Getting around: ${data.getting_around || ""}</div>
-    <div class="item">Dress code: ${data.dress_code || ""}</div>
-    <div class="item">Weather: ${data.weather || ""}</div>
+    <div class="item">Getting around: ${data.getting_around || "-"}</div>
+    <div class="item">Dress code: ${data.dress_code || "-"}</div>
+    <div class="item">Weather: ${data.weather || "-"}</div>
     <div class="item">${data.weather_note || ""}</div>
   `;
 
   // FAQ
-  const faqBox = document.getElementById("faq");
+  const faq = document.getElementById("faq");
 
-  if(data.faq){
+  if(data.faq?.length){
     data.faq.forEach(i=>{
-      faqBox.innerHTML += `
+      faq.innerHTML += `
         <div class="item">
           <b>${i.q}</b><br>${i.a}
         </div>
       `;
     });
+  } else {
+    faq.innerHTML = "No questions yet";
   }
 
 }
