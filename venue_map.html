@@ -25,48 +25,59 @@ h1{
   padding:20px;
   border-radius:12px;
   margin-bottom:20px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.title{
-  font-weight:700;
-  margin-bottom:10px;
-  color:#b41111;
 }
 </style>
 </head>
 
 <body>
 
-<h1 id="couple">Loading...</h1>
-<div id="date"></div>
-
+<h1 id="couple">...</h1>
 <div id="content"></div>
 
 <script>
 
-// 🔑 токен из URL
-const params = new URLSearchParams(window.location.search);
+// 🔑 токен
+const params = new URLSearchParams(location.search);
 const token = params.get("t");
 
-// 🔌 Supabase
-const sb = supabase.createClient(
-  "https://octwwpatppbenqwkcqaw.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+// 🔥 ВАЖНО: твой ключ
+const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
+// 🔥 КЛИЕНТ С HEADER (КАК У ТЕБЯ)
+const sb = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    global: {
+      headers: {
+        site_edit_token: token
+      }
+    }
+  }
 );
 
-// 📦 загрузка данных
+// 🚀 загрузка
 async function load(){
 
-  const { data } = await sb
+  if(!token){
+    document.body.innerHTML = "❌ Нет токена";
+    return;
+  }
+
+  const { data, error } = await sb
     .from("wedding_info")
     .select("*")
-    .eq("site_edit_token", token)
-    .single();
+    .maybeSingle();
+
+  if(error){
+    console.log(error);
+    document.body.innerHTML = "❌ Ошибка загрузки";
+    return;
+  }
 
   if(!data){
-    document.body.innerHTML = "Нет данных";
+    document.body.innerHTML = "❌ Нет данных";
     return;
   }
 
@@ -79,50 +90,41 @@ function render(d){
   document.getElementById("couple").innerText =
     d.couple_name || "Wedding";
 
-  document.getElementById("date").innerText =
-    d.wedding_date || "";
-
   const html = `
 
   <div class="block">
-    <div class="title">Schedule</div>
-    ${d.schedule?.map(i => `
-      <div>${i.time} — ${i.text}</div>
-    `).join("")}
+    <b>Schedule</b><br>
+    ${(d.schedule || []).map(i =>
+      `<div>${i.time} — ${i.text}</div>`
+    ).join("")}
   </div>
 
   <div class="block">
-    <div class="title">Flights</div>
-    <div>${d.flights_text || ""}</div>
+    <b>Flights</b><br>
+    ${d.flights_text || ""}
   </div>
 
   <div class="block">
-    <div class="title">Hotels</div>
-    <div>${d.hotel_1 || ""}</div>
-    <div>${d.hotel_2 || ""}</div>
-    <div>${d.hotel_3 || ""}</div>
+    <b>Hotels</b><br>
+    ${d.hotel_1 || ""}<br>
+    ${d.hotel_2 || ""}<br>
+    ${d.hotel_3 || ""}
   </div>
 
   <div class="block">
-    <div class="title">Venue</div>
-    <div>${d.venue_name || ""}</div>
-    <div>${d.venue_address || ""}</div>
+    <b>Venue</b><br>
+    ${d.venue_name || ""}<br>
+    ${d.venue_address || ""}<br>
     <a href="https://maps.google.com/?q=${encodeURIComponent(d.venue_address || "")}" target="_blank">
-      Открыть карту
+      карта
     </a>
   </div>
 
   <div class="block">
-    <div class="title">Details</div>
-    <div>${d.getting_around || ""}</div>
-    <div>${d.dress_code || ""}</div>
-  </div>
-
-  <div class="block">
-    <div class="title">FAQ</div>
-    ${d.faq?.map(i => `
-      <div><b>${i.q}</b><br>${i.a}</div><br>
-    `).join("")}
+    <b>FAQ</b><br>
+    ${(d.faq || []).map(i =>
+      `<div><b>${i.q}</b><br>${i.a}</div>`
+    ).join("")}
   </div>
 
   `;
