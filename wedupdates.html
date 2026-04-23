@@ -15,14 +15,26 @@ body{
   margin:auto;
 }
 
+/* 💎 HEADER */
 h1{
+  margin:0;
   text-align:center;
-  font-size:28px;
+  font-size:34px;
   font-weight:800;
   color:#5f2b33;
-  margin-bottom:10px;
 }
 
+#weddingDate{
+  text-align:center;
+  margin-top:8px;
+  margin-bottom:20px;
+
+  font-size:20px;
+  font-weight:700;
+  color:#8f5860;
+}
+
+/* 💎 ADMIN BLOCK */
 #notifyBlock{
   background:white;
   padding:14px;
@@ -32,28 +44,14 @@ h1{
   box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-.update{
-  background:white;
-  padding:16px;
-  border-radius:14px;
-  margin-bottom:16px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
-}
-
-.date{
-  font-weight:700;
-  margin-bottom:8px;
-  color:#8f5860;
-}
-
-
+/* 💎 CONTAINER */
 #content{
   margin-top:20px;
 }
 
-/* контейнер со скроллом */
+/* 💎 SCROLL BOX */
 .updates-box{
-  background:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.9);
   backdrop-filter: blur(14px);
 
   border-radius:18px;
@@ -63,24 +61,24 @@ h1{
     0 10px 25px rgba(0,0,0,0.08),
     inset 0 1px 2px rgba(255,255,255,0.6);
 
-  max-height:420px;       /* 🔥 высота */
-  overflow-y:auto;        /* 🔥 СКРОЛЛ */
+  max-height:420px;
+  overflow-y:auto;
 }
 
-/* отдельный update */
+/* 💎 CARD */
 .update{
   padding:14px 12px;
   border-radius:12px;
   margin-bottom:12px;
 
-  background:rgba(250,242,242,0.9);
+  background:rgba(250,242,242,0.95);
 
   box-shadow:
     0 4px 10px rgba(0,0,0,0.06),
     inset 0 1px 1px rgba(255,255,255,0.5);
 }
 
-/* дата */
+/* 💎 DATE */
 .date{
   font-size:14px;
   font-weight:700;
@@ -88,7 +86,7 @@ h1{
   margin-bottom:6px;
 }
 
-/* текст */
+/* 💎 TEXT */
 .update div{
   font-size:16px;
   font-weight:500;
@@ -96,31 +94,27 @@ h1{
   color:#5f4045;
 }
 
-/* скролл (красивый) */
+/* 💎 SCROLLBAR */
 .updates-box::-webkit-scrollbar{
   width:8px;
 }
-
 .updates-box::-webkit-scrollbar-thumb{
   background:#d9bcbc;
   border-radius:10px;
 }
-
-
 </style>
 </head>
 
 <body>
 
-<h1>Updates</h1>
+<h1 id="couple">Pari</h1>
+<div id="weddingDate">September 27, 2026</div>
 
 <div id="notifyBlock">
   Send this page to your guests
 </div>
 
 <div id="content"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 const params = new URLSearchParams(location.search);
@@ -132,25 +126,28 @@ if(isShared){
 }
 
 const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-;
-
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
 async function load(){
 
-  const { data } = await sb
-    .from("our_story_page")
-    .select("wed_updates")
-    .eq("edit_token", token)
-    .maybeSingle();
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
+    }
+  );
 
-  if(!data || !data.wed_updates){
+  const data = await res.json();
+
+  if(!data || !data.length || !data[0].wed_updates){
     document.getElementById("content").innerHTML = "No updates yet";
     return;
   }
 
-  render(data.wed_updates);
+  render(data[0].wed_updates);
 }
 
 function render(list){
@@ -174,10 +171,15 @@ function render(list){
   document.getElementById("content").innerHTML = html;
 }
 
+function formatDate(d){
+  return new Date(d).toLocaleDateString("en-US", {
+    year:"numeric",
+    month:"long",
+    day:"numeric"
+  });
+}
 
 load();
-
-
 </script>
 
 </body>
