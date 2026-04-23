@@ -2449,28 +2449,30 @@ document.getElementById("composerClose").onclick = () => {
 // ---------- LOAD FOOTER EMAIL ----------
 
 async function loadSenderEmail() {
-  try {
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || window.token || "";
 
-    const params = new URLSearchParams(location.search);
-    const token = params.get("t") || window.token || "";
+  if (!token) return;
 
-    if (!token) return;
+  const { data, error } = await supabase
+    .from("sites")
+    .select("email")
+    .eq("edit_token", token)
+    .single();
 
-    const { data, error } = await supabase
-      .from("sites")
-      .select("email")
-      .eq("edit_token", token)
-      .single();
-
-    if (!error && data?.email) {
-      document.getElementById("footerEmail").textContent = data.email;
-      window.senderEmail = data.email;
-    }
-
-  } catch (e) {
-    console.log("Email load error:", e);
+  if (!error && data?.email) {
+    document.getElementById("footerEmail").textContent = data.email;
+    window.senderEmail = data.email;
   }
 }
+
+document.getElementById("sendEmailBtn").onclick = () => {
+
+if(!validateBlueFields()) return;
+
+  openComposer();
+};
+
 // загрузка email отправителя
 loadSenderEmail();
 
