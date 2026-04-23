@@ -1601,8 +1601,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const token = window.APP_TOKEN;
 
-const link = `${window.location.origin}/rsvp-reminder.html?t=${token}&type=travel`;
-
+const url = `${window.location.origin}/venue_map.html?t=${encodeURIComponent(token)}&type=travel`;
 
 
       // 🔥 генерим QR прямо в canvas
