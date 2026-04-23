@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Travel & Event</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 body{
   margin:0;
@@ -22,18 +24,17 @@ body{
 h1{
   text-align:center;
   color:#b41111;
-  margin-bottom:6px;
 }
 
 .date{
   text-align:center;
   margin-bottom:20px;
-  opacity:0.8;
+  opacity:.8;
 }
 
 /* ACCORDION */
 .section{
-  background:white;
+  background:#fff;
   border-radius:16px;
   margin-bottom:12px;
   overflow:hidden;
@@ -43,7 +44,6 @@ h1{
 .header{
   padding:14px;
   font-weight:700;
-  color:#9c1818;
   cursor:pointer;
   background:#fff5f7;
 }
@@ -57,19 +57,12 @@ h1{
   margin-bottom:10px;
 }
 
-.map{
-  color:#2a6bff;
-  text-decoration:underline;
-}
-
 .empty{
   text-align:center;
-  margin-top:60px;
+  margin-top:50px;
   color:#999;
 }
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -105,43 +98,47 @@ h1{
 </div>
 
 <div id="empty" class="empty" style="display:none;">
-No event data found
+No data found
 </div>
 
 </div>
 
 <script>
 
-// ✅ SUPABASE (НЕ трогай)
+// ============================
+// INIT
+// ============================
+
 const sb = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 );
 
-// ✅ TOKEN
 const token = new URLSearchParams(location.search).get("t");
 
-// ✅ ACCORDION
+// ============================
+// ACCORDION
+// ============================
+
 document.querySelectorAll(".header").forEach(h=>{
   h.onclick = () => {
     const c = h.nextElementSibling;
-    const isOpen = c.style.display === "block";
+    const open = c.style.display === "block";
 
-    document.querySelectorAll(".content").forEach(x=>{
-      x.style.display = "none";
-    });
+    document.querySelectorAll(".content").forEach(x=>x.style.display="none");
 
-    if(!isOpen){
-      c.style.display = "block";
-    }
+    if(!open) c.style.display = "block";
   };
 });
 
-// ✅ LOAD DATA
+// ============================
+// LOAD DATA
+// ============================
+
 async function load(){
 
   if(!token){
-    document.getElementById("empty").style.display="block";
+    showEmpty();
     return;
   }
 
@@ -151,73 +148,118 @@ async function load(){
     .eq("site_edit_token", token)
     .maybeSingle();
 
-  console.log("DATA:", data);
-  console.log("ERROR:", error);
+  console.log(data);
 
   if(error || !data){
-    document.getElementById("empty").style.display="block";
+    showEmpty();
     return;
   }
 
-  // BASIC
-  document.getElementById("couple").textContent = data.couple_name || "—";
-  document.getElementById("date").textContent = data.wedding_date || "";
-
-  // SCHEDULE
-  const sch = document.getElementById("schedule");
-
-  if(data.schedule?.length){
-    data.schedule.forEach(i=>{
-      sch.innerHTML += `<div class="item"><b>${i.time}</b> — ${i.text}</div>`;
-    });
-  } else {
-    sch.innerHTML = "No schedule yet";
-  }
-
-  // TRAVEL
-  document.getElementById("travel").innerHTML = `
-    <div class="item">Airport: ${data.airport || "-"}</div>
-    <div class="item">Transfer: ${data.transfer_time || "-"}</div>
-    <div class="item">${data.flights_text || ""}</div>
-    <div class="item">Hotels: ${[data.hotel_1,data.hotel_2,data.hotel_3].filter(Boolean).join(", ") || "-"}</div>
-  `;
-
-  // VENUE
-  document.getElementById("venue").innerHTML = `
-    <div class="item">${data.venue_name || ""}</div>
-    <div class="item">${data.venue_address || ""}</div>
-    <div class="item">${data.venue_note || ""}</div>
-    ${
-      data.map_link
-      ? `<a class="map" href="${data.map_link}" target="_blank">Open Map</a>`
-      : ""
-    }
-  `;
-
-  // DETAILS
-  document.getElementById("details").innerHTML = `
-    <div class="item">Getting around: ${data.getting_around || "-"}</div>
-    <div class="item">Dress code: ${data.dress_code || "-"}</div>
-    <div class="item">Weather: ${data.weather || "-"}</div>
-    <div class="item">${data.weather_note || ""}</div>
-  `;
-
-  // FAQ
-  const faq = document.getElementById("faq");
-
-  if(data.faq?.length){
-    data.faq.forEach(i=>{
-      faq.innerHTML += `
-        <div class="item">
-          <b>${i.q}</b><br>${i.a}
-        </div>
-      `;
-    });
-  } else {
-    faq.innerHTML = "No questions yet";
-  }
-
+  renderBasic(data);
+  renderSchedule(data);
+  renderTravel(data);
+  renderVenue(data);
+  renderDetails(data);
+  renderFAQ(data);
 }
+
+// ============================
+// RENDER
+// ============================
+
+function renderBasic(d){
+  document.getElementById("couple").textContent = d.couple_name || "—";
+  document.getElementById("date").textContent = d.wedding_date || "";
+}
+
+// 🔥 SCHEDULE (dual support)
+function renderSchedule(d){
+
+  const el = document.getElementById("schedule");
+  el.innerHTML = "";
+
+  if(d.schedule && Array.isArray(d.schedule)){
+    d.schedule.forEach(i=>{
+      if(i.time || i.text){
+        el.innerHTML += `<div class="item"><b>${i.time||""}</b> — ${i.text||""}</div>`;
+      }
+    });
+  } else {
+    [
+      [d.schedule_time_1, d.schedule_text_1],
+      [d.schedule_time_2, d.schedule_text_2],
+      [d.schedule_time_3, d.schedule_text_3],
+      [d.schedule_time_4, d.schedule_text_4]
+    ].forEach(([t,txt])=>{
+      if(t || txt){
+        el.innerHTML += `<div class="item"><b>${t||""}</b> — ${txt||""}</div>`;
+      }
+    });
+  }
+}
+
+// TRAVEL
+function renderTravel(d){
+  document.getElementById("travel").innerHTML = `
+    <div class="item">Airport: ${d.airport || "-"}</div>
+    <div class="item">Transfer: ${d.transfer_time || "-"}</div>
+    <div class="item">${d.flights_text || ""}</div>
+  `;
+}
+
+// VENUE
+function renderVenue(d){
+  document.getElementById("venue").innerHTML = `
+    <div class="item">${d.venue_name || ""}</div>
+    <div class="item">${d.venue_address || ""}</div>
+    ${d.map_link ? `<a href="${d.map_link}" target="_blank">Open Map</a>` : ""}
+  `;
+}
+
+// DETAILS
+function renderDetails(d){
+  document.getElementById("details").innerHTML = `
+    <div class="item">Getting around: ${d.getting_around || "-"}</div>
+    <div class="item">Dress code: ${d.dress_code || "-"}</div>
+    <div class="item">Weather: ${d.weather || "-"}</div>
+  `;
+}
+
+// 🔥 FAQ (dual support)
+function renderFAQ(d){
+
+  const el = document.getElementById("faq");
+  el.innerHTML = "";
+
+  if(d.faq && Array.isArray(d.faq)){
+    d.faq.forEach(i=>{
+      if(i.q || i.a){
+        el.innerHTML += `<div class="item"><b>${i.q}</b><br>${i.a}</div>`;
+      }
+    });
+  } else {
+    [
+      [d.faq_q1, d.faq_a1],
+      [d.faq_q2, d.faq_a2],
+      [d.faq_q3, d.faq_a3],
+      [d.faq_q4, d.faq_a4]
+    ].forEach(([q,a])=>{
+      if(q || a){
+        el.innerHTML += `<div class="item"><b>${q}</b><br>${a}</div>`;
+      }
+    });
+  }
+}
+
+// ============================
+// EMPTY STATE
+// ============================
+
+function showEmpty(){
+  document.getElementById("empty").style.display = "block";
+}
+
+// ============================
 
 load();
 
