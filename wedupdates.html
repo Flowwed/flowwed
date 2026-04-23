@@ -133,10 +133,10 @@ if(isShared){
   document.getElementById("notifyBlock").style.display = "none";
 }
 
-// 🔌 SUPABASE
+// 🔌 SUPABASE (✅ КЛЮЧ ВСТАВЛЕН)
 const sb = supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
-  "YOUR_KEY",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
   {
     global:{
       headers:{
@@ -154,7 +154,6 @@ async function load(){
     return;
   }
 
-  // ✅ ВЕРНУЛИ КАК БЫЛО (БЕЗ .eq)
   const { data: info, error } = await sb
     .from("wedding_info")
     .select("*")
@@ -163,7 +162,6 @@ async function load(){
   console.log("INFO:", info);
   console.log("ERROR:", error);
 
-  // ❗ НЕ УБИВАЕМ СТРАНИЦУ
   if(info){
     document.getElementById("couple").innerText =
       info.couple_name || "Wedding";
@@ -174,13 +172,12 @@ async function load(){
     document.getElementById("couple").innerText = "Wedding";
   }
 
-  // 💎 UPDATES (оставляем как было)
+  // 💎 UPDATES
   const res = await fetch(
     `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
     {
       headers: {
-        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-,
+        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
         Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
       }
     }
@@ -200,7 +197,6 @@ async function load(){
 
 // 🎨 RENDER
 function render(list){
-
   const html = `
     <div class="updates-box">
       ${list.map(i => `
@@ -211,7 +207,6 @@ function render(list){
       `).join("")}
     </div>
   `;
-
   document.getElementById("content").innerHTML = html;
 }
 
@@ -228,5 +223,7 @@ function formatDate(d){
 load();
 
 </script>
+
+
 </body>
 </html>
