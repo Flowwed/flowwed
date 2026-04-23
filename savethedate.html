@@ -2522,8 +2522,8 @@ function openComposer() {
   if(firstGuest){
     const guestId = firstGuest.dataset.id;
 
-    const link =
-    `${window.location.origin}/std_preview.html?t=${token}&g=${guestId}&mode=admin`;
+const link =
+`${window.location.origin}/std_preview.html?t=${token}&g=${guestId}&type=std&mode=admin`;
 
 currentRsvpLink = link;
 
@@ -2605,9 +2605,8 @@ for (let i = 0; i < batchGuests.length; i++) {
   const g = batchGuests[i];
   let ok = true;
 
-  const rsvpLink =
-`${window.location.origin}/std_preview.html?t=${token}&g=${g.guest_id}&mode=admin`;
-
+const rsvpLink =
+`${window.location.origin}/std_preview.html?t=${token}&g=${g.guest_id}&type=std&mode=admin`;
   try {
 
 const res = await fetch("/.netlify/functions/send-invites", {
@@ -2685,93 +2684,6 @@ if (failures > 0) {
 }
 
 };
-/* ============================
-   FILTER FUNCTION
-============================ */
-let currentFilter = "all";
-
-function applyGuestFilters() {
-  const rows = document.querySelectorAll("#guestTable tbody tr");
-
-  rows.forEach(row => {
-    const std = row.children[6].innerText.trim();  // STD column
-    const rsvp = row.children[7].innerText.trim(); // RSVP column
-
-    let show = true;
-
-    switch (currentFilter) {
-      case "std-yes":   show = std === "✔"; break;
-      case "std-no":    show = std === "✘"; break;
-      case "std-maybe": show = std === "❔"; break;
-      case "std-none":  show = std === "⚠️"; break;
-
-      case "rsvp-yes":   show = rsvp === "✔"; break;
-      case "rsvp-no":    show = rsvp === "✘"; break;
-      case "rsvp-maybe": show = rsvp === "❔"; break;
-      case "rsvp-none":  show = rsvp === "⚠️"; break;
-
-      case "all": break;
-
-      default: break;
-    }
-
-    row.style.display = show ? "" : "none";
-  });
-}
-
-/* ============================
-   COLUMN VISIBILITY
-============================ */
-function updateColumnVisibility() {
-  const stdCol = document.querySelectorAll("#guestTable th:nth-child(7), #guestTable td:nth-child(7)");
-  const rsvpCol = document.querySelectorAll("#guestTable th:nth-child(8), #guestTable td:nth-child(8)");
-
-  if (currentFilter.startsWith("std-")) {
-    rsvpCol.forEach(c => c.style.display = "none");
-    stdCol.forEach(c => c.style.display = "");
-  }
-  else if (currentFilter.startsWith("rsvp-")) {
-    stdCol.forEach(c => c.style.display = "none");
-    rsvpCol.forEach(c => c.style.display = "");
-  }
-  else {
-    stdCol.forEach(c => c.style.display = "");
-    rsvpCol.forEach(c => c.style.display = "");
-  }
-}
-
-
-/* ============================
-   FILTER BUTTON HANDLERS
-============================ */
-document.querySelectorAll(".filter-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const filter = btn.dataset.filter;
-
-    if (filter === "clear") {
-      currentFilter = "all";
-
-      document.querySelectorAll(".filter-btn")
-        .forEach(b => b.classList.remove("active"));
-
-      document.querySelector('[data-filter="all"]').classList.add("active");
-
-      applyGuestFilters();
-      updateColumnVisibility(); // ← добавлено
-      return;
-    }
-
-    currentFilter = filter;
-
-    document.querySelectorAll(".filter-btn")
-      .forEach(b => b.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    applyGuestFilters();
-    updateColumnVisibility(); // ← добавлено
-  });
-});
 
 
 function validateBlueFields(){

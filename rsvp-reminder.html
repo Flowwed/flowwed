@@ -263,7 +263,17 @@ const CONFIG = {
     `,
     btnText: "Open Memory Form",
     showBtn: true
-  }
+  },
+
+std: {
+  title: "Save The Date",
+  text: `
+    We’re excited to celebrate with you.<br><br>
+    Please mark your calendar — we can’t wait to see you.
+  `,
+  btnText: "View Details",
+  showBtn: true
+}
 
 };
 
@@ -339,7 +349,12 @@ btnEl.onclick = () => {
   else if (type === "maybe") {
     link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=rsvpMaybe`;
   } 
-  
+
+  // ✅ NEW: Save The Date
+  else if (type === "std") {
+    link = `${window.location.origin}/savethedate.html?t=${token}`;
+  }
+
   // 🔥 Остальные → обычный RSVP
   else {
     link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
@@ -347,7 +362,6 @@ btnEl.onclick = () => {
 
   window.location.href = link;
 };
-
 
 // =============================
 // NOTIFY BUTTON (ADMIN)
