@@ -269,7 +269,7 @@ std: {
   title: "Save The Date",
   text: `
     We’re excited to celebrate with you.<br><br>
-    Please mark your calendar — we can’t wait to see you.
+    Please mark your calendar.
   `,
   btnText: "View Details",
   showBtn: true
@@ -352,7 +352,7 @@ btnEl.onclick = () => {
 
   // ✅ NEW: Save The Date
   else if (type === "std") {
-    link = `${window.location.origin}/savethedate.html?t=${token}`;
+    link = `${window.location.origin}/std_preview.html?t=${token}`;
   }
 
   // 🔥 Остальные → обычный RSVP
