@@ -364,7 +364,41 @@ if (!state || !titleEl || !textEl || !btnEl) {
 }
 
 // =============================
-// SEND BUTTON (верхняя кнопка)
+// VIEW DETAILS (кнопка в карточке)
+// =============================
+
+btnEl.onclick = () => {
+
+  let link;
+
+  if (type === "memories") {
+    link = `${window.location.origin}/postwed-form.html?t=${token}`;
+  } 
+  else if (type === "maybe") {
+    link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=rsvpMaybe`;
+  } 
+  else if (type === "std") {
+    link = `${window.location.origin}/std_preview.html?t=${token}`;
+  }
+  else if (type === "rsvp") {
+    link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
+  }
+  else if (type === "travel") {
+    link = `${window.location.origin}/venue_map.html?t=${token}`;
+  }
+  else if (type === "updates") {
+    link = `${window.location.origin}/updates.html?t=${token}`;
+  }
+  else {
+    link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
+  }
+
+  window.location.href = link;
+};
+
+
+// =============================
+// SEND BUTTON (над карточкой)
 // =============================
 
 document.getElementById("notifyBtn").onclick = async () => {
