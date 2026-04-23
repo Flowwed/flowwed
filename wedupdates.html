@@ -129,50 +129,54 @@ if(isShared){
   document.getElementById("notifyBlock").style.display = "none";
 }
 
-const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
-
-async function load(){
-
-  // 💎 1. COUPLE + DATE
-const infoRes = await fetch(
-  `${SUPABASE_URL}/rest/v1/wedding_info?select=*`,
+// 🔌 SUPABASE КАК В ОБРАЗЦЕ
+const sb = supabase.createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
   {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      site_edit_token: token   // 🔥 ВОТ ГЛАВНОЕ
+    global:{
+      headers:{
+        site_edit_token: token
+      }
     }
   }
 );
-  const info = await infoRes.json();
 
-  console.log("INFO:", info);
+// 🚀 LOAD
+async function load(){
 
-  if(info && info.length){
-    document.getElementById("couple").innerText =
-      info[0].couple_name || "Wedding";
-
-    document.getElementById("weddingDate").innerText =
-      formatDate(info[0].wedding_date);
-  } else {
-    document.getElementById("couple").innerText = "Wedding";
+  if(!token){
+    document.body.innerHTML = "❌ No token";
+    return;
   }
 
-  // 💎 2. UPDATES
+  // 💎 1. COUPLE + DATE (ТОЧНО КАК В ОБРАЗЦЕ)
+  const { data: info } = await sb
+    .from("wedding_info")
+    .select("*")
+    .maybeSingle();
+
+  if(info){
+    document.getElementById("couple").innerText =
+      info.couple_name || "Wedding";
+
+    document.getElementById("weddingDate").innerText =
+      formatDate(info.wedding_date);
+  }
+
+  // 💎 2. UPDATES (ОСТАВЛЯЕМ FETCH)
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
+    `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
     {
       headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY
+        apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        Authorization: "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+
       }
     }
   );
 
   const data = await res.json();
-
-  console.log("UPDATES:", data);
 
   if(!data || !data.length || !data[0].wed_updates){
     document.getElementById("content").innerHTML = "No updates yet";
@@ -182,6 +186,7 @@ const infoRes = await fetch(
   render(data[0].wed_updates);
 }
 
+// 🎨 RENDER
 function render(list){
 
   const html = `
@@ -198,6 +203,7 @@ function render(list){
   document.getElementById("content").innerHTML = html;
 }
 
+// 📅 FORMAT
 function formatDate(d){
   if(!d) return "";
   return new Date(d).toLocaleDateString("en-US", {
@@ -208,7 +214,6 @@ function formatDate(d){
 }
 
 load();
-
 </script>
 
 </body>
