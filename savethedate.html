@@ -2449,23 +2449,33 @@ document.getElementById("composerClose").onclick = () => {
 // ---------- LOAD FOOTER EMAIL ----------
 
 async function loadSenderEmail() {
-
-  const token = window.APP_TOKEN;
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t") || window.token || "";
 
   if (!token) return;
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("sites")
     .select("email")
     .eq("edit_token", token)
     .single();
 
-  if (data?.email) {
+  if (!error && data?.email) {
     document.getElementById("footerEmail").textContent = data.email;
+    window.senderEmail = data.email;
   }
 }
 
+document.getElementById("sendEmailBtn").onclick = () => {
+
+if(!validateBlueFields()) return;
+
+  openComposer();
+};
+
+// загрузка email отправителя
 loadSenderEmail();
+
 
 /* ----------------------------------------
    ШАГ 1 — функция пересборки email/phones
