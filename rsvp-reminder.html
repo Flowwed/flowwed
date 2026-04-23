@@ -288,8 +288,8 @@ rsvp: {
 travel: {
   title: "Travel & Event",
   text: `
-    All travel and event details are ready for you.<br><br>
-    We can’t wait to see you.
+    Travel and event details are ready.<br><br>
+    See you soon.
   `,
   btnText: "View Details",
   showBtn: true
@@ -363,78 +363,70 @@ if (!state || !titleEl || !textEl || !btnEl) {
 
 }
 
+
+// =============================
+// SEND BUTTON
+// =============================
+
+function getLinkByType(type, token){
+
+  if (type === "memories") {
+    return `${window.location.origin}/postwed-form.html?t=${token}`;
+  } 
+  else if (type === "maybe") {
+    return `${window.location.origin}/rsvpresponse.html?t=${token}&group=rsvpMaybe`;
+  } 
+  else if (type === "std") {
+    return `${window.location.origin}/std_preview.html?t=${token}`;
+  }
+  else if (type === "rsvp") {
+    return `${window.location.origin}/rsvpresponse.html?t=${token}`;
+  }
+  else if (type === "travel") {
+    return `${window.location.origin}/venue_map.html?t=${token}`;
+  }
+  else if (type === "updates") {
+    return `${window.location.origin}/updates.html?t=${token}`;
+  }
+
+  return `${window.location.origin}/rsvpresponse.html?t=${token}`;
+}
+
+
+
+
 // =============================
 // RSVP BUTTON
 // =============================
 
 btnEl.onclick = () => {
-
-  let link;
-
-  // 🔥 Memories → своя форма
-  if (type === "memories") {
-    link = `${window.location.origin}/postwed-form.html?t=${token}`;
-  } 
-  
-  // 🔥 Maybe → RSVP + группа
-  else if (type === "maybe") {
-    link = `${window.location.origin}/rsvpresponse.html?t=${token}&group=rsvpMaybe`;
-  } 
-
-  // ✅ NEW: Save The Date
-  else if (type === "std") {
-    link = `${window.location.origin}/std_preview.html?t=${token}`;
-  }
-
-
-else if (type === "rsvp") {
-  link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
-}
-
-
-else if (type === "travel") {
-  link = `${window.location.origin}/venue_map.html?t=${token}`;
-}
-
-
-else if (type === "updates") {
-  link = `${window.location.origin}/updates.html?t=${token}`;
-}
-
-
-  // 🔥 Остальные → обычный RSVP
-  else {
-    link = `${window.location.origin}/rsvpresponse.html?t=${token}`;
-  }
-
+  const link = getLinkByType(type, token);
   window.location.href = link;
 };
+
+
 
 // =============================
 // NOTIFY BUTTON ADM
 // =============================
+
 document.getElementById("notifyBtn").onclick = async () => {
 
-  const link =
-    `${window.location.origin}/rsvp-reminder.html?t=${token}&type=${type}&shared=1`;
+  const link = getLinkByType(type, token);
 
   if (navigator.share) {
     try {
       await navigator.share({
-        title: "RSVP Reminder",
-        text:
-          type === "maybe"
-            ? "Please confirm your final decision"
-            : "Please confirm your attendance",
+        title: "Wedding Details",
+        text: "Open this link",
         url: link
       });
     } catch(e){}
   } else {
-    alert("Sharing not supported on this device");
+    window.location.href = link;
   }
 
 };
-
 
 // =============================
 // HIDE NOTIFY FOR GUEST
