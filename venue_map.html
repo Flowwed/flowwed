@@ -94,7 +94,7 @@ No data found
 <script>
 
 // =========================
-// TOKEN (как в рабочем коде)
+// TOKEN (как в рабочем)
 // =========================
 const params = new URLSearchParams(location.search);
 
@@ -110,7 +110,7 @@ sessionStorage.setItem("rsvpToken", token);
 console.log("TOKEN:", token);
 
 // =========================
-// SUPABASE (С HEADER !!!)
+// SUPABASE (с твоим ключом)
 // =========================
 const sb = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
@@ -174,85 +174,65 @@ async function load(){
   document.getElementById("couple").textContent = data.couple_name || "";
   document.getElementById("date").textContent = data.wedding_date || "";
 
-  // =========================
   // SCHEDULE
-  // =========================
   const sch = document.getElementById("schedule");
   sch.innerHTML = "";
 
   if (data.schedule && Array.isArray(data.schedule) && data.schedule.length) {
-
     data.schedule
       .filter(i => i.time || i.text)
       .forEach(i=>{
         sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
       });
-
   } else {
-
     for(let i=1;i<=6;i++){
       const t = data[`schedule_time_${i}`];
       const txt = data[`schedule_text_${i}`];
-
       if(t || txt){
         sch.innerHTML += `<div><b>${t||""}</b> — ${txt||""}</div>`;
       }
     }
-
   }
 
-  // =========================
   // TRAVEL
-  // =========================
   document.getElementById("travel").innerHTML = `
     ${data.flights_text || ""}<br><br>
     Airport: ${data.airport || ""}<br>
     Transfer: ${data.transfer_time || ""}
   `;
 
-  // =========================
   // VENUE
-  // =========================
   document.getElementById("venue").innerHTML = `
     ${data.venue_name || ""}<br>
     ${data.venue_address || ""}<br>
     ${data.map_link ? `<a href="${data.map_link}" target="_blank">Open Map</a>` : ""}
   `;
 
-  // =========================
   // DETAILS
-  // =========================
   document.getElementById("details").innerHTML = `
     ${data.getting_around || ""}<br><br>
     Dress code: ${data.dress_code || ""}<br>
     Weather: ${data.weather || ""}
   `;
 
-  // =========================
   // FAQ
-  // =========================
   const faq = document.getElementById("faq");
   faq.innerHTML = "";
 
   if (data.faq && Array.isArray(data.faq) && data.faq.length) {
-
     data.faq
       .filter(i => i.q || i.a)
       .forEach(i=>{
         faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
       });
-
   } else {
-
     for(let i=1;i<=6;i++){
       const q = data[`faq_q${i}`];
       const a = data[`faq_a${i}`];
-
       if(q || a){
         faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
       }
     }
-
   }
 
 }
