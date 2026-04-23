@@ -3184,29 +3184,27 @@ let currentRsvpLink = "";
 const shareBtn = document.getElementById("shareBtn");
 
 if (shareBtn) {
-  shareBtn.onclick = () => {
 
-    const token = window.APP_TOKEN;
+shareBtn.onclick = () => {
 
-    const link = `${window.location.origin}/std_preview.html?t=${token}&mode=admin`;
+  const link = currentRsvpLink; // ✅ берём уже правильную ссылку
 
-    const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+  const isMobile = /iPhone|Android/i.test(navigator.userAgent);
 
-    // 📱 MOBILE → SMS
-    if (isMobile) {
-      window.location.href = `sms:?body=${encodeURIComponent(link)}`;
-      return;
-    }
+  if (isMobile) {
+    window.location.href = `sms:?body=${encodeURIComponent(link)}`;
+    return;
+  }
 
-    // 💻 DESKTOP → QR
-    const modal = document.getElementById("qrModal");
-    const canvas = document.getElementById("qrCanvas");
+  const modal = document.getElementById("qrModal");
+  const canvas = document.getElementById("qrCanvas");
 
-    modal.style.display = "flex";
+  modal.style.display = "flex";
 
-    QRCode.toCanvas(canvas, link, { width: 220 });
-  };
+  QRCode.toCanvas(canvas, link, { width: 220 });
+};
 }
+
 </script>
 
 
