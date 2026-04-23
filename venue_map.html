@@ -87,7 +87,11 @@ const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZi
 // TOKEN
 // =====================
 const params = new URLSearchParams(location.search);
-const token = params.get("t");
+const token =
+  params.get("t") ||
+  params.get("token") ||
+  params.get("edit_token") ||
+  "";
 
 console.log("TOKEN:", token);
 
@@ -104,9 +108,33 @@ document.querySelectorAll(".header").forEach(h=>{
 });
 
 // =====================
-// LOAD DATA
+// LOAD NAME (как в образце)
 // =====================
-async function load(){
+async function loadCoupleName(){
+
+  if(!token) return;
+
+  const res = await fetch(
+    `${URL}/rest/v1/sites?select=couple_name&edit_token=eq.${token}`,
+    {
+      headers:{
+        apikey: KEY,
+        Authorization: "Bearer " + KEY
+      }
+    }
+  );
+
+  const arr = await res.json();
+
+  if(arr && arr.length){
+    document.getElementById("couple").textContent = arr[0].couple_name || "";
+  }
+}
+
+// =====================
+// LOAD DATA (как в образце)
+// =====================
+async function loadWeddingData(){
 
   if(!token){
     document.getElementById("empty").style.display = "block";
@@ -133,15 +161,10 @@ async function load(){
     return;
   }
 
-  // =====================
   // BASIC
-  // =====================
-  document.getElementById("couple").textContent = data.couple_name || "";
   document.getElementById("date").textContent = data.wedding_date || "";
 
-  // =====================
   // SCHEDULE
-  // =====================
   const sch = document.getElementById("schedule");
   sch.innerHTML = "";
 
@@ -150,7 +173,7 @@ async function load(){
       sch.innerHTML += `<div><b>${i.time||""}</b> — ${i.text||""}</div>`;
     });
   } else {
-    for(let i=1;i<=10;i++){
+    for(let i=1;i<=6;i++){
       const t = data[`schedule_time_${i}`];
       const txt = data[`schedule_text_${i}`];
       if(t || txt){
@@ -159,62 +182,44 @@ async function load(){
     }
   }
 
-  // =====================
   // TRAVEL
-  // =====================
   document.getElementById("travel").innerHTML = `
     ${data.flights_text || ""}<br><br>
     Airport: ${data.airport || ""}<br>
-    Transfer: ${data.transfer_time || ""}<br><br>
-    Hotels:<br>
-    ${data.hotel_1 || ""}<br>
-    ${data.hotel_2 || ""}<br>
-    ${data.hotel_3 || ""}
+    Transfer: ${data.transfer_time || ""}
   `;
 
-  // =====================
   // VENUE
-  // =====================
   document.getElementById("venue").innerHTML = `
     ${data.venue_name || ""}<br>
     ${data.venue_address || ""}<br>
-    ${data.venue_note || ""}<br><br>
     ${data.map_link ? `<a href="${data.map_link}" target="_blank">Open Map</a>` : ""}
   `;
 
-  // =====================
   // DETAILS
-  // =====================
   document.getElementById("details").innerHTML = `
     ${data.getting_around || ""}<br><br>
-    Dress: ${data.dress_code || ""}<br>
-    Weather: ${data.weather || ""}<br>
-    ${data.weather_note || ""}
+    Dress code: ${data.dress_code || ""}<br>
+    Weather: ${data.weather || ""}
   `;
 
-  // =====================
   // FAQ
-  // =====================
   const faq = document.getElementById("faq");
   faq.innerHTML = "";
 
   if (data.faq && Array.isArray(data.faq)) {
     data.faq.forEach(i=>{
-      faq.innerHTML += `<div><b>${i.q}</b><br>${i.a}</div>`;
+      faq.innerHTML += `<div><b>${i.q||""}</b><br>${i.a||""}</div>`;
     });
-  } else {
-    for(let i=1;i<=10;i++){
-      const q = data[`faq_q${i}`];
-      const a = data[`faq_a${i}`];
-      if(q || a){
-        faq.innerHTML += `<div><b>${q||""}</b><br>${a||""}</div>`;
-      }
-    }
   }
 
 }
 
-load();
+// =====================
+// START
+// =====================
+loadCoupleName();
+loadWeddingData();
 
 </script>
 </body>
