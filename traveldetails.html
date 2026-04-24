@@ -1046,6 +1046,15 @@ Expedia — https://www.expedia.com
 <div class="field full"><label>Dress Code</label>
 <textarea id="dressCode"></textarea></div>
 
+
+<div class="field full">
+  <label>Important Info</label>
+  <textarea id="importantInfo"
+    placeholder="Add any important details guests should know (parking, outdoor ceremony, timing, etc.)">
+  </textarea>
+</div>
+
+
 <div class="field"><label>Weather</label><input id="weather"></div>
 <div class="field"><label>Weather Note</label><input id="weatherNote"></div>
 
@@ -1230,7 +1239,9 @@ const fieldIds = [
   "gettingAround","dressCode","weather","weatherNote",
   "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4",
   "stayLinks",
-  "thingsToDo"
+  "thingsToDo",
+  "importantInfo"
+
 ];
     function getFormData(){
       const data = {};
@@ -1396,6 +1407,7 @@ const faq = getFaqData();
     venue_note: f.venueNote,
 
     dress_code: f.dressCode,
+    important_info: f.importantInfo,
     weather: f.weather,
     weather_note: f.weatherNote,
 
@@ -1466,6 +1478,7 @@ if(openPreviewBtn){
       airport: data.airport,
       transferTime: data.transfer_time,
       flightsText: data.flights_text,
+      stayLinks: data.stay_links,
 
       hotel1: data.hotel_1,
       hotel2: data.hotel_2,
