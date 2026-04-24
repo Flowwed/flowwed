@@ -1851,16 +1851,89 @@ if (sendBtn) {
       return;
     }
 
-    alert("SEND BUTTON WORKS ✅");
+const recipients = selected.map(ch => ({
+  guest_id: ch.dataset.id,
+  email: ch.dataset.email,
+  name: "Guest"
+}));
+
+const subject = document.getElementById("composerSubject").value.trim();
+const message = document.getElementById("composerBody").value.trim();
+
+const htmlBody =
+  message +
+  `<br><br>
+  <a href="${currentRsvpLink}" target="_blank">View Details</a>
+  <br><br>` +
+  document.getElementById("composerFooter").innerHTML;
+
+// UI
+const overlay = document.getElementById("sendProgressOverlay");
+const bar = document.getElementById("progressBar");
+const text = document.getElementById("progressText");
+
+overlay.style.display = "flex";
+bar.style.width = "0%";
+text.textContent = `Sending 0 / ${recipients.length}`;
+
+let failures = 0;
+
+for (let i = 0; i < recipients.length; i++) {
+
+  const g = recipients[i];
+
+  let ok = true;
+
+  try {
+    const res = await fetch("/.netlify/functions/send-invites", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        subject,
+        html: htmlBody,
+        guests: [g]
+      })
+    });
+
+    const data = await res.json();
+    ok = res.ok && data?.results?.[0]?.ok;
+
+  } catch (e) {
+    ok = false;
+  }
+
+  if (!ok) failures++;
+
+  const done = i + 1;
+  const percent = Math.round((done / recipients.length) * 100);
+
+  bar.style.width = percent + "%";
+  text.textContent = `Sending ${done} / ${recipients.length}`;
+
+  await new Promise(r => setTimeout(r, 300));
+}
+
+setTimeout(() => {
+  overlay.style.display = "none";
+}, 400);
+
+if (failures > 0) {
+  showToast(`${failures} email(s) failed`, "error");
+} else {
+  showToast("All emails sent 🎉");
+}
+
+setTimeout(() => {
+  document.getElementById("composerBox").style.display = "none";
+}, 600);
+
+
   };
 }
 
 });
-
-  // 🔥 SEND
-
-
-
 
 
 function showToast(message, type = "success") {
