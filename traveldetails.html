@@ -1653,7 +1653,7 @@ async function loadFromSupabase() {
 
   const token = window.APP_TOKEN;
 
-  const { data, error } = await sb
+  const { error } = await sb
     .from("wedding_info")
     .select("*")
     .eq("site_edit_token", token)
