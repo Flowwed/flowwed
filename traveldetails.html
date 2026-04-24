@@ -1054,11 +1054,18 @@ Expedia — https://www.expedia.com
   </textarea>
 </div>
 
+
+
+
 <div class="field full">
-  <label>Check Weather</label>
-  <input id="weatherLink"
-    placeholder="Add a weather link (e.g. https://weather.com/...)">
-</div>
+  <label>
+    Check Weather
+    <span style="font-size:12px; font-weight:400; font-style:italic; color:#888;">
+      (you can edit these links)
+    </span>
+  </label>
+
+
 
 </div>
 </div>
@@ -1687,6 +1694,15 @@ async function loadFromSites() {
 
 
 document.addEventListener("DOMContentLoaded", () => {
+
+const weatherEl = document.getElementById("weatherLink");
+
+if (weatherEl && !weatherEl.value) {
+  weatherEl.value =
+`Weather.com — https://weather.com
+AccuWeather — https://www.accuweather.com
+Google Weather — https://www.google.com/search?q=weather`;
+}
 
  // 👇 ВСТАВЬ ВОТ ЭТО СЮДА
   const stayLinksEl = document.getElementById("stayLinks");
