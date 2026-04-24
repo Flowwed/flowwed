@@ -807,10 +807,6 @@ white-space: nowrap;
     <label class="composer-label">To Email(s):</label>
     <input type="text" id="composerEmails" class="composer-input">
 
-    <label class="composer-label">To Phone(s):</label>
-          <input type="text" id="toPhone_rsvpYes" style="display:none;">
-
-
     <label class="composer-label">Subject:</label>
     <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
 
@@ -855,25 +851,10 @@ async function loadCoupleName() {
     coupleFullName = data.couple_name.trim();
     document.getElementById("coupleSmallName").textContent = coupleFullName;
 
-// 🔥 ВОТ ЭТО ДОБАВЬ
-  const subjectInput = document.getElementById("composerSubject");
-  if (subjectInput) {
-    subjectInput.value = `${coupleFullName} — Wedding Updates`;
-}
 
   }
 }
 
-// ======================================================
-// GET ICON
-// ======================================================
-function getIcon(status) {
-  const s = (status || "").toLowerCase();
-  if (s === "yes") return `<span style="color:green;font-size:20px;">✔</span>`;
-  if (s === "no") return `<span style="color:red;font-size:20px;">✘</span>`;
-  if (s === "maybe") return `<span style="color:#ffd400;font-size:20px;">❔</span>`;
-  return `<span style="color:#ff9800;font-size:20px;">⚠️</span>`;
-}
 
 // ======================================================
 // LOAD GUESTS
@@ -1196,14 +1177,17 @@ function refreshComposerFields() {
 -----------------------------------------*/
 function openComposer() {
   const selected = [...document.querySelectorAll(".rowCheck:checked")];
-  if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
+  if (selected.length === 0)
+    return showToastBox("Select at least one guest!", "error");
 
+  refreshComposerFields();
 
-  refreshComposerFields(); // ← ВАЖНО! вызываем при открытии
+  const subjectInput = document.getElementById("composerSubject");
 
-  // Auto Subject
-  document.getElementById("composerSubject").value =
-    `Wedding Update: ${coupleFullName}`;
+  subjectInput.value =
+    coupleFullName
+      ? `${coupleFullName} — Wedding Updates`
+      : "Wedding Updates";
 
   emailComposer.style.display = "block";
 }
