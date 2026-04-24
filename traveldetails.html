@@ -966,23 +966,37 @@ window.APP_TOKEN = token;
 <h2>Flights & Stay</h2>
 <div class="grid">
 
-<div class="field"><label>Airport</label><input id="airport" placeholder="JFK"></div>
+<div class="field"><label>Airport</label><input id="airport" placeholder="Example: Fly to JFK"></div>
 <div class="field"><label>Travel time to venue</label><input id="transferTime" placeholder="45 minutes"></div>
 
 <div class="field full"><label>Travel Tips</label>
 <textarea id="flightsText" placeholder="Example: We recommend arriving one day before the wedding. 
 Traffic can be busy, so allow extra time."></textarea></div>
 
-<div class="field"><label>Hotel 1</label><input id="hotel1" placeholder="Hotel Option 1"></div>
-<div class="field"><label>Hotel 2</label><input id="hotel2" placeholder="Hotel Option 2"></div>
-<div class="field"><label>Hotel 3</label><input id="hotel3" placeholder="Hotel option 3"></div>
-<div class="field"><label>Hotel 4</label><input id="hotel3" placeholder="Hotel option 4"></div>
+<div class="field"><label>Hotel 1</label><input id="hotel1" placeholder="Hotel 1 (optional recommendation)"></div>
+<div class="field"><label>Hotel 2</label><input id="hotel2" placeholder="Hotel 2 (optional recommendation)"></div>
+<div class="field"><label>Hotel 3</label><input id="hotel3" placeholder="Hotel 3 (optional recommendation)"></div>
+<div class="field"><label>Hotel 4</label><input id="hotel3" placeholder="Hotel 4 (optional recommendation)"></div>
 
 
 <div class="field full">
-  <label>Booking platforms</label>
-  <textarea id="stayLinks" placeholder="Booking.com — https://www.booking.com&#10;Airbnb — https://www.airbnb.com&#10;Expedia — https://www.expedia.com"></textarea>
+  <label>
+    Booking platforms
+    <span style="font-size:12px; font-weight:400; font-style:italic; color:#888;">
+     (you can edit these links)
+    </span>
+  </label>
+
+  <textarea id="stayLinks"
+    placeholder="Booking.com — https://www.booking.com&#10;Airbnb — https://www.airbnb.com&#10;Expedia — https://www.expedia.com">
+  </textarea>
 </div>
+
+
+<div class="field full"><label>What to Do in the Area</label>
+<textarea id="flightsText" placeholder="Recommend places to visit, restaurants, or things to do in the area"></textarea></div>
+</div>
+
 
 
 </div>
