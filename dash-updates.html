@@ -1221,10 +1221,12 @@ modal.classList.add("is-open");
 iframe.onload = sendTextToIframe;
       });
 
-      sendEmailBtn?.addEventListener("click", () => {
-        if (!ensureToken()) return;
-        openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
-      });
+sendEmailBtn?.addEventListener("click", () => {
+  if (!ensureToken()) return;
+
+  alert("STEP 1 OK");
+});
+
 
 sendSmsBtn?.addEventListener("click", () => {
 
