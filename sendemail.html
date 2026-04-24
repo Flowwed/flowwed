@@ -813,6 +813,23 @@ white-space: nowrap;
     <label class="composer-label">Message:</label>
     <textarea id="composerBody" class="composer-textarea">Hello! Here is the latest update…</textarea>
 
+<div id="updatesPreviewBlock" style="
+  margin-top:10px;
+  padding:10px;
+  border-radius:8px;
+  background:#fff7f7;
+  border:1px solid #ffd0d0;
+  font-size:13px;
+">
+  <div style="font-weight:700;color:#9c1818;margin-bottom:6px;">
+    Updates Link
+  </div>
+
+  <div id="updatesPreviewLink" style="word-break:break-all;">
+    Link will appear automatically
+  </div>
+</div>
+
    <div id="composerFooter" class="composer-footer">
    This message is sent from a notification-only address.<br>
    If you'd like to contact us, please write to: <strong id="footerEmail"></strong>
@@ -1206,6 +1223,17 @@ document.getElementById("composerExpand").onclick = () => {
 const token = new URLSearchParams(location.search).get("t");
 
 const updatesLink = `https://flowwed.netlify.app/web-updates?t=${token}`;
+
+
+const previewEl = document.getElementById("updatesPreviewLink");
+
+if (previewEl) {
+  previewEl.innerHTML = `
+    <a href="${updatesLink}" target="_blank">
+      ${updatesLink}
+    </a>
+  `;
+}
 
 
 document.getElementById("composerSend").onclick = async () => {
