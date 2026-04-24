@@ -1221,18 +1221,10 @@ modal.classList.add("is-open");
 iframe.onload = sendTextToIframe;
       });
 
-sendEmailBtn?.addEventListener("click", () => {
-  if (!ensureToken()) return;
-
-  document.getElementById("emailComposer").style.display = "block";
-});
-
-
-
-document.getElementById("composerClose")?.addEventListener("click", () => {
-  document.getElementById("emailComposer").style.display = "none";
-});
-
+      sendEmailBtn?.addEventListener("click", () => {
+        if (!ensureToken()) return;
+        openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
+      });
 
 sendSmsBtn?.addEventListener("click", () => {
 
@@ -1369,52 +1361,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
-
-<div id="emailComposer" style="
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  width:360px;
-  background:white;
-  border-radius:14px;
-  padding:16px;
-  box-shadow:0 14px 32px rgba(0,0,0,0.35);
-  display:none;
-  z-index:999999;
-">
-
-  <div style="display:flex;justify-content:space-between;align-items:center;">
-    <strong>Send Email</strong>
-    <span id="composerClose" style="cursor:pointer;font-size:20px;">×</span>
-  </div>
-
-  <input id="composerEmails" placeholder="Emails"
-    style="width:100%;margin-top:10px;padding:8px;border-radius:8px;border:1px solid #ccc;">
-
-  <input id="composerSubject" value="Wedding Update"
-    style="width:100%;margin-top:10px;padding:8px;border-radius:8px;border:1px solid #ccc;">
-
-  <textarea id="composerBody"
-    style="width:100%;margin-top:10px;height:100px;padding:8px;border-radius:8px;border:1px solid #ccc;">
-Hello! Here is the latest update…
-  </textarea>
-
-  <button id="composerSend" style="
-    margin-top:10px;
-    width:100%;
-    padding:10px;
-    background:#b41111;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-  ">
-    Send Email
-  </button>
-
-</div>
-
 
 </body>
 </html>
