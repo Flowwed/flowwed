@@ -976,25 +976,27 @@ Traffic can be busy, so allow extra time."></textarea></div>
 <div class="field"><label>Hotel 1</label><input id="hotel1" placeholder="Hotel 1 (optional recommendation)"></div>
 <div class="field"><label>Hotel 2</label><input id="hotel2" placeholder="Hotel 2 (optional recommendation)"></div>
 <div class="field"><label>Hotel 3</label><input id="hotel3" placeholder="Hotel 3 (optional recommendation)"></div>
-<div class="field"><label>Hotel 4</label><input id="hotel3" placeholder="Hotel 4 (optional recommendation)"></div>
+<div class="field"><label>Hotel 4</label><input id="hotel4" placeholder="Hotel 4 (optional recommendation)"></div>
 
 
 <div class="field full">
   <label>
     Booking platforms
     <span style="font-size:12px; font-weight:400; font-style:italic; color:#888;">
-     (you can edit these links)
+      (you can edit these links)
     </span>
   </label>
 
-  <textarea id="stayLinks"
-    placeholder="Booking.com — https://www.booking.com&#10;Airbnb — https://www.airbnb.com&#10;Expedia — https://www.expedia.com">
+  <textarea id="stayLinks">
+Booking.com — https://www.booking.com
+Airbnb — https://www.airbnb.com
+Expedia — https://www.expedia.com
   </textarea>
 </div>
 
 
-<div class="field full"><label>What to Do in the Area</label>
-<textarea id="flightsText" placeholder="Recommend places to visit, restaurants, or things to do in the area"></textarea></div>
+<div class="field full"><label>Things To Do</label>
+<textarea id="thingsToDo" placeholder="Recommend places to visit, restaurants, or things to do in the area"></textarea></div>
 </div>
 
 
@@ -1040,8 +1042,6 @@ Traffic can be busy, so allow extra time."></textarea></div>
 <h2>Details</h2>
 <div class="grid">
 
-<div class="field full"><label>Getting Around</label>
-<textarea id="gettingAround"></textarea></div>
 
 <div class="field full"><label>Dress Code</label>
 <textarea id="dressCode"></textarea></div>
@@ -1225,12 +1225,12 @@ const fieldIds = [
   "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
   "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
   "airport","transferTime","flightsText",
-  "hotel1","hotel2","hotel3",
+  "hotel1","hotel2","hotel3","hotel4",
   "venueName","venueAddress","venueNote",
   "gettingAround","dressCode","weather","weatherNote",
-  "trip1","trip2","trip3",
   "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4",
-  "stayLinks"
+  "stayLinks",
+  "thingsToDo"
 ];
     function getFormData(){
       const data = {};
@@ -1383,17 +1383,18 @@ const faq = getFaqData();
     airport: f.airport,
     transfer_time: f.transferTime,
     flights_text: f.flightsText,
+    things_to_do: f.thingsToDo,
 
     hotel_1: f.hotel1,
     hotel_2: f.hotel2,
     hotel_3: f.hotel3,
+    hotel_4: f.hotel4,
+
 
     venue_name: f.venueName,
-    map_link: f.mapLink,
     venue_address: f.venueAddress,
     venue_note: f.venueNote,
 
-    getting_around: f.gettingAround,
     dress_code: f.dressCode,
     weather: f.weather,
     weather_note: f.weatherNote,
@@ -1469,6 +1470,7 @@ if(openPreviewBtn){
       hotel1: data.hotel_1,
       hotel2: data.hotel_2,
       hotel3: data.hotel_3,
+      hotel4: data.hotel_4,
 
       venueName: data.venue_name,
       mapLink: data.map_link,
