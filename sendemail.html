@@ -788,7 +788,6 @@ white-space: nowrap;
     </div>
 
     <div class="footer-buttons">
-      <button id="deleteSelected" class="footer-btn">Delete Selected</button>
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
 
 
@@ -1139,42 +1138,6 @@ document.getElementById("selectAll").onclick = e => {
   all.forEach(ch => (ch.checked = e.target.checked));
 };
 
-// ================================
-// DELETE SELECTED — WITH CONFIRM
-// ================================
-
-const deleteOverlay = document.getElementById("deleteConfirmOverlay");
-let idsToDelete = [];
-
-document.getElementById("deleteSelected").onclick = () => {
-  const checked = [...document.querySelectorAll(".rowCheck:checked")];
-
-  if (!checked.length) return alert("Nothing selected");
-
-  idsToDelete = checked.map(ch => ch.dataset.id);
-
-  deleteOverlay.style.display = "flex"; // show popup
-};
-
-// Cancel button
-document.getElementById("deleteCancelBtn").onclick = () => {
-  deleteOverlay.style.display = "none";
-};
-
-// Yes button — delete from DB
-document.getElementById("deleteYesBtn").onclick = async () => {
-  await supabase.from("guests").delete().in("id", idsToDelete);
-
-  guests = guests.filter(g => !idsToDelete.includes(g.id));
-  render();
-
-  deleteOverlay.style.display = "none";
-
-  // Clean checkboxes after delete
-  document.querySelectorAll(".rowCheck").forEach(ch => (ch.checked = false));
-  document.getElementById("selectAll").checked = false;
-};
-
 
 // ======================================================
 // EMAIL COMPOSER UI
@@ -1225,7 +1188,6 @@ function refreshComposerFields() {
   });
 
   document.getElementById("composerEmails").value = [...new Set(emails)].join(", ");
-  document.getElementById("composerPhones").value = [...new Set(phones)].join(", ");
 }
 
 /* ----------------------------------------
