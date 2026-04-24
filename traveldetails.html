@@ -1738,42 +1738,62 @@ function refreshComposerFields() {
 
 // 🔥 ВСЯ ЛОГИКА ПОСЛЕ ЗАГРУЗКИ DOM
 
+
+async function loadSenderEmail() {
+
+  const token = window.APP_TOKEN;
+  if (!token) return;
+
+  const { data, error } = await sb
+    .from("sites")
+    .select("email")
+    .eq("edit_token", token)
+    .single();
+
+  console.log("EMAIL LOAD:", data, error);
+
+  if (!error && data?.email) {
+    document.getElementById("footerEmail").textContent = data.email;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+
+  // 🔥 ВАЖНО — вызываем здесь
+  loadSenderEmail();
 
   const composer = document.getElementById("composerBox");
   const closeBtn = document.getElementById("composerClose");
   const expandBtn = document.getElementById("composerExpand");
-  const sendBtn = document.getElementById("composerSend");
   const openBtn = document.getElementById("sendEmailBtn");
 
   let expanded = false;
 
   // 🔥 OPEN COMPOSER
   if (openBtn) {
+    openBtn.onclick = () => {
 
-openBtn.onclick = () => {
+      const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
-  const selected = [...document.querySelectorAll(".rowCheck:checked")];
+      if (!selected.length) {
+        showToast("Select at least one guest", "error");
+        return;
+      }
 
-  if (!selected.length) {
-    showToast("Select at least one guest", "error");
-    return;
-  }
+      composer.style.display = "block";
 
-  composer.style.display = "block";
+      const token = window.APP_TOKEN;
 
-const token = window.APP_TOKEN;
+      const link =
+        `${window.location.origin}/venue_map.html?t=${token}&type=travel`;
 
-const link =
-  `${window.location.origin}/venue_map.html?t=${token}&type=travel`;
+      currentRsvpLink = link;
 
-currentRsvpLink = link;
+      const preview = document.getElementById("rsvpPreviewLink");
+      if (preview) preview.textContent = link;
 
-document.getElementById("rsvpPreviewLink").textContent = link;
-
-
-  refreshComposerFields(); // 🔥 ВОТ КЛЮЧ
-};
+      refreshComposerFields();
+    };
   }
 
   // 🔥 CLOSE (крестик)
@@ -1783,7 +1803,7 @@ document.getElementById("rsvpPreviewLink").textContent = link;
     };
   }
 
-  // 🔥 EXPAND / COLLAPSE (как в образце)
+  // 🔥 EXPAND
   if (expandBtn) {
     expandBtn.onclick = () => {
 
@@ -1800,6 +1820,8 @@ document.getElementById("rsvpPreviewLink").textContent = link;
       }
     };
   }
+
+});
 
   // 🔥 SEND
 
