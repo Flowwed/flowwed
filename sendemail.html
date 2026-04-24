@@ -854,6 +854,13 @@ async function loadCoupleName() {
   if (data?.couple_name) {
     coupleFullName = data.couple_name.trim();
     document.getElementById("coupleSmallName").textContent = coupleFullName;
+
+// 🔥 ВОТ ЭТО ДОБАВЬ
+  const subjectInput = document.getElementById("composerSubject");
+  if (subjectInput) {
+    subjectInput.value = `${coupleFullName} — Wedding Updates`;
+
+
   }
 }
 
