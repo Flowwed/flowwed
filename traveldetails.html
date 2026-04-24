@@ -1054,9 +1054,11 @@ Expedia — https://www.expedia.com
   </textarea>
 </div>
 
-
-<div class="field"><label>Weather</label><input id="weather"></div>
-<div class="field"><label>Weather Note</label><input id="weatherNote"></div>
+<div class="field full">
+  <label>Check Weather</label>
+  <input id="weatherLink"
+    placeholder="Add a weather link (e.g. https://weather.com/...)">
+</div>
 
 </div>
 </div>
@@ -1236,11 +1238,12 @@ const fieldIds = [
   "airport","transferTime","flightsText",
   "hotel1","hotel2","hotel3","hotel4",
   "venueName","venueAddress","venueNote",
-  "gettingAround","dressCode","weather","weatherNote",
+  "dressCode",
   "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4",
   "stayLinks",
   "thingsToDo",
   "importantInfo"
+  "weatherLink"
 
 ];
     function getFormData(){
@@ -1409,9 +1412,7 @@ const faq = getFaqData();
 
     dress_code: f.dressCode,
     important_info: f.importantInfo,
-    weather: f.weather,
-    weather_note: f.weatherNote,
-
+    weather_link: f.weatherLink,
 
     faq_q1: f.faqQ1,
     faq_a1: f.faqA1,
@@ -1490,10 +1491,8 @@ if(openPreviewBtn){
       venueAddress: data.venue_address,
       venueNote: data.venue_note,
 
-      gettingAround: data.getting_around,
       dressCode: data.dress_code,
-      weather: data.weather,
-      weatherNote: data.weather_note,
+      weatherLink: data.weather_link,
 
       trip1: data.trip_1,
       trip2: data.trip_2,
