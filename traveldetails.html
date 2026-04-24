@@ -59,15 +59,67 @@ h1{
 .step{
   flex:1;
   text-align:center;
-  padding:10px;
-  border-radius:12px;
-  background:#ffe5ea;
-  font-weight:600;
+  padding:14px 10px;
+
+  border-radius:16px;
+
+  background: linear-gradient(
+    180deg,
+    #fff1f4,
+    #ffd9e1
+  );
+
+  font-weight:700;
+  color:#9c1818;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.15),
+    inset 0 2px 4px rgba(255,255,255,0.6),
+    inset 0 -4px 10px rgba(180,17,17,0.15);
+
+  cursor:pointer;
+  transition:0.25s ease;
 }
 
+
 .step.active{
-  background:#b41111;
+  background: linear-gradient(
+    180deg,
+    #ff3b3b,
+    #b41111
+  );
+
   color:#fff;
+
+  box-shadow:
+    0 10px 24px rgba(180,17,17,0.45),
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -6px 14px rgba(60,0,20,0.45);
+
+  transform: translateY(-2px) scale(1.02);
+}
+
+.step:hover{
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 10px 22px rgba(0,0,0,0.25);
+}
+
+
+.step.active::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+
+  box-shadow:0 0 18px rgba(255,60,60,0.5);
+  opacity:0.6;
+  pointer-events:none;
+}
+
+
+.step{
+  position:relative;
 }
 
 .section{
@@ -131,14 +183,45 @@ textarea{
 }
 
 button{
-  padding:12px 18px;
+  padding:14px 22px;
   border:none;
-  border-radius:14px;
+  border-radius:16px;
+
   font-weight:700;
-  cursor:pointer;
-  background:linear-gradient(135deg,#b41111,#8e1515);
+  letter-spacing:0.3px;
+
+  background: linear-gradient(
+    180deg,
+    #ff4d4d,
+    #b41111
+  );
+
   color:white;
+
+  box-shadow:
+    0 10px 24px rgba(180,17,17,0.35),
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -6px 14px rgba(60,0,20,0.4);
+
+  cursor:pointer;
+  transition:0.25s ease;
 }
+
+
+button:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 30px rgba(180,17,17,0.45);
+}
+
+button:active{
+  transform: translateY(1px) scale(0.98);
+
+  box-shadow:
+    inset 0 4px 10px rgba(0,0,0,0.3);
+}
+
+
 
 .preview{
   position:sticky;
@@ -146,23 +229,43 @@ button{
 }
 
 
-.top-nav-wrapper {
+#previewBtn{
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  width: 100%;
+  background: linear-gradient(
+    180deg,
+    #ffffff,
+    #ffe6ec
+  );
 
-  margin-bottom: 8px;   /* 🔥 вместо 100px */
+  color:#9c1818;
+
+  border: 1px solid rgba(180,17,17,0.25);
+
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.15),
+    inset 0 2px 4px rgba(255,255,255,0.7);
+}
+
+/* внутренняя микро-рамка */
+#previewBtn::after{
+  content:"";
+  position:absolute;
+  inset:2px;
+  border-radius:14px;
+
+  border:1px solid rgba(255,255,255,0.6);
+  pointer-events:none;
 }
 
 
-.step:hover{
-  background:#d94b4b;
-  color:#fff;
-}
+#previewBtn:hover{
+  border-color: rgba(180,17,17,0.6);
 
+  box-shadow:
+    0 12px 26px rgba(0,0,0,0.2),
+    0 0 10px rgba(180,17,17,0.35);
+}
 
 .modal{
   position:fixed;
@@ -2029,7 +2132,7 @@ function showToast(message, type = "success") {
   <!-- MESSAGE -->
   <label class="composer-label">Message:</label>
   <textarea id="composerBody" class="composer-textarea">
-Hello! We’ve added new travel and event details for our wedding. Please click the button below.
+Hello! We’ve added new travel and event details for our wedding. 
   </textarea>
 
   <!-- RSVP BLOCK -->
