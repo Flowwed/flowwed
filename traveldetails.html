@@ -1801,8 +1801,8 @@ if (subjectInput) {
 
       const token = window.APP_TOKEN;
 
-      const link =
-        `${window.location.origin}/venue_map.html?t=${token}&type=travel`;
+const link =
+  `https://flowwed.netlify.app/venue_map.html?t=${token}`;
 
       currentRsvpLink = link;
 
@@ -1863,7 +1863,21 @@ const message = document.getElementById("composerBody").value.trim();
 const htmlBody =
   message +
   `<br><br>
-  <a href="${currentRsvpLink}" target="_blank">View Details</a>
+
+  <a href="${currentRsvpLink}" target="_blank" style="
+  display:inline-block;
+  padding:12px 18px;
+  background:#b41111;
+  color:white;
+  text-decoration:none;
+  border-radius:8px;
+  font-weight:700;
+  font-size:14px;
+">
+  View Details
+</a>
+
+
   <br><br>` +
   document.getElementById("composerFooter").innerHTML;
 
