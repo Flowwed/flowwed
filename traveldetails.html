@@ -1480,6 +1480,11 @@ if (data.faq && Array.isArray(data.faq)) {
         ? formatDate(siteData.wedding_date)
         : "—";
 
+// 🔥 ВОТ ЭТО ДОБАВИЛИ
+  if (siteData.couple_name) {
+    coupleFullName = siteData.couple_name;
+  }
+
     // ОБНОВЛЯЕМ ТОЛЬКО 2 ПОЛЯ
     await sb
       .from("wedding_info")
@@ -1649,6 +1654,7 @@ document.getElementById("selectAll").onclick = (e) => {
 let guests = [];
 
 let currentRsvpLink = "";
+let coupleFullName = "";
 
 
 async function loadGuests(){
@@ -1782,6 +1788,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       composer.style.display = "block";
 
+
+const subjectInput = document.getElementById("composerSubject");
+
+if (subjectInput) {
+  subjectInput.value =
+    coupleFullName
+      ? `${coupleFullName} — Wedding Updates`
+      : "Wedding Updates";
+}
+
+
       const token = window.APP_TOKEN;
 
       const link =
@@ -1795,6 +1812,8 @@ document.addEventListener("DOMContentLoaded", () => {
       refreshComposerFields();
     };
   }
+
+
 
   // 🔥 CLOSE (крестик)
   if (closeBtn) {
