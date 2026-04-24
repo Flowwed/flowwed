@@ -2221,7 +2221,7 @@ document.getElementById("composerClose").onclick = () => {
 // ---------- LOAD FOOTER EMAIL ----------
 async function loadSenderEmail() {
   const params = new URLSearchParams(location.search);
-  const token = params.get("t") || window.token || "";
+  const token = params.get("t") || window.APP_TOKEN || "";
 
   if (!token) return;
 
