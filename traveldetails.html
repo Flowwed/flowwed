@@ -969,15 +969,21 @@ window.APP_TOKEN = token;
 <div class="field"><label>Airport</label><input id="airport" placeholder="Example: Fly to JFK"></div>
 <div class="field"><label>Travel time to venue</label><input id="transferTime" placeholder="45 minutes"></div>
 
-<div class="field full"><label>Travel Tips</label>
-<textarea id="flightsText" placeholder="Example: We recommend arriving one day before the wedding. 
-Traffic can be busy, so allow extra time."></textarea></div>
+<div class="field full"><label>Travel Notes</label>
 
-<div class="field"><label>Hotel 1</label><input id="hotel1" placeholder="Hotel 1 (optional recommendation)"></div>
-<div class="field"><label>Hotel 2</label><input id="hotel2" placeholder="Hotel 2 (optional recommendation)"></div>
-<div class="field"><label>Hotel 3</label><input id="hotel3" placeholder="Hotel 3 (optional recommendation)"></div>
-<div class="field"><label>Hotel 4</label><input id="hotel4" placeholder="Hotel 4 (optional recommendation)"></div>
+<textarea id="flightsText"
+placeholder="Optional: share any helpful travel notes (arrival timing, local tips, etc.)">
+</textarea>
 
+
+<div class="field full">
+  <label>Recommended Hotels</label>
+  <textarea id="hotels"
+placeholder="Hilton Downtown — https://...
+Marriott Riverside — https://...
+Boutique Hotel XYZ — https://...">
+  </textarea>
+</div>
 
 <div class="field full">
   <label>
@@ -1247,7 +1253,7 @@ const fieldIds = [
   "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
   "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
   "airport","transferTime","flightsText",
-  "hotel1","hotel2","hotel3","hotel4",
+  "hotels",
   "venueName","venueAddress","venueNote",
   "dressCode",
   "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4",
@@ -1411,11 +1417,7 @@ const faq = getFaqData();
     things_to_do: f.thingsToDo,
     stay_links: f.stayLinks,
 
-    hotel_1: f.hotel1,
-    hotel_2: f.hotel2,
-    hotel_3: f.hotel3,
-    hotel_4: f.hotel4,
-
+    hotels: f.hotels,
 
     venue_name: f.venueName,
     venue_address: f.venueAddress,
@@ -1492,10 +1494,7 @@ if(openPreviewBtn){
       thingsToDo: data.things_to_do,
       importantInfo: data.important_info,
 
-      hotel1: data.hotel_1,
-      hotel2: data.hotel_2,
-      hotel3: data.hotel_3,
-      hotel4: data.hotel_4,
+      hotels: data.hotels,
 
       venueName: data.venue_name,
       mapLink: data.map_link,
