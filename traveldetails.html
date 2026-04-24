@@ -1772,7 +1772,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("composerClose");
   const expandBtn = document.getElementById("composerExpand");
   const openBtn = document.getElementById("sendEmailBtn");
-
+  const sendBtn = document.getElementById("composerSend");
   let expanded = false;
 
   // 🔥 OPEN COMPOSER
@@ -1840,9 +1840,6 @@ if (subjectInput) {
     };
   }
 
-});
-
-  // 🔥 SEND
 
 if (sendBtn) {
   sendBtn.onclick = async () => {
@@ -1853,6 +1850,15 @@ if (sendBtn) {
       showToast("No recipients", "error");
       return;
     }
+
+    alert("SEND BUTTON WORKS ✅");
+  };
+}
+
+});
+
+  // 🔥 SEND
+
 
     const guests = selected.map(ch => ({
       guest_id: ch.dataset.id,
@@ -2019,7 +2025,7 @@ function showToast(message, type = "success") {
 
   <!-- HEADER -->
   <div class="composer-header">
-    <span>Send Email & SMS</span>
+    <span>Send Email</span>
 
     <div style="display:flex;align-items:center;gap:10px;">
       <span id="composerExpand" class="expand-btn">⤢</span>
