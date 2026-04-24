@@ -1203,13 +1203,32 @@ document.getElementById("composerExpand").onclick = () => {
 // SEND EMAIL → SEND TO BATCH WORKER
 // ======================================================
 
+const token = new URLSearchParams(location.search).get("t");
+
+const updatesLink = `https://flowwed.netlify.app/web-updates?t=${token}`;
+
+
 document.getElementById("composerSend").onclick = async () => {
 
 // ----------------------------------------------------
 // NEW: формируем письмо (message + footer)
 // ----------------------------------------------------
 const body = document.getElementById("composerBody").value.trim();
-const footer = document.getElementById("composerFooter").innerHTML;
+
+
+const footer = `
+  <div style="margin-top:12px;">
+    <b>View latest updates:</b><br>
+    <a href="${updatesLink}" target="_blank">
+      ${updatesLink}
+    </a>
+  </div>
+  <br>
+  ${document.getElementById("composerFooter").innerHTML}
+`;
+
+
+
 const htmlBody = body + "<br><br>" + footer;
 
 // Проверка выбранных гостей
