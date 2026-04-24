@@ -1360,6 +1360,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+document.getElementById("storyModal")?.addEventListener("click", (e) => {
+  if (e.target.id === "storyModal") {
+    closeModal();
+  }
+});
+
 </script>
 
 </body>
