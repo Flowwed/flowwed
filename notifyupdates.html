@@ -107,8 +107,7 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 const params = new URLSearchParams(location.search);
 const token = params.get("t");
 
-const link = `https://flowwed.netlify.app/web-updates?t=${token}`;
-
+const link = `${window.location.origin}/wedupdates.html?t=${token}`;
 let coupleName = "The Couple";
 
 // 🔥 функция подписи
