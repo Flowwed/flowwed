@@ -1047,8 +1047,23 @@ Expedia — https://www.expedia.com
 <div class="grid">
 
 
-<div class="field full"><label>Dress Code</label>
-<textarea id="dressCode"></textarea></div>
+<div class="field full">
+  <label>Dress Code</label>
+
+  <select id="dressCodeSelect">
+    <option value="">Select dress code</option>
+    <option value="formal">Formal / Black Tie</option>
+    <option value="cocktail">Cocktail</option>
+    <option value="semi">Semi-Formal</option>
+    <option value="casual">Casual</option>
+  </select>
+
+  <textarea id="dressCode"
+    placeholder="Dress code description will appear automatically">
+  </textarea>
+</div>
+
+
 
 
 <div class="field full">
@@ -2539,7 +2554,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  document.querySelectorAll(".faqPreset").forEach(cb => {
+document.querySelectorAll(".faqPreset").forEach(cb => {
 
     cb.addEventListener("change", () => {
 
@@ -2554,13 +2569,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!q || !a) return;
 
-      // ✅ включили
       if (cb.checked) {
         q.value = template.q;
         a.value = template.a;
-      } 
-      // ❌ выключили
-      else {
+      } else {
         if (q.value === template.q) {
           q.value = "";
           a.value = "";
@@ -2570,6 +2582,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   });
+
+  // ==========================
+  // DRESS CODE LOGIC
+  // ==========================
+
+  const dressTemplates = {
+    formal: "Formal attire (black tie optional, suits and evening dresses).",
+    cocktail: "Cocktail attire (dresses, button-down shirts, no jeans).",
+    semi: "Semi-formal attire (dressy but comfortable).",
+    casual: "Casual attire (light and comfortable, but no beachwear)."
+  };
+
+  const dressSelect = document.getElementById("dressCodeSelect");
+  const dressTextarea = document.getElementById("dressCode");
+
+  if (dressSelect && dressTextarea) {
+    dressSelect.addEventListener("change", () => {
+      const val = dressSelect.value;
+      if (!val) return;
+
+      dressTextarea.value = dressTemplates[val];
+    });
+  }
 
 });
 </script>
