@@ -1068,6 +1068,25 @@ Expedia — https://www.expedia.com
 
 <div class="field full">
   <label>Important Info</label>
+
+
+
+<!-- 🔥 ДОБАВЛЯЕМ ЭТО -->
+  <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:10px;">
+
+    <label><input type="checkbox" class="infoPreset" data-type="parking"> Parking info</label>
+
+    <label><input type="checkbox" class="infoPreset" data-type="outdoor"> Outdoor wedding</label>
+
+    <label><input type="checkbox" class="infoPreset" data-type="kids"> Adults only</label>
+
+    <label><input type="checkbox" class="infoPreset" data-type="unplugged"> Unplugged ceremony</label>
+
+  </div>
+  <!-- 🔥 ДО СЮДА -->
+
+
+
   <textarea id="importantInfo"
     placeholder="Add any important details guests should know (parking, outdoor ceremony, timing, etc.)">
   </textarea>
@@ -2565,7 +2584,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-document.querySelectorAll(".faqPreset").forEach(cb => {
+const infoTemplates = {
+  parking: "Parking is available at the venue.",
+  outdoor: "This will be an outdoor event. Please dress accordingly.",
+  kids: "This will be an adults-only celebration.",
+  unplugged: "We kindly ask for an unplugged ceremony (no phones or cameras)."
+};
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ==========================
+  // HELPER (🔥 обязательно)
+  // ==========================
+  function setValueAndTrigger(el, value) {
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event("input"));
+  }
+
+  // ==========================
+  // FAQ LOGIC
+  // ==========================
+  document.querySelectorAll(".faqPreset").forEach(cb => {
 
     cb.addEventListener("change", () => {
 
@@ -2581,12 +2622,12 @@ document.querySelectorAll(".faqPreset").forEach(cb => {
       if (!q || !a) return;
 
       if (cb.checked) {
-setValueAndTrigger(q, template.q);
-setValueAndTrigger(a, template.a);
+        setValueAndTrigger(q, template.q);
+        setValueAndTrigger(a, template.a);
       } else {
         if (q.value === template.q) {
-setValueAndTrigger(q, "");
-setValueAndTrigger(a, "");
+          setValueAndTrigger(q, "");
+          setValueAndTrigger(a, "");
         }
       }
 
@@ -2595,9 +2636,37 @@ setValueAndTrigger(a, "");
   });
 
   // ==========================
+  // IMPORTANT INFO LOGIC
+  // ==========================
+  document.querySelectorAll(".infoPreset").forEach(cb => {
+
+    cb.addEventListener("change", () => {
+
+      const type = cb.dataset.type;
+      const template = infoTemplates[type];
+      const textarea = document.getElementById("importantInfo");
+
+      if (!template || !textarea) return;
+
+      let current = textarea.value || "";
+
+      if (cb.checked) {
+        if (!current.includes(template)) {
+          current += (current ? "\n" : "") + template;
+        }
+      } else {
+        current = current.replace(template, "").trim();
+      }
+
+      setValueAndTrigger(textarea, current);
+
+    });
+
+  });
+
+  // ==========================
   // DRESS CODE LOGIC
   // ==========================
-
   const dressTemplates = {
     formal: "Formal attire (black tie optional, suits and evening dresses).",
     cocktail: "Cocktail attire (dresses, button-down shirts, no jeans).",
