@@ -1532,6 +1532,47 @@ if(openPreviewBtn){
 
 }
 
+
+
+// ==========================
+// TEMPLATES (GLOBAL)
+// ==========================
+const faqTemplates = {
+  dress: {
+    q: "What is the dress code?",
+    a: "Cocktail attire (dresses, button-down shirts, no jeans)."
+  },
+  kids: {
+    q: "Are children invited?",
+    a: "We love your little ones, but this will be an adults-only celebration."
+  },
+  plusone: {
+    q: "Can I bring a plus one?",
+    a: "Plus ones are only included if listed on your invitation."
+  },
+  parking: {
+    q: "Is there parking available?",
+    a: "Parking is available at the venue."
+  },
+  arrival: {
+    q: "What time should I arrive?",
+    a: "Please arrive 15–20 minutes before the ceremony."
+  },
+  meal: {
+    q: "Do I need to select my meal in advance?",
+    a: "Yes, please select your meal when you RSVP."
+  }
+};
+
+const infoTemplates = {
+  parking: "Parking is available at the venue.",
+  outdoor: "This will be an outdoor event. Please dress accordingly.",
+  kids: "This will be an adults-only celebration.",
+  unplugged: "We kindly ask for an unplugged ceremony (no phones or cameras)."
+};
+
+
+
 (async () => {
 
   // 🔹 1. СТАРЫЕ ДАННЫЕ (форма)
@@ -2592,43 +2633,6 @@ document.addEventListener("DOMContentLoaded", () => {
     dropdown.classList.remove("open");
   });
 
-  // ==========================
-  // 🔥 FAQ LOGIC (FIXED)
-  // ==========================
-
-  const faqTemplates = {
-    dress: {
-      q: "What is the dress code?",
-      a: "Cocktail attire (dresses, button-down shirts, no jeans)."
-    },
-    kids: {
-      q: "Are children invited?",
-      a: "We love your little ones, but this will be an adults-only celebration."
-    },
-    plusone: {
-      q: "Can I bring a plus one?",
-      a: "Plus ones are only included if listed on your invitation."
-    },
-    parking: {
-      q: "Is there parking available?",
-      a: "Parking is available at the venue."
-    },
-    arrival: {
-      q: "What time should I arrive?",
-      a: "Please arrive 15–20 minutes before the ceremony."
-    },
-    meal: {
-      q: "Do I need to select my meal in advance?",
-      a: "Yes, please select your meal when you RSVP."
-    }
-  };
-
-const infoTemplates = {
-  parking: "Parking is available at the venue.",
-  outdoor: "This will be an outdoor event. Please dress accordingly.",
-  kids: "This will be an adults-only celebration.",
-  unplugged: "We kindly ask for an unplugged ceremony (no phones or cameras)."
-};
 
 
   // ==========================
