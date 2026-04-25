@@ -154,14 +154,32 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 
 function parseLinks(text){
   if(!text) return "";
+
   return text.split("\n").map(line=>{
-    const [name, link] = line.split("—");
-    if(link){
-      return `<a class="link-item" href="${link.trim()}" target="_blank">${name.trim()}</a>`;
+    let [name, link] = line.split("—");
+
+    name = (name || "").trim();
+    link = (link || "").trim();
+
+    // если ссылки нет — используем name как ссылку
+    if(!link && name.includes(".")){
+      link = name;
     }
-    return `<div class="link-item">${line}</div>`;
+
+    // если нет http — добавляем
+    if(link && !link.startsWith("http")){
+      link = "https://" + link;
+    }
+
+    if(link){
+      return `<a class="link-item" href="${link}" target="_blank">${name}</a>`;
+    }
+
+    return `<div class="link-item">${name}</div>`;
   }).join("");
 }
+
+
 
 async function loadData(){
   const token = getToken();
