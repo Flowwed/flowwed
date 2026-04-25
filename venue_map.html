@@ -1,317 +1,295 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Travel & Details</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wedding Details</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-/* ===== BASE ===== */
 body{
   margin:0;
-  padding:20px 14px 28px;
-  background:#fff6f6;
-  font-family:Arial, sans-serif;
+  font-family:Arial;
+  background:#fdeff1;
+  color:#732323;
 }
 
-/* ===== TITLE ===== */
-h1{
-  margin:0;
+header{
   text-align:center;
-  font-size:32px;
-  color:#6b2f38;
+  padding:40px 20px;
 }
 
-#weddingDate{
-  text-align:center;
-  margin-top:10px;
-  margin-bottom:18px;
-  font-size:18px;
-  font-weight:800;
-  color:#9c5962;
-}
+h1{color:#a52126;margin:0;}
 
-/* ===== CONTENT ===== */
-#content{
-  max-width:760px;
+.container{
+  max-width:900px;
   margin:0 auto;
+  padding:20px;
 }
 
-/* ===== CARDS ===== */
-.acc{
-  margin-bottom:14px;
-  border-radius:16px;
-
-background:rgba(250,242,242,0.9); /* 💎 мягкий, не розовый */
-
-  backdrop-filter: blur(14px);
-
-  border:1px solid rgba(255,255,255,0.7);
-
-  box-shadow:
-    0 10px 25px rgba(0,0,0,0.08),
-    0 4px 10px rgba(0,0,0,0.05),
-    inset 0 1px 2px rgba(255,255,255,0.7);
-
-  transition:0.25s ease;
+.accordion{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-/* HEADER */
-.acc-header{
-  padding:16px 18px;
-  font-weight:700;
-  font-size:17px;
+.acc-item{
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 6px 16px rgba(0,0,0,0.1);
+}
+
+.acc-title{
+  padding:16px;
   cursor:pointer;
-
-  color:#5a2f35;
-  position:relative;
+  font-weight:600;
+  background:#fff5f6;
 }
 
-/* hover */
-.acc:hover{
-  transform: translateY(-1px);
-}
-
-/* click */
-.acc:active{
-  transform: scale(0.995);
-}
-
-/* стрелка */
-.acc-header::after{
-  content:"›";
-  position:absolute;
-  right:18px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:20px;
-  color:rgba(0,0,0,0.25);
-  transition:0.25s;
-}
-
-.acc.open .acc-header::after{
-  transform:translateY(-50%) rotate(90deg);
-}
-
-/* BODY */
-.acc-body{
+.acc-content{
   max-height:0;
   overflow:hidden;
-  transition:0.35s ease;
-  font-size:17px;
-  font-weight:600;  
-  padding:0 18px;
-  color:#6a3a3a;
-  line-height:1.55;
+  transition:0.3s;
+  padding:0 16px;
 }
 
-.acc.open .acc-body{
-  max-height:700px;
-  padding:14px 18px 18px;
+.acc-item.active .acc-content{
+  max-height:800px;
+  padding:16px;
 }
 
-/* LINKS */
-.acc-body a{
-  color:#9c5962;
-  text-decoration:underline;
+.hotel-item{
+  display:block;
+  margin:8px 0;
+  padding:10px;
+  border-radius:10px;
+  background:#ffe5e8;
+  text-decoration:none;
+  color:#732323;
 }
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px){
-
-  h1{
-    font-size:26px;
-  }
-
-  #weddingDate{
-    font-size:17px;
-  }
-
-  .acc-header{
-    font-size:16px;
-  }
-
-  .acc-body{
-    font-size:15px;
-  }
+.timeline{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
+
+.timeline-item{
+  display:flex;
+  gap:12px;
+  background:#fff5f6;
+  padding:10px;
+  border-radius:10px;
+}
+
+.timeline-time{
+  font-weight:700;
+  color:#a52126;
+  min-width:80px;
+}
+
+.timeline-text{
+  color:#6f2a2a;
+}
+
 
 </style>
 </head>
 
 <body>
 
-<h1 id="couple"></h1>
-<div id="weddingDate"></div>
-<div id="content"></div>
+<header>
+  <h1 id="coupleName">Wedding</h1>
+</header>
+
+<div class="container">
+
+<div class="accordion">
+
+<div class="acc-item active">
+  <div class="acc-title">⏰ Schedule</div>
+  <div class="acc-content" id="schedule"></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-title">✈️ Travel</div>
+<div class="acc-content" id="travel"></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-title">🏨 Hotels</div>
+<div class="acc-content" id="hotels"></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-title">📍 Venue</div>
+<div class="acc-content" id="venue"></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-title">👗 Dress Code</div>
+<div class="acc-content" id="dress"></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-title">🗺 Things to Do</div>
+<div class="acc-content" id="things"></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-title">❓ FAQ</div>
+<div class="acc-content" id="faq"></div>
+</div>
+
+</div>
+
+</div>
 
 <script>
+const SUPABASE_URL = "https://octwwpatppbenqwkcqaw.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
+; // ← вставь свой
 
-// 🔑 token
-const params = new URLSearchParams(location.search);
-const token = params.get("t");
+function getToken(){
+  const p = new URLSearchParams(location.search);
+  return p.get("t") || p.get("token") || "";
+}
 
-// 🔌 Supabase
-const sb = supabase.createClient(
-  "https://octwwpatppbenqwkcqaw.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
-  {
-    global:{
-      headers:{
-        site_edit_token: token
-      }
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  global:{
+    headers:{
+      site_edit_token: getToken()
     }
   }
-);
+});
 
+async function loadData(){
+  const token = getToken();
+  if(!token) return;
 
-// 🚀 LOAD
-async function load(){
-
-  if(!token){
-    document.body.innerHTML = "❌ Нет токена";
-    return;
-  }
-
-  const { data } = await sb
+  const { data, error } = await sb
     .from("wedding_info")
     .select("*")
+    .eq("site_edit_token", token)
     .maybeSingle();
 
-  if(!data){
-    document.body.innerHTML = "❌ Нет данных";
+  if(error){
+    console.log(error);
     return;
   }
 
-  render(data);
-}
+  if(!data) return;
 
+  // NAME
+  document.getElementById("coupleName").innerText =
+    data.couple_name || "Wedding";
 
-// 📅 DATE FORMAT
-function formatDate(dateStr){
-  if(!dateStr) return "";
+  // TRAVEL
+  document.getElementById("travel").innerHTML = `
+    ${data.flights_text || ""}
+    <br><br>
+    <b>Airport:</b> ${data.airport || ""}<br>
+    <b>Transfer:</b> ${data.transfer_time || ""}
+  `;
 
-  const date = new Date(dateStr);
+  // SCHEDULE
 
-  return date.toLocaleDateString("en-US", {
-    year:"numeric",
-    month:"long",
-    day:"numeric"
-  });
-}
+const scheduleEl = document.getElementById("schedule");
 
+if (data.schedule && Array.isArray(data.schedule)) {
 
-// 📦 ACCORDION
-function accordion(title, content){
-  return `
-    <div class="acc">
-      <div class="acc-header">${title}</div>
-      <div class="acc-body">${content}</div>
+  scheduleEl.innerHTML = `
+    <div class="timeline">
+      ${data.schedule
+        .filter(i => i.time || i.text)
+        .map(i => `
+          <div class="timeline-item">
+            <div class="timeline-time">${i.time || ""}</div>
+            <div class="timeline-text">${i.text || ""}</div>
+          </div>
+        `).join("")}
+    </div>
+  `;
+
+} else {
+
+  // fallback (старые поля)
+  const list = [
+    [data.schedule_time_1, data.schedule_text_1],
+    [data.schedule_time_2, data.schedule_text_2],
+    [data.schedule_time_3, data.schedule_text_3],
+    [data.schedule_time_4, data.schedule_text_4]
+  ];
+
+  scheduleEl.innerHTML = `
+    <div class="timeline">
+      ${list
+        .filter(([t, txt]) => t || txt)
+        .map(([t, txt]) => `
+          <div class="timeline-item">
+            <div class="timeline-time">${t || ""}</div>
+            <div class="timeline-text">${txt || ""}</div>
+          </div>
+        `).join("")}
     </div>
   `;
 }
 
 
-// 🎨 RENDER
-function render(d){
 
-  document.getElementById("couple").innerText =
-    d.couple_name || "Wedding";
+  // HOTELS
+  const hotelsEl = document.getElementById("hotels");
 
-  document.getElementById("weddingDate").innerText =
-    formatDate(d.wedding_date);
-
-
-  // 🔥 универсальная функция проверки пустоты
-  function safe(val){
-    if(!val) return "";
-
-    if(typeof val === "string" && val.trim() === "") return "";
-
-    return val;
+  if(data.hotels){
+    hotelsEl.innerHTML = data.hotels.split("\n").map(line=>{
+      const [name, link] = line.split("—");
+      if(link){
+        return `<a class="hotel-item" href="${link.trim()}" target="_blank">${name.trim()}</a>`;
+      }
+      return `<div class="hotel-item">${line}</div>`;
+    }).join("");
+  } else {
+    hotelsEl.innerHTML = "No hotel info yet.";
   }
 
-
-  // 🔥 SCHEDULE
-  const schedule =
-    (d.schedule && d.schedule.length)
-      ? d.schedule
-          .filter(i => safe(i.time) || safe(i.text))
-          .map(i => `<div>${i.time || ""} — ${i.text || ""}</div>`)
-          .join("")
-      : "No Data";
-
-
-  // 🔥 HOTELS (ВОТ ТУТ БЫЛ КОСЯК)
-  const hotelsArr = [
-    safe(d.hotel_1),
-    safe(d.hotel_2),
-    safe(d.hotel_3)
-  ].filter(Boolean);
-
-  const hotels =
-    hotelsArr.length
-      ? hotelsArr.map(h => `<div>${h}</div>`).join("")
-      : "No Data";
-
-
-  // 🔥 FAQ
-  const faq =
-    (d.faq && d.faq.length)
-      ? d.faq
-          .filter(i => safe(i.q) || safe(i.a))
-          .map(i => `<div><b>${i.q || ""}</b><br>${i.a || ""}</div>`)
-          .join("")
-      : "No Data";
-
-
-  const html = `
-
-  ${accordion("Schedule", schedule)}
-
-  ${accordion("Flights", safe(d.flights_text) || "No Data")}
-
-  ${accordion("Hotels", hotels)}
-
-  ${accordion("Venue", `
-    ${safe(d.venue_name) || ""}
-    ${safe(d.venue_address) ? "<br>"+d.venue_address : ""}
-    ${
-      safe(d.venue_address)
-        ? `<br><a href="https://maps.google.com/?q=${encodeURIComponent(d.venue_address)}" target="_blank">Open Map</a>`
-        : ""
-    }
-  ` || "No Data")}
-
-  ${accordion("FAQ", faq)}
-
+  // VENUE
+  document.getElementById("venue").innerHTML = `
+    <b>${data.venue_name || ""}</b><br>
+    ${data.venue_address || ""}<br><br>
+    <a href="${data.map_link || "#"}" target="_blank">Open map</a>
   `;
 
-  document.getElementById("content").innerHTML = html;
+  // DRESS
+  document.getElementById("dress").innerHTML =
+    data.dress_code || "";
+
+  // THINGS
+  document.getElementById("things").innerHTML =
+    data.things_to_do || "";
+
+  // FAQ
+  const faqEl = document.getElementById("faq");
+  faqEl.innerHTML = "";
+
+  if(data.faq){
+    data.faq.forEach(f=>{
+      faqEl.innerHTML += `<b>${f.q}</b><br>${f.a}<br><br>`;
+    });
+  }
 }
 
-// 🖱 CLICK
-document.addEventListener("click", (e)=>{
+loadData();
 
-  if(!e.target.classList.contains("acc-header")) return;
-
-  const block = e.target.parentElement;
-
-  document.querySelectorAll(".acc").forEach(el=>{
-    if(el !== block) el.classList.remove("open");
-  });
-
-  block.classList.toggle("open");
+// ACCORDION (auto-close others)
+document.querySelectorAll(".acc-title").forEach(t=>{
+  t.onclick = ()=>{
+    document.querySelectorAll(".acc-item").forEach(i=>i.classList.remove("active"));
+    t.parentElement.classList.add("active");
+  };
 });
-
-
-// star
-
-load();
-
 </script>
+
 </body>
 </html>
