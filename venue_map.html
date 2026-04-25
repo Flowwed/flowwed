@@ -44,11 +44,55 @@
 }
 
 .acc-item{
-  background:#fff;
-  border-radius:14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.96),
+    rgba(255,245,246,0.92)
+  );
+
+  border-radius:18px;
   overflow:hidden;
-  box-shadow:0 6px 16px rgba(0,0,0,0.1);
+
+  /* 👇 ГЛАВНОЕ: мягкий двойной свет */
+  box-shadow:
+    0 20px 45px rgba(0,0,0,0.12),
+    0 8px 18px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.7),   /* свет сверху */
+    inset 0 -1px 2px rgba(180,17,17,0.05); /* лёгкий низ */
+
+  transition: all 0.25s ease;
 }
+
+.acc-item:hover{
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 26px 55px rgba(0,0,0,0.15),
+    0 10px 22px rgba(0,0,0,0.10),
+    inset 0 2px 4px rgba(255,255,255,0.9),
+    inset 0 -6px 14px rgba(0,0,0,0.06);
+}
+
+.acc-item.active{
+  background: linear-gradient(
+    180deg,
+    #fff9fa,
+    #ffe7eb
+  );
+
+  box-shadow:
+    0 24px 50px rgba(0,0,0,0.14),
+    0 10px 24px rgba(0,0,0,0.10),
+    inset 0 2px 4px rgba(255,255,255,0.8),
+    inset 0 -5px 12px rgba(165,33,38,0.05);
+}
+
+.acc-item.active .acc-title{
+  background: rgba(165,33,38,0.055);
+  border-left: 4px solid rgba(165,33,38,0.45);
+}
+
+
 
 .acc-title{
   padding:16px;
@@ -107,6 +151,46 @@
   text-decoration:none;
   color:#732323;
 }
+
+.faq-item{
+  margin-bottom:12px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#fff5f6;
+}
+
+.faq-question{
+  padding:14px;
+  font-weight:600;
+  color:#a52126;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  padding:0 14px;
+  transition:0.3s ease;
+  color:#6f2a2a;
+}
+
+.faq-item.active .faq-answer{
+  max-height:200px;
+  padding:10px 14px 14px;
+}
+
+.faq-arrow{
+  transition:0.3s;
+}
+
+.faq-item.active .faq-arrow{
+  transform:rotate(90deg);
+}
+
+
 </style>
 </head>
 
@@ -117,7 +201,7 @@
     <h1 id="coupleName" data-hidden></h1>
 <div id="eventDate" style="margin-top:8px; font-size:18px; opacity:0.9; font-weight:500;" data-hidden></div>
     <p id="storySubtitle" data-hidden style="font-size:18px;">
-  Get ready for the celebration ✨
+  We’re so excited to celebrate our big day with you — get ready ✨
 </p>
 
   
@@ -281,21 +365,47 @@ if (data.wedding_date) {
     <div class="block"><b>Weather</b>${parseLinks(data.weather_link)}</div>
   `;
 
-  // FAQ
-  const faqEl = document.getElementById("faq");
-  faqEl.innerHTML = "";
+// FAQ
+const faqEl = document.getElementById("faq");
+faqEl.innerHTML = "";
 
-  if(data.faq){
-    data.faq.forEach(f=>{
-      faqEl.innerHTML += `
-        <div class="block">
-          <b>${f.q}</b>
-          ${f.a}
+if (data.faq && data.faq.length) {
+
+  faqEl.innerHTML = data.faq.map((f, i) => {
+    const n = i + 1;
+
+    return `
+      <div class="faq-item">
+
+        <div class="faq-question">
+          <span>Q${n}. ${f.q || ""}</span>
+          <span class="faq-arrow">›</span>
         </div>
-      `;
-    });
-  }
+
+        <div class="faq-answer">
+          A${n}. ${f.a || ""}
+        </div>
+
+      </div>
+    `;
+  }).join("");
+
+
+// 👇 ВОТ СЮДА ВСТАВЛЯЕШЬ
+setTimeout(() => {
+  document.querySelectorAll(".faq-question").forEach(q => {
+    q.onclick = () => {
+      const item = q.parentElement;
+      item.classList.toggle("active");
+    };
+  });
+}, 0);
+
 }
+}
+
+
+
 
 loadData();
 
