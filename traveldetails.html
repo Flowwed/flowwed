@@ -1583,6 +1583,38 @@ if(openPreviewBtn){
 
 setFormData(mapped);
 
+// 🔥 SYNC CHECKBOXES AFTER DATA LOAD
+
+// FAQ
+document.querySelectorAll(".faqPreset").forEach(cb => {
+  const type = cb.dataset.type;
+  const template = faqTemplates[type];
+  const i = cb.dataset.index;
+
+  const q = document.getElementById(`faqQ${i}`);
+  if (!q || !template) return;
+
+  if (q.value === template.q) {
+    cb.checked = true;
+  }
+});
+
+// IMPORTANT INFO
+document.querySelectorAll(".infoPreset").forEach(cb => {
+  const type = cb.dataset.type;
+  const template = infoTemplates[type];
+  const textarea = document.getElementById("importantInfo");
+
+  if (!textarea || !template) return;
+
+  if ((textarea.value || "").includes(template)) {
+    cb.checked = true;
+  }
+});
+
+
+
+
 // ✅ правильная инициализация карты
 const mapLink = document.getElementById("mapLink");
 const venueInput = document.getElementById("venueAddress");
@@ -2686,42 +2718,8 @@ else {
     });
   }
 
-// ==========================
-// SYNC CHECKBOXES ON LOAD
-// ==========================
-
-// FAQ sync
-document.querySelectorAll(".faqPreset").forEach(cb => {
-  const type = cb.dataset.type;
-  const template = faqTemplates[type];
-  const i = cb.dataset.index;
-
-  const q = document.getElementById(`faqQ${i}`);
-  if (!q || !template) return;
-
-  if (q.value === template.q) {
-    cb.checked = true;
-  }
-});
-
-// IMPORTANT INFO sync
-document.querySelectorAll(".infoPreset").forEach(cb => {
-  const type = cb.dataset.type;
-  const template = infoTemplates[type];
-  const textarea = document.getElementById("importantInfo");
-
-  if (!textarea || !template) return;
-
-  if ((textarea.value || "").includes(template)) {
-    cb.checked = true;
-  }
-});
-
-
 
 });
-
-
 
 
 
