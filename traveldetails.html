@@ -2533,16 +2533,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  document.querySelectorAll(".faqPreset").forEach(cb => {
+document.querySelectorAll(".faqPreset").forEach(cb => {
 
-    cb.addEventListener("change", () => {
+  cb.addEventListener("change", () => {
 
-      if (!cb.checked) return;
+    const type = cb.dataset.type;
+    const template = faqTemplates[type];
 
-      const type = cb.dataset.type;
-      const template = faqTemplates[type];
+    if (!template) return;
 
-      if (!template) return;
+    // ✅ ЕСЛИ ВКЛЮЧИЛИ
+    if (cb.checked) {
 
       let i = 1;
 
@@ -2561,11 +2562,37 @@ document.addEventListener("DOMContentLoaded", () => {
         i++;
       }
 
-    });
+    } 
+    // ❌ ЕСЛИ ВЫКЛЮЧИЛИ
+    else {
+
+      let i = 1;
+
+      while (true) {
+        const q = document.getElementById(`faqQ${i}`);
+        const a = document.getElementById(`faqA${i}`);
+
+        if (!q || !a) break;
+
+        if (q.value === template.q) {
+          q.value = "";
+          a.value = "";
+          break;
+        }
+
+        i++;
+      }
+
+    }
 
   });
 
 });
+});
+
+
+
+
 </script>
 
 
