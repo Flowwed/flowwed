@@ -1331,7 +1331,14 @@ const fieldIds = [
     function setFormData(data){
       fieldIds.forEach(id => {
         const el = document.getElementById(id);
-        if (el && data[id] != null) el.value = data[id];
+
+
+if (el && data[id] != null) {
+  el.value = data[id];
+  el.dispatchEvent(new Event("input"));
+}
+
+
       });
     }
 
@@ -2622,13 +2629,15 @@ const infoTemplates = {
       if (cb.checked) {
         setValueAndTrigger(q, template.q);
         setValueAndTrigger(a, template.a);
-      } else {
-        if (q.value === template.q) {
-          setValueAndTrigger(q, "");
-          setValueAndTrigger(a, "");
-        }
-      }
+        saveDraft();
 
+else {
+  if (q.value === template.q) {
+    setValueAndTrigger(q, "");
+    setValueAndTrigger(a, "");
+    saveDraft();
+  }
+}
     });
 
   });
@@ -2657,6 +2666,7 @@ const infoTemplates = {
       }
 
       setValueAndTrigger(textarea, current);
+      saveDraft();
 
     });
 
@@ -2681,6 +2691,7 @@ const infoTemplates = {
       if (!val) return;
 
       setValueAndTrigger(dressTextarea, dressTemplates[val]);
+      saveDraft();
     });
   }
 
