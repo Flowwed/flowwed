@@ -2485,6 +2485,14 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
+
+ // 👇 ВСТАВЬ СЮДА
+  function setValueAndTrigger(el, value) {
+    if (!el) return;
+    el.value = value;
+    el.dispatchEvent(new Event("input"));
+  }
+
   const trigger = document.querySelector(".menu-trigger");
   const dropdown = document.getElementById("menuDropdown");
   const sourceNav = document.querySelector(".top-nav");
@@ -2502,6 +2510,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // подсветка
   const currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
+
+
   dropdown.querySelectorAll("a").forEach(link => {
     const href = link.getAttribute("href");
     if (!href) return;
@@ -2518,6 +2528,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.stopPropagation();
     dropdown.classList.toggle("open");
   });
+
 
   document.addEventListener("click", () => {
     dropdown.classList.remove("open");
@@ -2570,12 +2581,12 @@ document.querySelectorAll(".faqPreset").forEach(cb => {
       if (!q || !a) return;
 
       if (cb.checked) {
-        q.value = template.q;
-        a.value = template.a;
+setValueAndTrigger(q, template.q);
+setValueAndTrigger(a, template.a);
       } else {
         if (q.value === template.q) {
-          q.value = "";
-          a.value = "";
+setValueAndTrigger(q, "");
+setValueAndTrigger(a, "");
         }
       }
 
@@ -2602,7 +2613,7 @@ document.querySelectorAll(".faqPreset").forEach(cb => {
       const val = dressSelect.value;
       if (!val) return;
 
-      dressTextarea.value = dressTemplates[val];
+      setValueAndTrigger(dressTextarea, dressTemplates[val]);
     });
   }
 
