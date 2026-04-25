@@ -338,7 +338,7 @@ body::after { ... }
   left: 50%;
   transform: translateX(-50%) scale(0.98);
 
-  display: inline-block;
+  display: block;
   box-sizing: border-box;
 
   background: #e5e5ea;
@@ -348,12 +348,12 @@ body::after { ... }
   border-radius: 20px;
 
   font-size: 15px;
+  font-weight: 500;
   line-height: 1.45;
   text-align: center;
 
-  width: auto;
-  max-width: 320px;
-
+  width: 420px;
+  max-width: 420px;
   white-space: normal;
 
   box-shadow:
@@ -362,13 +362,12 @@ body::after { ... }
 
   opacity: 0;
   pointer-events: none;
-
   transition:
     opacity 0.25s ease,
     transform 0.25s ease;
-
   z-index: 20;
 }
+
 
 .big-btn .bubble::after {
   content: "";
