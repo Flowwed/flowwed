@@ -2600,15 +2600,6 @@ const infoTemplates = {
 
 
   // ==========================
-  // HELPER (🔥 обязательно)
-  // ==========================
-  function setValueAndTrigger(el, value) {
-    if (!el) return;
-    el.value = value;
-    el.dispatchEvent(new Event("input"));
-  }
-
-  // ==========================
   // FAQ LOGIC
   // ==========================
   document.querySelectorAll(".faqPreset").forEach(cb => {
@@ -2626,19 +2617,19 @@ const infoTemplates = {
 
       if (!q || !a) return;
 
-      if (cb.checked) {
-        setValueAndTrigger(q, template.q);
-        setValueAndTrigger(a, template.a);
-        saveDraft();
-
+if (cb.checked) {
+  setValueAndTrigger(q, template.q);
+  setValueAndTrigger(a, template.a);
+  saveDraft();
+} 
 else {
   if (q.value === template.q) {
     setValueAndTrigger(q, "");
     setValueAndTrigger(a, "");
     saveDraft();
   }
-}
-    });
+}  
+  });
 
   });
 
