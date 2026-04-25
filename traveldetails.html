@@ -1083,6 +1083,24 @@ Google Weather — https://www.google.com/search?q=weather
 <div class="section">
   <div class="section-box">
     <h2>FAQ</h2>
+
+
+<div style="display:flex; flex-direction:column; gap:8px;">
+
+        <label><input type="checkbox" class="faqPreset" data-type="dress"> Dress code</label>
+        <label><input type="checkbox" class="faqPreset" data-type="kids"> Adults only / kids</label>
+        <label><input type="checkbox" class="faqPreset" data-type="plusone"> Plus one policy</label>
+        <label><input type="checkbox" class="faqPreset" data-type="parking"> Parking</label>
+        <label><input type="checkbox" class="faqPreset" data-type="arrival"> Arrival time</label>
+        <label><input type="checkbox" class="faqPreset" data-type="meal"> Meal selection</label>
+
+      </div>
+    </div>
+    <!-- 🔥 ДО СЮДА -->
+
+
+
+
     <div class="grid">
 
       <div class="field"><label>Question 1</label><input id="faqQ1"></div>
@@ -2443,7 +2461,6 @@ document.getElementById("addFaqBtn").addEventListener("click", () => {
 
 </script>
 
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -2455,13 +2472,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const token = window.APP_TOKEN;
 
-  // 🔥 строим меню
+  // меню
   dropdown.innerHTML =
     `<a href="/dashboard.html?t=${token}" class="menu-back">← Home</a>` +
     `<div class="menu-divider"></div>` +
     sourceNav.innerHTML;
 
-  // 🔥 ПОДСВЕТКА
+  // подсветка
   const currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
   dropdown.querySelectorAll("a").forEach(link => {
@@ -2475,7 +2492,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 🔥 open / close
+  // open / close
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("open");
@@ -2485,10 +2502,71 @@ document.addEventListener("DOMContentLoaded", () => {
     dropdown.classList.remove("open");
   });
 
+  // ==========================
+  // 🔥 FAQ LOGIC (ПРАВИЛЬНО)
+  // ==========================
+
+  const faqTemplates = {
+    dress: {
+      q: "What is the dress code?",
+      a: "Cocktail attire (dresses, button-down shirts, no jeans)."
+    },
+    kids: {
+      q: "Are children invited?",
+      a: "We love your little ones, but this will be an adults-only celebration."
+    },
+    plusone: {
+      q: "Can I bring a plus one?",
+      a: "Plus ones are only included if listed on your invitation."
+    },
+    parking: {
+      q: "Is there parking available?",
+      a: "Parking is available at the venue."
+    },
+    arrival: {
+      q: "What time should I arrive?",
+      a: "Please arrive 15–20 minutes before the ceremony."
+    },
+    meal: {
+      q: "Do I need to select my meal in advance?",
+      a: "Yes, please select your meal when you RSVP."
+    }
+  };
+
+  document.querySelectorAll(".faqPreset").forEach(cb => {
+
+    cb.addEventListener("change", () => {
+
+      if (!cb.checked) return;
+
+      const type = cb.dataset.type;
+      const template = faqTemplates[type];
+
+      if (!template) return;
+
+      let i = 1;
+
+      while (true) {
+        const q = document.getElementById(`faqQ${i}`);
+        const a = document.getElementById(`faqA${i}`);
+
+        if (!q || !a) break;
+
+        if (!q.value && !a.value) {
+          q.value = template.q;
+          a.value = template.a;
+          break;
+        }
+
+        i++;
+      }
+
+    });
+
+  });
+
 });
-
 </script>
-
 
 
 
