@@ -2711,28 +2711,23 @@ function updateMealOptions() {
   if (!mealToggle.checked) {
     mealField.style.display = "none";
     mealSelectField.style.display = "none";
-    mealPresetGroup.style.display = "none"; // 👈 добавили
+    mealPresetGroup.style.display = "none";
     return;
   }
 
-
-
-  // ✅ показываем верхнее поле
+  // ✅ показываем всё
   mealField.style.display = "block";
-
-  // ✅ показываем dropdown
   mealSelectField.style.display = "block";
-
-  mealPresetGroup.style.display = "block"; // 👈 добавили
+  mealPresetGroup.style.display = "block";
 
   const selected = [];
 
-  // 🔥 1. берем из чекбоксов
+  // 🔥 1. собираем ТОЛЬКО чекбоксы
   document.querySelectorAll(".mealPresetOpt:checked").forEach(cb => {
     selected.push(cb.value);
   });
 
-  // 🔥 2. берем из input (кастом)
+  // 🔥 2. добавляем кастом (но без дубликатов)
   const raw = mealInput.value || "";
   const custom = raw.split(",").map(x => x.trim()).filter(Boolean);
 
@@ -2742,10 +2737,12 @@ function updateMealOptions() {
     }
   });
 
-  // очищаем dropdown
+  // 🔥 3. ОБЯЗАТЕЛЬНО записываем обратно в input
+  mealInput.value = selected.join(", ");
+
+  // 🔥 4. пересобираем dropdown
   mealSelect.innerHTML = `<option value="">Select a meal</option>`;
 
-  // добавляем всё
   selected.forEach(opt => {
     const el = document.createElement("option");
     el.value = opt.toLowerCase();
@@ -2753,8 +2750,6 @@ function updateMealOptions() {
     mealSelect.appendChild(el);
   });
 }
-
-
 // события
 
 mealToggle.addEventListener("change", () => {
