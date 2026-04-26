@@ -2060,6 +2060,13 @@ console.log("SUPABASE ERROR:", error);
 
 if(error || !data) return;
 
+// 🔥 ВОССТАНОВЛЕНИЕ MEAL
+if (mealInput && data.meal_options) {
+  mealInput.value = data.meal_options;
+  updateMealOptions(); // важно — пересоберёт чекбоксы и dropdown
+}
+
+
 /* inputs */
 
 const rsvp = document.getElementById("rsvpDate");
@@ -2793,11 +2800,11 @@ mealInput.addEventListener("change", async () => {
 
 // 🔥 SYNC ЧЕКБОКСОВ ИЗ INPUT (при загрузке)
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
-  if ((mealInput.value || "").includes(cb.value)) {
-    cb.checked = true;
-  }
+  cb.addEventListener("change", () => {
+    updateMealOptions();
+    mealInput.dispatchEvent(new Event("change")); // 🔥 ВОТ ЭТО
+  });
 });
-
 
 // 🔥 первичная инициализация (ПОСЛЕ sync!)
 updateMealOptions();
