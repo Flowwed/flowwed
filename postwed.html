@@ -2042,18 +2042,6 @@ document.querySelectorAll("[data-sync]").forEach(field => {
 
 });
 
-if (mealInput) {
-  mealInput.addEventListener("input", async () => {
-
-    const token = window.APP_TOKEN;
-
-    await supabase
-      .from("sites")
-      .update({ meal_options: mealInput.value })
-      .eq("edit_token", token);
-
-  });
-}
 
 async function loadWeddingData(){
 
@@ -2691,6 +2679,21 @@ const mealPresetGroup = document.getElementById("mealPresetGroup");
 
 const mealField = document.getElementById("mealOptionsField");
 const mealInput = document.getElementById("mealOptionsInput");
+
+if (mealInput) {
+  mealInput.addEventListener("input", async () => {
+
+    const token = window.APP_TOKEN;
+
+    await supabase
+      .from("sites")
+      .update({ meal_options: mealInput.value })
+      .eq("edit_token", token);
+
+  });
+}
+
+
 
 const mealPreset = document.getElementById("mealPreset");
 
