@@ -1665,7 +1665,7 @@ margin-bottom:16px;
 
 
 
-<div id="mealPresetGroup" style="margin-bottom:10px;">
+<div id="mealPresetGroup" style="display:none;margin-bottom:10px;">
 
   <label><input type="checkbox" class="mealPresetOpt" value="Chicken"> Chicken</label><br>
   <label><input type="checkbox" class="mealPresetOpt" value="Fish"> Fish</label><br>
@@ -1677,7 +1677,7 @@ margin-bottom:16px;
 </div>
 
 <div id="mealOptionsField" style="display:none;margin-bottom:20px;">
-  <label style="font-weight:600;">Meal options</label>
+  <label style="font-weight:600;">Add meal options</label>
 
   <input type="text" id="mealOptionsInput"
     placeholder="Chicken, Fish, Vegetarian"
@@ -2042,6 +2042,19 @@ document.querySelectorAll("[data-sync]").forEach(field => {
 
 });
 
+if (mealInput) {
+  mealInput.addEventListener("input", async () => {
+
+    const token = window.APP_TOKEN;
+
+    await supabase
+      .from("sites")
+      .update({ meal_options: mealInput.value })
+      .eq("edit_token", token);
+
+  });
+}
+
 async function loadWeddingData(){
 
 const token = window.APP_TOKEN;
@@ -2050,7 +2063,7 @@ console.log("TOKEN:", token);
 
 const { data, error } = await supabase
   .from("sites")
-  .select("rsvp_date, wedding_date, wedding_time, venue, address")
+  .select("rsvp_date, wedding_date, wedding_time, venue, address, meal_options")
   .eq("edit_token", token)
   .single();
 
@@ -2672,6 +2685,10 @@ if (failures > 0) {
 
 
 const mealToggle = document.getElementById("enableMeal");
+
+const mealPresetGroup = document.getElementById("mealPresetGroup");
+
+
 const mealField = document.getElementById("mealOptionsField");
 const mealInput = document.getElementById("mealOptionsInput");
 
@@ -2698,14 +2715,19 @@ function updateMealOptions() {
   if (!mealToggle.checked) {
     mealField.style.display = "none";
     mealSelectField.style.display = "none";
+    mealPresetGroup.style.display = "none"; // 👈 добавили
     return;
   }
+
+
 
   // ✅ показываем верхнее поле
   mealField.style.display = "block";
 
   // ✅ показываем dropdown
   mealSelectField.style.display = "block";
+
+  mealPresetGroup.style.display = "block"; // 👈 добавили
 
   const selected = [];
 
