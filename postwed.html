@@ -2766,21 +2766,28 @@ function updateMealOptions() {
 
 mealToggle.addEventListener("change", () => {
   updateMealOptions();
-  saveDraft();
 });
 
 // чекбоксы
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
   cb.addEventListener("change", () => {
     updateMealOptions();
-    saveDraft();
   });
 });
 
 // input
 mealInput.addEventListener("input", () => {
   updateMealOptions();
-  saveDraft();
+});
+
+
+mealInput.addEventListener("change", async () => {
+  const token = window.APP_TOKEN;
+
+  await supabase
+    .from("sites")
+    .update({ meal_options: mealInput.value })
+    .eq("edit_token", token);
 });
 
 
