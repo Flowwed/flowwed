@@ -2687,20 +2687,6 @@ const mealPresetGroup = document.getElementById("mealPresetGroup");
 const mealField = document.getElementById("mealOptionsField");
 const mealInput = document.getElementById("mealOptionsInput");
 
-if (mealInput) {
-  mealInput.addEventListener("change", async () => {
-
-    const token = window.APP_TOKEN;
-
-    await supabase
-      .from("sites")
-      .update({ meal_options: mealInput.value })
-      .eq("edit_token", token);
-
-  });
-}
-
-
 
 const mealPreset = document.getElementById("mealPreset");
 
@@ -2789,14 +2775,21 @@ mealInput.addEventListener("input", () => {
 
 
 mealInput.addEventListener("change", async () => {
+
   const token = window.APP_TOKEN;
 
-  await supabase
+  console.log("SAVING MEAL:", mealInput.value);
+
+  const { data, error } = await supabase
     .from("sites")
     .update({ meal_options: mealInput.value })
-    .eq("edit_token", token);
-});
+    .eq("edit_token", token)
+    .select();
 
+  console.log("MEAL RESULT:", data);
+  console.log("MEAL ERROR:", error);
+
+});
 
 // 🔥 SYNC ЧЕКБОКСОВ ИЗ INPUT (при загрузке)
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
