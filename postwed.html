@@ -1598,7 +1598,6 @@ Check this address on map
 
 </div>
 
-
 <!-- HEADER -->
 
 <div style="
@@ -1609,49 +1608,85 @@ margin-top:16px;
 margin-bottom:16px;
 ">
 
-<div style="
-font-weight:700;
-color:#9c1818;
-font-size:14px;
-">
-RSVP Deadline
-</div>
-
-<div style="
-display:flex;
-align-items:center;
-gap:8px;
-">
-
-<input id="rsvpDate" type="date" data-sync="deadline"
-style="
-border:1px solid rgba(160,0,40,0.25);
-padding:6px 10px;
-border-radius:8px;
-font-size:13px;
-background:#eef4ff;
-cursor:pointer;
-">
-
-<span id="rsvpSaved" style="
-font-size:12px;
-color:#2e7d32;
-display:none;
-font-weight:600;
-">
-✓ Saved
-</span>
-
-<div class="date-info">
-  <div class="date-info-icon">i</div>
-  <div class="date-info-text">
-   Your guests are expected to respond before this date
+  <!-- LABEL -->
+  <div style="
+  font-weight:700;
+  color:#9c1818;
+  font-size:14px;
+  ">
+    RSVP Deadline
   </div>
+
+  <!-- DATE + INFO -->
+  <div style="
+  display:flex;
+  align-items:center;
+  gap:8px;
+  ">
+
+    <input id="rsvpDate" type="date" data-sync="deadline"
+    style="
+    border:1px solid rgba(160,0,40,0.25);
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:13px;
+    background:#eef4ff;
+    cursor:pointer;
+    ">
+
+    <span id="rsvpSaved" style="
+    font-size:12px;
+    color:#2e7d32;
+    display:none;
+    font-weight:600;
+    ">
+      ✓ Saved
+    </span>
+
+    <div class="date-info">
+      <div class="date-info-icon">i</div>
+      <div class="date-info-text">
+        Your guests are expected to respond before this date
+      </div>
+    </div>
+
+  </div>
+
 </div>
+
+<!-- MEAL BLOCK -->
+
+<div style="margin-bottom:16px;">
+  <label style="display:flex;align-items:center;gap:8px;">
+    <input type="checkbox" id="enableMeal">
+    <span style="font-weight:600;">Enable meal selection</span>
+  </label>
+</div>
+
+
+
+<div id="mealPresetGroup" style="margin-bottom:10px;">
+
+  <label><input type="checkbox" class="mealPresetOpt" value="Chicken"> Chicken</label><br>
+  <label><input type="checkbox" class="mealPresetOpt" value="Fish"> Fish</label><br>
+  <label><input type="checkbox" class="mealPresetOpt" value="Beef"> Beef</label><br>
+  <label><input type="checkbox" class="mealPresetOpt" value="Vegetarian"> Vegetarian</label><br>
+  <label><input type="checkbox" class="mealPresetOpt" value="Vegan"> Vegan</label><br>
+  <label><input type="checkbox" class="mealPresetOpt" value="Gluten-free"> Gluten-free</label><br>
+
+</div>
+
+<div id="mealOptionsField" style="display:none;margin-bottom:20px;">
+  <label style="font-weight:600;">Meal options</label>
+
+  <input type="text" id="mealOptionsInput"
+    placeholder="Chicken, Fish, Vegetarian"
+    class="couple-field">
 
 </div>
 </div>
-</div>
+
+
 
 <!-- FORM -->
 
@@ -1725,10 +1760,23 @@ margin:18px 0 20px 0;
 border:none;
 border-top:3px solid #b41111;
 ">
+
+
   <div class="field">
     <label style="margin-top:6px;">Name</label>
     <input type="text" placeholder="Your name" disabled>
   </div>
+
+<!-- 🔥 ВОТ СЮДА -->
+
+<div class="field" id="mealSelectField" style="display:none;">
+  <label>Meal Preference</label>
+
+  <select id="mealSelect">
+    <option value="">Select a meal</option>
+  </select>
+</div>
+
 
   <div class="field">
     <label>Number of guests</label>
@@ -2622,6 +2670,105 @@ if (failures > 0) {
 };
 
 
+
+const mealToggle = document.getElementById("enableMeal");
+const mealField = document.getElementById("mealOptionsField");
+const mealInput = document.getElementById("mealOptionsInput");
+
+const mealPreset = document.getElementById("mealPreset");
+
+if (mealPreset) {
+  mealPreset.addEventListener("change", () => {
+    if (!mealPreset.value) return;
+
+    mealInput.value = mealPreset.value;
+
+    updateMealOptions(); // 🔥 сразу обновляем dropdown
+  });
+}
+
+
+
+const mealSelectField = document.getElementById("mealSelectField");
+const mealSelect = document.getElementById("mealSelect");
+
+function updateMealOptions() {
+
+  // ❌ если выключено — скрываем всё
+  if (!mealToggle.checked) {
+    mealField.style.display = "none";
+    mealSelectField.style.display = "none";
+    return;
+  }
+
+  // ✅ показываем верхнее поле
+  mealField.style.display = "block";
+
+  // ✅ показываем dropdown
+  mealSelectField.style.display = "block";
+
+  const selected = [];
+
+  // 🔥 1. берем из чекбоксов
+  document.querySelectorAll(".mealPresetOpt:checked").forEach(cb => {
+    selected.push(cb.value);
+  });
+
+  // 🔥 2. берем из input (кастом)
+  const raw = mealInput.value || "";
+  const custom = raw.split(",").map(x => x.trim()).filter(Boolean);
+
+  custom.forEach(val => {
+    if (!selected.includes(val)) {
+      selected.push(val);
+    }
+  });
+
+  // очищаем dropdown
+  mealSelect.innerHTML = `<option value="">Select a meal</option>`;
+
+  // добавляем всё
+  selected.forEach(opt => {
+    const el = document.createElement("option");
+    el.value = opt.toLowerCase();
+    el.textContent = opt;
+    mealSelect.appendChild(el);
+  });
+}
+
+
+// события
+
+mealToggle.addEventListener("change", () => {
+  updateMealOptions();
+  saveDraft();
+});
+
+// чекбоксы
+document.querySelectorAll(".mealPresetOpt").forEach(cb => {
+  cb.addEventListener("change", () => {
+    updateMealOptions();
+    saveDraft();
+  });
+});
+
+// input
+mealInput.addEventListener("input", () => {
+  updateMealOptions();
+  saveDraft();
+});
+
+
+// 🔥 SYNC ЧЕКБОКСОВ ИЗ INPUT (при загрузке)
+document.querySelectorAll(".mealPresetOpt").forEach(cb => {
+  if ((mealInput.value || "").includes(cb.value)) {
+    cb.checked = true;
+  }
+});
+
+
+// 🔥 первичная инициализация (ПОСЛЕ sync!)
+updateMealOptions();
 
 function validateBlueFields(){
 
