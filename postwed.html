@@ -2728,14 +2728,24 @@ function updateMealOptions() {
   });
 
   // 🔥 2. добавляем кастом (но без дубликатов)
-  const raw = mealInput.value || "";
-  const custom = raw.split(",").map(x => x.trim()).filter(Boolean);
+const raw = mealInput.value || "";
+const custom = raw.split(",").map(x => x.trim()).filter(Boolean);
 
-  custom.forEach(val => {
-    if (!selected.includes(val)) {
-      selected.push(val);
-    }
-  });
+// 👉 берём только те кастомные, которые НЕ были из чекбоксов
+custom.forEach(val => {
+
+  const existsInCheckbox = Array.from(
+    document.querySelectorAll(".mealPresetOpt")
+  ).some(cb => cb.value === val);
+
+  // 👉 если это НЕ чекбокс — оставляем
+  if (!existsInCheckbox && !selected.includes(val)) {
+    selected.push(val);
+  }
+
+});
+
+
 
   // 🔥 3. ОБЯЗАТЕЛЬНО записываем обратно в input
   mealInput.value = selected.join(", ");
