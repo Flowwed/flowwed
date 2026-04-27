@@ -2742,82 +2742,77 @@ if (mealPreset) {
   });
 }
 
+// 🔥 CUSTOM INPUT LISTENER (вот сюда)
+document.getElementById("customMealInput")?.addEventListener("input", updateMealOptions);
 
 const mealSelectField = document.getElementById("mealSelectField");
 const mealSelect = document.getElementById("mealSelect");
 
 function updateMealOptions() {
 
-  // ❌ если выключено — скрываем всё
   if (!mealToggle.checked) {
     mealField.style.display = "none";
-    mealSelectField.style.display = "none";
     mealPresetGroup.style.display = "none";
     return;
   }
 
-  // ✅ показываем всё
   mealField.style.display = "block";
-  mealSelectField.style.display = "block";
   mealPresetGroup.style.display = "block";
 
   const selected = [];
 
-
-
-  // 🔥 1. собираем ТОЛЬКО чекбоксы
-document.querySelectorAll(".mealPresetOpt:checked").forEach(cb => {
-
-  // ❌ пропускаем Custom
-  if (cb.value === "Custom") return;
-
-  selected.push(cb.value);
-});
-
-
-// 🔥 добавляем значения из custom input
-const customField = document.getElementById("customMealInput");
-
-if (customField) {
-  const customValues = (customField.value || "")
-    .split(",")
-    .map(x => x.trim())
-    .filter(Boolean);
-
-  customValues.forEach(val => {
-    if (!selected.includes(val)) {
-      selected.push(val);
-    }
+  // 🔥 1. чекбоксы (кроме Custom)
+  document.querySelectorAll(".mealPresetOpt:checked").forEach(cb => {
+    if (cb.value === "Custom") return;
+    selected.push(cb.value);
   });
+
+  // 🔥 2. custom input (ТОЛЬКО если чекнут Custom)
+  const customCheckbox = document.querySelector('.mealPresetOpt[value="Custom"]');
+  const customInput = document.getElementById("customMealInput");
+  const customField = document.getElementById("customMealField");
+
+  if (customCheckbox && customCheckbox.checked) {
+    if (customField) customField.style.display = "block";
+
+    const customValues = (customInput?.value || "")
+      .split(",")
+      .map(x => x.trim())
+      .filter(Boolean);
+
+    customValues.forEach(val => {
+      if (!selected.includes(val)) {
+        selected.push(val);
+      }
+    });
+
+  } else {
+    if (customField) customField.style.display = "none";
+  }
+
+  // 🔥 3. записываем В ОДНОМ МЕСТЕ
+  mealInput.value = selected.join(", ");
+
+  // 🔥 4. dropdown
+  mealSelect.innerHTML = `<option value="">Select a meal</option>`;
+
+  selected.forEach(opt => {
+    const el = document.createElement("option");
+    el.value = opt.toLowerCase();
+    el.textContent = opt;
+    mealSelect.appendChild(el);
+  });
+
+  // 🔥 5. save (ОДИН раз)
+  const token = window.APP_TOKEN;
+
+  if (token) {
+    supabase
+      .from("sites")
+      .update({ meal_options: mealInput.value })
+      .eq("edit_token", token);
+  }
 }
-
-
-
-// 🔥 1. записываем итог в input
-mealInput.value = selected.join(", ");
-
-// 🔥 2. пересобираем dropdown
-mealSelect.innerHTML = `<option value="">Select a meal</option>`;
-
-selected.forEach(opt => {
-  const el = document.createElement("option");
-  el.value = opt.toLowerCase();
-  el.textContent = opt;
-  mealSelect.appendChild(el);
-});
-
-// 🔥 3. сохраняем в Supabase
-const token = window.APP_TOKEN;
-
-if (token && mealInput.value) {
-  supabase
-    .from("sites")
-    .update({ meal_options: mealInput.value })
-    .eq("edit_token", token);
-}
-
-}
-
 
 // события
 
