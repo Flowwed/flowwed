@@ -2842,11 +2842,11 @@ if (token) {
 
 mealToggle.addEventListener("change", async () => {
 
-  updateMealOptions();
+  await updateMealOptions();
 
   const token = window.APP_TOKEN;
 
-console.log("SAVE MEAL:", mealInput.value);
+  console.log("SAVE MEAL:", mealInput.value);
 
   await supabase
     .from("sites")
@@ -2854,7 +2854,6 @@ console.log("SAVE MEAL:", mealInput.value);
     .eq("edit_token", token);
 
 });
-
 
 
 // чекбоксы
