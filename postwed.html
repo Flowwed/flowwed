@@ -2745,10 +2745,14 @@ if (mealPreset) {
 // 🔥 CUSTOM INPUT LISTENER (вот сюда)
 document.getElementById("customMealInput")?.addEventListener("input", updateMealOptions);
 
+document.querySelectorAll(".mealPresetOpt").forEach(cb => {
+  cb.addEventListener("change", updateMealOptions);
+});
+
 const mealSelectField = document.getElementById("mealSelectField");
 const mealSelect = document.getElementById("mealSelect");
 
-function updateMealOptions() {
+async function updateMealOptions() {
 
   if (!mealToggle.checked) {
     mealField.style.display = "none";
@@ -2790,29 +2794,34 @@ function updateMealOptions() {
     if (customField) customField.style.display = "none";
   }
 
-  // 🔥 3. записываем В ОДНОМ МЕСТЕ
-  mealInput.value = selected.join(", ");
+// 🔥 3. записываем В ОДНОМ МЕСТЕ
+mealInput.value = selected.join(", ");
 
-  // 🔥 4. dropdown
-  mealSelect.innerHTML = `<option value="">Select a meal</option>`;
+// 🔥 4. dropdown
+mealSelect.innerHTML = `<option value="">Select a meal</option>`;
 
-  selected.forEach(opt => {
-    const el = document.createElement("option");
-    el.value = opt.toLowerCase();
-    el.textContent = opt;
-    mealSelect.appendChild(el);
-  });
+selected.forEach(opt => {
+  const el = document.createElement("option");
+  el.value = opt.toLowerCase();
+  el.textContent = opt;
+  mealSelect.appendChild(el);
+});
 
-  // 🔥 5. save (ОДИН раз)
-  const token = window.APP_TOKEN;
+// 🔥 5. save (ОДИН раз)
+const token = window.APP_TOKEN;
 
-  if (token) {
-    supabase
-      .from("sites")
-      .update({ meal_options: mealInput.value })
-      .eq("edit_token", token);
-  }
+if (token) {
+  await supabase
+    .from("sites")
+    .update({
+      meal_options: mealInput.value,
+      meal_enabled: mealToggle.checked
+    })
+    .eq("edit_token", token);
 }
+
+}  // ← ЭТА скобка должна остаться
+
 
 // события
 
