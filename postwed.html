@@ -1806,9 +1806,31 @@ border-top:3px solid #b41111;
 <div class="field" id="mealSelectField" style="display:none;">
   <label>Meal Preference</label>
 
-  <select id="mealSelect">
-    <option value="">Select a meal</option>
-  </select>
+<select id="mealSelect" style="
+  width: 100%;
+  max-width: 260px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(160,0,40,0.25);
+  background: #eef4ff;
+  font-size: 14px;
+  box-sizing: border-box;
+">
+  <option value="">Select a meal</option>
+</select>
+
+<div id="mealChosen" style="
+  margin-top: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #333;
+  background: #f5f7fb;
+  border-radius: 6px;
+  display: none;
+  max-width: 260px;
+">
+  Selected: <span id="mealChosenText" style="font-weight:600;"></span>
+</div>
 </div>
 
 
@@ -2816,6 +2838,8 @@ if (!mealToggle.checked) {
 
   mealField.style.display = "block";
   mealPresetGroup.style.display = "block";
+
+if (mealSelectField) mealSelectField.style.display = "block";
 
   const selected = [];
 
