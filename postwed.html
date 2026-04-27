@@ -2831,6 +2831,8 @@ mealToggle.addEventListener("change", async () => {
 
   const token = window.APP_TOKEN;
 
+console.log("SAVE MEAL:", mealInput.value);
+
   await supabase
     .from("sites")
     .update({ meal_enabled: mealToggle.checked })
