@@ -2861,8 +2861,18 @@ if (token) {
 // события
 
 mealToggle.addEventListener("change", async () => {
-  await updateMealOptions();
+
+  updateMealOptions();
+
+  const token = window.APP_TOKEN;
+
+  await supabase
+    .from("sites")
+    .update({ meal_enabled: mealToggle.checked })
+    .eq("edit_token", token);
+
 });
+
 
 // чекбоксы
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
