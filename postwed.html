@@ -2861,6 +2861,9 @@ console.log("SAVE MEAL:", mealInput.value);
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
   cb.addEventListener("change", () => {
 
+document.getElementById("customMealInput")
+  .addEventListener("blur", updateMealOptions);
+
     let values = (mealInput.value || "")
       .split(",")
       .map(x => x.trim())
