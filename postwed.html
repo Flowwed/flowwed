@@ -2728,22 +2728,15 @@ function updateMealOptions() {
   });
 
   // 🔥 2. добавляем кастом (но без дубликатов)
-const raw = mealInput.value || "";
-const custom = raw.split(",").map(x => x.trim()).filter(Boolean);
+  const raw = mealInput.value || "";
+  const custom = raw.split(",").map(x => x.trim()).filter(Boolean);
 
-// 👉 берём только те кастомные, которые НЕ были из чекбоксов
-custom.forEach(val => {
+  custom.forEach(val => {
+    if (!selected.includes(val)) {
+      selected.push(val);
+    }
+  });
 
-  const existsInCheckbox = Array.from(
-    document.querySelectorAll(".mealPresetOpt")
-  ).some(cb => cb.value === val);
-
-  // 👉 если это НЕ чекбокс — оставляем
-  if (!existsInCheckbox && !selected.includes(val)) {
-    selected.push(val);
-  }
-
-});
 
 
 
@@ -2769,9 +2762,29 @@ mealToggle.addEventListener("change", () => {
 // чекбоксы
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
   cb.addEventListener("change", () => {
+
+    let values = (mealInput.value || "")
+      .split(",")
+      .map(x => x.trim())
+      .filter(Boolean);
+
+    if (cb.checked) {
+      // ✅ добавляем
+      if (!values.includes(cb.value)) {
+        values.push(cb.value);
+      }
+    } else {
+      // 🔥 удаляем ТОЛЬКО этот чекбокс
+      values = values.filter(v => v !== cb.value);
+    }
+
+    mealInput.value = values.join(", ");
+
     updateMealOptions();
   });
 });
+
+
 
 // input
 mealInput.addEventListener("input", () => {
