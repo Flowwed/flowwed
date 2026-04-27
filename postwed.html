@@ -1682,26 +1682,41 @@ margin-bottom:16px;
     type="text"
     id="customMealInput"
     placeholder="Enter custom meal options (e.g. Sushi, Pasta, Vegan)"
-    style="
-      width:100%;
-      padding:8px;
-      border-radius:8px;
-      border:1px solid rgba(160,0,40,0.25);
-      background:#eef4ff;
-    "
+style="
+  width: 100%;
+  max-width: 412px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(160,0,40,0.25);
+  background:#eef4ff;
+  box-sizing: border-box;
+"
   >
 </div>
 
 
-
-
 <div id="mealOptionsField" style="display:none;margin-bottom:20px;">
-  <label style="font-weight:600;">Your Meal Selection</label>
+  <label style="font-weight:600;">Meal Summary</label>
 
-  <input type="text" id="mealOptionsInput"
-    placeholder="Chicken, Fish, Vegetarian"
-    class="couple-field">
-
+<input 
+  type="text" 
+  id="mealOptionsInput"
+  placeholder="Selected meals will show here"
+  class="couple-field"
+  readonly
+  style="
+    width: 100%;
+    max-width: 300px;
+    padding: 6px 10px;
+    height: 35px;
+    border-radius: 8px;
+    border: 1px solid rgba(160,0,40,0.25);
+    background: #f5f7fb;
+    font-size: 13px;
+    box-sizing: border-box;
+    margin-top: 16px;
+  "
+>
 </div>
 </div>
 
@@ -2783,16 +2798,21 @@ const mealSelect = document.getElementById("mealSelect");
 
 async function updateMealOptions() {
 
+const mealSelectField = document.getElementById("mealSelectField");
 
 console.log("FORCE READ:", document.getElementById("customMealInput")?.value);
 
-  if (!mealToggle.checked) {
-    mealField.style.display = "none";
-    mealPresetGroup.style.display = "none";
-    return;
-  }
+if (!mealToggle.checked) {
+  mealField.style.display = "none";
+  mealPresetGroup.style.display = "none";
 
+  const customField = document.getElementById("customMealField");
+  if (customField) customField.style.display = "none";
 
+  if (mealSelectField) mealSelectField.style.display = "none";
+
+  return;
+}
 
   mealField.style.display = "block";
   mealPresetGroup.style.display = "block";
