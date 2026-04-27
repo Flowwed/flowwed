@@ -2743,7 +2743,12 @@ if (mealPreset) {
 }
 
 // 🔥 CUSTOM INPUT LISTENER (вот сюда)
-document.getElementById("customMealInput")?.addEventListener("input", updateMealOptions);
+document.addEventListener("input", (e) => {
+  if (e.target.id === "customMealInput") {
+    console.log("CUSTOM TYPING:", e.target.value);
+    updateMealOptions();
+  }
+});
 
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
   cb.addEventListener("change", updateMealOptions);
