@@ -2062,19 +2062,28 @@ if(error || !data) return;
 
 // 🔥 ВОССТАНОВЛЕНИЕ MEAL
 if (mealInput && data.meal_options) {
+
+  // 🔥 вставляем значение
   mealInput.value = data.meal_options;
-  updateMealOptions(); // важно — пересоберёт чекбоксы и dropdown
-}
 
-// 🔥 SYNC CHECKBOXES ИЗ INPUT
-document.querySelectorAll(".mealPresetOpt").forEach(cb => {
-  const values = (mealInput.value || "")
+  const values = mealInput.value
     .split(",")
-    .map(x => x.trim());
+    .map(x => x.trim())
+    .filter(Boolean);
 
-  cb.checked = values.includes(cb.value);
-});
+  // 🔥 синкаем чекбоксы
+  document.querySelectorAll(".mealPresetOpt").forEach(cb => {
+    cb.checked = values.includes(cb.value);
+  });
 
+  // 🔥 включаем мастер чекбокс (Enable Meal Selection)
+  if (mealToggle) {
+    mealToggle.checked = values.length > 0;
+  }
+
+  // 🔥 обновляем UI (покажет поля, соберёт dropdown)
+  updateMealOptions();
+}
 
 
 /* inputs */
