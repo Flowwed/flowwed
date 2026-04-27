@@ -2096,18 +2096,38 @@ if (mealInput && data.meal_options) {
     .map(x => x.trim())
     .filter(Boolean);
 
+  const presetValues = [];
+
+  // 🔥 сначала обрабатываем обычные чекбоксы
   document.querySelectorAll(".mealPresetOpt").forEach(cb => {
-    cb.checked = values.includes(cb.value);
+    if (cb.value !== "Custom" && values.includes(cb.value)) {
+      cb.checked = true;
+      presetValues.push(cb.value);
+    } else {
+      cb.checked = false;
+    }
   });
+
+  // 🔥 ищем кастомные значения (то, чего нет в пресетах)
+  const customValues = values.filter(v => !presetValues.includes(v));
+
+  const customCheckbox = document.querySelector('.mealPresetOpt[value="Custom"]');
+  const customInput = document.getElementById("customMealInput");
+
+  if (customValues.length > 0) {
+    if (customCheckbox) customCheckbox.checked = true;
+    if (customInput) customInput.value = customValues.join(", ");
+  }
+
 }
 
-// 🔥 3. И ТОЛЬКО ПОТОМ UI
-updateMealOptions();
-
+// 🔥 3. сначала toggle, потом UI
 if (mealToggle && data.meal_enabled !== null) {
   mealToggle.checked = data.meal_enabled;
 }
 
+// 🔥 4. обновляем UI ПОСЛЕ всего
+updateMealOptions();
 
 
 /* inputs */
@@ -2847,6 +2867,8 @@ mealToggle.addEventListener("change", async () => {
 // чекбоксы
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
   cb.addEventListener("change", () => {
+
+
 
 document.getElementById("customMealInput")
   .addEventListener("blur", updateMealOptions);
