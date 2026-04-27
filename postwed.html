@@ -2066,6 +2066,16 @@ if (mealInput && data.meal_options) {
   updateMealOptions(); // важно — пересоберёт чекбоксы и dropdown
 }
 
+// 🔥 SYNC CHECKBOXES ИЗ INPUT
+document.querySelectorAll(".mealPresetOpt").forEach(cb => {
+  const values = (mealInput.value || "")
+    .split(",")
+    .map(x => x.trim());
+
+  cb.checked = values.includes(cb.value);
+});
+
+
 
 /* inputs */
 
