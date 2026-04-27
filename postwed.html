@@ -1676,8 +1676,31 @@ margin-bottom:16px;
 
 </div>
 
+<div style="margin-top:6px;">
+  <label>
+    <input type="checkbox" id="customMealToggle">
+    Custom meal
+  </label>
+</div>
+
+<div id="customMealField" style="display:none; margin-top:8px;">
+  <input
+    type="text"
+    id="customMealInput"
+    placeholder="Enter custom meal options (e.g. Sushi, Pasta, Vegan)"
+    style="
+      width:100%;
+      padding:8px;
+      border-radius:8px;
+      border:1px solid rgba(160,0,40,0.25);
+      background:#eef4ff;
+    "
+  >
+</div>
+
+
 <div id="mealOptionsField" style="display:none;margin-bottom:20px;">
-  <label style="font-weight:600;">Add meal options</label>
+  <label style="font-weight:600;">Your Meal Selection</label>
 
   <input type="text" id="mealOptionsInput"
     placeholder="Chicken, Fish, Vegetarian"
@@ -2707,23 +2730,42 @@ const mealToggle = document.getElementById("enableMeal");
 
 const mealPresetGroup = document.getElementById("mealPresetGroup");
 
-
 const mealField = document.getElementById("mealOptionsField");
 const mealInput = document.getElementById("mealOptionsInput");
 
-
 const mealPreset = document.getElementById("mealPreset");
 
+// 🔥 NEW (custom meal)
+const customToggle = document.getElementById("customMealToggle");
+const customField = document.getElementById("customMealField");
+const customInput = document.getElementById("customMealInput");
+
+
+// preset dropdown
 if (mealPreset) {
   mealPreset.addEventListener("change", () => {
     if (!mealPreset.value) return;
 
     mealInput.value = mealPreset.value;
-
-    updateMealOptions(); // 🔥 сразу обновляем dropdown
+    updateMealOptions();
   });
 }
 
+
+// 🔥 custom toggle logic
+if (customToggle) {
+  customToggle.addEventListener("change", () => {
+
+    customField.style.display = customToggle.checked ? "block" : "none";
+
+    // если выключили — очищаем
+    if (!customToggle.checked && customInput) {
+      customInput.value = "";
+      updateMealOptions();
+    }
+
+  });
+}
 
 
 const mealSelectField = document.getElementById("mealSelectField");
@@ -2745,6 +2787,26 @@ function updateMealOptions() {
   mealPresetGroup.style.display = "block";
 
   const selected = [];
+
+// 🔥 CUSTOM MEAL (добавляем из отдельного input)
+if (customToggle && customToggle.checked && customInput) {
+
+  const customRaw = customInput.value || "";
+
+  const customList = customRaw
+    .split(",")
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  customList.forEach(val => {
+    if (!selected.includes(val)) {
+      selected.push(val);
+    }
+  });
+}
+
+
+
 
   // 🔥 1. собираем ТОЛЬКО чекбоксы
   document.querySelectorAll(".mealPresetOpt:checked").forEach(cb => {
