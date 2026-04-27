@@ -2061,9 +2061,15 @@ console.log("SUPABASE ERROR:", error);
 if(error || !data) return;
 
 // 🔥 ВОССТАНОВЛЕНИЕ MEAL
+// 🔥 1. сначала toggle
+
+if (mealToggle && data.meal_enabled !== null) {
+  mealToggle.checked = data.meal_enabled;
+}
+
+// 🔥 2. потом input + чекбоксы
 if (mealInput && data.meal_options) {
 
-  // 🔥 вставляем значение
   mealInput.value = data.meal_options;
 
   const values = mealInput.value
@@ -2071,19 +2077,13 @@ if (mealInput && data.meal_options) {
     .map(x => x.trim())
     .filter(Boolean);
 
-  // 🔥 синкаем чекбоксы
   document.querySelectorAll(".mealPresetOpt").forEach(cb => {
     cb.checked = values.includes(cb.value);
   });
-
-  // 🔥 включаем мастер чекбокс (Enable Meal Selection)
-  if (mealToggle) {
-    mealToggle.checked = values.length > 0;
-  }
-
-  // 🔥 обновляем UI (покажет поля, соберёт dropdown)
-  updateMealOptions();
 }
+
+// 🔥 3. И ТОЛЬКО ПОТОМ UI
+updateMealOptions();
 
 if (mealToggle && data.meal_enabled !== null) {
   mealToggle.checked = data.meal_enabled;
