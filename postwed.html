@@ -2743,6 +2743,16 @@ if (mealPreset) {
 }
 
 
+// 🔥 CUSTOM INPUT LISTENER
+const customInput = document.getElementById("customMealInput");
+
+if (customInput) {
+  customInput.addEventListener("input", () => {
+    updateMealOptions();
+  });
+}
+
+
 
 
 const mealSelectField = document.getElementById("mealSelectField");
@@ -2792,19 +2802,6 @@ if (customField) {
     }
   });
 }
-
-
-
-  // 🔥 2. добавляем кастом (но без дубликатов)
-  const raw = mealInput.value || "";
-  const custom = raw.split(",").map(x => x.trim()).filter(Boolean);
-
-  custom.forEach(val => {
-    if (!selected.includes(val)) {
-      selected.push(val);
-    }
-  });
-
 
 
 
