@@ -915,6 +915,7 @@ const { error: updateError } = await supabase
     extra_guests: extraGuestsInput.value,
     rsvp_status: rsvpSelect.value,
     message: messageInput.value,
+    meal_choice: mealSelect.value, // 🔥 ВОТ ЭТО
     responded_at: new Date().toISOString()
   })
   .eq("id", g.id);
