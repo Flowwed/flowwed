@@ -1675,8 +1675,23 @@ margin-bottom:16px;
   <label><input type="checkbox" class="mealPresetOpt" value="Gluten-free"> Gluten-free</label><br>
   <label><input type="checkbox" class="mealPresetOpt" value="Custom"> Custom meal</label><br>
 
-
 </div>
+
+<div id="customMealField" style="display:none; margin-top:10px;">
+  <input
+    type="text"
+    id="customMealInput"
+    placeholder="Enter custom meal options (e.g. Sushi, Pasta, Vegan)"
+    style="
+      width:100%;
+      padding:8px;
+      border-radius:8px;
+      border:1px solid rgba(160,0,40,0.25);
+      background:#eef4ff;
+    "
+  >
+</div>
+
 
 
 
@@ -2753,9 +2768,32 @@ function updateMealOptions() {
 
 
   // 🔥 1. собираем ТОЛЬКО чекбоксы
-  document.querySelectorAll(".mealPresetOpt:checked").forEach(cb => {
-    selected.push(cb.value);
+document.querySelectorAll(".mealPresetOpt:checked").forEach(cb => {
+
+  // ❌ пропускаем Custom
+  if (cb.value === "Custom") return;
+
+  selected.push(cb.value);
+});
+
+
+// 🔥 добавляем значения из custom input
+const customField = document.getElementById("customMealInput");
+
+if (customField) {
+  const customValues = (customField.value || "")
+    .split(",")
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  customValues.forEach(val => {
+    if (!selected.includes(val)) {
+      selected.push(val);
+    }
   });
+}
+
+
 
   // 🔥 2. добавляем кастом (но без дубликатов)
   const raw = mealInput.value || "";
