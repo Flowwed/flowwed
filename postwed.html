@@ -2051,7 +2051,7 @@ console.log("TOKEN:", token);
 
 const { data, error } = await supabase
   .from("sites")
-  .select("rsvp_date, wedding_date, wedding_time, venue, address, meal_options")
+  .select("rsvp_date, wedding_date, wedding_time, venue, address, meal_options, meal_enabled")
   .eq("edit_token", token)
   .single();
 
@@ -2084,6 +2084,11 @@ if (mealInput && data.meal_options) {
   // 🔥 обновляем UI (покажет поля, соберёт dropdown)
   updateMealOptions();
 }
+
+if (mealToggle && data.meal_enabled !== null) {
+  mealToggle.checked = data.meal_enabled;
+}
+
 
 
 /* inputs */
@@ -2774,9 +2779,20 @@ function updateMealOptions() {
 }
 // события
 
-mealToggle.addEventListener("change", () => {
+mealToggle.addEventListener("change", async () => {
+
   updateMealOptions();
+
+  const token = window.APP_TOKEN;
+
+  await supabase
+    .from("sites")
+    .update({ meal_enabled: mealToggle.checked })
+    .eq("edit_token", token);
+
 });
+
+
 
 // чекбоксы
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
