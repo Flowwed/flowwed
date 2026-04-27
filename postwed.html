@@ -2743,27 +2743,6 @@ if (mealPreset) {
 }
 
 
-// 🔥 CUSTOM INPUT LISTENER
-const customInput = document.getElementById("customMealInput");
-
-if (customInput) {
-  customInput.addEventListener("input", async () => {
-
-    // обновляем UI
-    updateMealOptions();
-
-    // 🔥 ВАЖНО — сохраняем уже ОБЩИЙ input
-    const token = window.APP_TOKEN;
-
-    await supabase
-      .from("sites")
-      .update({ meal_options: mealInput.value })
-      .eq("edit_token", token);
-
-  });
-}
-
-
 const mealSelectField = document.getElementById("mealSelectField");
 const mealSelect = document.getElementById("mealSelect");
 
@@ -2814,23 +2793,20 @@ if (customField) {
 
 
 
-  // 🔥 3. ОБЯЗАТЕЛЬНО записываем обратно в input
-  mealInput.value = selected.join(", ");
-
-  // 🔥 4. пересобираем dropdown
-  mealSelect.innerHTML = `<option value="">Select a meal</option>`;
-
-  selected.forEach(opt => {
-    const el = document.createElement("option");
-    el.value = opt.toLowerCase();
-    el.textContent = opt;
-    mealSelect.appendChild(el);
-  });
-
-// 🔥 синкаем общий input
+// 🔥 1. записываем итог в input
 mealInput.value = selected.join(", ");
 
-// 🔥 и сохраняем ВСЕГДА
+// 🔥 2. пересобираем dropdown
+mealSelect.innerHTML = `<option value="">Select a meal</option>`;
+
+selected.forEach(opt => {
+  const el = document.createElement("option");
+  el.value = opt.toLowerCase();
+  el.textContent = opt;
+  mealSelect.appendChild(el);
+});
+
+// 🔥 3. сохраняем в Supabase
 const token = window.APP_TOKEN;
 
 if (token && mealInput.value) {
