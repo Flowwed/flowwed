@@ -2747,12 +2747,21 @@ if (mealPreset) {
 const customInput = document.getElementById("customMealInput");
 
 if (customInput) {
-  customInput.addEventListener("input", () => {
+  customInput.addEventListener("input", async () => {
+
+    // обновляем UI
     updateMealOptions();
+
+    // 🔥 ВАЖНО — сохраняем уже ОБЩИЙ input
+    const token = window.APP_TOKEN;
+
+    await supabase
+      .from("sites")
+      .update({ meal_options: mealInput.value })
+      .eq("edit_token", token);
+
   });
 }
-
-
 
 
 const mealSelectField = document.getElementById("mealSelectField");
