@@ -2766,11 +2766,14 @@ async function updateMealOptions() {
 
 console.log("FORCE READ:", document.getElementById("customMealInput")?.value);
 
-  if (!mealToggle.checked) {
-    mealField.style.display = "none";
-    mealPresetGroup.style.display = "none";
-    return;
-  }
+if (!mealToggle.checked) {
+  mealField.style.display = "none";
+  mealPresetGroup.style.display = "none";
+} else {
+  mealField.style.display = "block";
+  mealPresetGroup.style.display = "block";
+}
+
 
   mealField.style.display = "block";
   mealPresetGroup.style.display = "block";
