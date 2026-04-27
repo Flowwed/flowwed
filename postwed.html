@@ -2764,9 +2764,7 @@ const mealSelect = document.getElementById("mealSelect");
 async function updateMealOptions() {
 
 
-const customInput = document.getElementById("customMealInput");
-
-console.log("FORCE READ:", customInput?.value);
+console.log("FORCE READ:", document.getElementById("customMealInput")?.value);
 
   if (!mealToggle.checked) {
     mealField.style.display = "none";
