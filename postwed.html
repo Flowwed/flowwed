@@ -2826,7 +2826,23 @@ if (customField) {
     el.textContent = opt;
     mealSelect.appendChild(el);
   });
+
+// 🔥 синкаем общий input
+mealInput.value = selected.join(", ");
+
+// 🔥 и сохраняем ВСЕГДА
+const token = window.APP_TOKEN;
+
+if (token && mealInput.value) {
+  supabase
+    .from("sites")
+    .update({ meal_options: mealInput.value })
+    .eq("edit_token", token);
 }
+
+}
+
+
 // события
 
 mealToggle.addEventListener("change", async () => {
