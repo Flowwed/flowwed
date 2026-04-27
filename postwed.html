@@ -2746,9 +2746,13 @@ if (mealPreset) {
 document.addEventListener("input", (e) => {
   if (e.target.id === "customMealInput") {
     console.log("CUSTOM TYPING:", e.target.value);
-    updateMealOptions();
+
+    setTimeout(() => {
+      updateMealOptions();
+    }, 0);
   }
 });
+
 
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
   cb.addEventListener("change", updateMealOptions);
@@ -2778,6 +2782,7 @@ async function updateMealOptions() {
 
   // 🔥 2. custom input (ТОЛЬКО если чекнут Custom)
   const customCheckbox = document.querySelector('.mealPresetOpt[value="Custom"]');
+
   const customInput = document.getElementById("customMealInput");
   const customField = document.getElementById("customMealField");
 
