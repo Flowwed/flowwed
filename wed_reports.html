@@ -46,18 +46,6 @@ body{
 
 }
 
-
-
-h1 {
-  text-align: center;
-  font-size: 36px;
-  font-weight: 600;
-  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
-  -webkit-background-clip: text;
-  color: transparent;
-  margin-bottom: 36px;
-  letter-spacing: -1px;
-}
 /* ====================================================== */
 /* TOTAL CARDS                                            */
 /* ====================================================== */
@@ -198,82 +186,6 @@ h1 {
   backdrop-filter: blur(12px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.18);
 }
-/* Menu View*/
-
-.top-nav-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.top-nav {
-  display: flex;
-  justify-content: center;
-  gap: 36px;
-  padding: 14px 0 10px !important; 
-  font-size: 16px;
-  font-weight: 500;
-  color: #7a6772;
-}
-
-.top-nav a {
-  text-decoration: none;
-  color: #7a6772;
-  transition: 0.2s;
-}
-
-
-.top-nav a.active {
-  color: #7a6772 !important;  /* ruby */
-  font-weight: 550 !important;
-  text-shadow: 0 0 4px rgba(180,17,17,0.25);
-}
-
-
-.top-nav a:hover {
-  color: #d6003d;
-}
-
-/* Back Button */
-
-.back-btn {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 6px 14px;
-
-  border-radius: 999px;
-
-  background: linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
-    #9c1818;
-
-  color: white;
-
-  font-size: 13px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  border: 1px solid rgba(255,255,255,0.35);
-
-  transition: 0.28s ease;   /* 🔥 КЛЮЧ */
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.38),
-    0 3px 8px rgba(0,0,0,0.25),
-    inset 0 3px 6px rgba(255,255,255,0.22),
-    inset 0 -6px 14px rgba(70,0,20,0.35);
-}
-
 
 /* ====================================================== */
 /* TABLE BLOCK HEADER (НЕ ТРОГАЕМ СТРУКТУРУ)              */
@@ -408,18 +320,26 @@ h1 {
 table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 14px;
+  color: #5a1a1a;
+ table-layout: fixed;
 }
 
 th, td {
   padding: 10px 12px;
   border-bottom: 1px solid #ebcccc;
-  text-align: left;   /* 🔥 ВОТ ГЛАВНОЕ */
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 400;
+  white-space: nowrap;   /* ← ВОТ КЛЮЧ */
 }
 th {
   color: #b41111;
-  font-weight: 800;
-  font-size: 16px;
+  font-weight: 600;
+  font-size: 15px;
+white-space: nowrap;
 }
+
 
 /* ====================================================== */
 /* FLOATING SCROLLBAR INDICATOR                           */
@@ -496,7 +416,7 @@ th {
 }
 
 .composer-send {
-  margin-top: 14px;
+  margin-top: auto;
   background: #b41111;
   border: none;
   padding: 10px 16px;
@@ -513,9 +433,6 @@ th {
   transition: 0.2s ease;
 }
 
-.composer-send {
-  margin-top: auto; /* притягивает кнопку вниз */
-}
 
 .composer-send:hover {
   transform: translateY(-2px);
@@ -802,67 +719,40 @@ max-width: 660px;
   content: "";
 }
 
-/* 🔥 ТАБЛИЦА */
-table {
-  width: 100%;
-  font-size: 14px;
-  color: #5a1a1a;
-}
-
-/* 🔥 ОБЩИЕ ЯЧЕЙКИ */
-td, th {
-  padding: 10px 12px;
-  vertical-align: middle;
-  font-weight: 400;
-  white-space: normal;      /* 🔥 КЛЮЧ */
-}
-
-/* 🔥 ЧЕКБОКС */
-th:nth-child(1), td:nth-child(1) {
+th:nth-of-type(1), td:nth-of-type(1) {
   width: 40px;
 }
 
-/* 🔥 НОМЕР (#) */
-th:nth-child(2), td:nth-child(2) {
+th:nth-of-type(2), td:nth-of-type(2) {
   width: 40px;
-  min-width: 40px;
-  max-width: 40px;
   text-align: center;
   font-weight: 500;
   color: #9c1818;
 }
 
-/* 🔥 NAME */
-th:nth-child(3), td:nth-child(3) {
+th:nth-of-type(3), td:nth-of-type(3) {
   width: 160px;
 }
 
-/* 🔥 EMAIL */
-th:nth-child(4), td:nth-child(4) {
+th:nth-of-type(4), td:nth-of-type(4) {
   width: 220px;
 }
 
-/* 🔥 GUESTS */
-th:nth-child(5), td:nth-child(5) {
+th:nth-of-type(5), td:nth-of-type(5) {
   width: 80px;
   text-align: center;
-  font-weight: 500;
 }
 
-/* 🔥 MEAL */
-th:nth-child(6), td:nth-child(6) {
+th:nth-of-type(6), td:nth-of-type(6) {
   width: 120px;
   text-align: center;
-  font-weight: 500;
-  color: #7a1010;
 }
 
-/* 🔥 MESSAGE */
-th:nth-child(7), td:nth-child(7) {
-  max-width: 260px;
-  white-space: normal;
-  word-break: break-word;
-  line-height: 1.4;
+th:nth-of-type(7), td:nth-of-type(7) {
+  width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 🔥 СКРОЛЛ */
@@ -898,10 +788,11 @@ th:nth-child(7), td:nth-child(7) {
   padding: 0;
 }
 
-table {
-  table-layout: fixed;   /* 🔥 стабилизирует ширины */
-}
 
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 
 </style>
