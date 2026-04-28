@@ -1809,7 +1809,7 @@ function exportCSVForGroup(group) {
 
 const safeMessage = `"${(message || "")
   .replace(/"/g, '""')     // экранируем кавычки
-  .replace(/\r?\n/g, '\r\n')   // ← ВАЖНО для Excel
+  .replace(/\r?\n/g, '\\n') // сохраняем переносы как \n
 }"`;
     const rowNumber = index + 1;
 
