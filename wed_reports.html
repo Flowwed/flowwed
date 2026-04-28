@@ -1365,27 +1365,38 @@ function renderTable(name, arr, key) {
                   </th>
                    <th>Name</th>
                     <th>Email</th>
-                       <th>Guest Message</th>
+                     <th>Guests</th>
+                       <th>Meal</th>
+                       <th>Message</th>
                        </tr>
                    </thead>
-            <tbody>
-              ${arr
-                .map(
-                  g => `
-              <tr>
-                <td>
-                  <input type="checkbox"
-                         data-email="${(g.email || "").replace(/"/g, "&quot;")}"
-                         data-phone="${(g.phone || "").replace(/"/g, "&quot;")}"
-                         data-group="${key}">
-                </td>
-                <td>${g.first_name || ""} ${g.last_name || ""}</td>
-                <td>${g.email || ""}</td>
-                <td>${g.message || ""}</td>
-              </tr>`
-                )
-                .join("")}
-            </tbody>
+
+
+<tbody>
+  ${arr
+    .map(
+      g => `
+  <tr>
+    <td>
+      <input type="checkbox"
+             data-email="${(g.email || "").replace(/"/g, "&quot;")}"
+             data-phone="${(g.phone || "").replace(/"/g, "&quot;")}"
+             data-group="${key}">
+    </td>
+
+    <td>${g.first_name || ""} ${g.last_name || ""}</td>
+    <td>${g.email || ""}</td>
+
+    <!-- 🔥 НОВОЕ -->
+    <td>${g.guests_count || "—"}</td>
+    <td>${g.meal_choice || "—"}</td>
+
+    <td>${g.message || ""}</td>
+  </tr>`
+    )
+    .join("")}
+</tbody>
+
           </table>
         </div>
       </div>
