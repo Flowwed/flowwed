@@ -830,6 +830,35 @@ document.querySelector('[data-preview="venue"]').textContent = data.venue || "";
 document.querySelector('[data-preview="address"]').textContent = data.address || "";
 document.querySelector('[data-preview="deadline"]').textContent = formatDate(data.rsvp_date);
 
+const guestCountSelect = document.getElementById("guestCount");
+
+if (guestCountSelect && data.guest_limit) {
+
+  guestCountSelect.innerHTML = "";
+
+  if (data.guest_limit === "1") {
+
+    guestCountSelect.innerHTML = `<option value="1">1</option>`;
+
+  } else if (data.guest_limit === "2") {
+
+    guestCountSelect.innerHTML = `
+      <option value="1">1</option>
+      <option value="2">2</option>
+    `;
+
+  } else {
+
+    guestCountSelect.innerHTML = `
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="more">More than 2</option>
+    `;
+
+  }
+
+}
+
 }
 
 loadSiteData();
