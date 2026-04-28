@@ -1426,6 +1426,36 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
   content: "";
 }
 
+#previewSubmitBtn {
+  width: 40%;
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, #b04a5a, #7d1e2c);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+
+  border: none;
+
+  opacity: 0.65;
+  pointer-events: none;
+
+  box-shadow:
+    0 8px 18px rgba(160, 0, 40, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+#previewSubmitBtn:disabled {
+  opacity: 0.7;
+  filter: none;
+}
+
+.date-info {
+  display: none;
+}
+
 
 </style>
 </head>
@@ -1500,12 +1530,18 @@ if (params.get("t")) {
 <div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
 
 
-<!-- POST-WEDDING VIDEO PLAYER -->
-
 <div id="postWeddingVideoWrapper">
 
+  <!-- 👇 BUBBLE СЮДА -->
+  <div class="video-info-bubble" style="margin: 20px 18px 0 18px;">
+    <span class="video-info-icon">i</span>
+    <span class="video-info-text">
+      This is the cinematic invitation your guests will receive
+    </span>
+  </div>
+
   <div id="postWeddingVideo" style="
-    margin: 150px 18px 12px 18px;
+    margin: 20px 18px 12px 18px;
     display:flex;
     justify-content:center;
   ">
@@ -1531,16 +1567,7 @@ if (params.get("t")) {
 
   </div>
 
-  <!-- 👇 ВОТ НОВЫЙ BUBBLE -->
-  <div class="video-info-bubble">
-    <span class="video-info-icon">i</span>
-    <span class="video-info-text">
-      This is the cinematic invitation your guests will receive
-    </span>
-  </div>
-
 </div>
-
 
 <div style="
 flex:1;
@@ -1548,14 +1575,27 @@ padding:18px 22px;
 ">
 
 <div style="
+margin-top:24px;
+margin-bottom:10px;
+font-size:15px;
+font-weight:700;
+color:#9c1818;
+">
+
+<div style="
 border:2px solid #b41111;
 border-radius:14px;
 padding:18px;
-background:rgba(255,255,255,0.85);
-box-shadow:
-0 6px 18px rgba(0,0,0,0.12),
-inset 0 0 6px rgba(255,255,255,0.5);
+margin-bottom:20px;
+background:rgba(255,255,255,0.9);
 ">
+
+<div class="preview-info" style="margin-bottom:12px;">
+  <div class="preview-info-icon">i</div>
+  <div class="preview-info-text">
+    This section is for you to fill out — guests will not see this
+  </div>
+</div>
 
 <div id="rsvpFormTitle" style="
 font-size:20px;
@@ -1760,6 +1800,15 @@ margin-bottom:20px;
 background:rgba(255,255,255,0.9);
 ">
 
+
+<div class="preview-info" style="margin-top:6px; margin-bottom:12px;">
+  <div class="preview-info-icon">i</div>
+  <div class="preview-info-text">
+    This is a preview of the RSVP form your guests will receive 
+  </div>
+</div>
+
+
 <div id="guestFormTitle" style="
 font-size:22px;
 font-weight:700;
@@ -1931,11 +1980,6 @@ border-top:3px solid #b41111;
       Submit RSVP
     </button>
 
-    <div class="preview-info">
-      <div class="preview-info-icon">i</div>
-      <div class="preview-info-text">
-        This is the RSVP form your guests will receive<br>
-      </div>
     </div>
   </div>
 
