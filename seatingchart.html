@@ -1392,11 +1392,17 @@ async function assignGuest(guestId, tableId) {
   if (guestPosition[guestId] == tableId) return;
 
   // 👉 считаем занятые места (БЕЗ изменения данных)
-  const usedSeats = (guestsAtTable[tableId] || [])
-    .reduce((sum, gid) => {
-      const g = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
-      return sum + (g?.guest_count || 1);
-    }, 0);
+const usedSeats = (guestsAtTable[tableId] || [])
+  .reduce((sum, gid) => {
+
+    // 👉 если это тот же гость — пропускаем (он будет пересчитан ниже)
+    if (gid == guestId) return sum;
+
+    const g = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
+    return sum + (g?.guest_count || 1);
+
+  }, 0);
+
 
   // ❗ проверка вместимости
   if (usedSeats + count > table.seats) {
