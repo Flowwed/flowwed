@@ -1414,9 +1414,14 @@ async function assignGuest(guestId, tableId) {
 
 let usedSeats = getUsedSeats(tableId);
 
+// если гость уже сидит — вычитаем его
 if (guestPosition[guestId] == tableId) {
   usedSeats -= count;
 }
+    if (guestPosition[guestId] == tableId) {
+      usedSeats -= count;
+    }
+
 
     if (usedSeats + count > table.seats) {
       showGreenToast("Not enough seats at this table!");
