@@ -1388,11 +1388,34 @@ async function assignGuest(guestId, tableId) {
     guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
   }
 
+
+  if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
+
+// 👇 ДОБАВИЛИ
+const guest = [...RSVP_YES, ...RSVP_MAYBE].find(g => g.id == guestId);
+const count = guest?.guest_count || 1;
+
+const usedSeats = (guestsAtTable[tableId] || [])
+  .reduce((sum, gid) => {
+    const g = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
+    return sum + (g?.guest_count || 1);
+  }, 0);
+
+const table = tables.find(t => t.id === tableId);
+
+if (usedSeats + count > table.seats) {
+  showGreenToast("Not enough seats at this table!");
+  return;
+}
+
+
   /* add to new table */
   guestPosition[guestId] = tableId;
 
-  if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
-  guestsAtTable[tableId].push(guestId);
+
+// 👇 ЭТО ОСТАЁТСЯ
+guestsAtTable[tableId].push(guestId);
+
 
   /* save to supabase */
   await supabase
