@@ -1384,22 +1384,26 @@ async function assignGuest(guestId, tableId) {
   tableId = Number(tableId);
 
   const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
-
   const guest = allGuests.find(g => g.id == guestId);
   const count = guest?.guest_count || 1;
 
   const table = tables.find(t => t.id === tableId);
 
-  // 👉 считаем занятые места ЧИСТО через guestPosition
+  // 👉 берём текущее состояние стола
+  const currentGuests = guestsAtTable[tableId] || [];
+
+  // 👉 считаем занятые места
   let usedSeats = 0;
 
-  Object.entries(guestPosition).forEach(([gid, tid]) => {
-    if (tid != tableId) return;
-    if (gid == guestId) return; // исключаем текущего
-
+  currentGuests.forEach(gid => {
     const g = allGuests.find(x => x.id == gid);
     usedSeats += (g?.guest_count || 1);
   });
+
+  // 👉 если гость уже сидит тут — вычитаем его
+  if (guestPosition[guestId] == tableId) {
+    usedSeats -= count;
+  }
 
   // ❗ проверка
   if (usedSeats + count > table.seats) {
@@ -1408,7 +1412,7 @@ async function assignGuest(guestId, tableId) {
   }
 
   // =========================
-  // ✅ ТОЛЬКО ТЕПЕРЬ МЕНЯЕМ
+  // ✅ ОБНОВЛЯЕМ
   // =========================
 
   // удалить со старого
@@ -1423,7 +1427,6 @@ async function assignGuest(guestId, tableId) {
   guestPosition[guestId] = tableId;
   guestsAtTable[tableId].push(guestId);
 
-  // сохранить
   await supabase
     .from("guests")
     .update({ table_id: tableId })
@@ -1434,7 +1437,6 @@ async function assignGuest(guestId, tableId) {
 
   showGreenToast("Guest assigned & saved!");
 }
-
 /***************************************************
  *  UNASSIGN GUEST
  ***************************************************/
