@@ -289,7 +289,7 @@ body {
 
 #mainRSVPTable th:nth-child(3),
 #mainRSVPTable td:nth-child(3) {
-  width: 120px;
+  width: auto;
 }
 
 #mainRSVPTable th:nth-child(4),
@@ -302,7 +302,13 @@ body {
   width: 100px;
 }
 
+#mainRSVPTable {
+  table-layout: auto;   /* 🔥 это фиксит пустоты */
+}
 
+#mainRSVPTable td {
+  vertical-align: top;
+}
 
 th, td {
   padding: 8px 10px;
@@ -336,6 +342,13 @@ th, td {
   z-index: 20;
   font-size: 18px;
 }
+
+.assign-container {
+  display: flex;
+  flex-wrap: wrap;   /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
+  gap: 6px;
+}
+
 
 /* ======================================= */
 /* FLOATING SCROLL INDICATOR               */
@@ -662,44 +675,6 @@ height: 1px;
   scrollbar-gutter: stable;
 }
 
-
-
-#mainRSVPTable {
-  table-layout: fixed;
-  width: 100%;
-}
-
-
-/* RSVP */
-#mainRSVPTable th:nth-child(1),
-#mainRSVPTable td:nth-child(1) {
-  width: 60px;
-}
-
-/* Name */
-#mainRSVPTable th:nth-child(2),
-#mainRSVPTable td:nth-child(2) {
-  width: 180px;
-}
-
-/* 🔥 Assign Table (КНОПКИ — ШИРОКО) */
-#mainRSVPTable th:nth-child(3),
-#mainRSVPTable td:nth-child(3) {
-  width: 420px;
-}
-
-/* 🔥 Table # (УЗКО) */
-#mainRSVPTable th:nth-child(4),
-#mainRSVPTable td:nth-child(4) {
-  width: 80px;
-  white-space: nowrap;
-}
-
-/* Unassign */
-#mainRSVPTable th:nth-child(5),
-#mainRSVPTable td:nth-child(5) {
-  width: 90px;
-}
 
 
 /* info bubble */
@@ -1546,15 +1521,16 @@ function renderRSVPTable() {
 <td>${formatGuestCount(g.guest_count)}</td>
 
         <!-- 🔥 ТЕПЕРЬ ЗДЕСЬ КНОПКИ -->
-        <td>
-          ${tables.map(t => `
-            <button class="mini-assign-btn ${assigned === t.id ? "active" : ""}"
-                    data-guest="${g.id}" data-table="${t.id}">
-              ${t.id}
-            </button>
-          `).join("")}
-        </td>
-
+<td>
+  <div class="assign-container">
+    ${tables.map(t => `
+      <button class="mini-assign-btn ${assigned === t.id ? "active" : ""}"
+              data-guest="${g.id}" data-table="${t.id}">
+        ${t.id}
+      </button>
+    `).join("")}
+  </div>
+</td>
         <!-- 🔥 А ЗДЕСЬ НОМЕР СТОЛА -->
         <td>${assigned ? "T " + assigned : "—"}</td>
 
