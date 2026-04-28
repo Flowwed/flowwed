@@ -1375,36 +1375,33 @@ document.addEventListener("click", async e => {
 
   showGreenToast("Seats saved!");
 });
+
 /***************************************************
- *  ASSIGN GUEST (FIXED)
+ *  ASSIGN GUEST — FINAL STABLE
  ***************************************************/
 async function assignGuest(guestId, tableId) {
   guestId = String(guestId);
   tableId = Number(tableId);
 
-  // 👉 находим гостя
-  const guest = [...RSVP_YES, ...RSVP_MAYBE].find(g => g.id == guestId);
+  const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
+
+  const guest = allGuests.find(g => g.id == guestId);
   const count = guest?.guest_count || 1;
 
   const table = tables.find(t => t.id === tableId);
 
-  // 👉 если уже сидит за этим столом — ничего не делаем
-  if (guestPosition[guestId] == tableId) return;
+  // 👉 считаем занятые места ЧИСТО через guestPosition
+  let usedSeats = 0;
 
-  // 👉 считаем занятые места (БЕЗ изменения данных)
-const usedSeats = (guestsAtTable[tableId] || [])
-  .reduce((sum, gid) => {
+  Object.entries(guestPosition).forEach(([gid, tid]) => {
+    if (tid != tableId) return;
+    if (gid == guestId) return; // исключаем текущего
 
-    // 👉 если это тот же гость — пропускаем (он будет пересчитан ниже)
-    if (gid == guestId) return sum;
+    const g = allGuests.find(x => x.id == gid);
+    usedSeats += (g?.guest_count || 1);
+  });
 
-    const g = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
-    return sum + (g?.guest_count || 1);
-
-  }, 0);
-
-
-  // ❗ проверка вместимости
+  // ❗ проверка
   if (usedSeats + count > table.seats) {
     showGreenToast("Not enough seats at this table!");
     return;
@@ -1414,22 +1411,19 @@ const usedSeats = (guestsAtTable[tableId] || [])
   // ✅ ТОЛЬКО ТЕПЕРЬ МЕНЯЕМ
   // =========================
 
-  // удалить со старого стола
+  // удалить со старого
   if (guestPosition[guestId]) {
     const old = guestPosition[guestId];
     guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
   }
 
-  // создать массив если нет
-  if (!guestsAtTable[tableId]) {
-    guestsAtTable[tableId] = [];
-  }
+  // добавить в новый
+  if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
 
-  // добавить в новый стол
   guestPosition[guestId] = tableId;
   guestsAtTable[tableId].push(guestId);
 
-  // сохранить в Supabase
+  // сохранить
   await supabase
     .from("guests")
     .update({ table_id: tableId })
@@ -1440,6 +1434,7 @@ const usedSeats = (guestsAtTable[tableId] || [])
 
   showGreenToast("Guest assigned & saved!");
 }
+
 /***************************************************
  *  UNASSIGN GUEST
  ***************************************************/
