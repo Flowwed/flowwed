@@ -8,6 +8,13 @@
 /* ======================================= */
 /* GLOBAL                                  */
 /* ======================================= */
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+
 body {
   font-family: "Poppins", sans-serif;
   background: linear-gradient(to bottom, #fff0f4, #fff);
@@ -52,11 +59,15 @@ body {
   gap: 30px;
   max-width: 1500px;
   margin: 0 auto;
-  align-items: flex-start;
+  height: calc(100vh - 140px); /* 🔥 */
 }
 
 .left-column { width: 380px; }
-.right-column { flex-grow: 1; }
+.right-column {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 .left-scroll {
   max-height: 420px;
@@ -74,6 +85,13 @@ body {
   background: #b41111;
   border-radius: 10px;
   border: 3px solid #ffe6eb;
+}
+
+
+#rsvpTableContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ======================================= */
@@ -252,8 +270,8 @@ body {
 /* === ONE SCROLL CONTAINER === */
 .custom-scroll-container {
   position: relative;
-  height: 350px;
-  overflow-y: scroll;
+  flex: 1;              /* 🔥 ВОТ ЭТО ГЛАВНОЕ */
+  overflow-y: auto;
   overflow-x: hidden;
   padding-right: 10px;
 }
@@ -440,7 +458,7 @@ th, td {
   position: sticky;
   top: 0;
 
-  background: #fff;   /* ← плотный белый */
+  background: linear-gradient(to bottom, #ffe6eb, #ffd6de);
   z-index: 50;        /* ← выше всего */
 
   border-bottom: 2px solid #b41111;
