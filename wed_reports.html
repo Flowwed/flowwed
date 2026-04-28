@@ -450,12 +450,12 @@ body{
   top: 8px;
   right: 12px;
 
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   border-radius: 50%;
   cursor: pointer;
@@ -463,30 +463,30 @@ body{
   background: radial-gradient(circle at 30% 30%, #ff6f8f, #b41111 70%);
   border: 1px solid rgba(255,255,255,0.6);
 
-  font-size: 18px;
-  font-weight: 900;
+  font-size: 14px;       /* ↓ уменьшили */
+  font-weight: 700;
   color: white;
 
-  pointer-events:auto;         /* клики разрешены */
-  z-index:50;                  /* выше всего */
-}
+  line-height: 1;        /* 🔥 КЛЮЧ */
+  transform: translateY(-0.5px); /* микро-центр */
 
-.table-close::before {
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  background:transparent;
-  pointer-events:none;         /* не блокирует */
-}
+  pointer-events: auto;
+  z-index: 50;
 
-.table-close:hover {
-  transform: scale(1.15) translateY(-1px);
   box-shadow:
-    0 4px 10px rgba(0,0,0,0.45),
+    0 4px 10px rgba(0,0,0,0.35);
+}
+
+/* убрали лишний ::before — он не нужен */
+
+/* hover */
+.table-close:hover {
+  transform: scale(1.15) translateY(-0.5px);
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.45),
     0 0 10px rgba(255,120,150,0.6);
 }
-
 /* highlight failed row */
 .row-error {
   background: #ffe6ec !important;
