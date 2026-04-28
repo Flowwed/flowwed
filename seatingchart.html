@@ -1337,7 +1337,7 @@ function getUsedSeats(tableId) {
 
   allGuests.forEach(g => {
     if (guestPosition[g.id] == tableId) {
-      total += (g.guest_count || 1);
+      total += Number(g.guest_count) || 1;
     }
   });
 
@@ -1406,7 +1406,7 @@ async function assignGuest(guestId, tableId) {
 
     const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
     const guest = allGuests.find(g => g.id == guestId);
-    const count = guest?.guest_count || 1;
+    const count = Number(guest?.guest_count) || 1;
 
     const table = tables.find(t => t.id === tableId);
 
