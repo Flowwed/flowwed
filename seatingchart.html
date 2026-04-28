@@ -1275,6 +1275,8 @@ async function loadRSVP() {
     .select("id, first_name, last_name, rsvp_status, table_id, guest_count")
     .eq("token", token);
 
+console.log("GUESTS DATA:", data); // 👈 ДОБАВЬ ЭТО
+
   if (error) {
     console.error("RSVP load error:", error);
     return;
