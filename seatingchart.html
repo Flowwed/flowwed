@@ -1469,6 +1469,10 @@ document.addEventListener("click", e => {
   /* assign */
   const assignBtn = e.target.closest(".mini-assign-btn");
   if (assignBtn) {
+
+  e.preventDefault();
+  e.stopPropagation();
+
     assignGuest(assignBtn.dataset.guest, assignBtn.dataset.table);
     scrollToTable(Number(assignBtn.dataset.table));
     return;
