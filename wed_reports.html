@@ -812,9 +812,9 @@ table {
 /* 🔥 ОБЩИЕ ЯЧЕЙКИ */
 td, th {
   padding: 10px 12px;
-  white-space: nowrap;
   vertical-align: middle;
   font-weight: 400;
+  white-space: normal;      /* 🔥 КЛЮЧ */
 }
 
 /* 🔥 ЧЕКБОКС */
@@ -898,7 +898,9 @@ th:nth-child(7), td:nth-child(7) {
   padding: 0;
 }
 
-
+table {
+  table-layout: fixed;   /* 🔥 стабилизирует ширины */
+}
 
 </style>
 </head>
