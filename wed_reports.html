@@ -1389,6 +1389,7 @@ function renderTable(name, arr, key) {
                    class="master-checkbox"
                     data-group="${key}">
                   </th>
+                   <th>#</th>
                    <th>Name</th>
                     <th>Email</th>
                      <th>Guests</th>
@@ -1396,19 +1397,17 @@ function renderTable(name, arr, key) {
                        <th>Message</th>
                        </tr>
                    </thead>
-
-
 <tbody>
   ${arr
-    .map(
-      g => `
+    .map((g, index) => `
   <tr>
     <td>
+
       <input type="checkbox"
              data-email="${(g.email || "").replace(/"/g, "&quot;")}"
              data-phone="${(g.phone || "").replace(/"/g, "&quot;")}"
              data-group="${key}">
-    </td>
+    <td>${index + 1}</td>
 
     <td>${g.first_name || ""} ${g.last_name || ""}</td>
     <td>${g.email || ""}</td>
