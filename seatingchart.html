@@ -1272,8 +1272,10 @@ document.getElementById("btnDeleteTable").onclick = async () => {
 async function loadRSVP() {
   const { data, error } = await supabase
     .from("guests")
-    .select("id, first_name, last_name, rsvp_status, table_id")
+    .select("id, first_name, last_name, rsvp_status, table_id, guest_count")
     .eq("token", token);
+
+console.log("GUESTS DATA:", data); // 👈 ДОБАВЬ ЭТО
 
   if (error) {
     console.error("RSVP load error:", error);
@@ -1373,26 +1375,55 @@ document.addEventListener("click", async e => {
 
   showGreenToast("Seats saved!");
 });
+
 /***************************************************
- *  ASSIGN GUEST
+ *  ASSIGN GUEST — FINAL STABLE
  ***************************************************/
 async function assignGuest(guestId, tableId) {
   guestId = String(guestId);
   tableId = Number(tableId);
 
-  /* remove from old table */
+  const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
+
+  const guest = allGuests.find(g => g.id == guestId);
+  const count = guest?.guest_count || 1;
+
+  const table = tables.find(t => t.id === tableId);
+
+  // 👉 считаем занятые места ЧИСТО через guestPosition
+  let usedSeats = 0;
+
+  Object.entries(guestPosition).forEach(([gid, tid]) => {
+    if (tid != tableId) return;
+    if (gid == guestId) return; // исключаем текущего
+
+    const g = allGuests.find(x => x.id == gid);
+    usedSeats += (g?.guest_count || 1);
+  });
+
+  // ❗ проверка
+  if (usedSeats + count > table.seats) {
+    showGreenToast("Not enough seats at this table!");
+    return;
+  }
+
+  // =========================
+  // ✅ ТОЛЬКО ТЕПЕРЬ МЕНЯЕМ
+  // =========================
+
+  // удалить со старого
   if (guestPosition[guestId]) {
     const old = guestPosition[guestId];
     guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
   }
 
-  /* add to new table */
-  guestPosition[guestId] = tableId;
-
+  // добавить в новый
   if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
+
+  guestPosition[guestId] = tableId;
   guestsAtTable[tableId].push(guestId);
 
-  /* save to supabase */
+  // сохранить
   await supabase
     .from("guests")
     .update({ table_id: tableId })
