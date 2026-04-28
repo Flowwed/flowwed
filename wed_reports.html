@@ -806,12 +806,16 @@ max-width: 660px;
 /* 🔥 ТАБЛИЦА */
 table {
   width: 100%;
+  font-size: 14px;
+  color: #5a1a1a;
 }
 
 /* 🔥 ОБЩИЕ ЯЧЕЙКИ */
 td, th {
   padding: 10px 12px;
-  white-space: nowrap; /* по умолчанию всё в одну строку */
+  white-space: nowrap;
+  vertical-align: middle;
+  font-weight: 400;
 }
 
 /* 🔥 ЧЕКБОКС */
@@ -825,7 +829,7 @@ th:nth-child(2), td:nth-child(2) {
   min-width: 40px;
   max-width: 40px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
   color: #9c1818;
 }
 
@@ -843,21 +847,21 @@ th:nth-child(4), td:nth-child(4) {
 th:nth-child(5), td:nth-child(5) {
   width: 80px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* 🔥 MEAL */
 th:nth-child(6), td:nth-child(6) {
   width: 120px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
   color: #7a1010;
 }
 
-/* 🔥 MESSAGE (САМОЕ ВАЖНОЕ) */
+/* 🔥 MESSAGE */
 th:nth-child(7), td:nth-child(7) {
   max-width: 260px;
-  white-space: normal;        /* 🔥 перенос строк */
+  white-space: normal;
   word-break: break-word;
   line-height: 1.4;
 }
