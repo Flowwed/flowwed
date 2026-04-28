@@ -861,8 +861,6 @@ th:nth-of-type(7), td:nth-of-type(7) {
   <div class="loader"></div>
 </div>
 
-
-
 <div class="top-header">
 
 <div class="mini-menu">
@@ -1808,8 +1806,11 @@ function exportCSVForGroup(group) {
     const safeEmail = `"${email.replace(/"/g, '""')}"`;
     const safeGuests = `"${guests}"`;
     const safeMeal = `"${meal}"`;
-    const safeMessage = `"${message.replace(/"/g, '""')}"`;
 
+const safeMessage = `"${(message || "")
+  .replace(/"/g, '""')     // экранируем кавычки
+  .replace(/\r?\n/g, '\\n') // сохраняем переносы как \n
+}"`;
     const rowNumber = index + 1;
 
 csv.push(`${rowNumber},${safeName},${safeEmail},${safeGuests},${safeMeal},${safeMessage}`);
