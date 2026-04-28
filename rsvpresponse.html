@@ -776,7 +776,7 @@ async function loadSiteData(){
 
 const {data}=await supabase
 .from("sites")
-.select("couple_name, rsvp_date, video_url, wedding_date, wedding_time, venue, address, meal_enabled, meal_options")
+.select("couple_name, rsvp_date, video_url, wedding_date, wedding_time, venue, address, meal_enabled, meal_options, guest_limit")
 .eq("edit_token",token)
 .single();
 
