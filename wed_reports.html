@@ -867,6 +867,36 @@ th:nth-child(7), td:nth-child(7) {
   width: 100%;
   overflow-x: auto;
 }
+
+.msg-box {
+  max-width: 260px;
+}
+
+.msg-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;   /* 👈 сколько строк видно */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.msg-box.expanded .msg-text {
+  -webkit-line-clamp: unset;
+}
+
+.msg-toggle {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #b41111;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+
+
 </style>
 </head>
 
@@ -1451,7 +1481,13 @@ function renderTable(name, arr, key) {
     <td>${g.guest_count || "—"}</td>
     <td>${g.meal_choice || "—"}</td>
 
-    <td>${g.message || ""}</td>
+<td>
+  <div class="msg-box">
+    <span class="msg-text">${g.message || ""}</span>
+    <button class="msg-toggle">Show</button>
+  </div>
+</td>
+
   </tr>`
     )
     .join("")}
@@ -2452,6 +2488,20 @@ document.getElementById("qrModal")?.addEventListener("click", (e) => {
     e.currentTarget.style.display = "none";
   }
 });
+
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("msg-toggle")) {
+    const box = e.target.closest(".msg-box");
+
+    box.classList.toggle("expanded");
+
+    e.target.textContent =
+      box.classList.contains("expanded") ? "Hide" : "Show";
+  }
+});
+
+
+
 </script>
 
 
