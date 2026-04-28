@@ -1741,18 +1741,22 @@ function exportCSVForGroup(group) {
   if (!groupsGlobal) return;
   const arr = groupsGlobal[group] || [];
 
-  let csv = ["Name,Email,Guest Message"];
+  let csv = ["Name,Email,Guests,Meal,Guest Message"];
 
   arr.forEach(g => {
     const name = `${g.first_name || ""} ${g.last_name || ""}`.trim();
     const email = g.email || "";
+    const guests = g.guest_count || "";
+    const meal = g.meal_choice || "";
     const message = g.message || "";
 
     const safeName = `"${name.replace(/"/g, '""')}"`;
     const safeEmail = `"${email.replace(/"/g, '""')}"`;
+    const safeGuests = `"${guests}"`;
+    const safeMeal = `"${meal}"`;
     const safeMessage = `"${message.replace(/"/g, '""')}"`;
 
-    csv.push(`${safeName},${safeEmail},${safeMessage}`);
+    csv.push(`${safeName},${safeEmail},${safeGuests},${safeMeal},${safeMessage}`);
   });
 
   const blob = new Blob([csv.join("\n")], { type: "text/csv" });
@@ -1765,7 +1769,6 @@ function exportCSVForGroup(group) {
 
   URL.revokeObjectURL(url);
 }
-
 /* ====================================================== */
 /* OPEN COMPOSER FOR GROUP                                */
 /* ====================================================== */
