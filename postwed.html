@@ -2946,21 +2946,47 @@ mealToggle.addEventListener("change", async () => {
 
 });
 
-
 document.getElementById("guestLimitSelect")?.addEventListener("change", async () => {
 
+  const val = document.getElementById("guestLimitSelect").value;
+
+  // 🔥 ОБНОВЛЯЕМ ПРЕВЬЮ СРАЗУ
+  const guestCountSelect = document.getElementById("guestCount");
+
+  if (guestCountSelect) {
+
+    if (val === "1") {
+
+      guestCountSelect.innerHTML = `<option value="1">1</option>`;
+
+    } else if (val === "2") {
+
+      guestCountSelect.innerHTML = `
+        <option value="1">1</option>
+        <option value="2">2</option>
+      `;
+
+    } else {
+
+      guestCountSelect.innerHTML = `
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="more">More than 2</option>
+      `;
+
+    }
+
+  }
+
+  // 🔥 СОХРАНЯЕМ
   const token = window.APP_TOKEN;
 
   await supabase
     .from("sites")
-    .update({
-      guest_limit: document.getElementById("guestLimitSelect").value
-    })
+    .update({ guest_limit: val })
     .eq("edit_token", token);
 
 });
-
-
 
 // чекбоксы
 document.querySelectorAll(".mealPresetOpt").forEach(cb => {
