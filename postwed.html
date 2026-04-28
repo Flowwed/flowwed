@@ -1656,6 +1656,24 @@ margin-bottom:16px;
 
 <!-- MEAL BLOCK -->
 
+
+<div style="margin-bottom:12px;">
+  <label style="font-weight:600;">Guests per RSVP</label>
+
+  <select id="guestLimitSelect" class="couple-field" style="
+    margin-top:6px;
+    padding:8px;
+    border-radius:8px;
+    border:1px solid rgba(160,0,40,0.25);
+    background:#eef4ff;
+  ">
+    <option value="1">1 guest only</option>
+    <option value="2">Up to 2 guests</option>
+    <option value="more">More than 2 allowed</option>
+  </select>
+</div>
+
+
 <div style="margin-bottom:16px;">
   <label style="display:flex;align-items:center;gap:8px;">
     <input type="checkbox" id="enableMeal">
@@ -2894,7 +2912,8 @@ if (token) {
     .from("sites")
     .update({
       meal_options: mealInput.value,
-      meal_enabled: mealToggle.checked
+      meal_enabled: mealToggle.checked,
+      guest_limit: document.getElementById("guestLimitSelect")?.value
     })
     .eq("edit_token", token);
 }
@@ -2916,6 +2935,21 @@ mealToggle.addEventListener("change", async () => {
     .eq("edit_token", token);
 
 });
+
+
+document.getElementById("guestLimitSelect")?.addEventListener("change", async () => {
+
+  const token = window.APP_TOKEN;
+
+  await supabase
+    .from("sites")
+    .update({
+      guest_limit: document.getElementById("guestLimitSelect").value
+    })
+    .eq("edit_token", token);
+
+});
+
 
 
 // чекбоксы
