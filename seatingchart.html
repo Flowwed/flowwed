@@ -1436,7 +1436,12 @@ if (guestPosition[guestId] == tableId) {
     if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
 
     guestPosition[guestId] = tableId;
-    guestsAtTable[tableId].push(guestId);
+
+    if (!guestsAtTable[tableId].includes(guestId)) {
+  guestsAtTable[tableId].push(guestId);
+}
+
+
 
     await supabase
       .from("guests")
