@@ -1412,6 +1412,8 @@ async function assignGuest(guestId, tableId) {
 
 let usedSeats = getUsedSeats(tableId);
 
+console.log("TABLE", tableId, "USED", usedSeats, "ADDING", count, "TOTAL IF ADD", usedSeats + count, "LIMIT", table.seats);
+
     if (usedSeats + count > table.seats) {
       showGreenToast("Not enough seats at this table!");
       return;
