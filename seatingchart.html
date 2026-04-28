@@ -1577,16 +1577,13 @@ initFloatingScrollbar();
 
 }
 
-
 function formatGuestCount(count) {
   const n = Number(count) || 1;
 
-  if (n <= 1) return "—";
+  if (n <= 1) return "";   // ← ВОТ ЭТО ГЛАВНОЕ
 
   return `+${n - 1}`;
 }
-
-
 /***************************************************
  *  FLOATING SCROLLBAR INDICATOR
  ***************************************************/
