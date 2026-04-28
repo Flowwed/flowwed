@@ -780,14 +780,19 @@ th:nth-of-type(7), td:nth-of-type(7) {
   overflow-x: auto;
 }
 
-
 /* ===== STICKY HEADER ===== */
 .custom-scroll-container thead th {
   position: sticky;
   top: 0;
   z-index: 20;
 
-  background: #ffffff;   /* ОБЯЗАТЕЛЬНО */
+  background: linear-gradient(
+    to bottom,
+    #fff0f4,
+    #ffd6e2
+  );
+
+  border-bottom: 1px solid #ebcccc; /* ← ДОБАВЬ */
 }
 
 /* =========================
