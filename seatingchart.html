@@ -1359,7 +1359,11 @@ function updateAllGuestLists() {
       const guest = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
       if (!guest) return;
 
-      ul.innerHTML += `<li>${guest.first_name} ${guest.last_name}</li>`;
+      ul.innerHTML += `<li>
+  ${guest.first_name} ${guest.last_name} ${formatGuestCount(guest.guest_count)}
+</li>`;
+
+
     });
   });
 }
