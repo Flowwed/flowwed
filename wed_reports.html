@@ -803,53 +803,70 @@ max-width: 660px;
   content: "";
 }
 
-td:last-child {
-  max-width: 250px;
-  word-break: break-word;
-}
-
-th:nth-child(2), td:nth-child(2) {
-  width: 160px;
-}
-
-th:nth-child(3), td:nth-child(3) {
-  width: 200px;
-}
-
-th:nth-child(4), td:nth-child(4) {
-  width: 70px;
-  text-align: center;
-}
-
-th:nth-child(5), td:nth-child(5) {
-  width: 110px;
-  text-align: center;
-}
-
-td, th {
-  padding: 10px 12px;
-}
-
-
-th:nth-child(2), td:nth-child(2) {
-  width: 10px;
-  text-align: center;
-}
-
-
+/* 🔥 ТАБЛИЦА */
 table {
   width: 100%;
 }
 
-table th, table td {
-  white-space: nowrap;
+/* 🔥 ОБЩИЕ ЯЧЕЙКИ */
+td, th {
+  padding: 10px 12px;
+  white-space: nowrap; /* по умолчанию всё в одну строку */
 }
 
+/* 🔥 ЧЕКБОКС */
+th:nth-child(1), td:nth-child(1) {
+  width: 40px;
+}
+
+/* 🔥 НОМЕР (#) */
+th:nth-child(2), td:nth-child(2) {
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  text-align: center;
+  font-weight: 600;
+  color: #9c1818;
+}
+
+/* 🔥 NAME */
+th:nth-child(3), td:nth-child(3) {
+  width: 160px;
+}
+
+/* 🔥 EMAIL */
+th:nth-child(4), td:nth-child(4) {
+  width: 220px;
+}
+
+/* 🔥 GUESTS */
+th:nth-child(5), td:nth-child(5) {
+  width: 80px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* 🔥 MEAL */
+th:nth-child(6), td:nth-child(6) {
+  width: 120px;
+  text-align: center;
+  font-weight: 600;
+  color: #7a1010;
+}
+
+/* 🔥 MESSAGE (САМОЕ ВАЖНОЕ) */
+th:nth-child(7), td:nth-child(7) {
+  max-width: 260px;
+  white-space: normal;        /* 🔥 перенос строк */
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* 🔥 СКРОЛЛ */
 .scroll-wrapper {
   width: 100%;
   overflow-x: auto;
 }
-
 </style>
 </head>
 
