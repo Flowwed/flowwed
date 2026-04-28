@@ -1741,9 +1741,9 @@ function exportCSVForGroup(group) {
   if (!groupsGlobal) return;
   const arr = groupsGlobal[group] || [];
 
-  let csv = ["Name,Email,Guests,Meal,Guest Message"];
+  let csv = ["#,Name,Email,Guests,Meal,Guest Message"];
 
-  arr.forEach(g => {
+  arr.forEach((g, index) => {
     const name = `${g.first_name || ""} ${g.last_name || ""}`.trim();
     const email = g.email || "";
     const guests = g.guest_count || "";
@@ -1756,7 +1756,11 @@ function exportCSVForGroup(group) {
     const safeMeal = `"${meal}"`;
     const safeMessage = `"${message.replace(/"/g, '""')}"`;
 
-    csv.push(`${safeName},${safeEmail},${safeGuests},${safeMeal},${safeMessage}`);
+    const rowNumber = index + 1;
+
+csv.push(`${rowNumber},${safeName},${safeEmail},${safeGuests},${safeMeal},${safeMessage}`);
+
+
   });
 
   const blob = new Blob([csv.join("\n")], { type: "text/csv" });
