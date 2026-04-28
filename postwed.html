@@ -2125,7 +2125,7 @@ console.log("TOKEN:", token);
 
 const { data, error } = await supabase
   .from("sites")
-  .select("rsvp_date, wedding_date, wedding_time, venue, address, meal_options, meal_enabled")
+  .select("rsvp_date, wedding_date, wedding_time, venue, address, meal_options, meal_enabled, guest_limit")
   .eq("edit_token", token)
   .single();
 
@@ -2181,8 +2181,18 @@ if (mealToggle && data.meal_enabled !== null) {
   mealToggle.checked = data.meal_enabled;
 }
 
+
+// 🔥 ВОССТАНОВЛЕНИЕ GUEST LIMIT
+const guestLimitSelect = document.getElementById("guestLimitSelect");
+
+if (guestLimitSelect && data.guest_limit) {
+  guestLimitSelect.value = data.guest_limit;
+}
+
 // 🔥 4. обновляем UI ПОСЛЕ всего
 updateMealOptions();
+
+
 
 
 /* inputs */
