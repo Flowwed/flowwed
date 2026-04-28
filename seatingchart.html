@@ -1329,6 +1329,23 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
   });
 });
 
+
+function getUsedSeats(tableId) {
+  const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
+
+  const guests = guestsAtTable[tableId] || [];
+
+  let total = 0;
+
+  guests.forEach(gid => {
+    const g = allGuests.find(x => x.id == gid);
+    total += (g?.guest_count || 1);
+  });
+
+  return total;
+}
+
+
 /***************************************************
  *  UPDATE LEFT SIDEBAR GUEST LISTS
  ***************************************************/
@@ -1395,17 +1412,16 @@ async function assignGuest(guestId, tableId) {
 
     const table = tables.find(t => t.id === tableId);
 
-    const currentGuests = guestsAtTable[tableId] || [];
+let usedSeats = getUsedSeats(tableId);
 
-    let usedSeats = 0;
-    currentGuests.forEach(gid => {
-      const g = allGuests.find(x => x.id == gid);
-      usedSeats += (g?.guest_count || 1);
-    });
-
+// если гость уже сидит — вычитаем его
+if (guestPosition[guestId] == tableId) {
+  usedSeats -= count;
+}
     if (guestPosition[guestId] == tableId) {
       usedSeats -= count;
     }
+
 
     if (usedSeats + count > table.seats) {
       showGreenToast("Not enough seats at this table!");
