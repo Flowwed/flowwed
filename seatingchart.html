@@ -1272,7 +1272,7 @@ document.getElementById("btnDeleteTable").onclick = async () => {
 async function loadRSVP() {
   const { data, error } = await supabase
     .from("guests")
-    .select("id, first_name, last_name, rsvp_status, table_id")
+    .select("id, first_name, last_name, rsvp_status, table_id, guest_count")
     .eq("token", token);
 
   if (error) {
