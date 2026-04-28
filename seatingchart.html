@@ -1380,63 +1380,64 @@ document.addEventListener("click", async e => {
  *  ASSIGN GUEST — FINAL STABLE
  ***************************************************/
 async function assignGuest(guestId, tableId) {
-  guestId = String(guestId);
-  tableId = Number(tableId);
 
-  const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
-  const guest = allGuests.find(g => g.id == guestId);
-  const count = guest?.guest_count || 1;
+  if (assignGuest._busy) return;
+  assignGuest._busy = true;
 
-  const table = tables.find(t => t.id === tableId);
+  try {
 
-  // 👉 берём текущее состояние стола
-  const currentGuests = guestsAtTable[tableId] || [];
+    guestId = String(guestId);
+    tableId = Number(tableId);
 
-  // 👉 считаем занятые места
-  let usedSeats = 0;
+    const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
+    const guest = allGuests.find(g => g.id == guestId);
+    const count = guest?.guest_count || 1;
 
-  currentGuests.forEach(gid => {
-    const g = allGuests.find(x => x.id == gid);
-    usedSeats += (g?.guest_count || 1);
-  });
+    const table = tables.find(t => t.id === tableId);
 
-  // 👉 если гость уже сидит тут — вычитаем его
-  if (guestPosition[guestId] == tableId) {
-    usedSeats -= count;
+    const currentGuests = guestsAtTable[tableId] || [];
+
+    let usedSeats = 0;
+    currentGuests.forEach(gid => {
+      const g = allGuests.find(x => x.id == gid);
+      usedSeats += (g?.guest_count || 1);
+    });
+
+    if (guestPosition[guestId] == tableId) {
+      usedSeats -= count;
+    }
+
+    if (usedSeats + count > table.seats) {
+      showGreenToast("Not enough seats at this table!");
+      return;
+    }
+
+    if (guestPosition[guestId]) {
+      const old = guestPosition[guestId];
+      guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
+    }
+
+    if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
+
+    guestPosition[guestId] = tableId;
+    guestsAtTable[tableId].push(guestId);
+
+    await supabase
+      .from("guests")
+      .update({ table_id: tableId })
+      .eq("id", guestId);
+
+    updateAllGuestLists();
+    renderRSVPTable();
+
+    showGreenToast("Guest assigned & saved!");
+
+  } finally {
+    assignGuest._busy = false;
   }
-
-  // ❗ проверка
-  if (usedSeats + count > table.seats) {
-    showGreenToast("Not enough seats at this table!");
-    return;
-  }
-
-  // =========================
-  // ✅ ОБНОВЛЯЕМ
-  // =========================
-
-  // удалить со старого
-  if (guestPosition[guestId]) {
-    const old = guestPosition[guestId];
-    guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
-  }
-
-  // добавить в новый
-  if (!guestsAtTable[tableId]) guestsAtTable[tableId] = [];
-
-  guestPosition[guestId] = tableId;
-  guestsAtTable[tableId].push(guestId);
-
-  await supabase
-    .from("guests")
-    .update({ table_id: tableId })
-    .eq("id", guestId);
-
-  updateAllGuestLists();
-  renderRSVPTable();
-
-  showGreenToast("Guest assigned & saved!");
 }
+
+
 /***************************************************
  *  UNASSIGN GUEST
  ***************************************************/
