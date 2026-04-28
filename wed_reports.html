@@ -314,32 +314,6 @@ body{
   border: 3px solid #ffe6eb;
 }
 
-/* ====================================================== */
-/* TABLE THEMING                                          */
-/* ====================================================== */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  color: #5a1a1a;
- table-layout: fixed;
-}
-
-th, td {
-  padding: 10px 12px;
-  border-bottom: 1px solid #ebcccc;
-  text-align: left;
-  vertical-align: middle;
-  font-weight: 400;
-  white-space: nowrap;   /* ← ВОТ КЛЮЧ */
-}
-th {
-  color: #b41111;
-  font-weight: 600;
-  font-size: 15px;
-white-space: nowrap;
-}
-
 
 /* ====================================================== */
 /* FLOATING SCROLLBAR INDICATOR                           */
@@ -719,24 +693,41 @@ max-width: 660px;
   content: "";
 }
 
-th:nth-of-type(1), td:nth-of-type(1) {
-  width: 40px;
+/* ================= TABLE ================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 18px;
+  color: #5a1a1a;
 }
+
+/* общие ячейки */
+th, td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #ebcccc;
+  text-align: left;
+  vertical-align: middle;
+  font-weight: 500;
+  color: #5a1a1a; /* ← один цвет для всего */
+}
+
+/* заголовки */
+th {
+  font-weight: 600;
+}
+
+/* ================= COLUMNS ================= */
+th:nth-of-type(1), td:nth-of-type(1) { width: 40px; }
 
 th:nth-of-type(2), td:nth-of-type(2) {
   width: 40px;
   text-align: center;
-  font-weight: 500;
-  color: #9c1818;
 }
 
-th:nth-of-type(3), td:nth-of-type(3) {
-  width: 160px;
-}
+th:nth-of-type(3), td:nth-of-type(3) { width: 160px; }
 
-th:nth-of-type(4), td:nth-of-type(4) {
-  width: 220px;
-}
+th:nth-of-type(4), td:nth-of-type(4) { width: 220px; }
 
 th:nth-of-type(5), td:nth-of-type(5) {
   width: 80px;
@@ -750,37 +741,32 @@ th:nth-of-type(6), td:nth-of-type(6) {
 
 th:nth-of-type(7), td:nth-of-type(7) {
   width: 260px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-/* 🔥 СКРОЛЛ */
-.scroll-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
-
+/* ================= MESSAGE ================= */
 .msg-box {
   max-width: 260px;
 }
 
 .msg-text {
   display: -webkit-box;
-  -webkit-line-clamp: 2;   /* 👈 сколько строк видно */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.4;
 }
 
 .msg-box.expanded .msg-text {
   -webkit-line-clamp: unset;
+  display: block;
+  white-space: normal;
 }
 
+/* кнопка */
 .msg-toggle {
   margin-top: 4px;
-  font-size: 12px;
+  font-size: 13px;
   color: #b41111;
   background: none;
   border: none;
@@ -788,12 +774,11 @@ th:nth-of-type(7), td:nth-of-type(7) {
   padding: 0;
 }
 
-
-td {
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* ================= SCROLL ================= */
+.scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
 }
-
 
 </style>
 
