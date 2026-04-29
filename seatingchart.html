@@ -1023,7 +1023,6 @@ height: 1px;
   background: rgba(255,255,255,0.4);
 }
 
-
 .guest-footer {
   position: absolute;
   bottom: 10px;
@@ -1031,8 +1030,9 @@ height: 1px;
   right: 24px;
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;   /* ✅ центрируем */
   align-items: center;
+  gap: 10px;                /* расстояние между текстом и pill */
 }
 
 .guest-more {
@@ -1506,7 +1506,7 @@ function updateAllGuestLists() {
     if (hiddenCount > 0) {
       footer.innerHTML = `
         <span class="guest-more">
-          +${hiddenCount} guests
+          +${hiddenCount} Guest(s)
         </span>
 
         <span class="show-all-btn" data-table="${t.id}">
