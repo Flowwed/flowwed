@@ -1431,19 +1431,27 @@ function updateAllGuestLists() {
     const ul = card.querySelector(".guest-list");
     ul.innerHTML = "";
 
-    (guestsAtTable[t.id] || []).forEach(gid => {
+    const list = guestsAtTable[t.id] || [];
+
+    const visible = list.slice(0, 1);      // 👈 сколько показывать
+    const hiddenCount = list.length - 3;
+
+    visible.forEach(gid => {
       const guest = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
       if (!guest) return;
 
       ul.innerHTML += `<li>
-  ${guest.first_name} ${guest.last_name} ${formatGuestCount(guest.guest_count)}
-</li>`;
-
-
+        ${guest.first_name} ${guest.last_name} ${formatGuestCount(guest.guest_count)}
+      </li>`;
     });
+
+    if (hiddenCount > 0) {
+      ul.innerHTML += `<li style="opacity:0.7;font-weight:600;">
+        +${hiddenCount} more
+      </li>`;
+    }
   });
 }
-
 /***************************************************
  *  SEAT COUNT BUTTONS
  ***************************************************/
