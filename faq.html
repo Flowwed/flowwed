@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FAQ — FloWWeds</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+  margin:0;
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:#fdeff1;
+  color:#732323;
+}
+
+.sticky-header{
+  position:sticky;
+  top:0;
+  background:#fdeff1;
+  padding:20px 0;
+  z-index:1000;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.container{
+  max-width:900px;
+  margin:20px auto 80px auto;
+  padding:0 20px;
+}
+
+h1{
+  text-align:center;
+  color:#a52126;
+  margin-bottom:40px;
+}
+
+.faq-item{
+  background:linear-gradient(180deg,#ffffff 0%,#fff6f7 100%);
+  padding:22px 26px;
+  margin-bottom:16px;
+  border-radius:18px;
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.16),
+    0 6px 14px rgba(0,0,0,0.10);
+}
+
+.question{
+  font-weight:600;
+  color:#a52126;
+  cursor:pointer;
+  position:relative;
+  padding-right:24px;
+}
+
+/* стрелка */
+.question::after{
+  content:"+";
+  position:absolute;
+  right:0;
+  transition:.25s;
+}
+
+/* когда открыт */
+.faq-item.open .question::after{
+  content:"−";
+}
+.answer{
+  color:#6f2a2a;
+  line-height:1.6;
+
+  max-height:0;
+  overflow:hidden;
+
+  transition:max-height .3s ease;
+
+  margin-top:0;
+}
+
+/* когда открыт */
+.faq-item.open .answer{
+  max-height:300px;
+  margin-top:8px;
+}
+footer{
+  margin-top:80px;
+  padding:30px;
+  text-align:center;
+  background:#fff5f5;
+  color:#a52126;
+}
+
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+  <h1>Frequently Asked Questions</h1>
+</div>
+
+<div class="container">
+
+
+<div class="faq-item open">
+
+<div class="question">1. What is FloWWeds?</div>
+<div class="answer">
+FloWWeds creates cinematic wedding invitations powered by AI, turning your photos into a film-style experience.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">2. How long does it take?</div>
+<div class="answer">
+Most invitations are ready within 7–10 days after you submit your photos and details.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">3. How many photos do I need?</div>
+<div class="answer">
+Typically 6–10 photos work perfectly, but even fewer can still create a beautiful result.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">4. Can I choose the cinematic style?</div>
+<div class="answer">
+Yes. You can choose the style that best fits your wedding theme and personality.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">5. Do guests need to install anything?</div>
+<div class="answer">
+No. Guests simply open a link and watch your invitation instantly.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">6. Can I share it by phone?</div>
+<div class="answer">
+Yes. You can send your invitation via text, WhatsApp, email, or any messaging app.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">7. Is this better than printed invitations?</div>
+<div class="answer">
+It’s faster, more memorable, and often more affordable — plus guests never lose it.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">8. Can I edit it later?</div>
+<div class="answer">
+Yes. You can update details or information anytime through your control panel.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">9. Do I get a wedding website too?</div>
+<div class="answer">
+Yes. Every package includes a beautiful wedding website.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">10. Is it private?</div>
+<div class="answer">
+Yes. Only people with your link can view your invitation.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">11. Does it work on mobile?</div>
+<div class="answer">
+Yes. It works perfectly on phones, tablets, and desktops.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">12. Can I preview before sharing?</div>
+<div class="answer">
+Yes. You’ll receive a preview before sending it to guests.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">13. How long is the invitation video?</div>
+<div class="answer">
+Usually between 30 and 60 seconds, optimized for emotional impact.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">14. Is support included?</div>
+<div class="answer">
+Yes. Our team helps you throughout the entire process.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">15. How do I start?</div>
+<div class="answer">
+Simply click “Make It Yours” and follow the instructions.
+</div>
+</div>
+
+
+</div>
+
+<footer>
+© FloWWeds
+</footer>
+
+<script>
+
+document.querySelectorAll(".question").forEach(q=>{
+
+  q.onclick = ()=>{
+
+    const item = q.parentElement;
+
+    item.classList.toggle("open");
+
+  };
+
+});
+
+</script>
+
+
+</body>
+</html>
