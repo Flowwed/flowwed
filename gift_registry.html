@@ -822,32 +822,35 @@ if (params.get("t")) {
 
 <div class="info-bubble-inline" style="margin: 0 18px 16px 18px;">
 
-
-
-
-
-
-
 <div class="container">
+
+  <!-- 💖 HONEYMOON FUND -->
+  <div class="form">
+    <h2>Honeymoon Fund</h2>
+
+    <input id="paypal" placeholder="PayPal link (https://paypal.me/...)" />
+    <input id="venmo" placeholder="Venmo username (@username)" />
+    <input id="zelle" placeholder="Zelle (email or phone)" />
+
+    <button id="saveFundBtn">Save Fund</button>
+  </div>
 
   <!-- FORM -->
   <div class="form">
     <h2>Add / Edit Gift</h2>
 
-
     <div class="form-grid">
 
-  <!-- CATEGORY -->
-  <select id="category">
-    <option value="">Choose category</option>
-  </select>
+      <!-- CATEGORY -->
+      <select id="category">
+        <option value="">Choose category</option>
+      </select>
 
-  <input id="title" placeholder="Gift name" disabled />
-  <input id="price" placeholder="Price" disabled />
-  <input id="qty" type="number" placeholder="Quantity" disabled />
-  <input id="link" placeholder="Store link" disabled />
-</div>
-
+      <input id="title" placeholder="Gift name" disabled />
+      <input id="price" placeholder="Price" disabled />
+      <input id="qty" type="number" placeholder="Quantity" disabled />
+      <input id="link" placeholder="Store link" disabled />
+    </div>
 
     <button id="saveBtn">Save gift</button>
   </div>
@@ -1315,6 +1318,37 @@ document.addEventListener("change", (e) => {
 });
 
 
+document.getElementById("saveFundBtn").onclick = async () => {
+
+  const paypal = document.getElementById("paypal").value.trim();
+  const venmo = document.getElementById("venmo").value.trim();
+  const zelle = document.getElementById("zelle").value.trim();
+
+  if (!window.APP_TOKEN) {
+    alert("No token");
+    return;
+  }
+
+  const payload = {
+    edit_token: window.APP_TOKEN,
+    paypal,
+    venmo,
+    zelle
+  };
+
+  // 🔥 UPSERT (если есть — обновит, если нет — создаст)
+  const { error } = await supabase
+    .from("honeymoon_fund")
+    .upsert(payload, { onConflict: "edit_token" });
+
+  if (error) {
+    console.error(error);
+    alert("Save failed");
+  } else {
+    alert("Saved!");
+  }
+
+};
 
 
 </script>
