@@ -233,10 +233,11 @@ body {
 .guest-list {
   margin: 0;
   list-style: disc;
+  list-style-position: inside;   /* 🔥 фикс */
 
   display: flex;
   flex-direction: column;
-  align-items: center;   /* 🔥 центр по горизонтали */
+  align-items: center;
 
   gap: 6px;
 }
@@ -244,7 +245,6 @@ body {
 .guest-list li {
   text-align: center;
 }
-
 /* ======================================= */
 /* MAIN TABLE AREA                         */
 /* ======================================= */
