@@ -993,6 +993,20 @@ height: 1px;
 }
 
 
+@keyframes tableShake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-4px); }
+  40%  { transform: translateX(4px); }
+  60%  { transform: translateX(-3px); }
+  80%  { transform: translateX(3px); }
+  100% { transform: translateX(0); }
+}
+
+.table-shake {
+  animation: tableShake 0.35s ease;
+}
+
+
 </style>
 </head>
 
@@ -1485,10 +1499,9 @@ let usedSeats = getUsedSeats(tableId);
 console.log("TABLE", tableId, "USED", usedSeats, "ADDING", count, "TOTAL IF ADD", usedSeats + count, "LIMIT", table.seats);
 
 if (usedSeats + count > table.seats) {
-  showGreenToast("Not enough seats", "error");
 
  showTableError(tableId);   // 🔥 ВОТ ЭТО
-
+shakeTable(tableId);
   scrollToTable.noHighlight = true;   // 🔥
   scrollToTable(tableId);
   scrollToTable.noHighlight = false;  // 🔥
@@ -1544,6 +1557,22 @@ function showTableError(tableId, text = "Not enough seats") {
   }, 2000);
 }
 
+
+// 👇 ВОТ СЮДА ВСТАВЬ
+function shakeTable(tableId) {
+  const card = document.querySelector(`.table-pair[data-id="${tableId}"]`);
+  if (!card) return;
+
+  const block = card.querySelector(".simple-table-block");
+
+  block.classList.add("table-shake");
+
+  setTimeout(() => {
+    block.classList.remove("table-shake");
+  }, 350);
+}
+
+
 /***************************************************
  *  UNASSIGN GUEST
  ***************************************************/
@@ -1590,8 +1619,8 @@ document.addEventListener("click", e => {
 
     // ❌ ЕСЛИ НЕТ МЕСТ — ВЫХОД
 if (usedSeats + count > table.seats) {
-  showGreenToast("Not enough seats", "error");
  showTableError(tableId);   // 🔥 ВОТ ЭТО
+shakeTable(tableId);
 
   scrollToTable.noHighlight = true;
   scrollToTable(tableId);
