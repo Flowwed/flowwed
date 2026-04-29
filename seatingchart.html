@@ -1516,7 +1516,7 @@ async function unassignGuest(guestId) {
 /***************************************************
  *  MAIN CLICK HANDLER
  ***************************************************/
-document.addEventListener("click", async e => {
+document.addEventListener("click", e => {
 
   const assignBtn = e.target.closest(".mini-assign-btn");
   if (assignBtn) {
@@ -1524,15 +1524,37 @@ document.addEventListener("click", async e => {
     e.preventDefault();
     e.stopPropagation();
 
-    const ok = await assignGuest(assignBtn.dataset.guest, assignBtn.dataset.table);
+    const tableId = Number(assignBtn.dataset.table);
+    const guestId = assignBtn.dataset.guest;
 
-    if (ok) {
-      scrollToTable(Number(assignBtn.dataset.table));
+    const allGuests = [...RSVP_YES, ...RSVP_MAYBE];
+    const guest = allGuests.find(g => g.id == guestId);
+    const count = Number(guest?.guest_count) || 1;
+
+    const usedSeats = getUsedSeats(tableId);
+    const table = tables.find(t => t.id === tableId);
+
+    // ❌ ЕСЛИ НЕТ МЕСТ — ВЫХОД
+    if (usedSeats + count > table.seats) {
+      showGreenToast("Not enough seats", "error");
+      return;
     }
+
+    // ✅ ЕСЛИ ВСЁ ОК
+    assignGuest(guestId, tableId);
+    scrollToTable(tableId);
 
     return;
   }
+
+  const unBtn = e.target.closest(".unassign-btn");
+  if (unBtn) {
+    unassignGuest(unBtn.dataset.id);
+    return;
+  }
 });
+
+
 
 /***************************************************
  *  RENDER MAIN RSVP TABLE
