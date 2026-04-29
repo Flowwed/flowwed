@@ -375,15 +375,34 @@ th, td {
 
 
 .unassign-btn {
-  background: #b41111;
+  background: #444;        /* тёмно-серый */
   color: white;
+
   padding: 4px 8px;
   border-radius: 8px;
   border: none;
+
   cursor: pointer;
-  z-index: 20;
   font-size: 18px;
+
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.18),
+    inset 0 1px 2px rgba(255,255,255,0.2);
 }
+
+
+.unassign-btn:hover {
+  background: #2f2f2f;
+  transform: translateY(-1px);
+}
+
+.unassign-btn:active {
+  background: #1f1f1f;
+  transform: scale(0.92);
+}
+
 
 
 /* ======================================= */
