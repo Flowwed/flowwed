@@ -237,13 +237,14 @@ body {
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;   /* 🔥 ВОТ ГЛАВНОЕ */
+
+  width: fit-content;        /* 🔥 */
+  margin-left: auto;         /* 🔥 центрируем блок */
+  margin-right: auto;        /* 🔥 */
 
   gap: 6px;
-
-  width: 100%;           /* 🔥 ВАЖНО */
 }
-
 .guest-list li {
   text-align: center;
   width: 100%;          /* 🔥 ВАЖНО */
