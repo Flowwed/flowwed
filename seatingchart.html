@@ -1456,9 +1456,16 @@ let usedSeats = getUsedSeats(tableId);
 console.log("TABLE", tableId, "USED", usedSeats, "ADDING", count, "TOTAL IF ADD", usedSeats + count, "LIMIT", table.seats);
 
 if (usedSeats + count > table.seats) {
-  showGreenToast("Not enough seats at this table!");
-  return false;   // 🔥 обязательно
+  showGreenToast("Not enough seats", "error");
+
+  scrollToTable.noHighlight = true;   // 🔥
+  scrollToTable(tableId);
+  scrollToTable.noHighlight = false;  // 🔥
+
+  return;
 }
+
+
     if (guestPosition[guestId]) {
       const old = guestPosition[guestId];
       guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
@@ -1699,13 +1706,19 @@ function scrollToTable(tableId) {
   );
 
   // 🔥 выделить текущий
+  if (!scrollToTable.noHighlight) {
   card.classList.add("active-table");
+}
 
   // (опционально — убрать через время)
+if (!scrollToTable.noHighlight) {
   setTimeout(() => {
     card.classList.remove("active-table");
   }, 2000);
 }
+
+
+
 /***************************************************
  *  EMAIL POPUP OPEN / CLOSE
  ***************************************************/
