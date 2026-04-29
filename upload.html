@@ -864,9 +864,15 @@ max-width: 510px;
   box-shadow:
     0 6px 16px rgba(0,0,0,0.10),
     inset 0 3px 8px rgba(255,255,255,0.25);
+
+  display: flex;              /* 👈 вместо inline-flex */
+  justify-content: center;    /* 👈 центрирует ВСЁ */
+  align-items: center;
+
+  gap: 8px;
+
+  width: fit-content;         /* 👈 по тексту */
 }
-
-
 
 
 .info-icon {
