@@ -1433,11 +1433,12 @@ function updateAllGuestLists() {
 
     const list = guestsAtTable[t.id] || [];
 
-const visibleCount = 1;
+    const visibleCount = 1;
 
-const visible = list.slice(0, visibleCount);
-const hiddenCount = list.length - visibleCount;
+    const visible = list.slice(0, visibleCount);
+    const hiddenGuests = list.slice(visibleCount);
 
+    // 👉 показываем видимых
     visible.forEach(gid => {
       const guest = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
       if (!guest) return;
@@ -1447,6 +1448,15 @@ const hiddenCount = list.length - visibleCount;
       </li>`;
     });
 
+    // 👉 считаем ВСЕХ скрытых людей (не строки!)
+    let hiddenCount = 0;
+
+    hiddenGuests.forEach(gid => {
+      const g = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
+      hiddenCount += Number(g?.guest_count) || 1;
+    });
+
+    // 👉 вывод "+N more"
     if (hiddenCount > 0) {
       ul.innerHTML += `<li style="opacity:0.7;font-weight:600;">
         +${hiddenCount} more
@@ -1454,6 +1464,7 @@ const hiddenCount = list.length - visibleCount;
     }
   });
 }
+
 /***************************************************
  *  SEAT COUNT BUTTONS
  ***************************************************/
