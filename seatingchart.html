@@ -234,13 +234,11 @@ body {
   margin: 0;
   list-style: disc;
   margin-left: 40px;
-
   display: flex;
   flex-direction: column;
   gap: 6px;
-
-  flex: 1;              /* 🔥 ВОТ ЭТО КЛЮЧ */
 }
+
 /* ======================================= */
 /* MAIN TABLE AREA                         */
 /* ======================================= */
@@ -1026,6 +1024,23 @@ height: 1px;
 }
 
 
+.guest-footer {
+  position: absolute;
+  bottom: 10px;
+  left: 24px;
+  right: 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.guest-more {
+  opacity: 0.7;
+  font-weight: 600;
+}
+
+
 </style>
 </head>
 
@@ -1454,6 +1469,14 @@ function updateAllGuestLists() {
     const ul = card.querySelector(".guest-list");
     ul.innerHTML = "";
 
+    // 🔥 footer (создаём 1 раз)
+    let footer = card.querySelector(".guest-footer");
+    if (!footer) {
+      footer = document.createElement("div");
+      footer.className = "guest-footer";
+      card.querySelector(".simple-table-block").appendChild(footer);
+    }
+
     const list = guestsAtTable[t.id] || [];
 
     const visibleCount = 1;
@@ -1471,7 +1494,7 @@ function updateAllGuestLists() {
       </li>`;
     });
 
-    // 👉 считаем ВСЕХ скрытых людей (не строки!)
+    // 👉 считаем скрытых людей
     let hiddenCount = 0;
 
     hiddenGuests.forEach(gid => {
@@ -1479,25 +1502,22 @@ function updateAllGuestLists() {
       hiddenCount += Number(g?.guest_count) || 1;
     });
 
-    // 👉 вывод "+N guests"
+    // 🔥 ВЫВОД В FOOTER (НЕ В UL)
     if (hiddenCount > 0) {
-      ul.innerHTML += `
-        <li style="margin-top:auto; margin-bottom:10px;">
-  <div style="opacity:0.7; font-weight:600;">
-    +${hiddenCount} guests
-  </div>
+      footer.innerHTML = `
+        <span class="guest-more">
+          +${hiddenCount} guests
+        </span>
 
-  <div>
-    <span class="show-all-btn" data-table="${t.id}">
-      Show all
-    </span>
-  </div>
-</li>
+        <span class="show-all-btn" data-table="${t.id}">
+          Show all
+        </span>
       `;
+    } else {
+      footer.innerHTML = "";
     }
   });
 }
-
 /***************************************************
  *  SEAT COUNT BUTTONS
  ***************************************************/
