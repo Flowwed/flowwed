@@ -1542,12 +1542,15 @@ document.addEventListener("click", e => {
     const table = tables.find(t => t.id === tableId);
 
     // ❌ ЕСЛИ НЕТ МЕСТ — ВЫХОД
-    if (usedSeats + count > table.seats) {
-      showGreenToast("Not enough seats", "error");
-      scrollToTable(tableId);   // 🔥 вернуть скролл
-      return;
-    }
+if (usedSeats + count > table.seats) {
+  showGreenToast("Not enough seats", "error");
 
+  scrollToTable.noHighlight = true;
+  scrollToTable(tableId);
+  scrollToTable.noHighlight = false;
+
+  return;
+}
     // ✅ ЕСЛИ ВСЁ ОК
     assignGuest(guestId, tableId);
     scrollToTable(tableId);
