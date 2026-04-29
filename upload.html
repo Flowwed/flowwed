@@ -1186,10 +1186,10 @@ if (params.get("t")) {
       <div class="info-icon">i</div>
       <div class="info-content">
         <span class="info-text">
-          You can notify your guests about your updates via email & SMS here
+          You can notify your guests about your updates here
         </span>
       </div>
-      <button class="info-action-btn">Send Email & SMS</button>
+      <button class="info-action-btn">Update</button>
 
 
     </div>
@@ -1211,21 +1211,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const token = window.APP_TOKEN;
 
-  sendEmailBtn.addEventListener("click", () => {
-    if (!token) {
-      alert("Missing token");
-      return;
-    }
+sendEmailBtn.addEventListener("click", () => {
+  if (!token) {
+    alert("Missing token");
+    return;
+  }
 
-    iframe.src = `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`;
-    modal.style.display = "flex";
-  });
-
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    iframe.src = "";
-  });
+  window.open(`dash-updates.html?t=${token}`, "_blank", "noopener");
 });
+
 
 </script>
 
