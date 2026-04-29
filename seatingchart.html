@@ -1537,6 +1537,7 @@ document.addEventListener("click", e => {
     // ❌ ЕСЛИ НЕТ МЕСТ — ВЫХОД
     if (usedSeats + count > table.seats) {
       showGreenToast("Not enough seats", "error");
+      scrollToTable(tableId);   // 🔥 вернуть скролл
       return;
     }
 
