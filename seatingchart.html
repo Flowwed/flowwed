@@ -1455,11 +1455,10 @@ let usedSeats = getUsedSeats(tableId);
 
 console.log("TABLE", tableId, "USED", usedSeats, "ADDING", count, "TOTAL IF ADD", usedSeats + count, "LIMIT", table.seats);
 
-    if (usedSeats + count > table.seats) {
-      showGreenToast("Not enough seats at this table!");
-      return;
-    }
-
+if (usedSeats + count > table.seats) {
+  showGreenToast("Not enough seats at this table!");
+  return false;   // 🔥 обязательно
+}
     if (guestPosition[guestId]) {
       const old = guestPosition[guestId];
       guestsAtTable[old] = guestsAtTable[old].filter(x => x !== guestId);
@@ -1526,8 +1525,12 @@ document.addEventListener("click", e => {
   e.preventDefault();
   e.stopPropagation();
 
-    assignGuest(assignBtn.dataset.guest, assignBtn.dataset.table);
-    scrollToTable(Number(assignBtn.dataset.table));
+const ok = assignGuest(assignBtn.dataset.guest, assignBtn.dataset.table);
+
+if (ok) {
+  scrollToTable(Number(assignBtn.dataset.table));
+}
+
     return;
   }
 
