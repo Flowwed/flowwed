@@ -94,23 +94,20 @@ margin: 30px auto 28px;
 /* нижняя плашка */
 
 .info-bubble--bottom {
-  display: inline-flex;          /* 🔥 КЛЮЧ — НЕ flex */
+  display: inline-flex;
   align-items: center;
   gap: 16px;
 
-  margin-left: auto;
   margin-top: 40px;
 
-  width: auto;                   /* 🔥 убрали fit-content */
-  max-width: none;               /* 🔥 убрали ограничения */
+  align-self: flex-end;   /* ✅ ВОТ ЭТО КЛЮЧ */
 
-  padding: 16px 28px;            /* чуть компактнее */
+  padding: 16px 28px;
   background: #fff;
   border-radius: 999px;
 
-  white-space: nowrap;           /* 🔥 запрещаем растягивание */
+  white-space: nowrap;
 }
-
 
 /* текстовый блок */
 .bottom-info-content {
