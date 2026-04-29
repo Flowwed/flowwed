@@ -233,20 +233,23 @@ body {
 .guest-list {
   margin: 0;
   padding: 0;
-
-  list-style: none;   /* 🔥 УБИЛИ BULLET */
+  list-style: none;
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
   gap: 6px;
+
+  width: 100%;           /* 🔥 ВАЖНО */
 }
 
 .guest-list li {
   text-align: center;
-  color: white;
+  width: 100%;          /* 🔥 ВАЖНО */
 }
+
+
 /* ======================================= */
 /* MAIN TABLE AREA                         */
 /* ======================================= */
