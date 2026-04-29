@@ -230,39 +230,31 @@ body {
 }
 .seat-btn:hover { background: #ffe2e2; }
 
+/* контейнер списка */
 .guest-list {
-  list-style: none;      /* убираем дефолтный bullet */
+  list-style: none;
   padding: 0;
   margin: 0;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-}
-
-.guest-list li {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   gap: 6px;
 }
 
-.guest-list li::before {
-  content: "•";
-  color: rgba(255,255,255,0.85);
-
-  font-size: 16px;
-  line-height: 1;
-}
-
-
-
+/* строки */
 .guest-list li {
   text-align: center;
+  color: white;
 }
 
+/* кастомный bullet */
+.guest-list li::before {
+  content: "• ";
+  color: #ffffff;
+  font-size: 14px;
+}
 
 /* ======================================= */
 /* MAIN TABLE AREA                         */
