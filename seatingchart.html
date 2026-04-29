@@ -1433,8 +1433,10 @@ function updateAllGuestLists() {
 
     const list = guestsAtTable[t.id] || [];
 
-    const visible = list.slice(0, 1);      // 👈 сколько показывать
-    const hiddenCount = list.length - 3;
+const visibleCount = 1;
+
+const visible = list.slice(0, visibleCount);
+const hiddenCount = list.length - visibleCount;
 
     visible.forEach(gid => {
       const guest = [...RSVP_YES, ...RSVP_MAYBE].find(x => x.id == gid);
