@@ -100,13 +100,14 @@ margin: 30px auto 28px;
 
   margin-top: 40px;
 
-  align-self: flex-end;   /* ✅ ВОТ ЭТО КЛЮЧ */
+  align-self: center;   /* 👈 ВОТ ЭТО */
 
   padding: 16px 28px;
   background: #fff;
   border-radius: 999px;
 
   white-space: nowrap;
+  min-width: 0;
 }
 
 /* текстовый блок */
@@ -1026,7 +1027,16 @@ max-width: 640px;
   to { transform: rotate(360deg); }
 }
 
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
+}
 
+.guide-link:hover {
+  color: #1a4fd6;
+}
 
 </style>
 
@@ -1077,7 +1087,7 @@ max-width: 640px;
 <div class="ios-banner">
 <span class="info-icon">i</span>
   Manage and organize your guests.  Check the Quick User Guide
-  <span id="openGuide" class="guide-link">here</span>
+  <a href="tttphotogallery.html" id="openGuide" class="guide-link">here</a>
 </div>
 
 
@@ -2165,6 +2175,63 @@ window.addEventListener("load", () => {
 });
 </script>
 
+
+<div id="guideModal" style="
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 340px;
+  height: 420px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  display: none;
+  z-index: 999999;
+  overflow: hidden;
+">
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 14px;
+    background:#f7f7f7;
+    font-weight:600;
+  ">
+    Guide
+    <span id="closeGuide" style="cursor:pointer;font-size:18px;">×</span>
+  </div>
+
+  <iframe src="tttphotogallery.html" style="
+    width:100%;
+    height:100%;
+    border:none;
+  "></iframe>
+
+</div>
+
+
+<script>
+const openGuide = document.getElementById("openGuide");
+const modal = document.getElementById("guideModal");
+const closeGuide = document.getElementById("closeGuide");
+
+openGuide.addEventListener("click", (e) => {
+  e.preventDefault(); // ❗ не уходим со страницы
+  modal.style.display = "block";
+});
+
+closeGuide.onclick = () => {
+  modal.style.display = "none";
+};
+
+// клик вне окна — закрывает
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+</script>
 
 </body>
 </html>
