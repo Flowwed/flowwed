@@ -1217,6 +1217,9 @@ document.addEventListener("DOMContentLoaded", () => {
 const token = window.APP_TOKEN;
 
 sendEmailBtn.addEventListener("click", () => {
+  console.log("CLICK WORKS");
+  console.log("TOKEN:", token);
+
   if (!token) {
     alert("Missing token");
     return;
