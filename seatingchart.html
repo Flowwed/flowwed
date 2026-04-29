@@ -1480,19 +1480,22 @@ function updateAllGuestLists() {
     // 👉 вывод "+N guests"
     if (hiddenCount > 0) {
       ul.innerHTML += `
-        <li style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-          <span style="opacity:0.7; font-weight:600;">
-            +${hiddenCount} guests
-          </span>
+        <li style="margin-top:6px;">
+  <div style="opacity:0.7; font-weight:600;">
+    +${hiddenCount} guests
+  </div>
 
-          <span class="show-all-btn" data-table="${t.id}">
-            Show all
-          </span>
-        </li>
+  <div>
+    <span class="show-all-btn" data-table="${t.id}">
+      Show all
+    </span>
+  </div>
+</li>
       `;
     }
   });
 }
+
 /***************************************************
  *  SEAT COUNT BUTTONS
  ***************************************************/
