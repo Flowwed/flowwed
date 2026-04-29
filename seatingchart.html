@@ -993,19 +993,15 @@ height: 1px;
 }
 
 
-@keyframes tableShake {
-  0%   { transform: translateX(0); }
-  20%  { transform: translateX(-4px); }
-  40%  { transform: translateX(4px); }
-  60%  { transform: translateX(-3px); }
-  80%  { transform: translateX(3px); }
-  100% { transform: translateX(0); }
+@keyframes tablePulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
 }
 
-.table-shake {
-  animation: tableShake 0.35s ease;
+.table-pulse {
+  animation: tablePulse 0.6s ease-in-out infinite;
 }
-
 
 </style>
 </head>
@@ -1501,7 +1497,7 @@ console.log("TABLE", tableId, "USED", usedSeats, "ADDING", count, "TOTAL IF ADD"
 if (usedSeats + count > table.seats) {
 
  showTableError(tableId);   // 🔥 ВОТ ЭТО
-shakeTable(tableId);
+pulseTable(tableId);
   scrollToTable.noHighlight = true;   // 🔥
   scrollToTable(tableId);
   scrollToTable.noHighlight = false;  // 🔥
@@ -1558,20 +1554,18 @@ function showTableError(tableId, text = "Not enough seats") {
 }
 
 
-// 👇 ВОТ СЮДА ВСТАВЬ
-function shakeTable(tableId) {
+function pulseTable(tableId) {
   const card = document.querySelector(`.table-pair[data-id="${tableId}"]`);
   if (!card) return;
 
   const block = card.querySelector(".simple-table-block");
 
-  block.classList.add("table-shake");
+  block.classList.add("table-pulse");
 
   setTimeout(() => {
-    block.classList.remove("table-shake");
-  }, 350);
+    block.classList.remove("table-pulse");
+  }, 2000);   // ⏱ столько же, сколько живёт бейдж
 }
-
 
 /***************************************************
  *  UNASSIGN GUEST
@@ -1620,8 +1614,7 @@ document.addEventListener("click", e => {
     // ❌ ЕСЛИ НЕТ МЕСТ — ВЫХОД
 if (usedSeats + count > table.seats) {
  showTableError(tableId);   // 🔥 ВОТ ЭТО
-shakeTable(tableId);
-
+pulseTable(tableId);
   scrollToTable.noHighlight = true;
   scrollToTable(tableId);
   scrollToTable.noHighlight = false;
