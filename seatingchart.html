@@ -977,20 +977,27 @@ height: 1px;
 
 .table-error-badge {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 
-  inset: 0;
+  background: rgba(211, 47, 47, 0.95);
+  color: white;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 12px;
 
-  background: transparent;
+  font-size: 15px;
+  font-weight: 700;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 
   z-index: 50;
   pointer-events: none;
 
   animation: fadeIn 0.2s ease;
 }
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translate(-50%, -60%); }
@@ -1046,19 +1053,6 @@ height: 1px;
 font-size: 14px;
 }
 
-
-.table-error-pill {
-  background: rgba(211, 47, 47, 0.95);
-  color: white;
-
-  padding: 12px 20px;
-  border-radius: 12px;
-
-  font-size: 15px;
-  font-weight: 700;
-
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
 
 </style>
 </head>
@@ -1637,13 +1631,7 @@ function showTableError(tableId, text = "Not enough seats") {
 
   const badge = document.createElement("div");
   badge.className = "table-error-badge";
-
-  badge.innerHTML = `
-  <div class="table-error-pill">
-    ${text}
-  </div>
-`;
-
+  badge.textContent = text;
 
   block.appendChild(badge);
 
