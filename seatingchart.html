@@ -963,6 +963,37 @@ height: 1px;
 }
 
 
+.table-error-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: rgba(211, 47, 47, 0.95);
+  color: white;
+
+  padding: 8px 14px;
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
+  z-index: 50;
+  pointer-events: none;
+
+  animation: fadeInOut 2s ease;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -60%); }
+  15% { opacity: 1; transform: translate(-50%, -50%); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -40%); }
+}
+
+
 
 </style>
 </head>
@@ -1458,6 +1489,8 @@ console.log("TABLE", tableId, "USED", usedSeats, "ADDING", count, "TOTAL IF ADD"
 if (usedSeats + count > table.seats) {
   showGreenToast("Not enough seats", "error");
 
+ showTableError(tableId);   // 🔥 ВОТ ЭТО
+
   scrollToTable.noHighlight = true;   // 🔥
   scrollToTable(tableId);
   scrollToTable.noHighlight = false;  // 🔥
@@ -1496,6 +1529,22 @@ if (usedSeats + count > table.seats) {
   }
 }
 
+function showTableError(tableId, text = "Not enough seats") {
+  const card = document.querySelector(`.table-pair[data-id="${tableId}"]`);
+  if (!card) return;
+
+  const block = card.querySelector(".simple-table-block");
+
+  const badge = document.createElement("div");
+  badge.className = "table-error-badge";
+  badge.textContent = text;
+
+  block.appendChild(badge);
+
+  setTimeout(() => {
+    badge.remove();
+  }, 2000);
+}
 
 /***************************************************
  *  UNASSIGN GUEST
@@ -1544,6 +1593,7 @@ document.addEventListener("click", e => {
     // ❌ ЕСЛИ НЕТ МЕСТ — ВЫХОД
 if (usedSeats + count > table.seats) {
   showGreenToast("Not enough seats", "error");
+ showTableError(tableId);   // 🔥 ВОТ ЭТО
 
   scrollToTable.noHighlight = true;
   scrollToTable(tableId);
