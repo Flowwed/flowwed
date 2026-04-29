@@ -230,30 +230,19 @@ body {
 }
 .seat-btn:hover { background: #ffe2e2; }
 
-/* контейнер списка */
 .guest-list {
-  list-style: none;
-  padding: 0;
   margin: 0;
+  list-style: disc;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;   /* 🔥 центр по горизонтали */
 
   gap: 6px;
 }
 
-/* строки */
 .guest-list li {
   text-align: center;
-  color: white;
-}
-
-/* кастомный bullet */
-.guest-list li::before {
-  content: "• ";
-  color: #ffffff;
-  font-size: 14px;
 }
 
 /* ======================================= */
