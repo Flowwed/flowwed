@@ -117,11 +117,14 @@ margin: 30px auto 28px;
 }
 
 
-/* сам текст */
-.info-text {
-  white-space: nowrap;           /* 🔥 в одну строку */
+.info-bubble--bottom .info-text {
+  white-space: nowrap;
 }
 
+.info-bubble:not(.info-bubble--bottom) .info-text {
+  white-space: normal;
+  max-width: 420px;
+}
 
 /* стрелка */
 .bottom-info-arrow {
