@@ -1516,28 +1516,20 @@ async function unassignGuest(guestId) {
 /***************************************************
  *  MAIN CLICK HANDLER
  ***************************************************/
-document.addEventListener("click", e => {
+document.addEventListener("click", async e => {
 
-  /* assign */
   const assignBtn = e.target.closest(".mini-assign-btn");
   if (assignBtn) {
 
-  e.preventDefault();
-  e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-const ok = assignGuest(assignBtn.dataset.guest, assignBtn.dataset.table);
+    const ok = await assignGuest(assignBtn.dataset.guest, assignBtn.dataset.table);
 
-if (ok) {
-  scrollToTable(Number(assignBtn.dataset.table));
-}
+    if (ok) {
+      scrollToTable(Number(assignBtn.dataset.table));
+    }
 
-    return;
-  }
-
-  /* unassign */
-  const unBtn = e.target.closest(".unassign-btn");
-  if (unBtn) {
-    unassignGuest(unBtn.dataset.id);
     return;
   }
 });
