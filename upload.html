@@ -78,11 +78,12 @@ margin: 30px auto 28px;
 }
 
 .info-text {
-  font-size: 15px;
-  white-space: nowrap;  /* ← одна строка, не переносится */
+  font-size: 18px;
   color: #444;
-}
 
+  white-space: normal;     /* 🔥 разрешаем перенос */
+  max-width: 420px;        /* 🔥 ограничиваем длину */
+}
 
 .editor-column {
   flex: 1;
@@ -98,12 +99,12 @@ margin: 30px auto 28px;
   gap: 16px;
 
   /* позиция */
-  margin-left: auto;       /* 🔥 вправо */
+  margin-left: auto;
   margin-top: 40px;
 
   /* размер */
-  width: 70%;
-  max-width: 900px;
+  width: fit-content;     /* 🔥 было 70% */
+  max-width: 90%;         /* 🔥 было 900px */
 
   /* стиль */
   padding: 20px 40px;
@@ -113,12 +114,15 @@ margin: 30px auto 28px;
 
 
 /* текстовый блок */
+
 .bottom-info-content {
   display: flex;
   align-items: center;
   gap: 10px;
-  flex: 1;
+
+  max-width: 320px;   /* 🔥 ограничили ширину текста */
 }
+
 
 /* стрелка */
 .bottom-info-arrow {
@@ -148,7 +152,8 @@ margin: 30px auto 28px;
 .info-bubble--bottom * {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                Roboto, Helvetica, Arial, sans-serif !important;
-  font-size: 16px;
+
+  font-size: 18px;   /* 🔥 было 16px */
   font-weight: 500;
   line-height: 1.45;
 
@@ -1207,7 +1212,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const iframe = document.getElementById("storyIframe");
   const closeBtn = document.getElementById("closeModal");
 
-  if (!sendEmailBtn || !modal || !iframe || !closeBtn) return;
+  if (!sendEmailBtn) return;
 
 const token = window.APP_TOKEN;
 
