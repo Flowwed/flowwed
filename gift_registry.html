@@ -604,65 +604,65 @@ h1 {
   to { transform: rotate(360deg); }
 }
 
+/* нижняя плашка */
+
 .info-bubble--bottom {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 
-  width: fit-content;
+  margin-top: 40px;
 
-  margin: 18px auto 10px;
-  padding: 10px 16px;
+  align-self: center;   /* 👈 ВОТ ЭТО */
 
-  background: rgba(255,255,255,0.92);
-
+  padding: 16px 28px;
+  background: #fff;
   border-radius: 999px;
 
-  box-shadow:
-    0 4px 14px rgba(0,0,0,0.08);
+  white-space: nowrap;
+  min-width: 0;
 }
 
+/* текстовый блок */
 .bottom-info-content {
-  display: flex;
+  display: inline-flex;          /* 🔥 чтобы не растягивался */
   align-items: center;
-
-  line-height: 1;
+  gap: 10px;
 }
 
-.info-text {
-  font-size: 15px;
-  font-weight: 500;
-  color: #2d2d2d;
+
+.info-bubble--bottom .info-text {
+  white-space: nowrap;
 }
 
+.info-bubble:not(.info-bubble--bottom) .info-text {
+  white-space: normal;
+  max-width: 420px;
+}
+
+/* стрелка */
+.bottom-info-arrow {
+  font-size: 20px;
+  font-weight: 600;
+  color: #b40012;
+}
+
+
+/* кнопка */
 .info-action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 34px;
-
-  padding: 0 16px;
-
-  border: 1px solid rgba(180,17,17,0.16);
-  border-radius: 999px;
-
-  background: white;
-  color: #b41111;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    background .18s ease,
-    border-color .18s ease;
+  margin-left: 12px;             /* аккуратный отступ */
 }
 
-.info-action-btn:hover {
-  background: #fff8f8;
-  border-color: rgba(180,17,17,0.28);
+
+/* шрифт */
+.info-bubble--bottom,
+.info-bubble--bottom * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif !important;
+
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 </style>
