@@ -1385,51 +1385,6 @@ window.open(
 });
 </script>
 
-<div class="modal-backdrop" id="webPreviewModal">
-  <div class="modal-window">
-
-    <div id="closeWebPreview" style="
-      position:absolute;
-      top:10px;
-      right:16px;
-      font-size:32px;
-      font-weight:bold;
-      cursor:pointer;
-      z-index:9999999;
-    ">×</div>
-
-    <iframe id="webPreviewIframe" class="modal-iframe"></iframe>
-
-  </div>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const seeWebBtn = document.querySelector(".see-web-btn");
-  const modal = document.getElementById("webPreviewModal");
-  const iframe = document.getElementById("webPreviewIframe");
-  const closeBtn = document.getElementById("closeWebPreview");
-
-  if (!seeWebBtn || !modal || !iframe || !closeBtn) return;
-
-const token = window.APP_TOKEN;
-
-  seeWebBtn.addEventListener("click", () => {
-    if (!token) {
-      alert("Missing token");
-      return;
-    }
-
-    iframe.src = `https://flowwed.netlify.app/gift_registry.html?token=${token}`;
-    modal.style.display = "flex";
-  });
-
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-    iframe.src = "";
-  });
-});
-</script>
 
 <div id="toast" class="toast"></div>
 
