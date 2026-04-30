@@ -875,16 +875,84 @@ if (params.get("t")) {
 
 <div class="container">
 
-  <!-- 💖 HONEYMOON FUND -->
-  <div class="form">
-    <h2>Honeymoon Fund</h2>
+<!-- 💖 HONEYMOON FUND -->
+<div class="form">
 
-    <input id="paypal" placeholder="PayPal link (https://paypal.me/...)" />
-    <input id="venmo" placeholder="Venmo username (@username)" />
-    <input id="zelle" placeholder="Zelle (email or phone)" />
+  <h2>Honeymoon Fund</h2>
 
-    <button id="saveFundBtn">Save Details</button>
+  <!-- PAYPAL -->
+  <div style="margin-bottom:14px;">
+
+    <div style="
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:#7c1d1d;
+    ">
+      PayPal
+    </div>
+
+    <input
+      id="paypal"
+      placeholder="https://paypal.me/yourname"
+    />
+
   </div>
+
+  <!-- VENMO -->
+  <div style="margin-bottom:14px;">
+
+    <div style="
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:#7c1d1d;
+    ">
+      Venmo
+    </div>
+
+    <input
+      id="venmo"
+      placeholder="@username"
+    />
+
+  </div>
+
+  <!-- ZELLE -->
+  <div>
+
+    <div style="
+      font-size:13px;
+      font-weight:700;
+      margin-bottom:6px;
+      color:#7c1d1d;
+    ">
+      Zelle
+    </div>
+
+    <div style="
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    ">
+
+      <input
+        id="zelle"
+        placeholder="email or phone"
+        style="flex:1;"
+      />
+
+      <button id="saveFundBtn">
+        Save Details
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
 
   <!-- FORM -->
   <div class="form">
