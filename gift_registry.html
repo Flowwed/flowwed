@@ -1158,7 +1158,18 @@ window.editGift = async (id) => {
 
   // ✅ CATEGORY RESTORE
   categorySelect.value = data.category || "";
-  formInputs.forEach(i => i.disabled = !categorySelect.value);
+
+  formInputs.forEach(i =>
+    i.disabled = !categorySelect.value
+  );
+
+  // ✨ EDIT MODE HIGHLIGHT
+  title.classList.add("editing");
+  price.classList.add("editing");
+  qty.classList.add("editing");
+  link.classList.add("editing");
+  categorySelect.classList.add("editing");
+
 };
 
 /* DELETE */
@@ -1174,10 +1185,17 @@ window.closeModal = () => {
 
 window.confirmDelete = async () => {
   if (!deleteId) return;
-  await supabase.from("gift_registry_items").delete().eq("id", deleteId);
+
+  await supabase
+    .from("gift_registry_items")
+    .delete()
+    .eq("id", deleteId);
+
   closeModal();
+
   loadGifts();
 };
+
 
 /* TOAST */
 function showToast(message, type = "success") {
