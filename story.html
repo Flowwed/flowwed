@@ -1508,6 +1508,10 @@ function buildHTML(block) {
 const payload = {
   edit_token: token,
 
+story_enabled:
+    document.getElementById("storyToggle").checked,
+
+
   how_we_met: buildHTML(window.storyData.how_we_met),
   growing_together: buildHTML(window.storyData.growing_together),
   proposal: buildHTML(window.storyData.proposal),
@@ -1848,6 +1852,10 @@ function buildHTML(block) {
 
 const payload = {
   edit_token: token,
+
+story_enabled:
+    document.getElementById("storyToggle").checked,
+
 
   how_we_met: buildHTML(window.storyData.how_we_met),
   growing_together: buildHTML(window.storyData.growing_together),
