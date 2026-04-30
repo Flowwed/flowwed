@@ -1344,7 +1344,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </script>
 
-
 <script>
 window.addEventListener("load", () => {
   const overlay = document.getElementById("loadingOverlay");
@@ -1352,7 +1351,7 @@ window.addEventListener("load", () => {
   if (overlay) {
     setTimeout(() => {
       overlay.classList.add("hide");
-    }, 300); // небольшая задержка как в примере
+    }, 300);
   }
 });
 </script>
@@ -1360,38 +1359,42 @@ window.addEventListener("load", () => {
 <div id="toast" class="toast hidden"></div>
 
 
+<!-- UPDATE BUTTON -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const btn = document.getElementById("openFundSettings");
+  const updateBtn =
+    document.getElementById("openFundSettings");
 
-  if (!btn) return;
+  if (updateBtn) {
 
-  btn.addEventListener("click", () => {
+    updateBtn.addEventListener("click", () => {
 
-    if (!window.APP_TOKEN) {
-      showToast("Missing access token", "error");
-      return;
-    }
+      if (!window.APP_TOKEN) {
+        showToast("Missing access token");
+        return;
+      }
 
-window.open(
-  `dash-updates.html?t=${window.APP_TOKEN}`,
-  "_blank",
-  "noopener"
-);
+      window.open(
+        `dash-updates.html?t=${window.APP_TOKEN}`,
+        "_blank",
+        "noopener"
+      );
 
-  });
+    });
+
+  }
 
 });
 </script>
 
 
-<div id="toast" class="toast"></div>
+<!-- PREVIEW MODAL -->
+<div class="modal-backdrop" id="registryPreviewModal">
 
-<div class="modal-backdrop" id="storyModal">
   <div class="modal-window">
 
-    <div id="closeModal" style="
+    <div id="closeRegistryPreview" style="
       position:absolute;
       top:10px;
       right:16px;
@@ -1401,11 +1404,55 @@ window.open(
       z-index:9999999;
     ">×</div>
 
-    <iframe id="storyIframe" class="modal-iframe"></iframe>
+    <iframe
+      id="registryPreviewIframe"
+      class="modal-iframe">
+    </iframe>
 
   </div>
+
 </div>
 
+
+<!-- PREVIEW BUTTON -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const previewBtn =
+    document.getElementById("previewRegistryBtn");
+
+  const modal =
+    document.getElementById("registryPreviewModal");
+
+  const iframe =
+    document.getElementById("registryPreviewIframe");
+
+  const closeBtn =
+    document.getElementById("closeRegistryPreview");
+
+  if (!previewBtn || !modal || !iframe || !closeBtn) return;
+
+  previewBtn.addEventListener("click", () => {
+
+    if (!window.APP_TOKEN) {
+      showToast("Missing access token");
+      return;
+    }
+
+    iframe.src =
+      `https://flowwed.netlify.app/gift_registry.html?t=${window.APP_TOKEN}`;
+
+    modal.style.display = "flex";
+
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    iframe.src = "";
+  });
+
+});
+</script>
 
 </body>
 </html>
