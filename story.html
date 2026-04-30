@@ -1224,7 +1224,9 @@ max-width: 500px;
 }
 
 
-
+.info-bubble--bottom {
+  display: none !important;
+}
 
 </style>
 
@@ -1409,6 +1411,12 @@ if (params.get("t")) {
     <!-- 🔥 EDITOR -->
     <div id="editor"></div>
 
+<label class="story-toggle">
+  <input type="checkbox" id="storyToggle" checked>
+  Enable "Our Story" Page
+</label>
+
+
     <!-- 🔥 КНОПКИ (ПОД EDITOR) -->
 <div class="editor-top-actions">
   <button class="editor-btn save-btn ruby-btn">Save Text Changes</button>
@@ -1426,15 +1434,14 @@ if (params.get("t")) {
 
   <div class="info-content">
     <span class="info-text">
-      You can notify your guests about your updates via email & SMS here
-
+      Want to send an update to your guests?
     </span>
 
 
   </div>
 
   <button class="info-action-btn">
-    Send Email & SMS
+    Update
   </button>
 
 </div>
@@ -1942,7 +1949,7 @@ window.storyData = {
     if (!token) return;
 
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/our_story_page?select=how_we_met,growing_together,proposal,new_chapter,custom&edit_token=eq.${token}`,
+      `${SUPABASE_URL}/rest/v1/our_story_page?select=how_we_met,growing_together,proposal,new_chapter,custom,story_enabled&edit_token=eq.${token}`,
       {
         headers: {
           apikey: SUPABASE_KEY,
@@ -1953,6 +1960,9 @@ window.storyData = {
 
     const data = await res.json();
     if (!data || !data.length) return;
+
+document.getElementById("storyToggle").checked =
+  data[0].story_enabled ?? true;
 
 function parseHTML(html) {
   if (!html) return { header: "", body: "" };
