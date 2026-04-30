@@ -868,6 +868,26 @@ if (params.get("t")) {
 </div>
 
 
+<!-- DELETE MODAL -->
+<div id="confirmModal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <p>Delete this gift?</p>
+
+    <button onclick="confirmDelete()">
+      Yes
+    </button>
+
+    <button onclick="closeModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
