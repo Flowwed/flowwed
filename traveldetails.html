@@ -957,6 +957,28 @@ window.APP_TOKEN = token;
   <div id="weddingDateDisplay">—</div>
 </div>
 
+<div style="
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:14px;
+  background:#fff5f7;
+  border:1px solid #f3d8de;
+">
+
+  <label style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:600;
+    color:#9c1818;
+  ">
+    <input type="checkbox" id="travelToggle">
+    Enable Travel & Event Page
+  </label>
+
+</div>
+
+
 <!-- STEPS -->
 <div class="steps">
 <div class="step active">Basic</div>
@@ -1347,6 +1369,10 @@ steps[i].classList.add("active");
 
 // ТВОЙ SUPABASE 1:1
 
+const travelToggle =
+  document.getElementById("travelToggle");
+
+
 const sb = window.supabase.createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI",
@@ -1632,6 +1658,21 @@ const infoTemplates = {
 
 (async () => {
 
+const token = window.APP_TOKEN;
+
+const toggleRes = await sb
+  .from("sites")
+  .select("page_toggles")
+  .eq("edit_token", token)
+  .single();
+
+const toggles =
+  toggleRes.data?.page_toggles || {};
+
+travelToggle.checked =
+  toggles.travel !== false;
+
+
   // 🔹 1. СТАРЫЕ ДАННЫЕ (форма)
   const data = await loadFromSupabase();
 
@@ -1828,6 +1869,32 @@ if (data.faq && Array.isArray(data.faq)) {
   }
 
 })();
+
+
+travelToggle.addEventListener("change", async () => {
+
+  const token = window.APP_TOKEN;
+
+  const currentRes = await sb
+    .from("sites")
+    .select("page_toggles")
+    .eq("edit_token", token)
+    .single();
+
+  const currentToggles =
+    currentRes.data?.page_toggles || {};
+
+  currentToggles.travel =
+    travelToggle.checked;
+
+  await sb
+    .from("sites")
+    .update({
+      page_toggles: currentToggles
+    })
+    .eq("edit_token", token);
+
+});
 
 
 async function saveToSupabase(data) {
