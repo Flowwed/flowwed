@@ -662,6 +662,44 @@ letter-spacing: 0.2px;
   line-height: 1.2;
 }
 
+.see-web-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 38px;
+
+  min-width: 190px;
+
+  padding: 0 18px;
+
+  margin-left: 160px;
+
+  border-radius: 999px;
+
+  border: 1px solid rgba(180,17,17,0.16);
+
+  background: white;
+  color: #b41111;
+
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background .18s ease,
+    border-color .18s ease;
+}
+
+.see-web-btn:hover {
+  background: #fff8f8;
+  border-color: rgba(180,17,17,0.28);
+}
+
 </style>
 </head>
 
@@ -1240,9 +1278,6 @@ async function loadFund() {
 </script>
 
 
-
-
-
 <div class="info-bubble info-bubble--bottom" style="margin-top:28px">
 
   <div class="info-icon">i</div>
@@ -1256,10 +1291,12 @@ async function loadFund() {
   <button class="info-action-btn" id="openFundSettings">
     Update
   </button>
-
 </div>
 
-
+<button class="see-web-btn" id="previewRegistryBtn">
+  👁 Preview Your WebPage
+</button>
+</div>
 
 
 <script>
