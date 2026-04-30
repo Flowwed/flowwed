@@ -1459,24 +1459,25 @@ document.addEventListener("change", (e) => {
 
 });
 
-
 document.getElementById("saveFundBtn").onclick = async () => {
 
   let paypal =
-  document.getElementById("paypal").value.trim();
+    document.getElementById("paypal").value.trim();
 
-if (
-  paypal &&
-  !paypal.startsWith("http")
-) {
-  paypal =
-    `https://paypal.me/${paypal
+  // 🔥 auto PayPal.me formatting
+  if (paypal && !paypal.startsWith("http")) {
+
+    paypal = `https://paypal.me/${paypal
       .replace("paypal.me/", "")
       .replace("@", "")}`;
-}
 
-  const venmo = document.getElementById("venmo").value.trim();
-  const zelle = document.getElementById("zelle").value.trim();
+  }
+
+  const venmo =
+    document.getElementById("venmo").value.trim();
+
+  const zelle =
+    document.getElementById("zelle").value.trim();
 
   if (!window.APP_TOKEN) {
     showToast("Missing access token", "error");
@@ -1490,20 +1491,31 @@ if (
     zelle
   };
 
-  // 🔥 UPSERT (если есть — обновит, если нет — создаст)
   const { error } = await supabase
     .from("honeymoon_fund")
-    .upsert(payload, { onConflict: "edit_token" });
+    .upsert(payload, {
+      onConflict: "edit_token"
+    });
 
   if (error) {
+
     console.error(error);
-    showToast("Save failed", "error");
+
+    showToast(
+      "Failed to save details",
+      "error"
+    );
+
   } else {
-    showToast("Details saved");
+
+    showToast(
+      "Details saved",
+      "success"
+    );
+
   }
 
 };
-
 
 async function loadFund() {
 
