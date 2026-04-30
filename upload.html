@@ -1092,34 +1092,34 @@ max-width: 510px;
 </div>
 
 
-<div id="pageToggles" style="
-  max-width:1500px;
-  margin:0 auto 24px auto;
-
-  background:white;
-  border-radius:22px;
-  padding:24px;
-
-  box-shadow:0 8px 24px rgba(0,0,0,.08);
-">
-
-  <h3 style="margin-top:0;">
-    Page Visibility
-  </h3>
-
-  <label style="display:block; margin-top:12px;">
-    <input type="checkbox" id="galleryToggle">
-    Enable Photo Gallery Page
-  </label>
-
-</div>
-
 
 <!-- MAIN CONTENT -->
 <div class="page-wrapper">
 
   <!-- LEFT: UPLOADER -->
   <div class="uploader-container">
+
+<div style="
+  background:#fff5f7;
+  border:1px solid #f1d7dc;
+  border-radius:14px;
+  padding:14px 16px;
+  margin-bottom:16px;
+">
+
+  <label style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:600;
+    color:#8f1d1d;
+  ">
+    <input type="checkbox" id="galleryToggle">
+    Enable Photo Gallery Page
+  </label>
+
+</div>
+
 
     <div id="tokenDisplay"></div>
     <div id="slugDisplay"></div>
@@ -1391,6 +1391,8 @@ async function loadGalleryToggle() {
 }
 
 loadGalleryToggle();
+
+
 
 galleryToggle.addEventListener("change", async () => {
 

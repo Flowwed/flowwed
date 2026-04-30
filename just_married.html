@@ -1155,6 +1155,27 @@ max-width: 620px;
   <!-- LEFT: UPLOADER -->
   <div class="uploader-container">
 
+<div style="
+  background:#fff5f7;
+  border:1px solid #f1d7dc;
+  border-radius:14px;
+  padding:14px 16px;
+  margin-bottom:16px;
+">
+
+  <label style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:600;
+    color:#8f1d1d;
+  ">
+    <input type="checkbox" id="justMarriedToggle">
+    Enable Album Page
+  </label>
+
+</div>
+
     <div id="tokenDisplay"></div>
     <div id="slugDisplay"></div>
 
@@ -1264,6 +1285,9 @@ if (params.get("t")) {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
 const token = window.APP_TOKEN;
+
+const justMarriedToggle =
+  document.getElementById("justMarriedToggle");
 
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
@@ -1411,14 +1435,75 @@ async function loadSlugFromGallery(token) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
   if (!token) {
     tokenDisplay.innerText = "❌ No token in URL";
     return;
   }
 
   tokenDisplay.innerText = "Token: " + token;
+
+  fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
+    }
+  )
+  .then(r => r.json())
+  .then(rows => {
+
+    const toggles =
+      rows?.[0]?.page_toggles || {};
+
+    justMarriedToggle.checked =
+      toggles.justMarried !== false;
+
+  });
+
   loadSlugFromGallery(token);
+
 });
+
+justMarriedToggle.addEventListener("change", async () => {
+
+  const currentRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
+    }
+  );
+
+  const rows = await currentRes.json();
+
+  const toggles =
+    rows?.[0]?.page_toggles || {};
+
+  toggles.justMarried =
+    justMarriedToggle.checked;
+
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        page_toggles: toggles
+      })
+    }
+  );
+
+});
+
 
 
 uploadBtn.onclick = async () => {
