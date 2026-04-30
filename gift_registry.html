@@ -173,16 +173,49 @@ tr:nth-child(even) {
   margin: 8px;
 }
 
-/* TOAST */
+/* ===== TOAST ===== */
+
 .toast {
   position: fixed;
   bottom: 30px;
   right: 30px;
-  background: #2ecc71;
-  color: #fff;
-  padding: 14px 20px;
+
+  min-width: 220px;
+  max-width: 320px;
+
+  padding: 14px 18px;
   border-radius: 14px;
-  font-weight: 600;
+
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.25);
+
+  z-index: 999999;
+
+  opacity: 0;
+  transform: translateY(12px);
+
+  pointer-events: none;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success {
+  background: #1f9d55;
+}
+
+.toast.error {
+  background: #c62828;
 }
 
 .toast.hidden {
@@ -832,7 +865,7 @@ if (params.get("t")) {
     <input id="venmo" placeholder="Venmo username (@username)" />
     <input id="zelle" placeholder="Zelle (email or phone)" />
 
-    <button id="saveFundBtn">Save Fund</button>
+    <button id="saveFundBtn">Save Details</button>
   </div>
 
   <!-- FORM -->
@@ -926,8 +959,6 @@ if (params.get("t")) {
   </div>
 </div>
 
-<!-- TOAST -->
-<div id="toast" class="toast hidden">Gift saved!</div>
 
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
@@ -1041,12 +1072,6 @@ categorySelect.addEventListener("change", () => {
   formInputs.forEach(i => i.disabled = !enabled);
 });
 
-function showErrorToast() {
-  const t = document.getElementById("toastError");
-  t.style.display = "block";
-  setTimeout(() => t.style.display = "none", 2000);
-}
-
 
 /* RENDER */
 function renderTable(gifts) {
@@ -1080,7 +1105,7 @@ function renderTable(gifts) {
 /* SAVE */
 document.getElementById("saveBtn").onclick = async () => {
   if (!categorySelect.value) {
-    showErrorToast();
+    showToast("Choose a category first", "error");
     return;
   }
 
@@ -1126,7 +1151,7 @@ document.getElementById("saveBtn").onclick = async () => {
     loadGifts();
 
   } catch {
-    alert("Save failed");
+    showToast("Save failed", "error");
   } finally {
     btn.disabled = false;
     btn.textContent = "Save gift";
@@ -1171,16 +1196,27 @@ window.confirmDelete = async () => {
 };
 
 /* TOAST */
-function showToast(text){
-  const t = document.getElementById("toast");
-  t.textContent = text;
-  t.classList.remove("hidden");
-  setTimeout(() => t.classList.add("hidden"), 2000);
+function showToast(message, type = "success") {
+
+  const toast = document.getElementById("toast");
+
+  toast.textContent = message;
+
+  toast.className = `toast ${type} show`;
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2400);
 }
+
+
 
 /* BOOT */
 loadCoupleName();
 loadGifts();
+loadFund();
 
 function normalizeLink(url) {
   if (!url) return "";
@@ -1263,7 +1299,7 @@ document.getElementById("composerSend").onclick = async () => {
   const emails = getSelectedEmails();
 
   if (!emails.length) {
-    alert("Нет получателей");
+    showToast("No guests selected", "error");
     return;
   }
 
@@ -1284,10 +1320,10 @@ document.getElementById("composerSend").onclick = async () => {
       })
     });
 
-    alert("Отправлено");
+    showToast("Email sent");
 
   } catch (e) {
-    alert("Ошибка отправки");
+    showToast("Failed to send email", "error");
     console.error(e);
   }
 
@@ -1325,7 +1361,7 @@ document.getElementById("saveFundBtn").onclick = async () => {
   const zelle = document.getElementById("zelle").value.trim();
 
   if (!window.APP_TOKEN) {
-    alert("No token");
+    showToast("Missing access token", "error");
     return;
   }
 
@@ -1343,32 +1379,34 @@ document.getElementById("saveFundBtn").onclick = async () => {
 
   if (error) {
     console.error(error);
-    alert("Save failed");
+    showToast("Save failed", "error");
   } else {
-    alert("Saved!");
+    showToast("Details saved");
   }
 
 };
 
 
+async function loadFund() {
+
+  if (!window.APP_TOKEN) return;
+
+  const { data } = await supabase
+    .from("honeymoon_fund")
+    .select("*")
+    .eq("edit_token", window.APP_TOKEN)
+    .single();
+
+  if (!data) return;
+
+  document.getElementById("paypal").value = data.paypal || "";
+  document.getElementById("venmo").value = data.venmo || "";
+  document.getElementById("zelle").value = data.zelle || "";
+}
+
+
 </script>
 
-
-<div id="toastError"
-     style="
-       position: fixed;
-       bottom: 80px;
-       right: 30px;
-       background: #cc0000;
-       color: white;
-       padding: 14px 20px;
-       border-radius: 14px;
-       font-weight: 600;
-       display: none;
-       z-index: 9999;
-">
-  Choose your category first!
-</div>
 
 
 
@@ -1454,7 +1492,7 @@ document.getElementById("sendEmailBtn").onclick = () => {
   const emails = getSelectedEmails();
 
   if (!emails.length) {
-    alert("Выбери гостей");
+    showToast("Select at least one guest", "error");
     return;
   }
 
@@ -1650,7 +1688,7 @@ window.addEventListener("load", () => {
 });
 </script>
 
-
+<div id="toast" class="toast hidden"></div>
 
 </body>
 </html>
