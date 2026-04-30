@@ -1385,11 +1385,10 @@ window.open(
 });
 </script>
 
-<div class="modal-backdrop" id="registryPreviewModal">
-
+<div class="modal-backdrop" id="webPreviewModal">
   <div class="modal-window">
 
-    <div id="closeRegistryPreview" style="
+    <div id="closeWebPreview" style="
       position:absolute;
       top:10px;
       right:16px;
@@ -1399,39 +1398,29 @@ window.open(
       z-index:9999999;
     ">×</div>
 
-    <iframe
-      id="registryPreviewIframe"
-      class="modal-iframe">
-    </iframe>
+    <iframe id="webPreviewIframe" class="modal-iframe"></iframe>
 
   </div>
-
 </div>
-
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  const seeWebBtn = document.querySelector(".see-web-btn");
+  const modal = document.getElementById("webPreviewModal");
+  const iframe = document.getElementById("webPreviewIframe");
+  const closeBtn = document.getElementById("closeWebPreview");
 
-  const btn = document.getElementById("previewRegistryBtn");
+  if (!seeWebBtn || !modal || !iframe || !closeBtn) return;
 
-  const modal = document.getElementById("registryPreviewModal");
-  const iframe = document.getElementById("registryPreviewIframe");
-  const closeBtn = document.getElementById("closeRegistryPreview");
+const token = window.APP_TOKEN;
 
-  if (!btn || !modal || !iframe || !closeBtn) return;
-
-  const token = window.APP_TOKEN;
-
-  btn.addEventListener("click", () => {
-
+  seeWebBtn.addEventListener("click", () => {
     if (!token) {
       alert("Missing token");
       return;
     }
 
-    iframe.src =
-      `https://flowwed.netlify.app/gift_registry.html?t=${token}`;
-
+    iframe.src = `https://flowwed.netlify.app/gift_registry.html?token=${token}`;
     modal.style.display = "flex";
   });
 
@@ -1439,9 +1428,28 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "none";
     iframe.src = "";
   });
-
 });
 </script>
+
+<div id="toast" class="toast"></div>
+
+<div class="modal-backdrop" id="storyModal">
+  <div class="modal-window">
+
+    <div id="closeModal" style="
+      position:absolute;
+      top:10px;
+      right:16px;
+      font-size:32px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:9999999;
+    ">×</div>
+
+    <iframe id="storyIframe" class="modal-iframe"></iframe>
+
+  </div>
+</div>
 
 
 </body>
