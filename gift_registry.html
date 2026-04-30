@@ -1144,6 +1144,29 @@ document.getElementById("saveBtn").onclick = async () => {
 
 /* EDIT */
 window.editGift = async (id) => {
+
+  // 🔥 TOGGLE OFF
+  if (editingId === id) {
+
+    editingId = null;
+
+    title.value = "";
+    price.value = "";
+    qty.value = "";
+    link.value = "";
+
+    categorySelect.value = "";
+
+    formInputs.forEach(i => {
+      i.disabled = true;
+      i.classList.remove("editing");
+    });
+
+    categorySelect.classList.remove("editing");
+
+    return;
+  }
+
   const { data } = await supabase
     .from("gift_registry_items")
     .select("*")
@@ -1154,6 +1177,7 @@ window.editGift = async (id) => {
   price.value = data.price || "";
   qty.value = data.quantity;
   link.value = data.link || "";
+
   editingId = id;
 
   // ✅ CATEGORY RESTORE
@@ -1171,6 +1195,7 @@ window.editGift = async (id) => {
   categorySelect.classList.add("editing");
 
 };
+
 
 /* DELETE */
 window.askDelete = (id) => {
