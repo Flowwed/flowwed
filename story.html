@@ -2397,7 +2397,37 @@ window.addEventListener("load", () => {
 });
 </script>
 
+<script>
 
+document.getElementById("storyToggle")
+  .addEventListener("change", async function () {
+
+  if (!token) return;
+
+  const enabled = this.checked;
+
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
+
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        story_enabled: enabled
+      })
+    }
+  );
+
+  console.log("Story enabled:", enabled);
+
+});
+
+</script>
 
 
 
