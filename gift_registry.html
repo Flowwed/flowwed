@@ -880,72 +880,83 @@ if (params.get("t")) {
 
   <h2>Honeymoon Fund</h2>
 
-  <!-- PAYPAL -->
-  <div style="margin-bottom:14px;">
+  <div style="
+    display:grid;
+    grid-template-columns:
+      1fr
+      1fr
+      1.8fr;
+    gap:22px;
+    align-items:end;
+  ">
 
-    <div style="
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:6px;
-      color:#7c1d1d;
-    ">
-      PayPal
-    </div>
+    <!-- PAYPAL -->
+    <div>
 
-    <input
-      id="paypal"
-      placeholder="https://paypal.me/yourname"
-    />
-
-  </div>
-
-  <!-- VENMO -->
-  <div style="margin-bottom:14px;">
-
-    <div style="
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:6px;
-      color:#7c1d1d;
-    ">
-      Venmo
-    </div>
-
-    <input
-      id="venmo"
-      placeholder="@username"
-    />
-
-  </div>
-
-  <!-- ZELLE -->
-  <div>
-
-    <div style="
-      font-size:13px;
-      font-weight:700;
-      margin-bottom:6px;
-      color:#7c1d1d;
-    ">
-      Zelle
-    </div>
-
-    <div style="
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-    ">
+      <div style="
+        font-size:13px;
+        font-weight:700;
+        margin-bottom:6px;
+        color:#7c1d1d;
+      ">
+        PayPal
+      </div>
 
       <input
-        id="zelle"
-        placeholder="email or phone"
-        style="flex:1;"
+        id="paypal"
+        placeholder="paypal.me/yourname"
       />
 
-      <button id="saveFundBtn">
-        Save Details
-      </button>
+    </div>
+
+    <!-- VENMO -->
+    <div>
+
+      <div style="
+        font-size:13px;
+        font-weight:700;
+        margin-bottom:6px;
+        color:#7c1d1d;
+      ">
+        Venmo
+      </div>
+
+      <input
+        id="venmo"
+        placeholder="@username"
+      />
+
+    </div>
+
+    <!-- ZELLE -->
+    <div>
+
+      <div style="
+        font-size:13px;
+        font-weight:700;
+        margin-bottom:6px;
+        color:#7c1d1d;
+      ">
+        Zelle
+      </div>
+
+      <div style="
+        display:flex;
+        align-items:flex-end;
+        gap:14px;
+      ">
+
+        <input
+          id="zelle"
+          placeholder="email or phone"
+          style="flex:1;"
+        />
+
+        <button id="saveFundBtn">
+          Save Details
+        </button>
+
+      </div>
 
     </div>
 
@@ -1451,7 +1462,19 @@ document.addEventListener("change", (e) => {
 
 document.getElementById("saveFundBtn").onclick = async () => {
 
-  const paypal = document.getElementById("paypal").value.trim();
+  let paypal =
+  document.getElementById("paypal").value.trim();
+
+if (
+  paypal &&
+  !paypal.startsWith("http")
+) {
+  paypal =
+    `https://paypal.me/${paypal
+      .replace("paypal.me/", "")
+      .replace("@", "")}`;
+}
+
   const venmo = document.getElementById("venmo").value.trim();
   const zelle = document.getElementById("zelle").value.trim();
 
