@@ -1376,10 +1376,59 @@ function openSMSQRModal(token) {
       initButtons();
       initNav();
 
+const toggleRes = await fetch(
+  `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+  {
+    headers: getAuthHeaders()
+  }
+);
+
+const toggleRows = await toggleRes.json();
+
+const toggles =
+  toggleRows?.[0]?.page_toggles || {};
+
+registryToggle.checked =
+  toggles.updates !== false;
+
       await loadStoryText();
     }
 
+registryToggle.addEventListener("change", async () => {
+
+  const currentRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+    {
+      headers: getAuthHeaders()
+    }
+  );
+
+  const rows = await currentRes.json();
+
+  const toggles =
+    rows?.[0]?.page_toggles || {};
+
+  toggles.updates =
+    registryToggle.checked;
+
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
+      headers: getAuthHeaders({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
+        page_toggles: toggles
+      })
+    }
+  );
+
+});
+
+
     document.addEventListener("DOMContentLoaded", initPage);
+
   </script>
 
   <script>
