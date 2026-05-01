@@ -865,9 +865,38 @@ if (params.get("t")) {
 </div>
 
 
-  <div id="coupleSmallName"></div>
+<div style="
+  max-width:720px;
+  margin:0 auto 22px;
+  padding:14px 18px;
+
+  background:rgba(255,255,255,0.72);
+  backdrop-filter:blur(14px);
+
+  border-radius:16px;
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.10),
+    inset 0 1px 2px rgba(255,255,255,0.6);
+">
+
+  <label style="
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-size:15px;
+    font-weight:700;
+    color:#8b2d2f;
+  ">
+    <input type="checkbox" id="registryToggle">
+    Enable Gift Registry Page
+  </label>
+
 </div>
 
+  <div id="coupleSmallName"></div>
+</div>
 
 <div class="top-divider-line"></div>
 
@@ -1061,6 +1090,9 @@ async function loadGuests() {
 
 /* TOKEN */
 const token = window.APP_TOKEN;
+
+const registryToggle =
+  document.getElementById("registryToggle");
 
 /* STATE */
 let editingId = null;
@@ -1317,12 +1349,70 @@ function showToast(message, type = "success") {
   }, 2400);
 }
 
-
-
 /* BOOT */
 loadCoupleName();
 loadGifts();
 loadFund();
+
+fetch(
+  `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+  {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    }
+  }
+)
+.then(r => r.json())
+.then(rows => {
+
+  const toggles =
+    rows?.[0]?.page_toggles || {};
+
+  registryToggle.checked =
+    toggles.gift_registry !== false;
+
+});
+
+
+registryToggle.addEventListener("change", async () => {
+
+  const currentRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
+    }
+  );
+
+  const rows = await currentRes.json();
+
+  const toggles =
+    rows?.[0]?.page_toggles || {};
+
+  toggles.gift_registry =
+    registryToggle.checked;
+
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        page_toggles: toggles
+      })
+    }
+  );
+
+});
+
+
 
 function normalizeLink(url) {
   if (!url) return "";
