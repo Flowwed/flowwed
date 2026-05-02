@@ -992,7 +992,7 @@ window.APP_TOKEN = token;
 <!-- STEPS -->
 <div class="steps">
 <div class="step active">Basic</div>
-<div class="step">Schedule</div>
+<div class="step">Events</div>
 <div class="step">Travel</div>
 <div class="step">Venue</div>
 <div class="step">Details</div>
@@ -1018,21 +1018,76 @@ window.APP_TOKEN = token;
 
 <!-- STEP 2 -->
 <div class="section">
+
 <div class="section-box">
-<h2>Schedule</h2>
+
+<h2>Wedding Events</h2>
+
 <div class="grid">
 
-<div class="field"><label>Time 1</label><input id="scheduleTime1" placeholder="3:00 PM"></div>
-<div class="field"><label>Event 1</label><input id="scheduleText1" placeholder="Ceremony begins"></div>
+<div class="field">
+<label>Wedding Event</label>
+<input
+  id="scheduleText1"
+  placeholder="Wedding Ceremony">
+</div>
 
-<div class="field"><label>Time 2</label><input id="scheduleTime2" placeholder="4:30 PM"></div>
-<div class="field"><label>Event 2</label><input id="scheduleText2" placeholder="Cocktail hour"></div>
+<div class="field">
+<label>Event Time</label>
+<input
+  id="scheduleTime1"
+  placeholder="3:00 PM">
+</div>
 
-<div class="field"><label>Time 3</label><input id="scheduleTime3" placeholder="6:00 PM"></div>
-<div class="field"><label>Event 3</label><input id="scheduleText3" placeholder="Dinner & celebration"></div>
 
-<div class="field"><label>Time 4</label><input id="scheduleTime4" placeholder="10:00 PM"></div>
-<div class="field"><label>Event 4</label><input id="scheduleText4" placeholder="Dancing continues"></div>
+
+<div class="field">
+<label>Wedding Event</label>
+<input
+  id="scheduleText2"
+  placeholder="Cocktail Hour">
+</div>
+
+<div class="field">
+<label>Event Time</label>
+<input
+  id="scheduleTime2"
+  placeholder="4:30 PM">
+</div>
+
+
+
+<div class="field">
+<label>Wedding Event</label>
+<input
+  id="scheduleText3"
+  placeholder="Reception Dinner">
+</div>
+
+<div class="field">
+<label>Event Time</label>
+<input
+  id="scheduleTime3"
+  placeholder="6:00 PM">
+</div>
+
+
+
+<div class="field">
+<label>Wedding Event</label>
+<input
+  id="scheduleText4"
+  placeholder="After Party">
+</div>
+
+<div class="field">
+<label>Event Time</label>
+<input
+  id="scheduleTime4"
+  placeholder="10:00 PM">
+</div>
+
+
 
 <div id="addScheduleBtn" style="
   margin-top:10px;
@@ -1041,14 +1096,12 @@ window.APP_TOKEN = token;
   cursor:pointer;
   text-decoration: underline;
 ">
-  + Add another schedule item
+  + Add another wedding event
 </div>
 
-
 </div>
 </div>
 </div>
-
 <!-- STEP 3 -->
 <div class="section">
 <div class="section-box">
@@ -2694,15 +2747,15 @@ document.getElementById("addScheduleBtn").addEventListener("click", () => {
   const timeField = document.createElement("div");
   timeField.className = "field";
   timeField.innerHTML = `
-    <label>Time ${scheduleCount}</label>
+    <label>Event Time</label>
     <input id="scheduleTime${scheduleCount}" placeholder="Time">
   `;
 
   const textField = document.createElement("div");
   textField.className = "field";
   textField.innerHTML = `
-    <label>Event ${scheduleCount}</label>
-    <input id="scheduleText${scheduleCount}" placeholder="Event">
+    <label>Wedding Event</label>
+    <input id="scheduleText${scheduleCount}" placeholder="Wedding Event">
   `;
 
   container.appendChild(timeField);
