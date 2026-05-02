@@ -1096,7 +1096,7 @@ window.APP_TOKEN = token;
   cursor:pointer;
   text-decoration: underline;
 ">
-  + Add another wedding event
+  + Add wedding event
 </div>
 
 </div>
@@ -1335,7 +1335,7 @@ Google Weather — https://www.google.com/search?q=weather
   cursor:pointer;
   text-decoration: underline;
 ">
-  + Add another FAQ
+  + Add FAQ
 </div>
 
 
@@ -2744,6 +2744,62 @@ document.getElementById("addScheduleBtn").addEventListener("click", () => {
 
   if (!container) return;
 
+const eventWrapper = document.createElement("div");
+
+eventWrapper.className = "dynamic-event";
+
+eventWrapper.style.position = "relative";
+
+eventWrapper.style.display = "grid";
+
+eventWrapper.style.gridColumn = "1 / -1";
+
+eventWrapper.style.gridTemplateColumns =
+  "1fr 1fr";
+
+eventWrapper.style.gap = "12px 14px";
+
+eventWrapper.style.marginBottom = "8px";
+
+
+const removeBtn = document.createElement("div");
+
+removeBtn.innerHTML = "×";
+
+removeBtn.style.position = "absolute";
+removeBtn.style.top = "-8px";
+removeBtn.style.right = "6px";
+
+removeBtn.style.width = "24px";
+removeBtn.style.height = "24px";
+
+removeBtn.style.borderRadius = "50%";
+
+removeBtn.style.background = "#b41111";
+removeBtn.style.color = "white";
+
+removeBtn.style.display = "flex";
+removeBtn.style.alignItems = "center";
+removeBtn.style.justifyContent = "center";
+removeBtn.style.lineHeight = "1";
+
+removeBtn.style.paddingBottom = "2px";
+
+removeBtn.style.cursor = "pointer";
+
+removeBtn.style.fontSize = "16px";
+removeBtn.style.fontWeight = "700";
+
+removeBtn.style.boxShadow =
+  "0 4px 10px rgba(0,0,0,0.25)";
+
+removeBtn.style.zIndex = "20";
+
+removeBtn.onclick = () => {
+  eventWrapper.remove();
+};
+
+
   const timeField = document.createElement("div");
   timeField.className = "field";
   timeField.innerHTML = `
@@ -2758,8 +2814,13 @@ document.getElementById("addScheduleBtn").addEventListener("click", () => {
     <input id="scheduleText${scheduleCount}" placeholder="Wedding Event">
   `;
 
-  container.appendChild(textField);
-  container.appendChild(timeField);
+eventWrapper.appendChild(removeBtn);
+
+eventWrapper.appendChild(textField);
+eventWrapper.appendChild(timeField);
+
+container.appendChild(eventWrapper);
+
 
   // 🔥 ВСЕГДА ВНИЗ
   const addBtn = document.getElementById("addScheduleBtn");
