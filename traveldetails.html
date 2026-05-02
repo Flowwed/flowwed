@@ -1087,98 +1087,17 @@ window.APP_TOKEN = token;
   placeholder="10:00 PM">
 </div>
 
+<div id="extraEventsContainer"></div>
 
-
-<div class="field">
-<label>Wedding Event</label>
-<input
-  id="scheduleText5"
-  placeholder="Wedding Event">
+<div id="addEventBtn" style="
+  margin-top:10px;
+  color:#2a6bff;
+  font-weight:600;
+  cursor:pointer;
+  text-decoration:underline;
+">
+  + Add wedding event
 </div>
-
-<div class="field">
-<label>Event Time</label>
-<input
-  id="scheduleTime5"
-  placeholder="10:00 PM">
-</div>
-
-
-<div class="field">
-<label>Wedding Event</label>
-<input
-  id="scheduleText6"
-  placeholder="Wedding Event">
-</div>
-
-<div class="field">
-<label>Event Time</label>
-<input
-  id="scheduleTime6"
-  placeholder="Time">
-</div>
-
-
-<div class="field">
-<label>Wedding Event</label>
-<input
-  id="scheduleText7"
-  placeholder="Wedding Event">
-</div>
-
-<div class="field">
-<label>Event Time</label>
-<input
-  id="scheduleTime7"
-  placeholder="Time">
-</div>
-
-
-<div class="field">
-<label>Wedding Event</label>
-<input
-  id="scheduleText8"
-  placeholder="Wedding Event">
-</div>
-
-<div class="field">
-<label>Event Time</label>
-<input
-  id="scheduleTime8"
-  placeholder="Time">
-</div>
-
-
-<div class="field">
-<label>Wedding Event</label>
-<input
-  id="scheduleText9"
-  placeholder="Wedding Event">
-</div>
-
-<div class="field">
-<label>Event Time</label>
-<input
-  id="scheduleTime9"
-  placeholder="Time">
-</div>
-
-
-<div class="field">
-<label>Wedding Event</label>
-<input
-  id="scheduleText10"
-  placeholder="Wedding Event">
-</div>
-
-<div class="field">
-<label>Event Time</label>
-<input
-  id="scheduleTime10"
-  placeholder="Time">
-</div>
-
-
 
 
 </div>
@@ -1935,6 +1854,13 @@ if (data) {
   };
 
   setFormData(mapped);
+
+const scheduleLength = data.schedule?.length || 0;
+
+for (let i = 5; i <= scheduleLength; i++) {
+  document.getElementById("addEventBtn")?.click();
+}
+
 }
 
 // 🔥 SYNC CHECKBOXES AFTER DATA LOAD
@@ -3010,7 +2936,51 @@ window.addEventListener("load", () => {
 });
 </script>
 
+<script>
 
+let eventCount = 4;
+const maxEvents = 10;
+
+document.getElementById("addEventBtn").addEventListener("click", () => {
+
+  if (eventCount >= maxEvents) return;
+
+  eventCount++;
+
+  const container =
+    document.getElementById("extraEventsContainer");
+
+  const row = document.createElement("div");
+
+  row.className = "grid";
+
+  row.innerHTML = `
+
+    <div class="field">
+      <label>Wedding Event</label>
+      <input
+        id="scheduleText${eventCount}"
+        placeholder="Wedding Event">
+    </div>
+
+    <div class="field">
+      <label>Event Time</label>
+      <input
+        id="scheduleTime${eventCount}"
+        placeholder="Time">
+    </div>
+
+  `;
+
+  container.appendChild(row);
+
+  if (eventCount >= maxEvents) {
+    document.getElementById("addEventBtn").style.display = "none";
+  }
+
+});
+
+</script>
 
 
 </body>
