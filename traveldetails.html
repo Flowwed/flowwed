@@ -1553,9 +1553,7 @@ function getScheduleData() {
   const items = [];
 
   const textInputs =
-    document.querySelectorAll(
-      '[id^="scheduleText"]'
-    );
+    document.querySelectorAll('[id^="scheduleText"]');
 
   textInputs.forEach(textEl => {
 
@@ -1563,26 +1561,25 @@ function getScheduleData() {
       textEl.id.replace("scheduleText", "");
 
     const timeEl =
-      document.getElementById(
-        `scheduleTime${number}`
-      );
+      document.getElementById(`scheduleTime${number}`);
 
-    // 🔥 ПРОПУСКАЕМ ПУСТЫЕ / УДАЛЕННЫЕ
-    if (
-      !textEl.value.trim() &&
-      !timeEl?.value.trim()
-    ) return;
+    const text =
+      (textEl?.value || "").trim();
+
+    const time =
+      (timeEl?.value || "").trim();
+
+    if (!text && !time) return;
 
     items.push({
-      time: timeEl?.value || "",
-      text: textEl?.value || ""
+      time,
+      text
     });
 
   });
 
   return items;
 }
-
 
 function getFaqData() {
   const items = [];
