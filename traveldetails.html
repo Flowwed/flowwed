@@ -2758,16 +2758,7 @@ eventWrapper.className = "dynamic-event";
 
 eventWrapper.style.position = "relative";
 
-eventWrapper.style.display = "grid";
-
-eventWrapper.style.gridColumn = "1 / -1";
-
-eventWrapper.style.gridTemplateColumns =
-  "1fr 1fr";
-
-eventWrapper.style.gap = "12px 14px";
-
-eventWrapper.style.marginBottom = "8px";
+eventWrapper.style.display = "contents";
 
 
 const removeBtn = document.createElement("div");
@@ -2804,9 +2795,12 @@ removeBtn.style.boxShadow =
 removeBtn.style.zIndex = "20";
 
 removeBtn.onclick = () => {
-  eventWrapper.remove();
-};
 
+  textField.remove();
+  timeField.remove();
+  removeBtn.remove();
+
+};
 
   const timeField = document.createElement("div");
   timeField.className = "field";
@@ -2822,12 +2816,12 @@ removeBtn.onclick = () => {
     <input id="scheduleText${scheduleCount}" placeholder="Wedding Event">
   `;
 
-eventWrapper.appendChild(removeBtn);
+textField.style.position = "relative";
 
-eventWrapper.appendChild(textField);
-eventWrapper.appendChild(timeField);
+textField.appendChild(removeBtn);
 
-container.appendChild(eventWrapper);
+container.appendChild(textField);
+container.appendChild(timeField);
 
 
   // 🔥 ВСЕГДА ВНИЗ
