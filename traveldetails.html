@@ -1089,15 +1089,21 @@ window.APP_TOKEN = token;
 
 
 
-<div id="addScheduleBtn" style="
-  margin-top:10px;
-  color:#2a6bff;
-  font-weight:600;
-  cursor:pointer;
-  text-decoration: underline;
-">
-  + Add wedding event
+<div class="field">
+<label>Wedding Event</label>
+<input
+  id="scheduleText5"
+  placeholder="After Party">
 </div>
+
+<div class="field">
+<label>Event Time</label>
+<input
+  id="scheduleTime5"
+  placeholder="10:00 PM">
+</div>
+
+
 
 </div>
 </div>
@@ -1869,42 +1875,6 @@ if (mapLink && venueInput && venueInput.value) {
 }
 
 
-
-// 🔥 ВОССТАНОВЛЕНИЕ SCHEDULE
-if (data.schedule && Array.isArray(data.schedule)) {
-
-  const container = document.querySelectorAll(".section")[1].querySelector(".grid");
-
-  // очищаем старые (кроме первых 4 — они уже есть)
-  for (let i = 5; i <= data.schedule.length; i++) {
-
-    const item = data.schedule[i - 1];
-
-    const timeField = document.createElement("div");
-    timeField.className = "field";
-    timeField.innerHTML = `
-      <label>Time ${i}</label>
-      <input id="scheduleTime${i}" value="${item.time || ""}">
-    `;
-
-    const textField = document.createElement("div");
-    textField.className = "field";
-    textField.innerHTML = `
-      <label>Event ${i}</label>
-      <input id="scheduleText${i}" value="${item.text || ""}">
-    `;
-
-    container.appendChild(timeField);
-    container.appendChild(textField);
-  }
-
-  // вернуть кнопку вниз
-  const btn = document.getElementById("addScheduleBtn");
-  container.appendChild(btn);
-
-  // обновить счётчик
-  scheduleCount = data.schedule.length;
-}
 
 
  // 🔥 ВОССТАНОВЛЕНИЕ FAQ
@@ -2741,94 +2711,6 @@ guideModal.onclick = (e) => {
 </script>
 
 <script>
-
-let scheduleCount = 4;
-
-document.getElementById("addScheduleBtn").addEventListener("click", () => {
-
-  scheduleCount++;
-
-  const container = document.querySelectorAll(".section")[1].querySelector(".grid");
-
-  if (!container) return;
-
-const eventWrapper = document.createElement("div");
-
-eventWrapper.className = "dynamic-event";
-
-eventWrapper.style.position = "relative";
-
-eventWrapper.style.display = "contents";
-
-
-const removeBtn = document.createElement("div");
-
-removeBtn.innerHTML = "×";
-
-removeBtn.style.position = "absolute";
-removeBtn.style.top = "-8px";
-removeBtn.style.right = "6px";
-
-removeBtn.style.width = "24px";
-removeBtn.style.height = "24px";
-
-removeBtn.style.borderRadius = "50%";
-
-removeBtn.style.background = "#b41111";
-removeBtn.style.color = "white";
-
-removeBtn.style.display = "flex";
-removeBtn.style.alignItems = "center";
-removeBtn.style.justifyContent = "center";
-removeBtn.style.lineHeight = "1";
-
-removeBtn.style.paddingBottom = "2px";
-
-removeBtn.style.cursor = "pointer";
-
-removeBtn.style.fontSize = "16px";
-removeBtn.style.fontWeight = "700";
-
-removeBtn.style.boxShadow =
-  "0 4px 10px rgba(0,0,0,0.25)";
-
-removeBtn.style.zIndex = "20";
-
-removeBtn.onclick = () => {
-
-  textField.remove();
-  timeField.remove();
-  removeBtn.remove();
-
-};
-
-  const timeField = document.createElement("div");
-  timeField.className = "field";
-  timeField.innerHTML = `
-    <label>Event Time</label>
-    <input id="scheduleTime${scheduleCount}" placeholder="Time">
-  `;
-
-  const textField = document.createElement("div");
-  textField.className = "field";
-  textField.innerHTML = `
-    <label>Wedding Event</label>
-    <input id="scheduleText${scheduleCount}" placeholder="Wedding Event">
-  `;
-
-textField.style.position = "relative";
-
-textField.appendChild(removeBtn);
-
-container.appendChild(textField);
-container.appendChild(timeField);
-
-
-  // 🔥 ВСЕГДА ВНИЗ
-  const addBtn = document.getElementById("addScheduleBtn");
-  container.appendChild(addBtn);
-
-});
 
 let faqCount = 4;
 
