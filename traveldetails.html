@@ -2748,90 +2748,107 @@ document.getElementById("addScheduleBtn").addEventListener("click", () => {
 
   scheduleCount++;
 
-  const container = document.querySelectorAll(".section")[1].querySelector(".grid");
+  const container =
+    document.querySelectorAll(".section")[1]
+    .querySelector(".grid");
 
   if (!container) return;
 
-const eventWrapper = document.createElement("div");
+  const eventWrapper = document.createElement("div");
 
-eventWrapper.className = "dynamic-event";
+  eventWrapper.className = "dynamic-event";
 
-eventWrapper.style.position = "relative";
+  eventWrapper.style.position = "relative";
 
-eventWrapper.style.display = "grid";
-
-eventWrapper.style.gridColumn = "1 / -1";
-
-eventWrapper.style.gridTemplateColumns =
-  "1fr 1fr";
-
-eventWrapper.style.gap = "12px 14px";
-
-eventWrapper.style.marginBottom = "8px";
+  eventWrapper.style.display = "contents";
 
 
-const removeBtn = document.createElement("div");
 
-removeBtn.innerHTML = "×";
+  // ❌ REMOVE BUTTON
+  const removeBtn = document.createElement("div");
 
-removeBtn.style.position = "absolute";
-removeBtn.style.top = "-8px";
-removeBtn.style.right = "6px";
+  removeBtn.innerHTML = "×";
 
-removeBtn.style.width = "24px";
-removeBtn.style.height = "24px";
+  removeBtn.style.position = "absolute";
+  removeBtn.style.top = "6px";
+  removeBtn.style.right = "6px";
 
-removeBtn.style.borderRadius = "50%";
+  removeBtn.style.width = "22px";
+  removeBtn.style.height = "22px";
 
-removeBtn.style.background = "#b41111";
-removeBtn.style.color = "white";
+  removeBtn.style.borderRadius = "50%";
 
-removeBtn.style.display = "flex";
-removeBtn.style.alignItems = "center";
-removeBtn.style.justifyContent = "center";
-removeBtn.style.lineHeight = "1";
+  removeBtn.style.background = "#b41111";
+  removeBtn.style.color = "white";
 
-removeBtn.style.paddingBottom = "2px";
+  removeBtn.style.display = "flex";
+  removeBtn.style.alignItems = "center";
+  removeBtn.style.justifyContent = "center";
 
-removeBtn.style.cursor = "pointer";
+  removeBtn.style.cursor = "pointer";
 
-removeBtn.style.fontSize = "16px";
-removeBtn.style.fontWeight = "700";
+  removeBtn.style.fontSize = "15px";
+  removeBtn.style.fontWeight = "700";
 
-removeBtn.style.boxShadow =
-  "0 4px 10px rgba(0,0,0,0.25)";
+  removeBtn.style.zIndex = "20";
 
-removeBtn.style.zIndex = "20";
-
-removeBtn.onclick = () => {
-  eventWrapper.remove();
-};
+  removeBtn.onclick = () => {
+    eventField.remove();
+    timeField.remove();
+    removeBtn.remove();
+  };
 
 
-  const timeField = document.createElement("div");
-  timeField.className = "field";
-  timeField.innerHTML = `
-    <label>Event Time</label>
-    <input id="scheduleTime${scheduleCount}" placeholder="Time">
-  `;
 
+  // LEFT
   const textField = document.createElement("div");
+
   textField.className = "field";
+
   textField.innerHTML = `
     <label>Wedding Event</label>
-    <input id="scheduleText${scheduleCount}" placeholder="Wedding Event">
+
+    <input
+      id="scheduleText${scheduleCount}"
+      placeholder="Wedding Event">
   `;
 
-eventWrapper.appendChild(removeBtn);
-
-eventWrapper.appendChild(textField);
-eventWrapper.appendChild(timeField);
-
-container.appendChild(eventWrapper);
 
 
-  // 🔥 ВСЕГДА ВНИЗ
-  const addBtn = document.getElementById("addScheduleBtn");
+  // RIGHT
+  const timeField = document.createElement("div");
+
+  timeField.className = "field";
+
+  timeField.innerHTML = `
+    <label>Event Time</label>
+
+    <input
+      id="scheduleTime${scheduleCount}"
+      placeholder="Time">
+  `;
+
+
+
+  const eventField = document.createElement("div");
+
+  eventField.style.position = "relative";
+
+  eventField.appendChild(removeBtn);
+
+  eventField.appendChild(textField);
+
+
+
+  container.appendChild(eventField);
+  container.appendChild(timeField);
+
+
+
+  // button always bottom
+  const addBtn =
+    document.getElementById("addScheduleBtn");
+
   container.appendChild(addBtn);
 
 });
