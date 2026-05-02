@@ -1813,73 +1813,62 @@ travelToggle.checked =
   toggles.travel !== false;
 
 
-  // 🔹 1. СТАРЫЕ ДАННЫЕ (форма)
-  const data = await loadFromSupabase();
+// 🔹 1. СТАРЫЕ ДАННЫЕ (форма)
+const data = await loadFromSupabase();
 
-  if (data) {
-    const mapped = {
-      coupleName: "",
-      weddingDate: "",
-      scheduleTime1: data.schedule_time_1,
-      scheduleText1: data.schedule_text_1,
-      scheduleTime2: data.schedule_time_2,
-      scheduleText2: data.schedule_text_2,
-      scheduleTime3: data.schedule_time_3,
-      scheduleText3: data.schedule_text_3,
-      scheduleTime4: data.schedule_time_4,
-      scheduleText4: data.schedule_text_4,
-      scheduleTime5: data.schedule_time_5,
-      scheduleText5: data.schedule_text_5,
+if (data) {
 
-scheduleTime6: data.schedule_time_6,
-scheduleText6: data.schedule_text_6,
+  const mapped = {
 
-scheduleTime7: data.schedule_time_7,
-scheduleText7: data.schedule_text_7,
+    coupleName: "",
+    weddingDate: "",
 
-scheduleTime8: data.schedule_time_8,
-scheduleText8: data.schedule_text_8,
+    // ✅ SCHEDULE FROM JSONB
+    ...(data.schedule?.reduce((acc, item, index) => {
 
-scheduleTime9: data.schedule_time_9,
-scheduleText9: data.schedule_text_9,
+      const i = index + 1;
 
-scheduleTime10: data.schedule_time_10,
-scheduleText10: data.schedule_text_10,
-      
+      acc[`scheduleText${i}`] = item.text || "";
+      acc[`scheduleTime${i}`] = item.time || "";
 
-      airport: data.airport,
-      transferTime: data.transfer_time,
-      flightsText: data.flights_text,
-      stayLinks: data.stay_links,
-      thingsToDo: data.things_to_do,
-      importantInfo: data.important_info,
+      return acc;
 
-      hotels: data.hotels,
+    }, {}) || {}),
 
-      venueName: data.venue_name,
-      mapLink: data.map_link,
-      venueAddress: data.venue_address,
-      venueNote: data.venue_note,
+    airport: data.airport,
+    transferTime: data.transfer_time,
+    flightsText: data.flights_text,
 
-      dressCode: data.dress_code,
-      weatherLink: data.weather_link,
+    stayLinks: data.stay_links,
+    thingsToDo: data.things_to_do,
+    importantInfo: data.important_info,
 
-      trip1: data.trip_1,
-      trip2: data.trip_2,
-      trip3: data.trip_3,
+    hotels: data.hotels,
 
-      faqQ1: data.faq_q1,
-      faqA1: data.faq_a1,
-      faqQ2: data.faq_q2,
-      faqA2: data.faq_a2,
-      faqQ3: data.faq_q3,
-      faqA3: data.faq_a3,
-      faqQ4: data.faq_q4,
-      faqA4: data.faq_a4
-    };
+    venueName: data.venue_name,
+    mapLink: data.map_link,
+    venueAddress: data.venue_address,
+    venueNote: data.venue_note,
 
-setFormData(mapped);
+    dressCode: data.dress_code,
+    weatherLink: data.weather_link,
 
+    trip1: data.trip_1,
+    trip2: data.trip_2,
+    trip3: data.trip_3,
+
+    faqQ1: data.faq_q1,
+    faqA1: data.faq_a1,
+    faqQ2: data.faq_q2,
+    faqA2: data.faq_a2,
+    faqQ3: data.faq_q3,
+    faqA3: data.faq_a3,
+    faqQ4: data.faq_q4,
+    faqA4: data.faq_a4
+  };
+
+  setFormData(mapped);
+}
 // 🔥 SYNC CHECKBOXES AFTER DATA LOAD
 
 // FAQ
