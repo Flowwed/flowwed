@@ -14,14 +14,103 @@ body{
   color:#732323;
 }
 
-.sticky-header{
-  position:sticky;
-  top:0;
-  background:#fdeff1;
-  padding:20px 0;
-  z-index:1000;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+/* ================= HEADER ================= */
+
+.top-header{
+  position:relative;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  margin-top:18px;
+  margin-bottom:28px;
 }
+
+h1{
+  text-align:center;
+  color:#a52126;
+
+  font-size:38px;
+  font-weight:700;
+
+  letter-spacing:-1px;
+
+  margin:0;
+}
+
+/* ================= MENU ================= */
+
+.mini-menu{
+  position:fixed;
+
+  top:24px;
+  left:28px;
+
+  z-index:999999;
+}
+
+.menu-trigger{
+  background:#9c1818;
+  color:white;
+
+  padding:10px 18px;
+
+  border-radius:999px;
+
+  font-weight:600;
+  cursor:pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.25),
+    inset 0 2px 6px rgba(255,255,255,0.22);
+}
+
+.menu-dropdown{
+  position:absolute;
+
+  top:120%;
+  left:0;
+
+  background:rgba(255,255,255,0.80);
+  backdrop-filter:blur(18px);
+
+  border-radius:18px;
+
+  min-width:250px;
+
+  overflow:hidden;
+
+  display:none;
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.18);
+}
+
+.menu-dropdown.open{
+  display:block;
+}
+
+.menu-dropdown a{
+  display:block;
+
+  padding:13px 18px;
+
+  color:#9c1818;
+
+  text-decoration:none;
+
+  font-weight:500;
+
+  border-bottom:
+    1px solid rgba(0,0,0,0.05);
+}
+
+.menu-dropdown a:hover{
+  background:rgba(255,0,40,0.06);
+}
+
+/* ================= LAYOUT ================= */
 
 .container{
   max-width:900px;
@@ -29,45 +118,57 @@ body{
   padding:0 20px;
 }
 
-h1{
-  text-align:center;
-  color:#a52126;
-  margin-bottom:40px;
-}
+/* ================= FAQ ================= */
 
 .faq-item{
-  background:linear-gradient(180deg,#ffffff 0%,#fff6f7 100%);
+  background:linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #fff6f7 100%
+  );
+
   padding:22px 26px;
+
   margin-bottom:16px;
+
   border-radius:18px;
+
   box-shadow:
     0 14px 30px rgba(0,0,0,0.16),
     0 6px 14px rgba(0,0,0,0.10);
 }
 
 .question{
-  font-weight:600;
+  font-weight:700;
+  font-size:18px;
+
   color:#a52126;
+
   cursor:pointer;
+
   position:relative;
+
   padding-right:24px;
 }
 
-/* стрелка */
 .question::after{
   content:"+";
+
   position:absolute;
   right:0;
+
   transition:.25s;
 }
 
-/* когда открыт */
 .faq-item.open .question::after{
   content:"−";
 }
+
 .answer{
   color:#6f2a2a;
-  line-height:1.6;
+
+  font-size:16px;
+  line-height:1.7;
 
   max-height:0;
   overflow:hidden;
@@ -77,136 +178,193 @@ h1{
   margin-top:0;
 }
 
-/* когда открыт */
 .faq-item.open .answer{
   max-height:300px;
-  margin-top:8px;
+  margin-top:12px;
 }
+
+/* ================= FOOTER ================= */
+
 footer{
   margin-top:80px;
+
   padding:30px;
+
   text-align:center;
+
   background:#fff5f5;
+
   color:#a52126;
+
+  font-weight:600;
+}
+
+.top-nav{
+  display:none;
 }
 
 </style>
 </head>
+
 <body>
 
-<div class="sticky-header">
+<div class="top-header">
+
+  <div class="mini-menu">
+
+    <div class="menu-trigger">
+      ☰ Menu
+    </div>
+
+    <div class="menu-dropdown" id="menuDropdown"></div>
+
+  </div>
+
   <h1>Frequently Asked Questions</h1>
+
+</div>
+
+<div class="top-nav">
+
+  <a href="videouploader.html">Web Video</a>
+  <a href="Guests.html">Guest Hub</a>
+  <a href="upload.html">Photo Gallery</a>
+  <a href="savethedate.html">Save the Date</a>
+  <a href="postwed.html">RSVP</a>
+  <a href="SeatingChart.html">Seating</a>
+  <a href="gift_registry.html">Gifts</a>
+  <a href="Budget.html">Budget</a>
+  <a href="traveldetails.html">Travel & Event</a>
+  <a href="postwed2.html">Memories</a>
+  <a href="just_married.html">Album</a>
+  <a href="story.html">Our Story</a>
+  <a href="dash-updates.html">Updates</a>
+  <a href="wed_reports.html">RSVP Reports</a>
+  <a href="guest_memory.html">Guest Feedback</a>
+
 </div>
 
 <div class="container">
 
-
 <div class="faq-item open">
 
-<div class="question">1. What is FloWWeds?</div>
+<div class="question">
+1. What is FloWWeds?
+</div>
+
 <div class="answer">
 FloWWeds creates cinematic wedding invitations powered by AI, turning your photos into a film-style experience.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">2. How long does it take?</div>
+
+<div class="question">
+2. How long does it take?
+</div>
+
 <div class="answer">
 Most invitations are ready within 7–10 days after you submit your photos and details.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">3. How many photos do I need?</div>
+
+<div class="question">
+3. How many photos do I need?
+</div>
+
 <div class="answer">
 Typically 6–10 photos work perfectly, but even fewer can still create a beautiful result.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">4. Can I choose the cinematic style?</div>
+
+<div class="question">
+4. Can I choose the cinematic style?
+</div>
+
 <div class="answer">
 Yes. You can choose the style that best fits your wedding theme and personality.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">5. Do guests need to install anything?</div>
+
+<div class="question">
+5. Do guests need to install anything?
+</div>
+
 <div class="answer">
 No. Guests simply open a link and watch your invitation instantly.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">6. Can I share it by phone?</div>
+
+<div class="question">
+6. Can I share it by phone?
+</div>
+
 <div class="answer">
 Yes. You can send your invitation via text, WhatsApp, email, or any messaging app.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">7. Is this better than printed invitations?</div>
+
+<div class="question">
+7. Is this better than printed invitations?
+</div>
+
 <div class="answer">
 It’s faster, more memorable, and often more affordable — plus guests never lose it.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">8. Can I edit it later?</div>
+
+<div class="question">
+8. Can I edit it later?
+</div>
+
 <div class="answer">
 Yes. You can update details or information anytime through your control panel.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">9. Do I get a wedding website too?</div>
+
+<div class="question">
+9. Do I get a wedding website too?
+</div>
+
 <div class="answer">
 Yes. Every package includes a beautiful wedding website.
 </div>
+
 </div>
 
 <div class="faq-item">
-<div class="question">10. Is it private?</div>
+
+<div class="question">
+10. Is it private?
+</div>
+
 <div class="answer">
 Yes. Only people with your link can view your invitation.
 </div>
-</div>
 
-<div class="faq-item">
-<div class="question">11. Does it work on mobile?</div>
-<div class="answer">
-Yes. It works perfectly on phones, tablets, and desktops.
 </div>
-</div>
-
-<div class="faq-item">
-<div class="question">12. Can I preview before sharing?</div>
-<div class="answer">
-Yes. You’ll receive a preview before sending it to guests.
-</div>
-</div>
-
-<div class="faq-item">
-<div class="question">13. How long is the invitation video?</div>
-<div class="answer">
-Usually between 30 and 60 seconds, optimized for emotional impact.
-</div>
-</div>
-
-<div class="faq-item">
-<div class="question">14. Is support included?</div>
-<div class="answer">
-Yes. Our team helps you throughout the entire process.
-</div>
-</div>
-
-<div class="faq-item">
-<div class="question">15. How do I start?</div>
-<div class="answer">
-Simply click “Make It Yours” and follow the instructions.
-</div>
-</div>
-
 
 </div>
 
@@ -225,6 +383,62 @@ document.querySelectorAll(".question").forEach(q=>{
     item.classList.toggle("open");
 
   };
+
+});
+
+/* MENU */
+
+const trigger =
+  document.querySelector(".menu-trigger");
+
+const dropdown =
+  document.getElementById("menuDropdown");
+
+trigger.addEventListener("click",(e)=>{
+
+  e.stopPropagation();
+
+  dropdown.classList.toggle("open");
+
+});
+
+document.addEventListener("click",()=>{
+
+  dropdown.classList.remove("open");
+
+});
+
+</script>
+
+<script>
+
+const trigger =
+  document.querySelector(".menu-trigger");
+
+const dropdown =
+  document.getElementById("menuDropdown");
+
+const sourceNav =
+  document.querySelector(".top-nav");
+
+/* BUILD MENU */
+
+dropdown.innerHTML =
+  sourceNav.innerHTML;
+
+/* OPEN / CLOSE */
+
+trigger.addEventListener("click",(e)=>{
+
+  e.stopPropagation();
+
+  dropdown.classList.toggle("open");
+
+});
+
+document.addEventListener("click",()=>{
+
+  dropdown.classList.remove("open");
 
 });
 
