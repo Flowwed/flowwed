@@ -171,9 +171,51 @@ h1 {
 
 .container{
   max-width:900px;
-  margin:20px auto 80px auto;
+
+  height:480px;
+
+  margin:20px auto 40px auto;
+
   padding:0 20px;
+
+  overflow-y:auto;
+  overflow-x:hidden;
 }
+
+
+.container::-webkit-scrollbar{
+  width:10px;
+}
+
+.container::-webkit-scrollbar-track{
+  background:rgba(255,240,243,0.75);
+  border-radius:999px;
+}
+
+.container::-webkit-scrollbar-thumb{
+  background:
+    linear-gradient(
+      180deg,
+      #d11f2f,
+      #9c1818,
+      #5e0202
+    );
+
+  border-radius:999px;
+
+  border:2px solid rgba(255,255,255,0.55);
+}
+
+.container::-webkit-scrollbar-thumb:hover{
+  background:
+    linear-gradient(
+      180deg,
+      #ff3347,
+      #b41111,
+      #690303
+    );
+}
+
 
 /* ================= FAQ ================= */
 
@@ -304,126 +346,217 @@ footer{
 <div class="container">
 
 <div class="faq-item open">
-
-<div class="question">
-1. What is FloWWeds?
-</div>
-
+<div class="question">1. What is FloWWeds?</div>
 <div class="answer">
-FloWWeds creates cinematic wedding invitations powered by AI, turning your photos into a film-style experience.
+FloWWeds creates cinematic AI-powered wedding invitations and interactive wedding websites that feel like a personalized digital experience instead of a traditional invite.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-2. How long does it take?
-</div>
-
+<div class="question">2. How does it work?</div>
 <div class="answer">
-Most invitations are ready within 7–10 days after you submit your photos and details.
+You send your photos, wedding details, and preferences — we transform them into a cinematic invitation and interactive wedding experience your guests can open instantly from any device.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-3. How many photos do I need?
-</div>
-
+<div class="question">3. How long does it take to create our invitation?</div>
 <div class="answer">
-Typically 6–10 photos work perfectly, but even fewer can still create a beautiful result.
+Most projects are completed within 7–10 days depending on customization and content.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-4. Can I choose the cinematic style?
-</div>
-
+<div class="question">4. Do guests need to install an app?</div>
 <div class="answer">
-Yes. You can choose the style that best fits your wedding theme and personality.
+No. Guests simply tap your private link and everything opens instantly in their browser.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-5. Do guests need to install anything?
-</div>
-
+<div class="question">5. Will it work on iPhone and Android?</div>
 <div class="answer">
-No. Guests simply open a link and watch your invitation instantly.
+Yes. FloWWeds is designed to work smoothly across iPhone, Android, tablets, and desktop devices.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-6. Can I share it by phone?
-</div>
-
+<div class="question">6. Can older guests use it easily?</div>
 <div class="answer">
-Yes. You can send your invitation via text, WhatsApp, email, or any messaging app.
+Yes. The experience is intentionally designed to feel simple, intuitive, and easy for guests of all ages.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-7. Is this better than printed invitations?
-</div>
-
+<div class="question">7. Can we personalize every section?</div>
 <div class="answer">
-It’s faster, more memorable, and often more affordable — plus guests never lose it.
+Yes. You can customize photos, videos, colors, text, music, event details, RSVP settings, and more.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-8. Can I edit it later?
-</div>
-
+<div class="question">8. Can we choose the cinematic style?</div>
 <div class="answer">
-Yes. You can update details or information anytime through your control panel.
+Absolutely. You can choose from different visual moods and styles to match your wedding aesthetic and personality.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-9. Do I get a wedding website too?
-</div>
-
+<div class="question">9. Can we include our love story?</div>
 <div class="answer">
-Yes. Every package includes a beautiful wedding website.
+Yes. Many couples add timelines, photo memories, personal messages, and story sections to make the experience feel more emotional and personal.
 </div>
-
 </div>
 
 <div class="faq-item">
-
-<div class="question">
-10. Is it private?
-</div>
-
+<div class="question">10. Can we add music and cinematic effects?</div>
 <div class="answer">
-Yes. Only people with your link can view your invitation.
+Yes. Your experience can include music, transitions, motion effects, animations, and cinematic visuals.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">11. Can guests RSVP directly from the invitation?</div>
+<div class="answer">
+Yes. Guests can RSVP directly from your wedding experience without needing separate forms or apps.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">12. Can guests upload their own photos and videos?</div>
+<div class="answer">
+Yes. Guests can share memories, videos, and messages directly through your wedding platform.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">13. Can we update information after sending the invitation?</div>
+<div class="answer">
+Yes. You can update schedules, locations, travel details, and other information anytime.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">14. Do you support multiple wedding events?</div>
+<div class="answer">
+Yes. You can include rehearsal dinners, after parties, brunches, ceremonies, receptions, and more.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">15. Will guests receive directions and travel information?</div>
+<div class="answer">
+Yes. You can include maps, hotel details, schedules, transportation information, and event guidance.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">16. Can we include a wedding gallery?</div>
+<div class="answer">
+Yes. Your wedding experience can include galleries for engagement photos, wedding memories, and guest uploads.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">17. Is FloWWeds private?</div>
+<div class="answer">
+Yes. Your experience can remain private and accessible only through your personalized link.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">18. Are our photos and videos stored securely?</div>
+<div class="answer">
+Yes. We use secure cloud storage and protected access systems for your content.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">19. Can this replace a traditional wedding website?</div>
+<div class="answer">
+Yes. FloWWeds combines cinematic invitations, RSVP tools, event details, galleries, guest interaction, and wedding updates in one experience.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">20. Can we share it through text or WhatsApp?</div>
+<div class="answer">
+Yes. Your invitation can be shared through text message, WhatsApp, email, Instagram, or any messaging platform.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">21. Do we need professional photos?</div>
+<div class="answer">
+No. Even casual phone photos can create a beautiful cinematic experience.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">22. How many photos should we upload?</div>
+<div class="answer">
+Most couples upload between 6–20 photos depending on the sections they want included.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">23. Can we preview everything before guests see it?</div>
+<div class="answer">
+Yes. You’ll be able to review and approve your experience before sharing it.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">24. What makes FloWWeds different from printed invitations?</div>
+<div class="answer">
+FloWWeds creates an immersive emotional experience guests interact with instead of simply reading and forgetting.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">25. Why do couples choose FloWWeds?</div>
+<div class="answer">
+Couples choose FloWWeds because it feels modern, cinematic, interactive, emotional, and unforgettable for both them and their guests.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">26. Can we use FloWWeds after the wedding too?</div>
+<div class="answer">
+Yes. Many couples continue using their website for wedding albums, memories, guest media, and post-wedding updates.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">27. Is FloWWeds available internationally?</div>
+<div class="answer">
+Yes. Your wedding experience can be shared worldwide instantly through a single private link.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">28. Can we have different themes or aesthetics?</div>
+<div class="answer">
+Yes. From elegant and romantic to modern cinematic styles, your experience can match your wedding vision.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">29. What if we need help during setup?</div>
+<div class="answer">
+We guide you through the process and help make sure everything looks beautiful and works smoothly.
+</div>
+</div>
+
+<div class="faq-item">
+<div class="question">30. Will guests remember this experience?</div>
+<div class="answer">
+That’s exactly the goal — to create something emotional, cinematic, and unforgettable instead of a traditional invitation card.
+</div>
 </div>
 
 </div>
 
-</div>
 
 <footer>
 © FloWWeds
