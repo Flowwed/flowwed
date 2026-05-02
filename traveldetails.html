@@ -2985,6 +2985,83 @@ document.getElementById("addEventBtn").addEventListener("click", () => {
 
 </script>
 
+<script>
+
+document.addEventListener("keydown", async (e) => {
+
+  // только Enter
+  if (e.key !== "Enter") return;
+
+  // textarea пропускаем
+  if (e.target.tagName === "TEXTAREA") return;
+
+  // чтобы form не делал submit
+  e.preventDefault();
+
+  const inputs = [
+    ...document.querySelectorAll(
+      'input, select, textarea'
+    )
+  ].filter(el =>
+    !el.disabled &&
+    el.offsetParent !== null
+  );
+
+  const index = inputs.indexOf(e.target);
+
+  // 👉 прыжок на следующее поле
+  if (index > -1 && index < inputs.length - 1) {
+    inputs[index + 1].focus();
+  }
+
+  // 👉 AUTO SAVE
+  const f = getFormData();
+
+  const schedule = getScheduleData();
+  const faq = getFaqData();
+
+  const data = {
+
+    couple_name: f.coupleName,
+    wedding_date: f.weddingDate,
+
+    airport: f.airport,
+    transfer_time: f.transferTime,
+    flights_text: f.flightsText,
+    things_to_do: f.thingsToDo,
+    stay_links: f.stayLinks,
+
+    hotels: f.hotels,
+
+    venue_name: f.venueName,
+    venue_address: f.venueAddress,
+    venue_note: f.venueNote,
+
+    dress_code: f.dressCode,
+    important_info: f.importantInfo,
+    weather_link: f.weatherLink,
+
+    faq_q1: f.faqQ1,
+    faq_a1: f.faqA1,
+    faq_q2: f.faqQ2,
+    faq_a2: f.faqA2,
+    faq_q3: f.faqQ3,
+    faq_a3: f.faqA3,
+    faq_q4: f.faqQ4,
+    faq_a4: f.faqA4,
+
+    schedule: schedule,
+    faq: faq
+  };
+
+  await saveToSupabase(data);
+
+  showToast("Saved");
+
+});
+
+</script>
+
 
 </body>
 </html>
