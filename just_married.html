@@ -1551,6 +1551,13 @@ document.addEventListener("DOMContentLoaded", () => {
     justMarriedToggle.checked =
       toggles.justMarried !== false;
 
+randomHintsToggle.checked =
+  toggles.randomHints !== false;
+
+window.randomHintsEnabled =
+  randomHintsToggle.checked;
+
+
   });
 
   loadSlugFromGallery(token);
@@ -1593,6 +1600,47 @@ justMarriedToggle.addEventListener("change", async () => {
   );
 
 });
+
+randomHintsToggle.addEventListener("change", async () => {
+
+  const currentRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
+    }
+  );
+
+  const rows = await currentRes.json();
+
+  const toggles =
+    rows?.[0]?.page_toggles || {};
+
+  toggles.randomHints =
+    randomHintsToggle.checked;
+
+  window.randomHintsEnabled =
+    randomHintsToggle.checked;
+
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        page_toggles: toggles
+      })
+    }
+  );
+
+});
+
 
 
 
