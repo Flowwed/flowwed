@@ -1685,17 +1685,6 @@ const faq = getFaqData();
     couple_name: f.coupleName,
     wedding_date: f.weddingDate,
 
-    schedule_time_1: f.scheduleTime1,
-    schedule_text_1: f.scheduleText1,
-    schedule_time_2: f.scheduleTime2,
-    schedule_text_2: f.scheduleText2,
-    schedule_time_3: f.scheduleTime3,
-    schedule_text_3: f.scheduleText3,
-    schedule_time_4: f.scheduleTime4,
-    schedule_text_4: f.scheduleText4,
-    schedule_time_5: f.scheduleTime5,
-    schedule_text_5: f.scheduleText5,
-
 
     airport: f.airport,
     transfer_time: f.transferTime,
@@ -1823,17 +1812,19 @@ if (data) {
     coupleName: "",
     weddingDate: "",
 
-    // ✅ SCHEDULE FROM JSONB
-    ...(data.schedule?.reduce((acc, item, index) => {
+    // ✅ schedule from JSONB
+    ...(Array.isArray(data.schedule)
+      ? data.schedule.reduce((acc, item, index) => {
 
-      const i = index + 1;
+          const i = index + 1;
 
-      acc[`scheduleText${i}`] = item.text || "";
-      acc[`scheduleTime${i}`] = item.time || "";
+          acc[`scheduleText${i}`] = item?.text || "";
+          acc[`scheduleTime${i}`] = item?.time || "";
 
-      return acc;
+          return acc;
 
-    }, {}) || {}),
+        }, {})
+      : {}),
 
     airport: data.airport,
     transferTime: data.transfer_time,
@@ -1869,6 +1860,7 @@ if (data) {
 
   setFormData(mapped);
 }
+
 // 🔥 SYNC CHECKBOXES AFTER DATA LOAD
 
 // FAQ
