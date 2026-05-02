@@ -1557,7 +1557,10 @@ function getScheduleData() {
     const timeEl = document.getElementById(`scheduleTime${i}`);
     const textEl = document.getElementById(`scheduleText${i}`);
 
-    if (!timeEl && !textEl) break;
+    if (!timeEl && !textEl) {
+  i++;
+  continue;
+}
 
     if (timeEl || textEl) {
       items.push({
