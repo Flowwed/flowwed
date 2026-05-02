@@ -1549,32 +1549,33 @@ if (el && data[id] != null) {
     }
 
 function getScheduleData() {
+
   const items = [];
 
-  let i = 1;
+  const textInputs =
+    document.querySelectorAll(
+      '[id^="scheduleText"]'
+    );
 
-  while (true) {
-    const timeEl = document.getElementById(`scheduleTime${i}`);
-    const textEl = document.getElementById(`scheduleText${i}`);
+  textInputs.forEach(textEl => {
 
-    if (!timeEl && !textEl) {
-  i++;
-  continue;
-}
+    const number =
+      textEl.id.replace("scheduleText", "");
 
-    if (timeEl || textEl) {
-      items.push({
-        time: timeEl?.value || "",
-        text: textEl?.value || ""
-      });
-    }
+    const timeEl =
+      document.getElementById(
+        `scheduleTime${number}`
+      );
 
-    i++;
-  }
+    items.push({
+      time: timeEl?.value || "",
+      text: textEl?.value || ""
+    });
+
+  });
 
   return items;
 }
-
 
 function getFaqData() {
   const items = [];
