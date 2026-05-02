@@ -386,64 +386,45 @@ document.querySelectorAll(".question").forEach(q=>{
 
 });
 
-/* MENU */
 
-const trigger =
-  document.querySelector(".menu-trigger");
 
-const dropdown =
-  document.getElementById("menuDropdown");
+document.addEventListener("DOMContentLoaded", () => {
 
-trigger.addEventListener("click",(e)=>{
+  const trigger =
+    document.querySelector(".menu-trigger");
 
-  e.stopPropagation();
+  const dropdown =
+    document.getElementById("menuDropdown");
 
-  dropdown.classList.toggle("open");
+  const sourceNav =
+    document.querySelector(".top-nav");
 
-});
+  if (!trigger || !dropdown || !sourceNav) return;
 
-document.addEventListener("click",()=>{
+  /* BUILD MENU */
 
-  dropdown.classList.remove("open");
+  dropdown.innerHTML =
+    sourceNav.innerHTML;
 
-});
+  /* OPEN / CLOSE */
 
-</script>
+  trigger.addEventListener("click",(e)=>{
 
-<script>
+    e.stopPropagation();
 
-const trigger =
-  document.querySelector(".menu-trigger");
+    dropdown.classList.toggle("open");
 
-const dropdown =
-  document.getElementById("menuDropdown");
+  });
 
-const sourceNav =
-  document.querySelector(".top-nav");
+  document.addEventListener("click",()=>{
 
-/* BUILD MENU */
+    dropdown.classList.remove("open");
 
-dropdown.innerHTML =
-  sourceNav.innerHTML;
-
-/* OPEN / CLOSE */
-
-trigger.addEventListener("click",(e)=>{
-
-  e.stopPropagation();
-
-  dropdown.classList.toggle("open");
-
-});
-
-document.addEventListener("click",()=>{
-
-  dropdown.classList.remove("open");
+  });
 
 });
 
 </script>
-
 
 </body>
 </html>
