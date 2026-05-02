@@ -1717,6 +1717,8 @@ const faq = getFaqData();
   await saveToSupabase(data);
 
   showToast("Saved");
+markAsSaved();
+
 });
 
 
@@ -3054,14 +3056,47 @@ document.addEventListener("keydown", async (e) => {
     faq: faq
   };
 
-  await saveToSupabase(data);
+await saveToSupabase(data);
 
-  showToast("Saved");
+showToast("Saved");
+
+markAsSaved();
 
 });
 
 </script>
 
+
+<script>
+
+let hasUnsavedChanges = false;
+
+
+// любое изменение = несохранённые изменения
+document.addEventListener("input", () => {
+  hasUnsavedChanges = true;
+});
+
+
+// после Save → выключаем popup
+function markAsSaved() {
+  hasUnsavedChanges = false;
+}
+
+
+// popup при выходе
+window.addEventListener("beforeunload", (e) => {
+
+  if (!hasUnsavedChanges) return;
+
+  e.preventDefault();
+
+  e.returnValue =
+    "Please click 'Save Travel & Event' before leaving this page to avoid losing your latest changes.";
+
+});
+
+</script>
 
 </body>
 </html>
