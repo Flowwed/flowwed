@@ -2809,30 +2809,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
 
+dropdown.querySelectorAll("a").forEach(link => {
 
-  dropdown.querySelectorAll("a").forEach(link => {
-    const href = link.getAttribute("href");
-    if (!href) return;
+  const href = link.getAttribute("href");
+  if (!href) return;
 
-    const linkPage = href.split("?")[0].split("/").pop().toLowerCase();
+  const linkPage =
+    href.split("?")[0]
+    .split("/")
+    .pop()
+    .toLowerCase();
 
-    if (linkPage === currentPage) {
-      link.classList.add("active");
+  // active page
+  if (linkPage === currentPage) {
+    link.classList.add("active");
+  }
+
+  // 🔥 UNSAVED CHANGES WARNING
+  link.addEventListener("click", (e) => {
+
+    if (!hasUnsavedChanges) return;
+
+    const ok = confirm(
+      "You have unsaved changes.\n\nPlease click 'Save Travel & Event' before leaving this page."
+    );
+
+    if (!ok) {
+      e.preventDefault();
     }
+
   });
 
-  // open / close
-  trigger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("open");
-  });
+});
 
 
-  document.addEventListener("click", () => {
-    dropdown.classList.remove("open");
-  });
+// open / close
+trigger.addEventListener("click", (e) => {
+  e.stopPropagation();
+  dropdown.classList.toggle("open");
+});
 
 
+document.addEventListener("click", () => {
+  dropdown.classList.remove("open");
+});
 
   // ==========================
   // FAQ LOGIC
