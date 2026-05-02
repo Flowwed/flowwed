@@ -2837,12 +2837,53 @@ link.addEventListener("click", (e) => {
 
   modal.style.display = "flex";
 
-  document.getElementById("stayBtn").onclick = () => {
-    modal.style.display = "none";
-  };
+  document.getElementById("saveLeaveBtn").onclick = async () => {
 
-  document.getElementById("leaveBtn").onclick = () => {
+    const f = getFormData();
+
+    const schedule = getScheduleData();
+    const faq = getFaqData();
+
+    const data = {
+
+      couple_name: f.coupleName,
+      wedding_date: f.weddingDate,
+
+      airport: f.airport,
+      transfer_time: f.transferTime,
+      flights_text: f.flightsText,
+      things_to_do: f.thingsToDo,
+      stay_links: f.stayLinks,
+
+      hotels: f.hotels,
+
+      venue_name: f.venueName,
+      venue_address: f.venueAddress,
+      venue_note: f.venueNote,
+
+      dress_code: f.dressCode,
+      important_info: f.importantInfo,
+      weather_link: f.weatherLink,
+
+      faq_q1: f.faqQ1,
+      faq_a1: f.faqA1,
+      faq_q2: f.faqQ2,
+      faq_a2: f.faqA2,
+      faq_q3: f.faqQ3,
+      faq_a3: f.faqA3,
+      faq_q4: f.faqQ4,
+      faq_a4: f.faqA4,
+
+      schedule: schedule,
+      faq: faq
+    };
+
+    await saveToSupabase(data);
+
+    markAsSaved();
+
     window.location.href = href;
+
   };
 
 });
@@ -3158,34 +3199,18 @@ window.addEventListener("beforeunload", (e) => {
       color:#555;
       margin-bottom:22px;
     ">
-      Please click
-      <strong>"Save Travel & Event"</strong>
-      before leaving this page.
+      Please save your latest changes before leaving this page.
     </div>
 
-    <div style="
-      display:flex;
-      gap:12px;
-      justify-content:center;
+    <button id="saveLeaveBtn" style="
+      width:100%;
     ">
-
-      <button id="stayBtn" style="
-        background:#e9e9e9;
-        color:#333;
-      ">
-        Stay
-      </button>
-
-      <button id="leaveBtn">
-        Leave Page
-      </button>
-
-    </div>
+      Save & Leave
+    </button>
 
   </div>
 
 </div>
-
 
 </body>
 </html>
