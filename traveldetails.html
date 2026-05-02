@@ -1492,20 +1492,45 @@ const sb = window.supabase.createClient(
     const storageKey = `venueMapDraft:${token || "no-token"}`;
 
 const fieldIds = [
-  "coupleName","weddingDate",
-  "scheduleTime1","scheduleText1","scheduleTime2","scheduleText2",
-  "scheduleTime3","scheduleText3","scheduleTime4","scheduleText4",
-  "airport","transferTime","flightsText",
+
+  "coupleName",
+  "weddingDate",
+
+  "scheduleTime1","scheduleText1",
+  "scheduleTime2","scheduleText2",
+  "scheduleTime3","scheduleText3",
+  "scheduleTime4","scheduleText4",
+  "scheduleTime5","scheduleText5",
+  "scheduleTime6","scheduleText6",
+  "scheduleTime7","scheduleText7",
+  "scheduleTime8","scheduleText8",
+  "scheduleTime9","scheduleText9",
+  "scheduleTime10","scheduleText10",
+
+  "airport",
+  "transferTime",
+  "flightsText",
+
   "hotels",
-  "venueName","venueAddress","venueNote",
+
+  "venueName",
+  "venueAddress",
+  "venueNote",
+
   "dressCode",
-  "faqQ1","faqA1","faqQ2","faqA2","faqQ3","faqA3","faqQ4","faqA4",
+
+  "faqQ1","faqA1",
+  "faqQ2","faqA2",
+  "faqQ3","faqA3",
+  "faqQ4","faqA4",
+
   "stayLinks",
   "thingsToDo",
   "importantInfo",
   "weatherLink"
 
 ];
+
     function getFormData(){
       const data = {};
       fieldIds.forEach(id => {
