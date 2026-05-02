@@ -1229,8 +1229,22 @@ max-width: 620px;
     color:#8f1d1d;
   ">
     <input type="checkbox" id="justMarriedToggle">
-    Enable Just Married Album Webpage
+    Enable Album Webpage
   </label>
+
+<label style="
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:14px;
+  font-weight:600;
+  color:#8f1d1d;
+">
+  <input type="checkbox" id="randomHintsToggle" checked>
+  Enable Floating Tips
+</label>
+
+
 
 </div>
 
@@ -1346,6 +1360,24 @@ const token = window.APP_TOKEN;
 
 const justMarriedToggle =
   document.getElementById("justMarriedToggle");
+
+window.randomHintsEnabled = true;
+
+const randomHintsToggle =
+  document.getElementById("randomHintsToggle");
+
+if (randomHintsToggle) {
+
+  randomHintsToggle.checked = true;
+
+  randomHintsToggle.addEventListener("change", () => {
+
+    window.randomHintsEnabled =
+      randomHintsToggle.checked;
+
+  });
+
+}
 
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
@@ -1926,16 +1958,26 @@ document.addEventListener("keydown", (e) => {
 });
 
 
-function showToast(text) {
+function showToast(text, force = false) {
+
+  if (!force && !window.randomHintsEnabled) {
+    return;
+  }
+
   const t = document.getElementById("toast");
+
   t.innerText = text;
+
   t.classList.add("show");
 
   clearTimeout(t._timer);
+
   t._timer = setTimeout(() => {
     t.classList.remove("show");
   }, 2200);
 }
+
+
 
 function showConfirm(text) {
   return new Promise(resolve => {
@@ -1999,7 +2041,7 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
   }
 
   if (!caption) {
-    showToast("Please enter a caption for your photo");
+    showToast("Please enter a caption for your photo", true);
     return;
   }
 
