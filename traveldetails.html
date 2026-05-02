@@ -1087,19 +1087,22 @@ window.APP_TOKEN = token;
   placeholder="10:00 PM">
 </div>
 
-<div id="extraEventsContainer"></div>
+<div class="field full">
 
-<div id="addEventBtn" style="
-  margin-top:10px;
-  color:#2a6bff;
-  font-weight:600;
-  cursor:pointer;
-  text-decoration:underline;
-">
-  + Add wedding event
+  <div id="extraEventsContainer"></div>
+
+  <div id="addEventBtn" style="
+    margin-top:10px;
+    color:#2a6bff;
+    font-weight:600;
+    cursor:pointer;
+    text-decoration:underline;
+    width:fit-content;
+  ">
+    + Add wedding event
+  </div>
+
 </div>
-
-
 </div>
 </div>
 </div>
@@ -1853,13 +1856,13 @@ if (data) {
     faqA4: data.faq_a4
   };
 
-  setFormData(mapped);
-
 const scheduleLength = data.schedule?.length || 0;
 
 for (let i = 5; i <= scheduleLength; i++) {
   document.getElementById("addEventBtn")?.click();
 }
+
+setFormData(mapped);
 
 }
 
