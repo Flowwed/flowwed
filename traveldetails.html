@@ -1567,6 +1567,12 @@ function getScheduleData() {
         `scheduleTime${number}`
       );
 
+    // 🔥 ПРОПУСКАЕМ ПУСТЫЕ / УДАЛЕННЫЕ
+    if (
+      !textEl.value.trim() &&
+      !timeEl?.value.trim()
+    ) return;
+
     items.push({
       time: timeEl?.value || "",
       text: textEl?.value || ""
@@ -1576,6 +1582,7 @@ function getScheduleData() {
 
   return items;
 }
+
 
 function getFaqData() {
   const items = [];
