@@ -1860,6 +1860,15 @@ console.log("SAVED ROW:", savedData);
 
 await loadMiniGallery();
 
+window.lastUploadedSlot = slot;
+window.lastUploadedPath = serverPath;
+
+document.getElementById("captionInput").value = "";
+
+document.getElementById("captionModal").style.display =
+  "flex";
+
+
 
     setTimeout(() => {
       progressContainer.style.display = "none";
@@ -1931,6 +1940,7 @@ function buildHTML(block) {
 const payload = {
   edit_token: token,
 
+
 story_enabled:
     document.getElementById("storyToggle").checked,
 
@@ -2001,6 +2011,91 @@ modal.style.display = "flex";
 </div>
 
 <div id="toast" class="toast">Message saved!</div>
+
+<!-- CAPTION MODAL -->
+
+<div id="captionModal" style="
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  z-index:99999999;
+">
+
+  <div style="
+    width:420px;
+    background:white;
+
+    border-radius:24px;
+
+    padding:24px;
+
+    box-shadow:
+      0 20px 60px rgba(0,0,0,.35);
+  ">
+
+    <div style="
+      font-size:22px;
+      font-weight:700;
+      margin-bottom:16px;
+      color:#8f1d1d;
+    ">
+      Add Caption
+    </div>
+
+    <textarea
+      id="captionInput"
+      placeholder="Write something about this photo..."
+      style="
+        width:100%;
+        height:120px;
+
+        border-radius:16px;
+        border:1px solid #ddd;
+
+        padding:14px;
+        box-sizing:border-box;
+
+        resize:none;
+
+        font-size:16px;
+        line-height:1.5;
+      "
+    ></textarea>
+
+    <div style="
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      margin-top:18px;
+    ">
+
+      <button
+        id="cancelCaptionBtn"
+        class="ruby-btn"
+        style="
+          background:#999;
+        "
+      >
+        Cancel
+      </button>
+
+      <button
+        id="saveCaptionBtn"
+        class="ruby-btn"
+      >
+        Save Caption
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <script>
@@ -2212,7 +2307,7 @@ async function loadMiniGallery() {
   if (!token) return;
 
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path`,
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,caption`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -2257,8 +2352,27 @@ async function loadMiniGallery() {
     removeBtn.style.justifyContent = "center";
     removeBtn.style.fontSize = "14px";
 
-    wrapper.appendChild(img);
-    wrapper.appendChild(removeBtn);
+wrapper.appendChild(img);
+wrapper.appendChild(removeBtn);
+
+if (item.caption) {
+
+  const caption = document.createElement("div");
+
+  caption.innerText = item.caption;
+
+  caption.style.marginTop = "6px";
+  caption.style.fontSize = "13px";
+  caption.style.lineHeight = "1.35";
+  caption.style.color = "#5c4a4a";
+
+  caption.style.maxWidth = "70px";
+
+  caption.style.wordBreak = "break-word";
+
+  wrapper.appendChild(caption);
+
+}
 
     // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
     removeBtn.onclick = async () => {
@@ -2476,6 +2590,65 @@ window.addEventListener("load", () => {
 </script>
 
 <script>
+
+/* =========================
+   CAPTION SAVE
+========================= */
+
+document.getElementById("cancelCaptionBtn")
+  .addEventListener("click", () => {
+
+    document.getElementById("captionModal")
+      .style.display = "none";
+
+});
+
+
+document.getElementById("saveCaptionBtn")
+  .addEventListener("click", async () => {
+
+  const caption =
+    document.getElementById("captionInput")
+      .value.trim();
+
+  await fetch(
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
+    {
+
+      method: "POST",
+
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates"
+      },
+
+      body: JSON.stringify({
+
+        edit_token: token,
+
+        slot: window.lastUploadedSlot,
+
+        page_key: "story",
+
+        path: window.lastUploadedPath,
+
+        caption: caption
+
+      })
+
+    }
+  );
+
+  document.getElementById("captionModal")
+    .style.display = "none";
+
+  showToast("Caption saved");
+
+  await loadMiniGallery();
+
+});
 
 document.getElementById("storyToggle")
   .addEventListener("change", async function () {
