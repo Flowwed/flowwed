@@ -1967,44 +1967,52 @@ function showPreview(file, isFinal = false) {
     }
   }
 
-
 (async () => {
 
   const overlay =
     document.getElementById("loadingOverlay");
 
-  if (overlay) {
-    overlay.classList.remove("hide");
-  }
-
-  if (!token) {
-
-    tokenDisplay.innerText =
-      "❌ No token in URL";
-
-  } else {
-
-    tokenDisplay.innerText =
-      "Token: " + token;
-
-    await loadSlugFromGallery(token);
-
-    await loadStoryFromSupabase();
-
-    await loadMiniGallery();
-
-  }
-
-  requestAnimationFrame(() => {
+  try {
 
     if (overlay) {
-      overlay.classList.add("hide");
+      overlay.classList.remove("hide");
     }
 
-  });
+    if (!token) {
+
+      tokenDisplay.innerText =
+        "❌ No token in URL";
+
+    } else {
+
+      tokenDisplay.innerText =
+        "Token: " + token;
+
+      await loadSlugFromGallery(token);
+
+      await loadStoryFromSupabase();
+
+      await loadMiniGallery();
+
+    }
+
+  } catch (err) {
+
+    console.error(err);
+
+  } finally {
+
+    requestAnimationFrame(() => {
+
+      if (overlay) {
+        overlay.classList.add("hide");
+      }
+
+    });
+
+  }
 
 })();
-
 
   uploadBtn.onclick = async () => {
 
