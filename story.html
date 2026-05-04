@@ -2729,6 +2729,8 @@ document.getElementById("captionAddBtn")
 
   showToast("Caption saved");
 
+await new Promise(r => setTimeout(r, 500));
+
   await loadMiniGallery();
 
 });
