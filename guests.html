@@ -824,6 +824,22 @@ cursor: pointer;   /* ← добавь это */
 }
 
 
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-text {
+  margin-top: 16px;
+
+  color: #a52126;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
 
 
 </style>
@@ -833,7 +849,17 @@ cursor: pointer;   /* ← добавь это */
 <body>
 
 <div id="loadingOverlay">
-  <div class="loader"></div>
+
+  <div class="loading-content">
+
+    <div class="loader"></div>
+
+    <div class="loading-text">
+      Loading...
+    </div>
+
+  </div>
+
 </div>
 
 
@@ -1066,7 +1092,27 @@ console.log("FROM DB:", data);
 
   render();
 }
-loadGuests();
+
+(async () => {
+
+  const overlay = document.getElementById("loadingOverlay");
+
+  if (overlay) {
+    overlay.classList.remove("hide");
+  }
+
+  await loadGuests();
+
+  requestAnimationFrame(() => {
+
+    if (overlay) {
+      overlay.classList.add("hide");
+    }
+
+  });
+
+})();
+
 
 // ======================================================
 // RENDER TABLE
@@ -1971,21 +2017,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
-
-<script>
-window.addEventListener("load", () => {
-  const overlay = document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    setTimeout(() => {
-      overlay.classList.add("hide");
-    }, 300); // небольшая задержка как в примере
-  }
-});
-</script>
-
-
 
 
 </body>
