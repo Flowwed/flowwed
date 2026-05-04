@@ -569,14 +569,44 @@ h1 {
 }
 
 
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-text {
+  margin-top: 16px;
+
+  color: #a52126;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+
 </style>
 </head>
 
 <body>
 
 <div id="loadingOverlay">
-  <div class="loader"></div>
+
+  <div class="loading-content">
+
+    <div class="loader"></div>
+
+    <div class="loading-text">
+      Loading...
+    </div>
+
+  </div>
+
 </div>
+
+
 
 
 <div class="top-header">
@@ -936,8 +966,26 @@ deleteBtn.onclick = async () => {
 };
 
 
+(async () => {
 
-loadSlug();
+  const overlay = document.getElementById("loadingOverlay");
+
+  if (overlay) {
+    overlay.classList.remove("hide");
+  }
+
+  await loadSlug();
+
+  requestAnimationFrame(() => {
+
+    if (overlay) {
+      overlay.classList.add("hide");
+    }
+
+  });
+
+})();
+
 
 
 function uploadFileWithProgress(url, file, onProgress) {
@@ -1112,23 +1160,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
-
-
-<script>
-window.addEventListener("load", () => {
-  const overlay = document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    setTimeout(() => {
-      overlay.classList.add("hide");
-    }, 300); // небольшая задержка как в примере
-  }
-});
-</script>
-
-
-
 
 </body>
 </html>
