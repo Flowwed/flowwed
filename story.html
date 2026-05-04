@@ -1933,19 +1933,21 @@ container.style.opacity = "1";
 const pageKey = "story";
 
 
-const saveRes = await fetch(
-  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}`,
+await fetch(
+  `${SUPABASE_URL}/rest/v1/gallery_images?on_conflict=edit_token,slot`,
   {
-    method: "PATCH",
+    method: "POST",
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: "Bearer " + SUPABASE_KEY,
       "Content-Type": "application/json",
-      Prefer: "return=minimal"
+      Prefer: "resolution=merge-duplicates"
     },
     body: JSON.stringify({
-      path: serverPath,
-      page_key: "story"
+      edit_token: token,
+      slot: slot,
+      page_key: "story",
+      path: serverPath
     })
   }
 );
@@ -2717,31 +2719,33 @@ document.getElementById("captionAddBtn")
     }
   );
 
-  await fetch(
-    `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${window.lastUploadedSlot}`,
-    {
-      method: "PATCH",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        path: window.lastUploadedPath,
-        page_key: "story"
-      })
-    }
-  );
+await fetch(
+  `${SUPABASE_URL}/rest/v1/gallery_images?on_conflict=edit_token,slot`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates"
+    },
+    body: JSON.stringify({
+      edit_token: token,
+      slot: window.lastUploadedSlot,
+      page_key: "story",
+      path: window.lastUploadedPath
+    })
+  }
+);
 
-  document.getElementById("captionModal")
-    .style.display = "none";
+document.getElementById("captionModal")
+  .style.display = "none";
 
-  showToast("Caption saved");
+showToast("Caption saved");
 
-  await loadMiniGallery();
+await loadMiniGallery();
 
 });
-
 
 document.getElementById("storyToggle")
   .addEventListener("change", async function () {
