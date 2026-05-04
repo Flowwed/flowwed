@@ -1887,7 +1887,7 @@ const existingData = await existing.json();
 
 if (existingData.length && existingData[0].path) {
 
-await showConfirm(
+const ok = await showConfirm(
   `${slot.replace("img","Photo ")} already exists.\n\nDelete it first?`
 );
 
@@ -1895,6 +1895,7 @@ uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalUploadText;
 
 return;
+
 }
 
 
@@ -1992,19 +1993,11 @@ console.log("SAVED ROW:", savedData);
 window.lastUploadedSlot = slot;
 window.lastUploadedPath = serverPath;
 
-const captionInput =
-  document.getElementById("captionInput");
+document.getElementById("captionInput").value = "";
 
-const captionModal =
-  document.getElementById("captionModal");
+document.getElementById("captionModal").style.display =
+  "flex";
 
-if (captionInput) {
-  captionInput.value = "";
-}
-
-if (captionModal) {
-  captionModal.style.display = "flex";
-}
 
 
     setTimeout(() => {
@@ -2811,7 +2804,6 @@ document.getElementById("storyToggle")
 
 });
 
-
 function showConfirm(text) {
 
   return new Promise(resolve => {
@@ -2837,7 +2829,6 @@ function showConfirm(text) {
   });
 
 }
-
 
 
 </script>
@@ -2868,68 +2859,6 @@ font-size:16px;
 line-height:1.5;
 margin-bottom:24px;
 color:#5c2b2b;
-">
-</div>
-
-<div style="
-display:flex;
-gap:12px;
-justify-content:center;
-">
-
-<button id="confirmNo" style="
-padding:10px 22px;
-border:none;
-border-radius:12px;
-background:#eee;
-cursor:pointer;
-">
-No
-</button>
-
-<button id="confirmYes" style="
-padding:10px 22px;
-border:none;
-border-radius:12px;
-background:#8d1f1f;
-color:white;
-cursor:pointer;
-">
-Yes
-</button>
-
-</div>
-</div>
-</div>
-
-
-<div id="confirmModal" style="
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-backdrop-filter:blur(10px);
-z-index:999999;
-align-items:center;
-justify-content:center;
-">
-
-<div style="
-background:white;
-padding:26px;
-border-radius:22px;
-width:320px;
-text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,.25);
-">
-
-<div id="confirmText"
-style="
-font-size:16px;
-line-height:1.5;
-margin-bottom:24px;
-color:#5c2b2b;
-white-space:pre-line;
 ">
 </div>
 
