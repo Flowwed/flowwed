@@ -1571,13 +1571,24 @@ inset 0 1px 0 rgba(255,255,255,.7);
 ">
 
 <div style="
-font-size:24px;
-font-weight:700;
+font-size:22px;
+font-weight:600;
 color:#8d1f1f;
 
 margin-bottom:22px;
 ">
 Gallery
+
+<span style="
+  font-size:15px;
+  font-style:italic;
+  font-weight:400;
+
+  color:#8f8f8f;
+  ">
+    (you can upload up to 20 photos for your “Our Story” page)
+  </span>
+
 </div>
 
 <div id="miniGallery" style="
@@ -2528,6 +2539,22 @@ async function loadMiniGallery() {
     if (!item.path) return;
 
     const wrapper = document.createElement("div");
+
+const photoLabel =
+  document.createElement("div");
+
+photoLabel.innerText =
+  `Photo ${Number(item.slot.replace("img","")) - 1}`;
+
+photoLabel.style.fontSize = "13px";
+photoLabel.style.fontWeight = "700";
+
+photoLabel.style.color = "#8d1f1f";
+
+photoLabel.style.marginBottom = "10px";
+
+wrapper.appendChild(photoLabel);
+
     wrapper.style.position = "relative";
 
 wrapper.style.display = "flex";
