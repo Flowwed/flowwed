@@ -2724,16 +2724,47 @@ document.getElementById("captionAddBtn")
     }
   );
 
-  document.getElementById("captionModal")
-    .style.display = "none";
 
-  showToast("Caption saved");
+document.getElementById("captionModal")
+  .style.display = "none";
 
-await new Promise(r => setTimeout(r, 500));
+showToast("Caption saved");
 
-  await loadMiniGallery();
+const container =
+  document.getElementById("miniGallery");
+
+const wrapper = document.createElement("div");
+wrapper.style.position = "relative";
+
+const img = document.createElement("img");
+
+img.src =
+  `${SUPABASE_URL}/storage/v1/object/public/galleries/${window.lastUploadedPath}?cachebust=${Math.random()}`;
+
+const removeBtn = document.createElement("div");
+removeBtn.innerText = "×";
+
+removeBtn.style.position = "absolute";
+removeBtn.style.top = "4px";
+removeBtn.style.right = "6px";
+
+wrapper.appendChild(img);
+wrapper.appendChild(removeBtn);
+
+if (caption) {
+
+  const captionEl =
+    document.createElement("div");
+
+  captionEl.innerText = caption;
+
+  wrapper.appendChild(captionEl);
+}
+
+container.prepend(wrapper);
 
 });
+
 
 document.getElementById("storyToggle")
   .addEventListener("change", async function () {
