@@ -1959,6 +1959,7 @@ const saveRes = await fetch(
 const savedData = await saveRes.json();
 console.log("SAVED ROW:", savedData);
 
+await new Promise(r => setTimeout(r, 700));
 await loadMiniGallery();
 
 window.lastUploadedSlot = slot;
