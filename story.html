@@ -1829,7 +1829,7 @@ function showPreview(file, isFinal = false) {
       if (Array.isArray(rows) && rows.length > 0) {
         slug = rows[0].slug;
         slugDisplay.innerText = "Slug: " + slug;
- loadMiniGallery(); // ✅ ВОТ СЮДА
+        await loadMiniGallery(); // ✅ ВОТ СЮДА
      
       } else {
         slugDisplay.innerText = "❌ No rows returned for token";
