@@ -1886,7 +1886,15 @@ function resetUploaderForm() {
   }
 
 async function loadCaptionsFromSupabase() {
+
+  const overlay = document.getElementById("loadingOverlay");
+
+  if (overlay) {
+    overlay.classList.remove("hide");
+  }
+
   if (!token) return;
+
 
   // 1️⃣ captions
   const capRes = await fetch(
@@ -2001,6 +2009,43 @@ items.forEach(el => gallery.appendChild(el));
 requestAnimationFrame(() => {
   gallery.style.opacity = "1";
 });
+
+const images = gallery.querySelectorAll("img");
+
+let loaded = 0;
+
+images.forEach(img => {
+
+  if (img.complete) {
+    loaded++;
+  } else {
+
+    img.addEventListener("load", () => {
+
+      loaded++;
+
+      if (loaded === images.length) {
+        finishLoading();
+      }
+
+    });
+
+  }
+
+});
+
+if (loaded === images.length) {
+  finishLoading();
+}
+
+function finishLoading() {
+
+  if (overlay) {
+    overlay.classList.add("hide");
+  }
+
+}
+
 
 
 // 🎵 MUSIC PREVIEW (STEP 3)
@@ -2593,21 +2638,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
-
-
-
-<script>
-window.addEventListener("load", () => {
-  const overlay = document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    setTimeout(() => {
-      overlay.classList.add("hide");
-    }, 300); // небольшая задержка как в примере
-  }
-});
-</script>
-
 
 
 </body>
