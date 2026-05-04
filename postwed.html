@@ -1288,10 +1288,9 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
   box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
 
-
 /* =========================
    GLASS LOADING OVERLAY
-   ========================= */
+========================= */
 
 #loadingOverlay{
   position: fixed;
@@ -1301,45 +1300,47 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
   align-items: center;
   justify-content: center;
 
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(255,240,245,.65),
-      rgba(255,220,230,.55)
-    );
+  background: rgba(255,245,247,0.62);
 
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
 
   z-index: 999999;
 
   opacity: 1;
-  transition: opacity .45s ease;
+  visibility: visible;
+
+  transition:
+    opacity .45s ease,
+    visibility .45s ease;
 }
 
 #loadingOverlay.hide{
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
 .loader{
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
 
   border-radius: 50%;
-  border: 4px solid rgba(165,33,38,.15);
+
+  border: 4px solid rgba(165,33,38,.12);
   border-top: 4px solid #a52126;
 
   animation: spin .9s linear infinite;
 
   box-shadow:
-    0 0 30px rgba(165,33,38,.35);
+    0 0 24px rgba(165,33,38,.25);
 }
 
 @keyframes spin{
-  to { transform: rotate(360deg); }
+  to{
+    transform: rotate(360deg);
+  }
 }
-
 
 /* контейнер */
 .menu-dropdown {
@@ -1457,6 +1458,25 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
 }
 
 
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-text {
+  margin-top: 16px;
+
+  color: #a52126;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+
 </style>
 </head>
 
@@ -1476,6 +1496,19 @@ if (params.get("t")) {
 
 </script>
 
+<div id="loadingOverlay">
+
+  <div class="loading-content">
+
+    <div class="loader"></div>
+
+    <div class="loading-text">
+      Loading...
+    </div>
+
+  </div>
+
+</div>
 
 
 <div class="top-header">
@@ -2347,10 +2380,19 @@ async function loadGuests() {
   const overlay = document.getElementById("loadingOverlay");
   const token = window.APP_TOKEN;
 
-  if (!token) {
-    if (overlay) overlay.classList.add("hide");
-    return;
+  if (overlay) {
+
+    overlay.classList.add("hide");
+
+    setTimeout(() => {
+      overlay.remove();
+    }, 500);
+
   }
+
+  return;
+}
+
 
   try {
     const { data, error } = await supabase
@@ -2377,20 +2419,34 @@ async function loadGuests() {
     render();
 
   } catch (e) {
+
     console.error("LOAD GUESTS CATCH:", e);
+
     guests = [];
+
     render();
+
   } finally {
+
     if (overlay) {
+
       requestAnimationFrame(() => {
+
         overlay.classList.add("hide");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 500);
+
       });
+
     }
+
   }
+
 }
 
 loadGuests();
-
 
 // ======================================================
 // RENDER TABLE
@@ -3633,9 +3689,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<div id="loadingOverlay">
-  <div class="loader"></div>
-</div>
 
 <script>
 
