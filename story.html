@@ -2535,6 +2535,19 @@ async function loadMiniGallery() {
   const container = document.getElementById("miniGallery");
   container.innerHTML = "";
 
+data.sort((a, b) => {
+
+  const aNum =
+    Number(a.slot.replace("img",""));
+
+  const bNum =
+    Number(b.slot.replace("img",""));
+
+  return aNum - bNum;
+
+});
+
+
   data.forEach(item => {
     if (!item.path) return;
 
