@@ -826,6 +826,24 @@ max-width: 800px;
 
 
 
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-text {
+  margin-top: 16px;
+
+  color: #a52126;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+
 
 </style>
 </head>
@@ -833,8 +851,20 @@ max-width: 800px;
 <body>
 
 <div id="loadingOverlay">
-  <div class="loader"></div>
+
+  <div class="loading-content">
+
+    <div class="loader"></div>
+
+    <div class="loading-text">
+      Loading...
+    </div>
+
+  </div>
+
 </div>
+
+
 
 <div class="top-header">
 
@@ -1376,29 +1406,65 @@ function openSMSQRModal(token) {
   overlay.style.display = "flex";
 }
 
-    async function initPage() {
-      initQuill();
-      setTodayDate();
-      initButtons();
-      initNav();
+async function initPage() {
 
-const toggleRes = await fetch(
-  `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
-  {
-    headers: getAuthHeaders()
-  }
-);
+  const overlay =
+    document.getElementById("loadingOverlay");
 
-const toggleRows = await toggleRes.json();
+  try {
 
-const toggles =
-  toggleRows?.[0]?.page_toggles || {};
-
-registryToggle.checked =
-  toggles.updates !== false;
-
-      await loadStoryText();
+    if (overlay) {
+      overlay.classList.remove("hide");
     }
+
+    initQuill();
+
+    setTodayDate();
+
+    initButtons();
+
+    initNav();
+
+    const toggleRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/sites?edit_token=eq.${token}&select=page_toggles`,
+      {
+        headers: getAuthHeaders()
+      }
+    );
+
+    const toggleRows = await toggleRes.json();
+
+    const toggles =
+      toggleRows?.[0]?.page_toggles || {};
+
+    registryToggle.checked =
+      toggles.updates !== false;
+
+    await loadStoryText();
+
+  } catch (err) {
+
+    console.error(err);
+
+  } finally {
+
+    requestAnimationFrame(() => {
+
+      if (overlay) {
+
+        overlay.classList.add("hide");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 500);
+
+      }
+
+    });
+
+  }
+
+}
 
 registryToggle.addEventListener("change", async () => {
 
@@ -1431,7 +1497,6 @@ registryToggle.addEventListener("change", async () => {
   );
 
 });
-
 
     document.addEventListener("DOMContentLoaded", initPage);
 
@@ -1516,21 +1581,6 @@ document.getElementById("storyModal")?.addEventListener("click", (e) => {
 });
 
 </script>
-
-
-<script>
-window.addEventListener("load", () => {
-  const overlay = document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    setTimeout(() => {
-      overlay.classList.add("hide");
-    }, 300); // небольшая задержка как в примере
-  }
-});
-</script>
-
-
 
 
 </body>
