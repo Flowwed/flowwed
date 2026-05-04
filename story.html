@@ -1759,7 +1759,7 @@ function showPreview(file, isFinal = false) {
 
   const url = URL.createObjectURL(file);
 
-  previewBox.classList.remove("placeholder");
+  
 
   if (!isFinal) {
 
@@ -1771,6 +1771,8 @@ function showPreview(file, isFinal = false) {
 
     return;
   }
+
+  previewBox.classList.remove("placeholder");
 
   preview.src = url;
 
