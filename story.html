@@ -2421,84 +2421,60 @@ images.forEach(img => {
   const container = document.getElementById("miniGallery");
   container.innerHTML = "";
 
-  images.forEach(item => {
-    const wrapper = document.createElement("div");
-    wrapper.style.position = "relative";
+images.forEach(item => {
 
-    const img = document.createElement("img");
-    img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}?t=${Date.now()}`;
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "relative";
 
-    const removeBtn = document.createElement("div");
-    removeBtn.innerText = "×";
+  const img = document.createElement("img");
 
-    removeBtn.style.position = "absolute";
-    removeBtn.style.top = "4px";
-    removeBtn.style.right = "6px";
-    removeBtn.style.cursor = "pointer";
-    removeBtn.style.background = "rgba(0,0,0,0.6)";
-    removeBtn.style.color = "white";
-    removeBtn.style.borderRadius = "50%";
-    removeBtn.style.width = "18px";
-    removeBtn.style.height = "18px";
-    removeBtn.style.display = "flex";
-    removeBtn.style.alignItems = "center";
-    removeBtn.style.justifyContent = "center";
-    removeBtn.style.fontSize = "14px";
+  img.src =
+    `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}?t=${Date.now()}`;
 
-wrapper.appendChild(img);
-wrapper.appendChild(removeBtn);
+  const removeBtn = document.createElement("div");
+  removeBtn.innerText = "×";
 
-const cap =
-  captions.find(c => c.slot === item.slot);
+  removeBtn.style.position = "absolute";
+  removeBtn.style.top = "4px";
+  removeBtn.style.right = "6px";
+  removeBtn.style.cursor = "pointer";
+  removeBtn.style.background = "rgba(0,0,0,0.6)";
+  removeBtn.style.color = "white";
+  removeBtn.style.borderRadius = "50%";
+  removeBtn.style.width = "18px";
+  removeBtn.style.height = "18px";
+  removeBtn.style.display = "flex";
+  removeBtn.style.alignItems = "center";
+  removeBtn.style.justifyContent = "center";
+  removeBtn.style.fontSize = "14px";
 
-item.caption = cap?.caption || "";
+  wrapper.appendChild(img);
+  wrapper.appendChild(removeBtn);
 
-if (item.caption) {
+  const cap =
+    captions.find(c => c.slot === item.slot);
 
-  const caption = document.createElement("div");
+  if (cap?.caption) {
 
-  caption.innerText = item.caption;
+    const caption = document.createElement("div");
 
-  caption.style.marginTop = "6px";
-  caption.style.fontSize = "13px";
-  caption.style.lineHeight = "1.35";
-  caption.style.color = "#5c4a4a";
+    caption.innerText = cap.caption;
 
-  caption.style.maxWidth = "70px";
+    caption.style.marginTop = "6px";
+    caption.style.fontSize = "13px";
+    caption.style.lineHeight = "1.35";
+    caption.style.color = "#5c4a4a";
+    caption.style.maxWidth = "70px";
+    caption.style.wordBreak = "break-word";
 
-  caption.style.wordBreak = "break-word";
+    wrapper.appendChild(caption);
+  }
 
-  wrapper.appendChild(caption);
+  container.appendChild(wrapper);
 
-}
+});
 
-    // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
-    removeBtn.onclick = async () => {
-      if (!confirm("Delete this photo?")) return;
 
-      try {
-        await fetch("/.netlify/functions/delete-photo", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            token,
-            slot: item.slot,
-            path: item.path
-          })
-        });
-
-        wrapper.remove();
-
-      } catch (err) {
-        console.error(err);
-        alert("Delete failed");
-      }
-    };
-
-    container.appendChild(wrapper);
-  });
 }
 
 </script>
