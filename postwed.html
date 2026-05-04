@@ -2375,24 +2375,29 @@ async function loadPostWeddingVideo() {
 // LOAD GUESTS
 // ======================================================
 
-
 async function loadGuests() {
-  const overlay = document.getElementById("loadingOverlay");
-  const token = window.APP_TOKEN;
 
-  if (overlay) {
+  const overlay =
+    document.getElementById("loadingOverlay");
 
-    overlay.classList.add("hide");
+  const token =
+    window.APP_TOKEN;
 
-    setTimeout(() => {
-      overlay.remove();
-    }, 500);
+  if (!token) {
+
+    if (overlay) {
+
+      overlay.classList.add("hide");
+
+      setTimeout(() => {
+        overlay.remove();
+      }, 500);
+
+    }
+
+    return;
 
   }
-
-  return;
-}
-
 
   try {
     const { data, error } = await supabase
