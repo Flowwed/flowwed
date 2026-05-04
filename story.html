@@ -1534,27 +1534,60 @@ document
 <div id="fakeHeader" contenteditable="true" class="fake-header"></div>
 
     <!-- 🔥 EDITOR -->
+
     <div id="editor"></div>
 
 
     <!-- 🔥 КНОПКИ (ПОД EDITOR) -->
+
 <div class="editor-top-actions">
   <button class="editor-btn save-btn ruby-btn">Save Text Changes</button>
   <button class="editor-btn update-btn ruby-btn">👁 Preview Your Page Updates</button>
 </div>
 
 
+<!-- 🔥 GALLERY -->
+
+<div style="
+margin-top:34px;
+
+background:
+linear-gradient(
+to bottom,
+rgba(255,255,255,.92),
+rgba(255,245,248,.88)
+);
+
+backdrop-filter: blur(22px) saturate(160%);
+-webkit-backdrop-filter: blur(22px) saturate(160%);
+
+border-radius:28px;
+
+padding:24px;
+
+box-shadow:
+0 24px 60px rgba(120,30,50,.18),
+inset 0 1px 0 rgba(255,255,255,.7);
+">
+
+<div style="
+font-size:24px;
+font-weight:700;
+color:#8d1f1f;
+
+margin-bottom:22px;
+">
+Gallery
+</div>
+
 <div id="miniGallery" style="
-  margin-top: 22px;
-
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-
-  padding-top: 12px;
-
-  border-top: 1px solid rgba(0,0,0,.08);
+display:flex;
+flex-wrap:wrap;
+gap:18px;
 "></div>
+
+</div>
+
 
 
   </div> <!-- editorTab -->
@@ -2497,7 +2530,23 @@ async function loadMiniGallery() {
     const wrapper = document.createElement("div");
     wrapper.style.position = "relative";
 
+wrapper.style.display = "flex";
+wrapper.style.flexDirection = "column";
+wrapper.style.alignItems = "center";
+
     const img = document.createElement("img");
+
+img.style.width = "110px";
+img.style.height = "110px";
+
+img.style.objectFit = "cover";
+
+img.style.borderRadius = "18px";
+
+img.style.boxShadow =
+  "0 10px 24px rgba(0,0,0,.16)";
+
+
     img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}?t=${Date.now()}`;
 
     const removeBtn = document.createElement("div");
@@ -2526,14 +2575,19 @@ if (item.caption) {
 
   caption.innerText = item.caption;
 
-  caption.style.marginTop = "6px";
-  caption.style.fontSize = "13px";
-  caption.style.lineHeight = "1.35";
-  caption.style.color = "#5c4a4a";
+caption.style.marginTop = "10px";
 
-  caption.style.maxWidth = "70px";
+caption.style.fontSize = "13px";
+caption.style.lineHeight = "1.45";
 
-  caption.style.wordBreak = "break-word";
+caption.style.color = "#5c4a4a";
+
+caption.style.textAlign = "center";
+
+caption.style.maxWidth = "110px";
+
+caption.style.wordBreak = "break-word";
+
 
   wrapper.appendChild(caption);
 
