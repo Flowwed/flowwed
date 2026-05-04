@@ -2010,32 +2010,34 @@ requestAnimationFrame(() => {
   gallery.style.opacity = "1";
 });
 
+
 const images = gallery.querySelectorAll("img");
 
-let loaded = 0;
+if (images.length === 0) {
+  finishLoading();
+} else {
 
-images.forEach(img => {
+  let loaded = 0;
 
-  if (img.complete) {
-    loaded++;
-  } else {
+  images.forEach(img => {
 
-    img.addEventListener("load", () => {
-
+    const done = () => {
       loaded++;
 
-      if (loaded === images.length) {
+      if (loaded >= images.length) {
         finishLoading();
       }
+    };
 
-    });
+    if (img.complete) {
+      done();
+    } else {
+      img.addEventListener("load", done);
+      img.addEventListener("error", done);
+    }
 
-  }
+  });
 
-});
-
-if (loaded === images.length) {
-  finishLoading();
 }
 
 function finishLoading() {
@@ -2045,7 +2047,6 @@ function finishLoading() {
   }
 
 }
-
 
 
 // 🎵 MUSIC PREVIEW (STEP 3)
