@@ -1887,7 +1887,7 @@ const existingData = await existing.json();
 
 if (existingData.length && existingData[0].path) {
 
-  showToast(
+  const ok = await showConfirm(
     `${slot.replace("img","Photo ")} already exists — delete it first`
   );
 
@@ -2803,10 +2803,95 @@ document.getElementById("storyToggle")
 });
 
 
+function showConfirm(text) {
+
+  return new Promise(resolve => {
+
+    const modal =
+      document.getElementById("confirmModal");
+
+    document.getElementById("confirmText")
+      .innerText = text;
+
+    modal.style.display = "flex";
+
+    document.getElementById("confirmYes").onclick = () => {
+      modal.style.display = "none";
+      resolve(true);
+    };
+
+    document.getElementById("confirmNo").onclick = () => {
+      modal.style.display = "none";
+      resolve(false);
+    };
+
+  });
+
+}
+
+
 
 </script>
 
+<div id="confirmModal" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(10px);
+z-index:99999;
+align-items:center;
+justify-content:center;
+">
 
+<div style="
+background:white;
+padding:26px;
+border-radius:22px;
+width:320px;
+text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,.25);
+">
+
+<div id="confirmText"
+style="
+font-size:16px;
+line-height:1.5;
+margin-bottom:24px;
+color:#5c2b2b;
+">
+</div>
+
+<div style="
+display:flex;
+gap:12px;
+justify-content:center;
+">
+
+<button id="confirmNo" style="
+padding:10px 22px;
+border:none;
+border-radius:12px;
+background:#eee;
+cursor:pointer;
+">
+No
+</button>
+
+<button id="confirmYes" style="
+padding:10px 22px;
+border:none;
+border-radius:12px;
+background:#8d1f1f;
+color:white;
+cursor:pointer;
+">
+Yes
+</button>
+
+</div>
+</div>
+</div>
 
 </body>
 </html>
