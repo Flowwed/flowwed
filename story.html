@@ -1876,6 +1876,31 @@ uploadBtn.innerHTML = "Uploading...";
   const file = fileInput.files[0];
   const slot = slotSelect.value;
 
+const existing = await fetch(
+  `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${slot}&page_key=eq.story&select=path`,
+  {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    }
+  }
+);
+
+const existingData = await existing.json();
+
+if (existingData.length && existingData[0].path) {
+
+  alert(
+    `${slot.replace("img","Photo ")} already exists.\n\nDelete it first.`
+  );
+
+  uploadBtn.disabled = false;
+  uploadBtn.innerHTML = originalUploadText;
+
+  return;
+}
+
+
   status.innerText = "Requesting upload URL...";
   progressContainer.style.display = "none";
   preview.style.display = "none";
