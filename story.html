@@ -2489,7 +2489,14 @@ if (item.caption) {
 
     // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
     removeBtn.onclick = async () => {
-      if (!confirm("Delete this photo?")) return;
+      
+    const ok = await showConfirm(
+  "Delete this photo?"
+);
+
+if (!ok) return;
+
+
 
       try {
         await fetch("/.netlify/functions/delete-photo", {
