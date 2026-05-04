@@ -2390,7 +2390,7 @@ async function loadMiniGallery() {
   if (!token) return;
 
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,caption`,
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,caption&order=created_at.asc`,
     {
       headers: {
         apikey: SUPABASE_KEY,
