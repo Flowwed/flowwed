@@ -1377,10 +1377,19 @@ max-width: 500px;
     <div id="tokenDisplay"></div>
     <div id="slugDisplay"></div>
 
-    <div id="previewBox" class="placeholder">
-      <img id="preview">
-    </div>
+<div id="previewBox" class="placeholder">
 
+  <img id="miniPreview" style="
+    width:90px;
+    height:90px;
+    object-fit:cover;
+    border-radius:14px;
+    display:none;
+  ">
+
+  <img id="preview">
+
+</div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
@@ -1427,7 +1436,7 @@ document
 
     if (!file) return;
 
-    showPreview(file);
+    showPreview(file, false);
 
 });
 
@@ -1709,6 +1718,10 @@ const token = window.APP_TOKEN;
   const slugDisplay = document.getElementById("slugDisplay");
   const uploadBtn = document.getElementById("uploadBtn");
   const preview = document.getElementById("preview");
+  const miniPreview =
+  document.getElementById("miniPreview");
+
+
   const previewBox = document.getElementById("previewBox");
   const status = document.getElementById("status");
   const slotSelect = document.getElementById("slotSelect");
@@ -1725,11 +1738,50 @@ const token = window.APP_TOKEN;
     status.innerText = "";
   });
 
-  function showPreview(file) {
-    preview.src = URL.createObjectURL(file);
-    preview.style.display = "block";
-    previewBox.classList.remove("placeholder");
+
+function showPreview(file, isFinal = false) {
+
+  const url = URL.createObjectURL(file);
+
+  previewBox.classList.remove("placeholder");
+
+  if (!isFinal) {
+
+    miniPreview.src = url;
+
+    miniPreview.style.display = "block";
+
+    preview.style.display = "none";
+
+    return;
   }
+
+  preview.src = url;
+
+  preview.style.display = "block";
+
+  preview.style.opacity = "0";
+
+  requestAnimationFrame(() => {
+
+    preview.style.transition =
+      "opacity .35s ease";
+
+    preview.style.opacity = "1";
+
+    miniPreview.style.opacity = "0";
+
+  });
+
+  setTimeout(() => {
+
+    miniPreview.style.display = "none";
+
+    miniPreview.style.opacity = "1";
+
+  }, 350);
+}
+
 
   async function loadSlugFromGallery(token) {
     try {
@@ -1841,7 +1893,7 @@ uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalUploadText;
 
 status.innerText = "✅ Uploaded!";
-showPreview(file);
+showPreview(file, true);
 
 const container = document.getElementById("miniGallery");
 
