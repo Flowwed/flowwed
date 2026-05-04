@@ -1963,6 +1963,28 @@ console.log("SAVED ROW:", savedData);
 window.lastUploadedSlot = slot;
 window.lastUploadedPath = serverPath;
 
+await fetch(
+  `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates"
+    },
+    body: JSON.stringify({
+      edit_token: token,
+      slug: slug,
+      page_key: "story",
+      slot: slot,
+      path: serverPath,
+      caption: ""
+    })
+  }
+);
+
+
 document.getElementById("captionInput").value = "";
 
 document.getElementById("captionModal").style.display =
@@ -2390,7 +2412,7 @@ async function loadMiniGallery() {
   if (!token) return;
 
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,caption`,
+   `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,caption&t=${Date.now()}`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -2438,12 +2460,10 @@ async function loadMiniGallery() {
 wrapper.appendChild(img);
 wrapper.appendChild(removeBtn);
 
-if (item.caption) {
 
   const caption = document.createElement("div");
 
-  caption.innerText = item.caption;
-
+  caption.innerText = item.caption || "—";
   caption.style.marginTop = "6px";
   caption.style.fontSize = "13px";
   caption.style.lineHeight = "1.35";
@@ -2455,7 +2475,6 @@ if (item.caption) {
 
   wrapper.appendChild(caption);
 
-}
 
     // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
     removeBtn.onclick = async () => {
@@ -2728,6 +2747,9 @@ document.getElementById("captionAddBtn")
     .style.display = "none";
 
   showToast("Caption saved");
+
+document.getElementById("captionModal")
+  .style.display = "none";
 
   await loadMiniGallery();
 
