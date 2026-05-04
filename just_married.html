@@ -1879,7 +1879,6 @@ async function loadCaptionsFromSupabase() {
   );
 
   const captions = await capRes.json();
-if (!captions.length) return;
   if (!Array.isArray(captions)) return;
 
   // 2️⃣ images (slot → path)
@@ -1893,7 +1892,6 @@ const imgRes = await fetch(
   }
 );
   const images = await imgRes.json();
-if (!images.length) return;
   if (!Array.isArray(images)) return;
 
 console.log("IMG51 ROWS:", images.filter(x => x.slot === "img51"));
