@@ -1959,6 +1959,7 @@ const saveRes = await fetch(
 const savedData = await saveRes.json();
 console.log("SAVED ROW:", savedData);
 
+await loadMiniGallery();
 
 window.lastUploadedSlot = slot;
 window.lastUploadedPath = serverPath;
@@ -1968,7 +1969,7 @@ document.getElementById("captionInput").value = "";
 document.getElementById("captionModal").style.display =
   "flex";
 
-await loadMiniGallery();
+
 
     setTimeout(() => {
       progressContainer.style.display = "none";
@@ -2390,7 +2391,7 @@ async function loadMiniGallery() {
   if (!token) return;
 
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,caption&order=created_at.asc`,
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.story&select=slot,path,caption`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -2442,7 +2443,7 @@ if (item.caption) {
 
   const caption = document.createElement("div");
 
-  caption.innerHTML = item.caption || "&nbsp;";
+  caption.innerText = item.caption;
 
   caption.style.marginTop = "6px";
   caption.style.fontSize = "13px";
@@ -2456,7 +2457,6 @@ if (item.caption) {
   wrapper.appendChild(caption);
 
 }
-
 
     // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
     removeBtn.onclick = async () => {
@@ -2680,14 +2680,13 @@ window.addEventListener("load", () => {
 ========================= */
 
 document.getElementById("captionCancelBtn")
-  .addEventListener("click", async () => {
+  .addEventListener("click", () => {
 
     document.getElementById("captionModal")
       .style.display = "none";
 
-    await loadMiniGallery();
-
 });
+
 
 document.getElementById("captionAddBtn")
   .addEventListener("click", async () => {
@@ -2730,8 +2729,6 @@ document.getElementById("captionAddBtn")
     .style.display = "none";
 
   showToast("Caption saved");
-
-await new Promise(r => setTimeout(r, 350));
 
   await loadMiniGallery();
 
