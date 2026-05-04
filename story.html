@@ -1586,7 +1586,7 @@ Gallery
 
   color:#8f8f8f;
   ">
-    (you can upload up to 20 photos for your “Our Story” page)
+    (you can upload up to 20 photos for your “Our Story” page with notes visible to your guests)
   </span>
 
 </div>
@@ -2849,10 +2849,12 @@ window.addEventListener("load", () => {
 ========================= */
 
 document.getElementById("captionCancelBtn")
-  .addEventListener("click", () => {
+  .addEventListener("click", async () => {
 
     document.getElementById("captionModal")
       .style.display = "none";
+
+    await loadMiniGallery();
 
 });
 
