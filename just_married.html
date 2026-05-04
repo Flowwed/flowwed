@@ -1869,7 +1869,7 @@ async function loadCaptionsFromSupabase() {
 
   // 1️⃣ captions
   const capRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&order=created_at.asc`,
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.just_married&order=created_at.asc`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -2177,7 +2177,8 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
       body: JSON.stringify({
         edit_token: token,
         slot: slotSelect.value,
-        caption: caption
+        caption: caption,
+        page_key: "just_married"
       })
     }
   );
@@ -2207,6 +2208,7 @@ document.getElementById("captionCancelBtn").addEventListener("click", async () =
           edit_token: token,
           slot: slotSelect.value,
           caption: ""
+          page_key: "just_married"
         })
       }
     );
