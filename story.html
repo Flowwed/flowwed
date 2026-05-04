@@ -1417,6 +1417,22 @@ if (params.get("t")) {
 
     <input type="file" id="fileInput" accept="image/*">
 
+<script>
+
+document
+  .getElementById("fileInput")
+  .addEventListener("change", (e) => {
+
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    showPreview(file);
+
+});
+
+</script>
+
     <button id="uploadBtn" class="ruby-btn">Upload Photo to Your Page</button>
 
 
