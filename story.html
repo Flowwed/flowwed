@@ -1888,8 +1888,9 @@ const existingData = await existing.json();
 if (existingData.length && existingData[0].path) {
 
 const ok = await showConfirm(
-  `${slot.replace("img","Photo ")} already exists.\n\nDelete it first?`
+  `Photo ${Number(slot.replace("img","")) - 1} already exists.\n\nDelete it first?`
 );
+
 
 uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalUploadText;
@@ -2145,71 +2146,117 @@ modal.style.display = "flex";
 <!-- CAPTION MODAL -->
 
 <div id="captionModal" style="
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.45);
-
-  display:none;
-  align-items:center;
-  justify-content:center;
-
-  z-index:99999999;
+display:none;
+position:fixed;
+top:110px;
+right:34px;
+z-index:99999999;
 ">
 
   <div style="
-    width:420px;
-    background:white;
+  width:280px;
 
-    border-radius:24px;
+  background:
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,.92),
+    rgba(255,245,248,.88)
+  );
 
-    padding:24px;
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
 
-    box-shadow:
-      0 20px 60px rgba(0,0,0,.35);
+  border-radius:20px;
+
+  padding:18px;
+
+  box-shadow:
+    0 24px 60px rgba(120,30,50,.25),
+    inset 0 1px 0 rgba(255,255,255,.7);
   ">
 
     <div style="
-      font-size:20px;
-      font-weight:700;
-      margin-bottom:16px;
-      color:#8f1d1d;
+    font-size:16px;
+    font-weight:600;
+    line-height:1.4;
+
+    margin-bottom:14px;
+
+    color:#8f1d1d;
     ">
-      Would you like to add a note to your photo?
+      Add a note to your photo?
     </div>
 
     <textarea
       id="captionInput"
-      placeholder="Write a short note that will appear below the photo"
+      placeholder="Write a short note..."
       style="
-        width:100%;
-        height:120px;
+      width:100%;
+      height:84px;
 
-        border-radius:16px;
-        border:1px solid #ddd;
+      border:none;
+      outline:none;
 
-        padding:14px;
-        box-sizing:border-box;
+      border-radius:16px;
 
-        resize:none;
+      padding:12px;
 
-        font-size:16px;
-        line-height:1.5;
+      box-sizing:border-box;
+
+      resize:none;
+
+      font-size:14px;
+      line-height:1.45;
+
+      background:rgba(255,255,255,.7);
+
+      color:#5c2b2b;
       "
     ></textarea>
 
-    <div style="display:flex; gap:12px; margin-top:18px;">
-      <button id="captionAddBtn" class="editor-btn save-btn" style="flex:1;">
-        Save 
+    <div style="
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+
+    margin-top:14px;
+    ">
+
+      <button
+        id="captionCancelBtn"
+        style="
+        padding:9px 18px;
+        border:none;
+        border-radius:999px;
+
+        background:#f1f1f1;
+        color:#5c2b2b;
+
+        cursor:pointer;
+        ">
+        Skip
       </button>
-      <button id="captionCancelBtn" class="editor-btn update-btn" style="flex:1;">
-        Skip 
+
+      <button
+        id="captionAddBtn"
+        style="
+        padding:9px 18px;
+        border:none;
+        border-radius:999px;
+
+        background:#8d1f1f;
+        color:white;
+
+        cursor:pointer;
+        ">
+        Save
       </button>
+
     </div>
 
   </div>
 
 </div>
-
 
 <script>
 
@@ -2843,62 +2890,82 @@ function showConfirm(text) {
 <div id="confirmModal" style="
 display:none;
 position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-backdrop-filter:blur(10px);
-z-index:99999;
-align-items:center;
-justify-content:center;
+top:110px;
+right:34px;
+z-index:999999;
 ">
 
-<div style="
-background:white;
-padding:26px;
-border-radius:22px;
-width:320px;
-text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,.25);
-">
+  <div style="
+  width:240px;
 
-<div id="confirmText"
-style="
-font-size:16px;
-line-height:1.5;
-margin-bottom:24px;
-color:#5c2b2b;
-">
+  background:
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,.92),
+    rgba(255,245,248,.88)
+  );
+
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+
+  border-radius:20px;
+
+  padding:18px;
+
+  box-shadow:
+    0 24px 60px rgba(120,30,50,.25),
+    inset 0 1px 0 rgba(255,255,255,.7);
+  ">
+
+    <div id="confirmText" style="
+    font-size:15px;
+    line-height:1.45;
+    color:#5c2b2b;
+
+    margin-bottom:18px;
+
+    white-space:pre-line;
+    ">
+    </div>
+
+    <div style="
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    ">
+
+      <button id="confirmNo" style="
+      padding:9px 18px;
+      border:none;
+      border-radius:999px;
+
+      background:#f1f1f1;
+      color:#5c2b2b;
+
+      cursor:pointer;
+      ">
+        No
+      </button>
+
+      <button id="confirmYes" style="
+      padding:9px 18px;
+      border:none;
+      border-radius:999px;
+
+      background:#8d1f1f;
+      color:white;
+
+      cursor:pointer;
+      ">
+        Yes
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 
-<div style="
-display:flex;
-gap:12px;
-justify-content:center;
-">
-
-<button id="confirmNo" style="
-padding:10px 22px;
-border:none;
-border-radius:12px;
-background:#eee;
-cursor:pointer;
-">
-No
-</button>
-
-<button id="confirmYes" style="
-padding:10px 22px;
-border:none;
-border-radius:12px;
-background:#8d1f1f;
-color:white;
-cursor:pointer;
-">
-Yes
-</button>
-
-</div>
-</div>
-</div>
 
 </body>
 </html>
