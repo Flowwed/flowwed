@@ -2442,7 +2442,7 @@ if (item.caption) {
 
   const caption = document.createElement("div");
 
-  caption.innerText = item.caption;
+  caption.innerHTML = item.caption || "&nbsp;";
 
   caption.style.marginTop = "6px";
   caption.style.fontSize = "13px";
