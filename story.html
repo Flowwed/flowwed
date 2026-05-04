@@ -1957,7 +1957,6 @@ function showPreview(file, isFinal = false) {
       if (Array.isArray(rows) && rows.length > 0) {
         slug = rows[0].slug;
         slugDisplay.innerText = "Slug: " + slug;
- loadMiniGallery(); // ✅ ВОТ СЮДА
      
       } else {
         slugDisplay.innerText = "❌ No rows returned for token";
@@ -1968,14 +1967,44 @@ function showPreview(file, isFinal = false) {
     }
   }
 
+
+(async () => {
+
+  const overlay =
+    document.getElementById("loadingOverlay");
+
+  if (overlay) {
+    overlay.classList.remove("hide");
+  }
+
   if (!token) {
-    tokenDisplay.innerText = "❌ No token in URL";
+
+    tokenDisplay.innerText =
+      "❌ No token in URL";
+
   } else {
-    tokenDisplay.innerText = "Token: " + token;
+
+    tokenDisplay.innerText =
+      "Token: " + token;
 
     await loadSlugFromGallery(token);
 
+    await loadStoryFromSupabase();
+
+    await loadMiniGallery();
+
   }
+
+  requestAnimationFrame(() => {
+
+    if (overlay) {
+      overlay.classList.add("hide");
+    }
+
+  });
+
+})();
+
 
   uploadBtn.onclick = async () => {
 
@@ -2473,29 +2502,6 @@ if (firstBlock) {
 }
 
   }
-
-(async () => {
-
-  const overlay =
-    document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    overlay.classList.remove("hide");
-  }
-
-  await loadStoryFromSupabase();
-
-  await loadMiniGallery();
-
-  requestAnimationFrame(() => {
-
-    if (overlay) {
-      overlay.classList.add("hide");
-    }
-
-  });
-
-})();
 
 
   // =========================
