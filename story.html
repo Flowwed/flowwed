@@ -295,6 +295,14 @@ input[type=file] {
   color: white;
 
   white-space: nowrap;
+  border: none;
+  outline: none;
+
+}
+
+.editor-btn:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 .update-btn {
@@ -2671,7 +2679,7 @@ window.addEventListener("load", () => {
    CAPTION SAVE
 ========================= */
 
-document.getElementById("cancelCaptionBtn")
+document.getElementById("captionCancelBtn")
   .addEventListener("click", () => {
 
     document.getElementById("captionModal")
@@ -2680,7 +2688,7 @@ document.getElementById("cancelCaptionBtn")
 });
 
 
-document.getElementById("saveCaptionBtn")
+document.getElementById("captionAddBtn")
   .addEventListener("click", async () => {
 
   const caption =
