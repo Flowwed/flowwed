@@ -1865,9 +1865,6 @@ const originalUploadText = uploadBtn.innerHTML;
     return;
   }
 
-  if (!slug) {
-    status.innerText = "⚠️ Slug not loaded. Trying upload anyway...";
-  }
 
 
 uploadBtn.disabled = true;
@@ -1890,8 +1887,8 @@ const existingData = await existing.json();
 
 if (existingData.length && existingData[0].path) {
 
-  alert(
-    `${slot.replace("img","Photo ")} already exists.\n\nDelete it first.`
+  showToast(
+    `${slot.replace("img","Photo ")} already exists — delete it first`
   );
 
   uploadBtn.disabled = false;
@@ -1900,10 +1897,14 @@ if (existingData.length && existingData[0].path) {
   return;
 }
 
+if (!slug) {
+  status.innerText = "⚠️ Slug not loaded. Trying upload anyway...";
+}
 
-  status.innerText = "Requesting upload URL...";
-  progressContainer.style.display = "none";
-  preview.style.display = "none";
+status.innerText = "Requesting upload URL...";
+progressContainer.style.display = "none";
+preview.style.display = "none";
+
 
   try {
     const res = await fetch("/.netlify/functions/mint-upload-url-2", {
