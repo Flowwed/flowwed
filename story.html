@@ -1887,15 +1887,16 @@ const existingData = await existing.json();
 
 if (existingData.length && existingData[0].path) {
 
-  const ok = await showConfirm(
-    `${slot.replace("img","Photo ")} already exists — delete it first`
-  );
+await showConfirm(
+  `${slot.replace("img","Photo ")} already exists.\n\nDelete it first?`
+);
 
-  uploadBtn.disabled = false;
-  uploadBtn.innerHTML = originalUploadText;
+uploadBtn.disabled = false;
+uploadBtn.innerHTML = originalUploadText;
 
-  return;
+return;
 }
+
 
 if (!slug) {
   status.innerText = "⚠️ Slug not loaded. Trying upload anyway...";
