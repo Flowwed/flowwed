@@ -265,8 +265,6 @@ input[type=file]::file-selector-button {
 }
 
 
-
-
 #uploadBtn {
   margin-top: 10px;        /* отступ от file input */
   height: 42px;            /* нормальная высота */
@@ -1051,12 +1049,16 @@ width: 100%;
 
 
 .mini-menu {
-  position: fixed;
-  top: 50px;
-  left: 110px;  width: fit-content;
+  position: fixed !important;
 
-  z-index: 9999999;  /* 👈 выше ВСЕГО */
+  top: 24px;
+  left: 32px;
+
+  width: fit-content;
+
+  z-index: 9999999;
 }
+
 
 .menu-trigger {
   background: #9c1818;
@@ -1306,13 +1308,12 @@ max-width: 500px;
 
 
 
-<div class="top-header">
-
 <div class="mini-menu">
   <div class="menu-trigger">☰ Menu</div>
+  <div class="menu-dropdown" id="menuDropdown"></div>
+</div>
 
-  <!-- 🔥 ВОТ ЭТО ДОБАВЬ -->
-<div class="menu-dropdown" id="menuDropdown"></div></div>
+<div class="top-header">
 
 <h1>Our Story</h1>
 

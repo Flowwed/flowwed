@@ -220,16 +220,68 @@ margin: 40px auto 28px;
       border-radius: 14px;
     }
 
-    select,
+select,
 input[type=file] {
-  padding: 10px;
-  height: 38px;      
+
+  padding: 10px 14px;
+  height: 44px;
+
   margin-top: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 16px;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,.35);
+
+  font-size: 15px;
+  font-weight: 500;
+
+  color: #5c4a4a;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,.92),
+      rgba(255,245,248,.88)
+    );
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 8px 20px rgba(0,0,0,.12),
+    inset 0 1px 0 rgba(255,255,255,.7);
+
+  cursor: pointer;
+
+  transition: .18s ease;
 }
 
+input[type=file]:hover {
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 12px 24px rgba(0,0,0,.16),
+    inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+input[type=file]::file-selector-button {
+
+  border:none;
+
+  padding:8px 14px;
+
+  margin-right:14px;
+
+  border-radius:999px;
+
+  background:#8d1f1f;
+  color:white;
+
+  font-weight:600;
+
+  cursor:pointer;
+}
 
     button {
       background: #0075ff;
