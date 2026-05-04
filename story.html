@@ -2421,17 +2421,12 @@ images.forEach(img => {
   const container = document.getElementById("miniGallery");
   container.innerHTML = "";
 
-  captions.forEach(item => {
-    const path = slotToPath[item.slot];
-
-if (!path) return;
-
-
+  images.forEach(item => {
     const wrapper = document.createElement("div");
     wrapper.style.position = "relative";
 
     const img = document.createElement("img");
-    img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${path}?t=${Date.now()}`;
+    img.src = `${SUPABASE_URL}/storage/v1/object/public/galleries/${item.path}?t=${Date.now()}`;
 
     const removeBtn = document.createElement("div");
     removeBtn.innerText = "×";
@@ -2452,6 +2447,11 @@ if (!path) return;
 
 wrapper.appendChild(img);
 wrapper.appendChild(removeBtn);
+
+const cap =
+  captions.find(c => c.slot === item.slot);
+
+item.caption = cap?.caption || "";
 
 if (item.caption) {
 
