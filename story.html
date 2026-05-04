@@ -2438,20 +2438,25 @@ async function loadMiniGallery() {
 wrapper.appendChild(img);
 wrapper.appendChild(removeBtn);
 
-const caption = document.createElement("div");
+if (item.caption) {
 
-caption.innerText = item.caption || "";
+  const caption = document.createElement("div");
 
-caption.style.marginTop = "6px";
-caption.style.fontSize = "13px";
-caption.style.lineHeight = "1.35";
-caption.style.color = "#5c4a4a";
+  caption.innerText = item.caption;
 
-caption.style.maxWidth = "70px";
+  caption.style.marginTop = "6px";
+  caption.style.fontSize = "13px";
+  caption.style.lineHeight = "1.35";
+  caption.style.color = "#5c4a4a";
 
-caption.style.wordBreak = "break-word";
+  caption.style.maxWidth = "70px";
 
-wrapper.appendChild(caption);
+  caption.style.wordBreak = "break-word";
+
+  wrapper.appendChild(caption);
+
+}
+
 
     // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
     removeBtn.onclick = async () => {
@@ -2725,6 +2730,8 @@ document.getElementById("captionAddBtn")
     .style.display = "none";
 
   showToast("Caption saved");
+
+await new Promise(r => setTimeout(r, 350));
 
   await loadMiniGallery();
 
