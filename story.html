@@ -1589,8 +1589,8 @@ document
 
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  // TOAST HELPER
+
+// TOAST HELPER
   function showToast(msg) {
     const t = document.getElementById("toast");
     if (!t) return;
@@ -1603,6 +1603,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2000);
   }
 
+document.addEventListener("DOMContentLoaded", () => {
+  
   // ===============================
   // 2) SAVE BUTTON — SAVE TEXT ONLY
   // ===============================
@@ -2725,45 +2727,15 @@ document.getElementById("captionAddBtn")
   );
 
 
-document.getElementById("captionModal")
-  .style.display = "none";
+  document.getElementById("captionModal")
+    .style.display = "none";
 
-showToast("Caption saved");
+  showToast("Caption saved");
 
-const container =
-  document.getElementById("miniGallery");
-
-const wrapper = document.createElement("div");
-wrapper.style.position = "relative";
-
-const img = document.createElement("img");
-
-img.src =
-  `${SUPABASE_URL}/storage/v1/object/public/galleries/${window.lastUploadedPath}?cachebust=${Math.random()}`;
-
-const removeBtn = document.createElement("div");
-removeBtn.innerText = "×";
-
-removeBtn.style.position = "absolute";
-removeBtn.style.top = "4px";
-removeBtn.style.right = "6px";
-
-wrapper.appendChild(img);
-wrapper.appendChild(removeBtn);
-
-if (caption) {
-
-  const captionEl =
-    document.createElement("div");
-
-  captionEl.innerText = caption;
-
-  wrapper.appendChild(captionEl);
-}
-
-container.prepend(wrapper);
+  await loadMiniGallery();
 
 });
+
 
 
 document.getElementById("storyToggle")
@@ -2793,6 +2765,8 @@ document.getElementById("storyToggle")
   console.log("Story enabled:", enabled);
 
 });
+
+
 
 </script>
 
