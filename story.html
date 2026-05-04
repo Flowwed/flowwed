@@ -2692,6 +2692,12 @@ document.getElementById("captionCancelBtn")
 document.getElementById("captionAddBtn")
   .addEventListener("click", async () => {
 
+const btn =
+  document.getElementById("captionAddBtn");
+
+btn.disabled = true;
+btn.innerText = "Saving...";
+
   const caption =
     document.getElementById("captionInput")
       .value.trim();
@@ -2733,6 +2739,10 @@ document.getElementById("captionAddBtn")
   showToast("Caption saved");
 
   await loadMiniGallery();
+
+btn.disabled = false;
+btn.innerText = "Save";
+
 
 });
 
