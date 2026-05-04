@@ -2010,42 +2010,8 @@ requestAnimationFrame(() => {
   gallery.style.opacity = "1";
 });
 
-
-const images = gallery.querySelectorAll("img");
-
-if (images.length === 0) {
-  finishLoading();
-} else {
-
-  let loaded = 0;
-
-  images.forEach(img => {
-
-    const done = () => {
-      loaded++;
-
-      if (loaded >= images.length) {
-        finishLoading();
-      }
-    };
-
-    if (img.complete) {
-      done();
-    } else {
-      img.addEventListener("load", done);
-      img.addEventListener("error", done);
-    }
-
-  });
-
-}
-
-function finishLoading() {
-
-  if (overlay) {
-    overlay.classList.add("hide");
-  }
-
+if (overlay) {
+  overlay.classList.add("hide");
 }
 
 
