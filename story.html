@@ -178,6 +178,7 @@
       align-items: center;
       overflow: hidden;
       margin-bottom: 18px;
+      position: relative;
     }
 
     #previewBox.placeholder::before {
@@ -1379,13 +1380,27 @@ max-width: 500px;
 
 <div id="previewBox" class="placeholder">
 
-  <img id="miniPreview" style="
-    width:90px;
-    height:90px;
-    object-fit:cover;
-    border-radius:14px;
-    display:none;
-  ">
+<img id="miniPreview" style="
+  position:absolute;
+
+  right:18px;
+  bottom:18px;
+
+  width:92px;
+  height:92px;
+
+  object-fit:cover;
+
+  border-radius:18px;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.22);
+
+  display:none;
+
+  z-index:5;
+">
+
 
   <img id="preview">
 
