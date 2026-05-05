@@ -2950,6 +2950,8 @@ totalBudgetInput.addEventListener("change", async () => {
   const value =
     Number(totalBudgetInput.value.replace(/[^\d]/g, "")) || 0;
 
+console.log(categoryRow);
+
   const { error } = await supabase
     .from("wedding_budgets")
     .update({
