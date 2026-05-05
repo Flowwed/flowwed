@@ -3283,6 +3283,29 @@ document.querySelectorAll('.category').forEach(category => {
 
     const amountInput = row.querySelector('.expense-amount');
     const saveBtn = row.querySelector('.expense-action.save');
+
+saveBtn.addEventListener('click', async e => {
+
+  e.stopPropagation();
+
+  const expenseName =
+    row.querySelector('.expense-name')?.value?.trim();
+
+  const amount =
+    Number(
+      amountInput.value.replace(/[^\d]/g, '')
+    ) || 0;
+
+  if (!expenseName || !amount) return;
+
+  console.log("SAVE EXPENSE", {
+    expenseName,
+    amount,
+    categoryRow
+  });
+
+});
+
     const removeBtn = row.querySelector('.expense-action.remove');
     const editBtn = row.querySelector('.expense-action.edit');
 
