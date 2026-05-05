@@ -3282,6 +3282,7 @@ function initExpenseRow(row) {
   row.__value = 0;
 
   const amountInput = row.querySelector('.expense-amount');
+  const removeBtn = row.querySelector('.expense-action.remove');
 
   amountInput.addEventListener('keydown', async e => {
 
@@ -3308,6 +3309,7 @@ function initExpenseRow(row) {
 
   });
 
+}
     const removeBtn = row.querySelector('.expense-action.remove');
     const editBtn = row.querySelector('.expense-action.edit');
 
