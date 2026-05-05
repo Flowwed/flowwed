@@ -861,7 +861,22 @@ th {
 }
 
 
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.loading-text {
+  margin-top: 16px;
+
+  color: #a52126;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
 
 
 </style>
@@ -892,8 +907,19 @@ window.APP_TOKEN = token;
 
 
 <div id="loadingOverlay">
-  <div class="loader"></div>
+
+  <div class="loading-content">
+
+    <div class="loader"></div>
+
+    <div class="loading-text">
+      Loading...
+    </div>
+
+  </div>
+
 </div>
+
 
 
 <div class="top-header">
@@ -1784,8 +1810,14 @@ const infoTemplates = {
 };
 
 
-
 (async () => {
+
+const overlay =
+  document.getElementById("loadingOverlay");
+
+if (overlay) {
+  overlay.classList.remove("hide");
+}
 
 const token = window.APP_TOKEN;
 
@@ -1975,6 +2007,21 @@ if (data.faq && Array.isArray(data.faq)) {
       })
       .eq("site_edit_token", window.APP_TOKEN);
   }
+
+requestAnimationFrame(() => {
+
+  if (overlay) {
+
+    overlay.classList.add("hide");
+
+    setTimeout(() => {
+      overlay.remove();
+    }, 500);
+
+  }
+
+});
+
 
 })();
 
@@ -2993,19 +3040,6 @@ else {
 
 
 
-</script>
-
-
-<script>
-window.addEventListener("load", () => {
-  const overlay = document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    setTimeout(() => {
-      overlay.classList.add("hide");
-    }, 300); // небольшая задержка как в примере
-  }
-});
 </script>
 
 <script>
