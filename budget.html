@@ -3418,10 +3418,6 @@ function applyExpense() {
   }
 }
 
-    saveBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      applyExpense();
-    });
 
   amountInput.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
