@@ -3339,16 +3339,23 @@ const saveBtn = row.querySelector('.expense-action.save');
 
     if (!expenseName || !amount) return;
 
-const { error } = await supabase
+const { data: savedExpense, error } = await supabase
   .from("budget_expenses")
   .insert({
     category_id: categoryRow.id,
     expense_name: expenseName,
     amount: amount
-  });
+  })
+  .select()
+  .single();
 
 console.log("EXPENSE SAVE ERROR:", error);
-  });
+
+if (savedExpense) {
+  row.__expenseId = savedExpense.id;
+}
+
+});
 
 saveBtn.addEventListener('click', () => {
 
@@ -3360,7 +3367,6 @@ saveBtn.addEventListener('click', () => {
   );
 
 });
-
     const removeBtn = row.querySelector('.expense-action.remove');
     const editBtn = row.querySelector('.expense-action.edit');
 
