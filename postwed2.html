@@ -1987,6 +1987,7 @@ async function loadGuests() {
     return;
   }
 
+
   try {
     const { data, error } = await supabase
       .from("guests")
@@ -2024,6 +2025,7 @@ async function loadGuests() {
   }
 }
 
+loadGuests();
 
 
 // ======================================================
