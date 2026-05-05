@@ -2903,6 +2903,26 @@ budgetInput.addEventListener('keydown', e => {
     budgetInput.blur();
     category.__updateUI();
 
+if (categoryRow) {
+
+  const planned =
+    Number(budgetInput.value.replace(/[^\d]/g, "")) || 0;
+
+  const { error } = await supabase
+    .from("budget_categories")
+    .update({
+      planned_budget: planned
+    })
+    .eq("id", categoryRow.id);
+
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(categoryName, "saved");
+  }
+
+}
+
     const details = category.querySelector('.details');
     if (details) {
       details.style.display = 'block';
