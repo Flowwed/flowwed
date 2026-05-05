@@ -3227,6 +3227,41 @@ const supabase = createClient(
 
 const token = window.APP_TOKEN;
 
+async function getOrCreateWedding() {
+
+  // ищем existing wedding
+  let { data: wedding } = await supabase
+    .from("wedding_budgets")
+    .select("*")
+    .eq("edit_token", token)
+    .single();
+
+  // если нет — создаём
+  if (!wedding) {
+
+    const { data: created, error } = await supabase
+      .from("wedding_budgets")
+      .insert({
+        edit_token: token
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error(error);
+      return null;
+    }
+
+    wedding = created;
+  }
+
+  return wedding;
+}
+
+const wedding = await getOrCreateWedding();
+
+console.log("Wedding loaded:", wedding);
+
 function cap(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
 }
@@ -3358,6 +3393,7 @@ document.querySelectorAll('.category').forEach(category => {
 </div>
 
 <script>
+
 /* ===============================
    Budget input formatting
 ================================ */
