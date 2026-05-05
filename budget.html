@@ -3265,6 +3265,14 @@ document.querySelectorAll('.category').forEach(category => {
 
   console.log("CATEGORY LOADED:", categoryRow);
 
+const { data: expenses } = await supabase
+  .from("budget_expenses")
+  .select("*")
+  .eq("category_id", categoryRow.id);
+
+console.log("RESTORE EXPENSES:", expenses);
+
+
   if (categoryRow.planned_budget) {
     budgetInput.value = categoryRow.planned_budget;
   }
