@@ -3530,7 +3530,15 @@ removeBtn.addEventListener('click', e => {
 
     }
 
-    category.__spent -= row.__value;
+const value =
+  Number(
+    row.querySelector('.expense-amount')
+      ?.value
+      ?.replace(/[^\d]/g, '')
+  ) || row.__value || 0;
+
+category.__spent -= value;
+
 
     category.__updateUI();
 
