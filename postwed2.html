@@ -1555,6 +1555,24 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
 }
 
 
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-text {
+  margin-top: 16px;
+
+  color: #a52126;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+
 
 </style>
 </head>
@@ -1562,7 +1580,17 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
 <body>
 
 <div id="loadingOverlay">
-  <div class="loader"></div>
+
+  <div class="loading-content">
+
+    <div class="loader"></div>
+
+    <div class="loading-text">
+      Loading...
+    </div>
+
+  </div>
+
 </div>
 
 
@@ -1984,19 +2012,16 @@ async function loadGuests() {
     render();
 
   } catch (e) {
-    console.error("LOAD GUESTS CATCH:", e);
-    guests = [];
-    render();
-  } finally {
-    if (overlay) {
-      requestAnimationFrame(() => {
-        overlay.classList.add("hide");
-      });
-    }
-  }
-}
 
-loadGuests();
+    console.error("LOAD GUESTS CATCH:", e);
+
+    guests = [];
+
+    render();
+
+  }
+
+}
 
 
 // ======================================================
@@ -3020,21 +3045,43 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<script>
-window.addEventListener("load", () => {
-  const overlay = document.getElementById("loadingOverlay");
 
-  if (overlay) {
-    setTimeout(() => {
-      overlay.classList.add("hide");
-    }, 300); // небольшая задержка как в примере
+(async () => {
+
+  const overlay =
+    document.getElementById("loadingOverlay");
+
+  try {
+
+    if (overlay) {
+      overlay.classList.remove("hide");
+    }
+
+    await loadGuests();
+
+  } catch (err) {
+
+    console.error(err);
+
+  } finally {
+
+    requestAnimationFrame(() => {
+
+      if (overlay) {
+
+        overlay.classList.add("hide");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 500);
+
+      }
+
+    });
+
   }
-});
-</script>
 
-
-
-
+})();
 
 </body>
 </html>
