@@ -2889,7 +2889,7 @@ function toggleDetails(el) {
 <script type="module">
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const supabase = createClient(
+window.supabase = createClient(
   "https://octwwpatppbenqwkcqaw.supabase.co",
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
 
@@ -2928,7 +2928,8 @@ async function getOrCreateWedding() {
   return wedding;
 }
 
-const wedding = await getOrCreateWedding();
+window.wedding = await getOrCreateWedding();
+const wedding = window.wedding;
 
 console.log("Wedding loaded:", wedding);
 
@@ -3975,7 +3976,6 @@ document.addEventListener("DOMContentLoaded", () => {
       overlay.classList.remove("hide");
     }
 
-    await loadBudget();
 
   } catch (err) {
 
