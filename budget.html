@@ -3277,39 +3277,35 @@ document.querySelectorAll('.category').forEach(category => {
   // EXPENSE ROW
   // =========================
 
-function initExpenseRow(row) {
+  function initExpenseRow(row) {
 
-  row.__value = 0;
+    row.__value = 0;
 
-  const amountInput = row.querySelector('.expense-amount');
-  const removeBtn = row.querySelector('.expense-action.remove');
+    const amountInput = row.querySelector('.expense-amount');
+    const saveBtn = row.querySelector('.expense-action.save');
 
-  amountInput.addEventListener('keydown', async e => {
+saveBtn.addEventListener('click', async e => {
 
-    if (e.key !== 'Enter') return;
+  e.stopPropagation();
 
-    e.preventDefault();
-    e.stopPropagation();
+  const expenseName =
+    row.querySelector('.expense-name')?.value?.trim();
 
-    const expenseName =
-      row.querySelector('.expense-name')?.value?.trim();
+  const amount =
+    Number(
+      amountInput.value.replace(/[^\d]/g, '')
+    ) || 0;
 
-    const amount =
-      Number(
-        amountInput.value.replace(/[^\d]/g, '')
-      ) || 0;
+  if (!expenseName || !amount) return;
 
-    if (!expenseName || !amount || !categoryRow) return;
-
-    console.log("SAVE EXPENSE", {
-      expenseName,
-      amount,
-      categoryRow
-    });
-
+  console.log("SAVE EXPENSE", {
+    expenseName,
+    amount,
+    categoryRow
   });
 
-}
+});
+
     const removeBtn = row.querySelector('.expense-action.remove');
     const editBtn = row.querySelector('.expense-action.edit');
 
