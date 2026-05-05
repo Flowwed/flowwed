@@ -3272,6 +3272,35 @@ const { data: expenses } = await supabase
 
 console.log("RESTORE EXPENSES:", expenses);
 
+expenses?.forEach(expense => {
+
+  const template =
+    details.querySelector('.expense-row.base-expense');
+
+  if (!template) return;
+
+  const newRow = template.cloneNode(true);
+
+  newRow.classList.remove('base-expense');
+  newRow.style.display = 'flex';
+
+  newRow.querySelector('.expense-name').value =
+    expense.expense_name || '';
+
+  newRow.querySelector('.expense-amount').value =
+    `$ ${Number(expense.amount || 0).toLocaleString()}`;
+
+  newRow.__value = Number(expense.amount || 0);
+
+  details.insertBefore(
+    newRow,
+    addLink
+  );
+
+  initExpenseRow(newRow);
+
+});
+
 
   if (categoryRow.planned_budget) {
     budgetInput.value = categoryRow.planned_budget;
