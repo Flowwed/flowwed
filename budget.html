@@ -3101,7 +3101,12 @@ budgetInput.addEventListener('focus', e => {
 
 
 // 🔴 ONE SOURCE OF TRUTH
-category.__spent = Number(spentEl.innerText.replace(/[^\d]/g, '')) || 0;
+
+if (typeof category.__spent !== "number") {
+  category.__spent = 0;
+}
+
+
 
 category.__updateUI = function () {
   const planned = Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
