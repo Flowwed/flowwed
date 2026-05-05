@@ -3039,18 +3039,79 @@ document.querySelectorAll('.extra-cost-row').forEach(row => {
 ================================ */
 
 document.querySelectorAll('.category').forEach(category => {
+
+  const categoryName =
+    category.querySelector(".category-title")
+      ?.innerText
+      ?.trim();
+
+  let categoryRow = null;
+
   const details = category.querySelector('.details');
   const addLink = details?.querySelector('.add-expense-link');
 
   if (!details || !addLink) return;
 
+  const budgetInput = category.querySelector('.budget-input');
+
+  // =========================
+  // LOAD OR CREATE CATEGORY
+  // =========================
+
+  (async () => {
+
+    // ищем category
+    let { data } = await supabase
+      .from("budget_categories")
+      .select("*")
+      .eq("wedding_id", wedding.id)
+      .eq("category_name", categoryName)
+      .single();
+
+    // если нет — создаём
+    if (!data) {
+
+      const { data: created, error } = await supabase
+        .from("budget_categories")
+        .insert({
+          wedding_id: wedding.id,
+          category_name: categoryName
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      data = created;
+    }
+
+    categoryRow = data;
+
+    // restore budget
+    if (categoryRow.planned_budget) {
+      budgetInput.value = categoryRow.planned_budget;
+    }
+
+  })();
+
+  // =========================
+  // EXPENSE ROW
+  // =========================
+
   function initExpenseRow(row) {
-  row.__value = 0;
+
+    row.__value = 0;
+
     const amountInput = row.querySelector('.expense-amount');
     const saveBtn = row.querySelector('.expense-action.save');
     const removeBtn = row.querySelector('.expense-action.remove');
     const editBtn = row.querySelector('.expense-action.edit');
-    const budgetInput = category.querySelector('.budget-input');
+  }
+
+})();
 
 const toast = document.getElementById("toast");
 let toastTimeout = null;
@@ -3349,6 +3410,8 @@ noBtn.onclick = closeConfirm;
 
 <script>
 document.querySelectorAll('.category').forEach(category => {
+
+
   const details = category.querySelector('.details');
   const expandBtn = category.querySelector('.card-btn.expand');
   const closeBtn = category.querySelector('.card-btn.close');
