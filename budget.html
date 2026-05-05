@@ -3027,30 +3027,25 @@ budgetInput.addEventListener('keydown', async e => {
 
     category.__updateUI();
 
-    if (categoryRow) {
+if (categoryRow) {
 
-      const planned =
-        Number(budgetInput.value.replace(/[^\d]/g, "")) || 0;
+  const planned =
+    Number(budgetInput.value.replace(/[^\d]/g, "")) || 0;
 
-      console.log("SAVING...", planned);
+  console.log("SAVING...", planned);
 
-      const { error } = await supabase
-        .from("budget_categories")
-        .update({
-          planned_budget: planned
-        })
-        .eq("id", categoryRow.id);
+  const { error } = await supabase
+    .from("budget_categories")
+    .update({
+      planned_budget: planned
+    })
+    .eq("id", categoryRow.id);
 
-      console.log("UPDATE ERROR:", error);
+  console.log("UPDATE ERROR:", error);
 
-    }
+}
 
-    if (details) {
-      details.style.display = 'block';
-      ensureFirstExpenseRow(category);
-    }
-
-  }
+}
 
 });
 
@@ -3063,12 +3058,9 @@ budgetInput.addEventListener('focus', e => {
 
   e.stopPropagation();
 
-  if (details) {
-    details.style.display = 'block';
-    ensureFirstExpenseRow(category);
-  }
-
 });
+
+
 // 🔴 ONE SOURCE OF TRUTH
 category.__spent = Number(spentEl.innerText.replace(/[^\d]/g, '')) || 0;
 
