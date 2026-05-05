@@ -3353,6 +3353,16 @@ const { data: savedExpense, error } = await supabase
 
 console.log("EXPENSE SAVE ERROR:", error);
 
+row.__value = amount;
+
+category.__spent += amount;
+
+category.__updateUI();
+
+updateOverviewTotals();
+
+updateTotalBalanceBar();
+
 if (savedExpense) {
   row.__expenseId = savedExpense.id;
 }
