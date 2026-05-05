@@ -3292,6 +3292,8 @@ expenses?.forEach(expense => {
 
   newRow.__value = Number(expense.amount || 0);
 
+newRow.__expenseId = expense.id;
+
   details.insertBefore(
     newRow,
     addLink
