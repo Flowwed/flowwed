@@ -3277,34 +3277,36 @@ document.querySelectorAll('.category').forEach(category => {
   // EXPENSE ROW
   // =========================
 
-  function initExpenseRow(row) {
+function initExpenseRow(row) {
 
-    row.__value = 0;
+  row.__value = 0;
 
-    const amountInput = row.querySelector('.expense-amount');
-    const saveBtn = row.querySelector('.expense-action.save');
+  const amountInput = row.querySelector('.expense-amount');
 
-saveBtn.addEventListener('click', async e => {
+  amountInput.addEventListener('keydown', async e => {
 
-  e.stopPropagation();
+    if (e.key !== 'Enter') return;
 
-  const expenseName =
-    row.querySelector('.expense-name')?.value?.trim();
+    e.preventDefault();
+    e.stopPropagation();
 
-  const amount =
-    Number(
-      amountInput.value.replace(/[^\d]/g, '')
-    ) || 0;
+    const expenseName =
+      row.querySelector('.expense-name')?.value?.trim();
 
-  if (!expenseName || !amount) return;
+    const amount =
+      Number(
+        amountInput.value.replace(/[^\d]/g, '')
+      ) || 0;
 
-  console.log("SAVE EXPENSE", {
-    expenseName,
-    amount,
-    categoryRow
+    if (!expenseName || !amount || !categoryRow) return;
+
+    console.log("SAVE EXPENSE", {
+      expenseName,
+      amount,
+      categoryRow
+    });
+
   });
-
-});
 
     const removeBtn = row.querySelector('.expense-action.remove');
     const editBtn = row.querySelector('.expense-action.edit');
