@@ -3047,48 +3047,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
-<script>
-
-
-(async () => {
-
-  const overlay =
-    document.getElementById("loadingOverlay");
-
-  try {
-
-    if (overlay) {
-      overlay.classList.remove("hide");
-    }
-
-    await loadGuests();
-
-  } catch (err) {
-
-    console.error(err);
-
-  } finally {
-
-    requestAnimationFrame(() => {
-
-      if (overlay) {
-
-        overlay.classList.add("hide");
-
-        setTimeout(() => {
-          overlay.remove();
-        }, 500);
-
-      }
-
-    });
-
-  }
-
-})();
-
-</script>
-
 
 </body>
 </html>
