@@ -3007,6 +3007,8 @@ await new Promise(resolve => {
 const wedding = window.wedding;
 
 document.querySelectorAll('.category').forEach(category => {
+
+let categoryRow = null;
   const budgetInput = category.querySelector('.budget-input');
   
 // ✅ ENTER = зафиксировать бюджет и убрать курсор
@@ -3166,63 +3168,61 @@ document.querySelectorAll('.extra-cost-row').forEach(row => {
 
 document.querySelectorAll('.category').forEach(category => {
 
+  let categoryRow = null;
+
   const categoryName =
     category.querySelector(".category-title")
       ?.innerText
       ?.trim();
 
-  let categoryRow = null;
-
   const details = category.querySelector('.details');
   const addLink = details?.querySelector('.add-expense-link');
 
-  if (!details || !addLink) return;
-
   const budgetInput = category.querySelector('.budget-input');
 
-  // =========================
-  // LOAD OR CREATE CATEGORY
-  // =========================
 
-  (async () => {
 
-    // ищем category
-    let { data } = await supabase
+// =========================
+// LOAD OR CREATE CATEGORY
+// =========================
+
+(async () => {
+
+  let { data } = await supabase
+    .from("budget_categories")
+    .select("*")
+    .eq("wedding_id", wedding.id)
+    .eq("category_name", categoryName)
+    .single();
+
+  if (!data) {
+
+    const { data: created, error } = await supabase
       .from("budget_categories")
-      .select("*")
-      .eq("wedding_id", wedding.id)
-      .eq("category_name", categoryName)
+      .insert({
+        wedding_id: wedding.id,
+        category_name: categoryName
+      })
+      .select()
       .single();
 
-    // если нет — создаём
-    if (!data) {
-
-      const { data: created, error } = await supabase
-        .from("budget_categories")
-        .insert({
-          wedding_id: wedding.id,
-          category_name: categoryName
-        })
-        .select()
-        .single();
-
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      data = created;
+    if (error) {
+      console.error(error);
+      return;
     }
 
-    categoryRow = data;
-console.log("CATEGORY LOADED:", categoryRow);
+    data = created;
+  }
 
-    // restore budget
-    if (categoryRow.planned_budget) {
-      budgetInput.value = categoryRow.planned_budget;
-    }
+  categoryRow = data;
 
-  })();
+  console.log("CATEGORY LOADED:", categoryRow);
+
+  if (categoryRow.planned_budget) {
+    budgetInput.value = categoryRow.planned_budget;
+  }
+
+})();
 
   // =========================
   // EXPENSE ROW
