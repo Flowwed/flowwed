@@ -3371,24 +3371,6 @@ saveBtn.addEventListener('click', () => {
 });
     const removeBtn = row.querySelector('.expense-action.remove');
 
-removeBtn.addEventListener('click', async e => {
-
-  e.stopPropagation();
-
-  if (row.__expenseId) {
-
-    const { error } = await supabase
-      .from("budget_expenses")
-      .delete()
-      .eq("id", row.__expenseId);
-
-    console.log("DELETE ERROR:", error);
-
-  }
-
-  row.remove();
-
-});
 
     const editBtn = row.querySelector('.expense-action.edit');
 
@@ -3510,19 +3492,37 @@ function applyExpense() {
 
 
 removeBtn.addEventListener('click', e => {
+
   e.stopPropagation();
+
   if (row.classList.contains('base-expense')) return;
 
- openConfirm(() => {
-  category.__spent -= row.__value;
-  category.__updateUI();
-  updateOverviewTotals();     // ✅ ВОТ ЭТОГО НЕ ХВАТАЛО
-  updateTotalBalanceBar();   // (рекомендую, для консистентности)
-  row.remove();
-});
+  openConfirm(async () => {
+
+    if (row.__expenseId) {
+
+      const { error } = await supabase
+        .from("budget_expenses")
+        .delete()
+        .eq("id", row.__expenseId);
+
+      console.log("DELETE ERROR:", error);
+
+    }
+
+    category.__spent -= row.__value;
+
+    category.__updateUI();
+
+    updateOverviewTotals();
+
+    updateTotalBalanceBar();
+
+    row.remove();
+
+  });
 
 });
-
 
     row.querySelectorAll('input, button').forEach(el => {
       el.addEventListener('click', e => e.stopPropagation());
