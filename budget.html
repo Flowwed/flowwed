@@ -3283,6 +3283,8 @@ function initExpenseRow(row) {
 
   const amountInput = row.querySelector('.expense-amount');
 
+const saveBtn = row.querySelector('.expense-action.save');
+
   amountInput.addEventListener('keydown', async e => {
 
     if (e.key !== 'Enter') return;
@@ -3310,6 +3312,17 @@ const { error } = await supabase
 
 console.log("EXPENSE SAVE ERROR:", error);
   });
+
+saveBtn.addEventListener('click', () => {
+
+  amountInput.dispatchEvent(
+    new KeyboardEvent('keydown', {
+      key: 'Enter',
+      bubbles: true
+    })
+  );
+
+});
 
     const removeBtn = row.querySelector('.expense-action.remove');
     const editBtn = row.querySelector('.expense-action.edit');
