@@ -2895,7 +2895,7 @@ document.querySelectorAll('.category').forEach(category => {
   
 // ✅ ENTER = зафиксировать бюджет и убрать курсор
   
-budgetInput.addEventListener('keydown', e => {
+budgetInput.addEventListener('keydown', async e => {
   if (e.key === 'Enter') {
     e.preventDefault();
     e.stopPropagation();
