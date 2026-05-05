@@ -3262,6 +3262,32 @@ const wedding = await getOrCreateWedding();
 
 console.log("Wedding loaded:", wedding);
 
+const totalBudgetInput = document.getElementById("totalBudgetInput");
+
+if (wedding?.total_budget) {
+  totalBudgetInput.value = wedding.total_budget;
+}
+
+totalBudgetInput.addEventListener("change", async () => {
+
+  const value =
+    Number(totalBudgetInput.value.replace(/[^\d]/g, "")) || 0;
+
+  const { error } = await supabase
+    .from("wedding_budgets")
+    .update({
+      total_budget: value
+    })
+    .eq("id", wedding.id);
+
+  if (error) {
+    console.error(error);
+  } else {
+    console.log("Total budget saved");
+  }
+
+});
+
 function cap(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
 }
