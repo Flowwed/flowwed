@@ -2990,9 +2990,12 @@ loadCoupleName();
    CATEGORY CORE LOGIC
 ================================ */
 
-const wedding = await window.wedding;
+await new Promise(r => setTimeout(r, 300));
+
+const wedding = window.wedding;
 
 document.querySelectorAll('.category').forEach(category => {
+
   const budgetInput = category.querySelector('.budget-input');
   
 // ✅ ENTER = зафиксировать бюджет и убрать курсор
