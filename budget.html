@@ -3368,6 +3368,26 @@ saveBtn.addEventListener('click', () => {
 
 });
     const removeBtn = row.querySelector('.expense-action.remove');
+
+removeBtn.addEventListener('click', async e => {
+
+  e.stopPropagation();
+
+  if (row.__expenseId) {
+
+    const { error } = await supabase
+      .from("budget_expenses")
+      .delete()
+      .eq("id", row.__expenseId);
+
+    console.log("DELETE ERROR:", error);
+
+  }
+
+  row.remove();
+
+});
+
     const editBtn = row.querySelector('.expense-action.edit');
 
 const toast = document.getElementById("toast");
