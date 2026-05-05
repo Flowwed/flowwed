@@ -3292,6 +3292,8 @@ expenses?.forEach(expense => {
 
   newRow.__value = Number(expense.amount || 0);
 
+category.__spent += Number(expense.amount || 0);
+
 newRow.__expenseId = expense.id;
 
   details.insertBefore(
@@ -3307,6 +3309,9 @@ newRow.__expenseId = expense.id;
   if (categoryRow.planned_budget) {
     budgetInput.value = categoryRow.planned_budget;
   }
+
+category.__updateUI();
+
 
 })();
 
