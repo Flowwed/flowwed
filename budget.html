@@ -2896,48 +2896,48 @@ document.querySelectorAll('.category').forEach(category => {
 // ✅ ENTER = зафиксировать бюджет и убрать курсор
   
 budgetInput.addEventListener('keydown', async e => {
+
   if (e.key === 'Enter') {
+
     e.preventDefault();
     e.stopPropagation();
 
     budgetInput.blur();
+
     category.__updateUI();
 
-console.log("CATEGORY ROW:", categoryRow);
+    console.log("CATEGORY ROW:", categoryRow);
 
-if (categoryRow) {
+    if (categoryRow) {
 
-  const planned =
-    Number(budgetInput.value.replace(/[^\d]/g, "")) || 0;
+      const planned =
+        Number(budgetInput.value.replace(/[^\d]/g, "")) || 0;
 
-  const { error } = await supabase
-    .from("budget_categories")
-    .update({
-      planned_budget: planned
-    })
-    .eq("id", categoryRow.id);
+      const { error } = await supabase
+        .from("budget_categories")
+        .update({
+          planned_budget: planned
+        })
+        .eq("id", categoryRow.id);
 
-  if (error) {
-    console.error(error);
-  } else {
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(categoryName, "saved");
+      }
 
-    console.log(categoryName, "saved");
-  }
-
-}
-
-  }
-
-});
+    }
 
     const details = category.querySelector('.details');
+
     if (details) {
       details.style.display = 'block';
-      ensureFirstExpenseRow(category); // 👈 ВОТ ЭТО
+      ensureFirstExpenseRow(category);
     }
-  }
-});
 
+  }
+
+});
   const spentEl = category.querySelector('.spent-value');
   const progressBar = category.querySelector('.progress-bar');
   const details = category.querySelector('.details');
