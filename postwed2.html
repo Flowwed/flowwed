@@ -2012,16 +2012,18 @@ async function loadGuests() {
     render();
 
   } catch (e) {
-
     console.error("LOAD GUESTS CATCH:", e);
-
     guests = [];
-
     render();
-
+  } finally {
+    if (overlay) {
+      requestAnimationFrame(() => {
+        overlay.classList.add("hide");
+      });
+    }
   }
-
 }
+
 
 
 // ======================================================
