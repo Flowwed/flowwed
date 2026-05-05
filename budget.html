@@ -3300,12 +3300,15 @@ function initExpenseRow(row) {
 
     if (!expenseName || !amount) return;
 
-    console.log("SAVE EXPENSE", {
-      expenseName,
-      amount,
-      categoryRow
-    });
+const { error } = await supabase
+  .from("budget_expenses")
+  .insert({
+    category_id: categoryRow.id,
+    expense_name: expenseName,
+    amount: amount
+  });
 
+console.log("EXPENSE SAVE ERROR:", error);
   });
 
     const removeBtn = row.querySelector('.expense-action.remove');
