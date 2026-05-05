@@ -2935,6 +2935,10 @@ const wedding = window.wedding;
 
 console.log("Wedding loaded:", wedding);
 
+window.dispatchEvent(
+  new Event("wedding-ready")
+);
+
 const totalBudgetInput = document.getElementById("totalBudgetInput");
 
 if (wedding?.total_budget) {
@@ -2990,12 +2994,17 @@ loadCoupleName();
    CATEGORY CORE LOGIC
 ================================ */
 
-await new Promise(r => setTimeout(r, 300));
+await new Promise(resolve => {
+  window.addEventListener(
+    "wedding-ready",
+    resolve,
+    { once: true }
+  );
+});
 
 const wedding = window.wedding;
 
 document.querySelectorAll('.category').forEach(category => {
-
   const budgetInput = category.querySelector('.budget-input');
   
 // ✅ ENTER = зафиксировать бюджет и убрать курсор
