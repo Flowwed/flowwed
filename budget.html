@@ -3642,14 +3642,6 @@ function applyExpense() {
 }
 
 
-  amountInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    e.stopPropagation();
-    applyExpense(); // ← Enter = Save
-  }
-});
-
 
 removeBtn.addEventListener('click', e => {
 
