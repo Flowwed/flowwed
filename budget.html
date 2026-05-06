@@ -3361,36 +3361,39 @@ hideLoader();
   // SAVE BUDGET
   // =========================
 
-  budgetInput.addEventListener(
-    'keydown',
-    async e => {
+budgetInput.addEventListener(
+  'keydown',
+  async e => {
 
-      if (e.key !== 'Enter') return;
+    if (e.key !== 'Enter') return;
 
-      e.preventDefault();
+    e.preventDefault();
 
-      if (!categoryRow) return;
+    if (!categoryRow) return;
 
-      const planned =
-        Number(
-          budgetInput.value.replace(/[^\d]/g, "")
-        ) || 0;
+    const planned =
+      Number(
+        budgetInput.value.replace(/[^\d]/g, "")
+      ) || 0;
 
-const { error } = await supabase
-  .from("budget_categories")
-  .update({
-    planned_budget: planned
-  })
-  .eq("id", categoryRow.id);
+    /* UI FIRST */
+    category.__updateUI();
 
-console.log("UPDATE ERROR:", error);
+    showSuccessToast("Budget saved");
 
-category.__updateUI();
+    /* SAVE AFTER */
+    const { error } = await supabase
+      .from("budget_categories")
+      .update({
+        planned_budget: planned
+      })
+      .eq("id", categoryRow.id);
 
-showSuccessToast("Budget saved");
+    console.log("UPDATE ERROR:", error);
 
-    }
-  );
+  }
+);
+
 
   // live ui update
   budgetInput.addEventListener(
