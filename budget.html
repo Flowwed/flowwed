@@ -3459,7 +3459,11 @@ row.__initialized = true;
 
     row.__value = amount;
 
-    category.__spent += amount;
+    category.__spent -= row.__value || 0;
+
+row.__value = amount;
+
+category.__spent += amount;
 
     category.__updateUI();
 
