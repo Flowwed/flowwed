@@ -1842,8 +1842,7 @@ if (params.get("t")) {
   <div class="category-header" onclick="toggleDetails(this.closest('.category'))">
 
     <div class="card-actions">
-      <button class="card-btn expand">⤢</button>
-      <button class="card-btn close">✕</button>
+    <button class="card-btn expand">⤢</button>
     </div>
 
     <div class="category-title">🏛️ Venue</div>
@@ -1931,7 +1930,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2027,7 +2025,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2122,7 +2119,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2215,7 +2211,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2309,7 +2304,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2403,7 +2397,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2497,7 +2490,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2591,7 +2583,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2685,7 +2676,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2779,7 +2769,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -2873,7 +2862,6 @@ if (params.get("t")) {
 
 <div class="card-actions">
   <button class="card-btn expand">⤢</button>
-  <button class="card-btn close">✕</button>
 </div>
 
 
@@ -3388,31 +3376,6 @@ console.log("UPDATE ERROR:", error);
 
 category.__updateUI();
 
-// auto-open details
-details.style.display = 'block';
-
-// auto-create first expense row
-const existingRows =
-  details.querySelectorAll(
-    '.expense-row:not(.base-expense)'
-  );
-
-if (existingRows.length === 0) {
-
-  addLink.click();
-
-  setTimeout(() => {
-
-    const firstInput =
-      details.querySelector(
-        '.expense-row:not(.base-expense) .expense-name'
-      );
-
-    firstInput?.focus();
-
-  }, 0);
-
-}
     }
   );
 
@@ -3449,9 +3412,15 @@ if (!hasRows) {
 
     initExpenseRow(row);
 
-  }
+const amountInput =
+  row.querySelector('.expense-amount');
 
+if (amountInput) {
+  amountInput.disabled = false;
 }
+}
+}
+
 
 addLink.addEventListener('click', e => {
   e.preventDefault();
