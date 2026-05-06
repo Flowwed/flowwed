@@ -3551,7 +3551,12 @@ let toastShown = false;
 
 ["mouseenter", "focus"].forEach(evt => {
   amountInput.addEventListener(evt, () => {
-    const budget = Number(budgetInput.value);
+
+const budget =
+  Number(
+    budgetInput.value.replace(/[^\d]/g, '')
+  ) || 0;
+
     if ((!budget || budget <= 0) && !toastShown) {
       highlightBudgetError();
       toastShown = true; // 🔒 блокируем повтор
