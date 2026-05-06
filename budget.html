@@ -3458,7 +3458,7 @@ row.__initialized = true;
 
 
 
-const oldValue = row.__value || 0;
+ const oldValue = row.__value || 0;
 
 row.__value = amount;
 
@@ -3488,6 +3488,9 @@ console.log("EXPENSE SAVE ERROR:", error);
 if (savedExpense) {
   row.__expenseId = savedExpense.id;
 }
+
+  });
+
 
 
 
