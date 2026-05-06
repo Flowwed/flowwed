@@ -1799,7 +1799,7 @@ if (params.get("t")) {
   <!-- Assigned Budget -->
   <div class="card">
     <h3>Unassigned Budget</h3>
-    <div class="value" id="assignedBudgetValue">$0</div>
+    <div class="value" id="unassignedBudgetValue">$0</div>
   </div>
 
   <!-- Total Spent -->
@@ -3072,7 +3072,6 @@ totalBudgetInput.addEventListener("change", async () => {
   const value =
     Number(totalBudgetInput.value.replace(/[^\d]/g, "")) || 0;
 
-console.log(categoryRow);
 
   const { error } = await supabase
     .from("wedding_budgets")
@@ -4000,13 +3999,16 @@ function updateOverviewTotals() {
   });
 
   /* Render — Assigned */
-const assignedEl =
-  document.getElementById('assignedBudgetValue');
+const unassigned = (totalBudget || 0) - assigned;
 
-if (assignedEl) {
-  assignedEl.textContent =
-    `$${assigned.toLocaleString()}`;
+const unassignedEl =
+  document.getElementById('unassignedBudgetValue');
+
+if (unassignedEl) {
+  unassignedEl.textContent =
+    `$${unassigned.toLocaleString()}`;
 }
+
 
   /* Render — Spent */
   const spentEl = document.getElementById('totalSpentValue');
