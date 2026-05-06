@@ -3079,7 +3079,7 @@ totalBudgetInput.addEventListener("change", async () => {
     .update({
       total_budget: value
     })
-    .eq("id", wedding.id);
+    .eq("id", window.wedding.id);
 
   if (error) {
     console.error(error);
@@ -3260,7 +3260,7 @@ document.querySelectorAll('.category').forEach(category => {
     let { data } = await supabase
       .from("budget_categories")
       .select("*")
-      .eq("wedding_id", wedding.id)
+      .eq("wedding_id", window.wedding.id)
       .eq("category_name", categoryName)
       .single();
 
@@ -3270,7 +3270,7 @@ document.querySelectorAll('.category').forEach(category => {
         await supabase
           .from("budget_categories")
           .insert({
-            wedding_id: wedding.id,
+            wedding_id: window.wedding.id,
             category_name: categoryName
           })
           .select()
