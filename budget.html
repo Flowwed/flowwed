@@ -751,6 +751,7 @@ h1 {
     transform 0.28s ease,
     background-color 0.28s ease;
 }
+
 /* ===============================
    GLASS iOS – HOVER
 ================================ */
@@ -3468,37 +3469,39 @@ row.__initialized = true;
 
     if (!expenseName || !amount) return;
 
-    const { data: savedExpense, error } = await supabase
-      .from("budget_expenses")
-      .insert({
-        category_id: category.__categoryRow.id,
-        expense_name: expenseName,
-        amount: amount
-      })
-      .select()
-      .single();
 
-    console.log("EXPENSE SAVE ERROR:", error);
-
-    row.__value = amount;
-
-    category.__spent -= row.__value || 0;
+const oldValue = row.__value || 0;
 
 row.__value = amount;
 
+category.__spent -= oldValue;
 category.__spent += amount;
 
-    category.__updateUI();
+/* UI FIRST — INSTANT */
+category.__updateUI();
 
-    updateOverviewTotals();
+updateOverviewTotals();
 
-    updateTotalBalanceBar();
+updateTotalBalanceBar();
 
-    if (savedExpense) {
-      row.__expenseId = savedExpense.id;
-    }
+/* SAVE AFTER */
+const { data: savedExpense, error } = await supabase
+  .from("budget_expenses")
+  .insert({
+    category_id: category.__categoryRow.id,
+    expense_name: expenseName,
+    amount: amount
+  })
+  .select()
+  .single();
 
-  });
+console.log("EXPENSE SAVE ERROR:", error);
+
+if (savedExpense) {
+  row.__expenseId = savedExpense.id;
+}
+
+
 
   syncExpenseAvailability();
 
