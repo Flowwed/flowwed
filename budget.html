@@ -1779,7 +1779,7 @@ if (params.get("t")) {
 
   <div class="export-row">
     <button id="exportCsvBtn" class="export-btn">
-      ⬇️ Download & Print (CSV)
+      ⬇️ Download & Print
     </button>
   </div>
 
@@ -4239,44 +4239,9 @@ rows.push([
 
 /* ================= HELPERS ================= */
 
-function cleanCategory(str) {
-  return str
-    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
-    .replace(/\uFE0F/g, '')   // 🔑 убираем variation selector
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function parseMoney(val) {
-  return Number(String(val || "").replace(/[^\d]/g, "")) || 0;
-}
-
-function formatMoney(num) {
-  return `$${Number(num).toLocaleString()}`;
-}
-
-
 function ensureFirstExpenseRow(category) {
-  const details = category.querySelector('.details');
-  if (!details) return;
-
-  const existing =
-    details.querySelectorAll('.expense-row:not(.expense-template)');
-
-  if (existing.length > 0) return;
-
-  const addLink = details.querySelector('.add-expense-link');
-  if (addLink) {
-    addLink.click();
-
-    setTimeout(() => {
-      const firstRow =
-        details.querySelector('.expense-row:not(.expense-template)');
-      firstRow?.querySelector('.expense-name')?.focus();
-    }, 0);
-  }
+  return;
 }
-
 </script>
 
 <div id="guideModal" style="
