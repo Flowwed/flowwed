@@ -3113,64 +3113,8 @@ loadCoupleName();
 
 <script type="module">
 
-/* ===============================
-   CATEGORY CORE LOGIC
-================================ */
 
-await new Promise(resolve => {
-  window.addEventListener(
-    "wedding-ready",
-    resolve,
-    { once: true }
-  );
-});
 
-const wedding = window.wedding;
-
-document.querySelectorAll('.category').forEach(category => {
-
-let categoryRow = null;
-
-const categoryName =
-  category.querySelector(".category-title")
-    ?.innerText
-    ?.trim();
-
-(async () => {
-
-  let { data } = await supabase
-    .from("budget_categories")
-    .select("*")
-    .eq("wedding_id", wedding.id)
-    .eq("category_name", categoryName)
-    .single();
-
-  if (!data) {
-
-    const { data: created, error } = await supabase
-      .from("budget_categories")
-      .insert({
-        wedding_id: wedding.id,
-        category_name: categoryName
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    data = created;
-  }
-
-  categoryRow = data;
-
-  console.log("CATEGORY LOADED:", categoryRow);
-
-})();
-  const budgetInput = category.querySelector('.budget-input');
-  
 // ✅ ENTER = save budget
 
 budgetInput.addEventListener('keydown', async e => {
