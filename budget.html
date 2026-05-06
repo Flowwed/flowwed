@@ -3196,10 +3196,17 @@ document.querySelectorAll('.category').forEach(category => {
 
   let categoryRow = null;
 
-  const categoryName =
-    category.querySelector(".category-title")
-      ?.innerText
-      ?.trim();
+const rawCategoryName =
+  category.querySelector(".category-title")
+    ?.innerText
+    ?.trim();
+
+const categoryName =
+  rawCategoryName.replace(
+    /[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu,
+    ""
+  ).trim();
+
 
 console.log("CATEGORY:", categoryName);
 
