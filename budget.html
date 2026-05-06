@@ -3318,12 +3318,39 @@ console.log(
   expenses
 );
 
-    expenses?.forEach(expense => {
+expenses?.forEach(expense => {
 
-      category.__spent +=
-        Number(expense.amount || 0);
+  category.__spent +=
+    Number(expense.amount || 0);
 
-    });
+  const template =
+    details.querySelector('.expense-row.base-expense');
+
+  if (!template) return;
+
+  const row = template.cloneNode(true);
+
+  row.classList.remove('base-expense');
+
+  row.style.display = 'flex';
+
+  row.querySelector('.expense-name').value =
+    expense.expense_name || '';
+
+  row.querySelector('.expense-amount').value =
+    expense.amount || '';
+
+  row.__expenseId = expense.id;
+
+  row.__value =
+    Number(expense.amount || 0);
+
+  details.insertBefore(row, addLink);
+
+  initExpenseRow(row);
+
+});
+
 
     category.__updateUI();
 
