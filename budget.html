@@ -3202,6 +3202,8 @@ if (categoryRow) {
     .eq("id", categoryRow.id);
 
   console.log("UPDATE ERROR:", error);
+category.__updateUI();
+renderBudgetOverview();
 
 }
 
