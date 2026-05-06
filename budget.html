@@ -3357,6 +3357,7 @@ updateTotalBalanceBar();
 
     category.__updateUI();
 
+
   })();
 
   // =========================
@@ -3378,17 +3379,42 @@ updateTotalBalanceBar();
           budgetInput.value.replace(/[^\d]/g, "")
         ) || 0;
 
-      const { error } = await supabase
-        .from("budget_categories")
-        .update({
-          planned_budget: planned
-        })
-        .eq("id", categoryRow.id);
+const { error } = await supabase
+  .from("budget_categories")
+  .update({
+    planned_budget: planned
+  })
+  .eq("id", categoryRow.id);
 
-      console.log("UPDATE ERROR:", error);
+console.log("UPDATE ERROR:", error);
 
-      category.__updateUI();
+category.__updateUI();
 
+// auto-open details
+details.style.display = 'block';
+
+// auto-create first expense row
+const existingRows =
+  details.querySelectorAll(
+    '.expense-row:not(.base-expense)'
+  );
+
+if (existingRows.length === 0) {
+
+  addLink.click();
+
+  setTimeout(() => {
+
+    const firstInput =
+      details.querySelector(
+        '.expense-row:not(.base-expense) .expense-name'
+      );
+
+    firstInput?.focus();
+
+  }, 0);
+
+}
     }
   );
 
