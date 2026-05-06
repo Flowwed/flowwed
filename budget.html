@@ -3324,7 +3324,7 @@ expenses?.forEach(expense => {
 
   const row = template.cloneNode(true);
 
-  row.classList.remove('base-expense');
+  row.classList.remove('expense-template');
 
   row.style.display = 'flex';
 
@@ -3416,7 +3416,7 @@ addLink.addEventListener('click', e => {
 
   const newRow = template.cloneNode(true);
 
-  newRow.classList.remove('base-expense');
+  newRow.classList.remove('expense-template');
   newRow.style.display = 'flex';
 
   newRow.querySelector('.expense-name').value = '';
