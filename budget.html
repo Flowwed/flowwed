@@ -3293,10 +3293,8 @@ document.querySelectorAll('.category').forEach(category => {
     );
 
     // restore budget
-    if (categoryRow?.planned_budget) {
-      budgetInput.value =
-        categoryRow.planned_budget;
-    }
+budgetInput.value =
+  categoryRow?.planned_budget || 0;
 
     // restore expenses
     const { data: expenses } =
