@@ -1674,7 +1674,6 @@ transform: translateX(-50%) translateY(4px);
   z-index: 20;
 
   opacity: 0;
-  transform: translateY(4px);
 
   transition:
     opacity 0.25s ease,
@@ -4001,7 +4000,7 @@ function updateOverviewTotals() {
   });
 
   /* Render — Assigned */
-const unassigned = totalBudget - assigned;
+const unassigned = (totalBudget || 0) - assigned;
 
 const unassignedEl =
   document.getElementById('unassignedBudgetValue');
