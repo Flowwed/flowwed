@@ -3477,7 +3477,7 @@ function syncExpenseAvailability() {
 
   if (!budget || budget <= 0) {
 
-    amountInput.disabled = true;
+    amountInput.readOnly = true;
 
     if (hint) {
       hint.style.opacity = '1';
@@ -3485,7 +3485,7 @@ function syncExpenseAvailability() {
 
   } else {
 
-    amountInput.disabled = false;
+    amountInput.readOnly = false;
 
     if (hint) {
       hint.style.opacity = '0';
