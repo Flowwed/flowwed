@@ -137,7 +137,7 @@ h1 {
 
 /* Details */
 .details {
-  display: none;
+  display: block;
   margin-top: 16px;
   border-top: 1px solid #f2dcdc;
   padding-top: 12px;
@@ -3623,36 +3623,41 @@ noBtn.onclick = closeConfirm;
 <script>
 document.querySelectorAll('.category').forEach(category => {
 
-
   const details = category.querySelector('.details');
   const expandBtn = category.querySelector('.card-btn.expand');
   const closeBtn = category.querySelector('.card-btn.close');
 
   if (expandBtn) {
     expandBtn.addEventListener('click', e => {
-  e.stopPropagation();
-  if (!details) return;
 
-  const willOpen = details.style.display !== 'block';
-  details.style.display = willOpen ? 'block' : 'none';
+      e.stopPropagation();
 
-  if (willOpen) {
-    ensureFirstExpenseRow(category); // 👈 ВОТ ЭТО
-  }
-});
+      if (!details) return;
 
+      const willOpen = details.style.display !== 'block';
+
+      details.style.display = willOpen ? 'block' : 'none';
+
+      // ❌ УБРАЛИ auto-create строки
+      // ensureFirstExpenseRow(category);
+
+    });
   }
 
   if (closeBtn) {
     closeBtn.addEventListener('click', e => {
+
       e.stopPropagation();
+
       if (!details) return;
+
       details.style.display = 'none';
+
     });
   }
+
 });
 </script>
-
 
 <div id="toast" style="
   position: fixed;
