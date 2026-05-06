@@ -3413,6 +3413,9 @@ addLink.addEventListener('click', e => {
 
 function initExpenseRow(row) {
 
+if (row.__initialized) return;
+row.__initialized = true;
+
   const category = row.closest('.category');
 
   row.__value = 0;
