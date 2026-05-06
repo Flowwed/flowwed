@@ -3284,6 +3284,7 @@ document.querySelectorAll('.category').forEach(category => {
     }
 
     categoryRow = data;
+    category.__categoryRow = data;
 
     console.log(
       "CATEGORY LOADED:",
@@ -3355,6 +3356,29 @@ document.querySelectorAll('.category').forEach(category => {
     }
   );
 
+
+details.querySelectorAll('.expense-row').forEach(initExpenseRow);
+
+addLink.addEventListener('click', e => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const template = details.querySelector('.expense-row.base-expense');
+  if (!template) return;
+
+  const newRow = template.cloneNode(true);
+
+  newRow.classList.remove('base-expense');
+  newRow.style.display = 'flex';
+
+  newRow.querySelector('.expense-name').value = '';
+  newRow.querySelector('.expense-amount').value = '';
+
+  details.insertBefore(newRow, addLink);
+
+  initExpenseRow(newRow);
+});
+
   // initial render
   category.__updateUI();
 
@@ -3393,7 +3417,7 @@ const saveBtn = row.querySelector('.expense-action.save');
 const { data: savedExpense, error } = await supabase
   .from("budget_expenses")
   .insert({
-    category_id: categoryRow.id,
+    category_id: category.__categoryRow?.id,
     expense_name: expenseName,
     amount: amount
   })
@@ -3612,25 +3636,6 @@ category.__spent -= value;
     });
 }
 
-  details.querySelectorAll('.expense-row').forEach(initExpenseRow);
-
-addLink.addEventListener('click', e => {
-  e.preventDefault();
-  e.stopPropagation();
-
-  const template = details.querySelector('.expense-row.base-expense');
-  if (!template) return;
-
-  const newRow = template.cloneNode(true);
-  newRow.classList.remove('base-expense');
-  newRow.style.display = 'flex';
-
-  newRow.querySelector('.expense-name').value = '';
-  newRow.querySelector('.expense-amount').value = '';
-
-  details.insertBefore(newRow, addLink);
-  initExpenseRow(newRow);
-});
 
 
 </script>
