@@ -3639,25 +3639,6 @@ function applyExpense() {
      🔑 AUTO-ADD NEXT ROW
   ================================ */
 
-  const addLink = category
-    .querySelector(".details .add-expense-link");
-
-  if (addLink) {
-    addLink.click();
-
-    // дать DOM обновиться
-    setTimeout(() => {
-      const rows = category
-        .querySelectorAll(".expense-row:not(.expense-template)");
-
-      const lastRow = rows[rows.length - 1];
-      const nameInput = lastRow?.querySelector(".expense-name");
-
-      if (nameInput) {
-        nameInput.focus();
-      }
-    }, 0);
-  }
 }
 
 
@@ -4239,9 +4220,44 @@ rows.push([
 
 /* ================= HELPERS ================= */
 
-function ensureFirstExpenseRow(category) {
-  return;
+function cleanCategory(str) {
+  return str
+    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
+    .replace(/\uFE0F/g, '')   // 🔑 убираем variation selector
+    .replace(/\s+/g, ' ')
+    .trim();
 }
+
+function parseMoney(val) {
+  return Number(String(val || "").replace(/[^\d]/g, "")) || 0;
+}
+
+function formatMoney(num) {
+  return `$${Number(num).toLocaleString()}`;
+}
+
+
+function ensureFirstExpenseRow(category) {
+  const details = category.querySelector('.details');
+  if (!details) return;
+
+  const existing =
+    details.querySelectorAll('.expense-row:not(.expense-template)');
+
+  if (existing.length > 0) return;
+
+  const addLink = details.querySelector('.add-expense-link');
+  if (addLink) {
+    addLink.click();
+
+    setTimeout(() => {
+      const firstRow =
+        details.querySelector('.expense-row:not(.expense-template)');
+      firstRow?.querySelector('.expense-name')?.focus();
+    }, 0);
+  }
+}
+
 </script>
 
 <div id="guideModal" style="
