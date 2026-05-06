@@ -3391,44 +3391,6 @@ category.__updateUI();
 
 details.querySelectorAll('.expense-row').forEach(initExpenseRow);
 
-const hasRows =
-  details.querySelectorAll(
-    '.expense-row:not(.base-expense)'
-  ).length;
-
-if (!hasRows) {
-
-  const template =
-    details.querySelector('.expense-row.base-expense');
-
-  if (template) {
-
-    const row = template.cloneNode(true);
-
-    row.classList.remove('base-expense');
-
-    row.style.display = 'flex';
-
-    details.insertBefore(row, addLink);
-
-    // force clean values
-    row.querySelector('.expense-name').value = '';
-    row.querySelector('.expense-amount').value = '';
-
-    initExpenseRow(row);
-
-    const amountInput =
-      row.querySelector('.expense-amount');
-
-    if (amountInput) {
-      amountInput.disabled = false;
-    }
-
-    row.__value = 0;
-
-  }
-
-}
 
 addLink.addEventListener('click', e => {
   e.preventDefault();
@@ -3462,16 +3424,15 @@ addLink.addEventListener('click', e => {
 
 function initExpenseRow(row) {
 
-const category = row.closest('.category');
-
-const categoryRow =
-  category.__categoryRow;
+  const category = row.closest('.category');
 
   row.__value = 0;
 
-  const amountInput = row.querySelector('.expense-amount');
+  const amountInput =
+    row.querySelector('.expense-amount');
 
-const saveBtn = row.querySelector('.expense-action.save');
+  const saveBtn =
+    row.querySelector('.expense-action.save');
 
   amountInput.addEventListener('keydown', async e => {
 
@@ -3481,7 +3442,9 @@ const saveBtn = row.querySelector('.expense-action.save');
     e.stopPropagation();
 
     const expenseName =
-      row.querySelector('.expense-name')?.value?.trim();
+      row.querySelector('.expense-name')
+        ?.value
+        ?.trim();
 
     const amount =
       Number(
@@ -3490,35 +3453,35 @@ const saveBtn = row.querySelector('.expense-action.save');
 
     if (!expenseName || !amount) return;
 
-const { data: savedExpense, error } = await supabase
-  .from("budget_expenses")
-  .insert({
-    category_id: categoryRow.id,
-    expense_name: expenseName,
-    amount: amount
-  })
-  .select()
-  .single();
+    const { data: savedExpense, error } = await supabase
+      .from("budget_expenses")
+      .insert({
+        category_id: category.__categoryRow.id,
+        expense_name: expenseName,
+        amount: amount
+      })
+      .select()
+      .single();
 
-console.log("EXPENSE SAVE ERROR:", error);
+    console.log("EXPENSE SAVE ERROR:", error);
 
-row.__value = amount;
+    row.__value = amount;
 
-category.__spent += amount;
+    category.__spent += amount;
 
-category.__updateUI();
+    category.__updateUI();
 
-updateOverviewTotals();
+    updateOverviewTotals();
 
-updateTotalBalanceBar();
+    updateTotalBalanceBar();
 
-if (savedExpense) {
-  row.__expenseId = savedExpense.id;
-}
+    if (savedExpense) {
+      row.__expenseId = savedExpense.id;
+    }
 
-});
+  });
 
-syncExpenseAvailability();
+  syncExpenseAvailability();
 
 saveBtn.addEventListener('click', () => {
 
