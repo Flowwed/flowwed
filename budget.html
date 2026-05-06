@@ -3331,9 +3331,13 @@ expenses?.forEach(expense => {
   row.__value =
     Number(expense.amount || 0);
 
-  details.insertBefore(row, addLink);
+details.insertBefore(row, addLink);
 
-  initExpenseRow(row);
+// force clean values
+row.querySelector('.expense-name').value = '';
+row.querySelector('.expense-amount').value = '';
+
+initExpenseRow(row);
 
 });
 
@@ -3410,17 +3414,24 @@ if (!hasRows) {
 
     details.insertBefore(row, addLink);
 
+    // force clean values
+    row.querySelector('.expense-name').value = '';
+    row.querySelector('.expense-amount').value = '';
+
     initExpenseRow(row);
 
-const amountInput =
-  row.querySelector('.expense-amount');
+    const amountInput =
+      row.querySelector('.expense-amount');
 
-if (amountInput) {
-  amountInput.disabled = false;
-}
-}
-}
+    if (amountInput) {
+      amountInput.disabled = false;
+    }
 
+    row.__value = 0;
+
+  }
+
+}
 
 addLink.addEventListener('click', e => {
   e.preventDefault();
