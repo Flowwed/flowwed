@@ -1799,7 +1799,7 @@ if (params.get("t")) {
   <!-- Assigned Budget -->
   <div class="card">
     <h3>Unassigned Budget</h3>
-    <div class="value" id="unassignedBudgetValue">$0</div>
+    <div class="value" id="assignedBudgetValue">$0</div>
   </div>
 
   <!-- Total Spent -->
@@ -4000,16 +4000,13 @@ function updateOverviewTotals() {
   });
 
   /* Render — Assigned */
-const unassigned = (totalBudget || 0) - assigned;
+const assignedEl =
+  document.getElementById('assignedBudgetValue');
 
-const unassignedEl =
-  document.getElementById('unassignedBudgetValue');
-
-if (unassignedEl) {
-  unassignedEl.textContent =
-    `$${unassigned.toLocaleString()}`;
+if (assignedEl) {
+  assignedEl.textContent =
+    `$${assigned.toLocaleString()}`;
 }
-
 
   /* Render — Spent */
   const spentEl = document.getElementById('totalSpentValue');
