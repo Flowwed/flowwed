@@ -3136,6 +3136,7 @@ document.querySelectorAll('.category').forEach(category => {
     console.error("Missing UI elements");
   }
 
+});
 
 /* ===============================
    EXTRA COST (+ / UNDO)
@@ -3457,7 +3458,7 @@ function showToastOnce() {
 function highlightBudgetError() {
   amountInput.classList.add("input-error");
   budgetInput.closest(".money-input")?.classList.add("input-error");
-  showToast();
+  showToastOnce();
 }
 
 function clearBudgetError() {
