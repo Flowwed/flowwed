@@ -1682,6 +1682,16 @@ transform: translateX(-50%) translateY(4px);
   pointer-events: none;
 }
 
+
+.expense-list {
+  max-height: 260px;
+  overflow-y: auto;
+
+  padding-right: 4px;
+  margin-bottom: 8px;
+}
+
+
 </style>
 </head>
 
@@ -1917,6 +1927,8 @@ if (params.get("t")) {
   Add budget first
 </div>
 
+</div>
+
     <div class="add-expense-link">Add expense</div>
 
   </div>
@@ -1978,9 +1990,13 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
- <div class="details">
+
+<div class="details">
+
+<div class="expense-list">
 
 <div class="expense-row expense-template" style="display:none">
+
 
     <div class="text-input">
       <input
@@ -2008,7 +2024,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2102,7 +2118,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2193,7 +2209,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2285,7 +2301,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2378,7 +2394,7 @@ if (params.get("t")) {
   Add budget first
 </div>
 
-
+</div>
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2470,6 +2486,7 @@ if (params.get("t")) {
   Add budget first
 </div>
 
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2561,7 +2578,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2654,7 +2671,7 @@ if (params.get("t")) {
   Add budget first
 </div>
 
-
+</div>
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2745,7 +2762,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2837,7 +2854,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2929,7 +2946,7 @@ if (params.get("t")) {
 <div class="expense-hint">
   Add budget first
 </div>
-
+</div>
 
   <div class="add-expense-link">Add expense</div>
 
@@ -3337,7 +3354,9 @@ expenses?.forEach(expense => {
   row.__value =
     Number(expense.amount || 0);
 
-details.insertBefore(row, addLink);
+details
+  .querySelector('.expense-list')
+  .appendChild(row);
 
 
 initExpenseRow(row);
@@ -3413,7 +3432,9 @@ addLink.addEventListener('click', e => {
   newRow.querySelector('.expense-name').value = '';
   newRow.querySelector('.expense-amount').value = '';
 
-  details.insertBefore(newRow, addLink);
+  details
+  .querySelector('.expense-list')
+  .appendChild(newRow);
 
   initExpenseRow(newRow);
 });
