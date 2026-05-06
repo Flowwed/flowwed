@@ -3113,156 +3113,28 @@ loadCoupleName();
 
 <script type="module">
 
-const budgetInput =
-  category.querySelector('.budget-input');
+document.querySelectorAll('.category').forEach(category => {
 
-const spentEl =
-  category.querySelector('.spent-value');
+  let categoryRow = null;
 
-const progressBar =
-  category.querySelector('.progress-bar');
+  const details =
+    category.querySelector('.details');
 
-if (!budgetInput || !spentEl || !progressBar) {
-  console.error("Missing UI elements");
-}
+  const addLink =
+    details?.querySelector('.add-expense-link');
 
-// stop bubbling
-budgetInput.addEventListener('focus', e => {
-  e.stopPropagation();
-});
+  const budgetInput =
+    category.querySelector('.budget-input');
 
-// 🔴 ONE SOURCE OF TRUTH
-if (typeof category.__spent !== "number") {
-  category.__spent = 0;
-}
+  const spentEl =
+    category.querySelector('.spent-value');
 
-// ===============================
-// UPDATE UI
-// ===============================
+  const progressBar =
+    category.querySelector('.progress-bar');
 
-category.__updateUI = function () {
-
-  const planned =
-    Number(
-      budgetInput.value.replace(/[^\d]/g, '')
-    ) || 0;
-
-  // ✅ NO BUDGET = NO PROGRESS
-  if (!planned || planned <= 0) {
-
-    progressBar.style.width = '0%';
-
-    category.classList.remove('over-budget');
-
-    const remainingEl =
-      category.querySelector('.remaining-value');
-
-    if (remainingEl) {
-
-      remainingEl.innerText = '0';
-
-      const remainingBox =
-        remainingEl.closest('.money-input');
-
-      if (remainingBox) {
-        remainingBox.classList.remove('negative');
-      }
-    }
-
-    updateOverviewTotals();
-
-    return;
+  if (!budgetInput || !spentEl || !progressBar) {
+    console.error("Missing UI elements");
   }
-
-  const percent =
-    Math.round(
-      (category.__spent / planned) * 100
-    );
-
-  spentEl.innerText =
-    category.__spent.toLocaleString();
-
-  progressBar.style.width =
-    percent + '%';
-
-  category.classList.toggle(
-    'over-budget',
-    percent > 100
-  );
-
-  // remaining
-  const remainingEl =
-    category.querySelector('.remaining-value');
-
-  if (remainingEl) {
-
-    const remaining =
-      planned - category.__spent;
-
-    remainingEl.innerText =
-      remaining.toLocaleString();
-
-    const remainingBox =
-      remainingEl.closest('.money-input');
-
-    if (remainingBox) {
-
-      remainingBox.classList.toggle(
-        'negative',
-        remaining < 0
-      );
-    }
-  }
-
-  updateOverviewTotals();
-};
-
-// ===============================
-// SAVE BUDGET ON ENTER
-// ===============================
-
-budgetInput.addEventListener(
-  'keydown',
-  async e => {
-
-    if (e.key !== 'Enter') return;
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    budgetInput.blur();
-
-    category.__updateUI();
-
-    if (!categoryRow) return;
-
-    const planned =
-      Number(
-        budgetInput.value.replace(/[^\d]/g, "")
-      ) || 0;
-
-    console.log("SAVING...", planned);
-
-    const { error } = await supabase
-      .from("budget_categories")
-      .update({
-        planned_budget: planned
-      })
-      .eq("id", categoryRow.id);
-
-    console.log("UPDATE ERROR:", error);
-  }
-);
-
-// live update
-budgetInput.addEventListener('input', () => {
-  category.__updateUI();
-});
-
-// initial render
-category.__updateUI();
-
-
 
 
 /* ===============================
