@@ -1892,7 +1892,7 @@ if (params.get("t")) {
 
   <div class="details">
 
-    <div class="expense-row">
+    <div class="expense-row base-expense" style="display:none">
       <div class="text-input">
         <input
           type="text"
@@ -1982,7 +1982,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2078,7 +2078,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2171,7 +2171,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2265,7 +2265,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2359,7 +2359,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2453,7 +2453,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2547,7 +2547,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2641,7 +2641,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2735,7 +2735,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2829,7 +2829,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -2923,7 +2923,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row">
+  <div class="expense-row base-expense" style="display:none">
 
 
     <div class="text-input">
@@ -3426,6 +3426,32 @@ if (existingRows.length === 0) {
 
 
 details.querySelectorAll('.expense-row').forEach(initExpenseRow);
+
+const hasRows =
+  details.querySelectorAll(
+    '.expense-row:not(.base-expense)'
+  ).length;
+
+if (!hasRows) {
+
+  const template =
+    details.querySelector('.expense-row.base-expense');
+
+  if (template) {
+
+    const row = template.cloneNode(true);
+
+    row.classList.remove('base-expense');
+
+    row.style.display = 'flex';
+
+    details.insertBefore(row, addLink);
+
+    initExpenseRow(row);
+
+  }
+
+}
 
 addLink.addEventListener('click', e => {
   e.preventDefault();
