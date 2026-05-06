@@ -419,6 +419,7 @@ h1 {
   align-items:center;
   gap:10px;
   padding:6px 0;
+  position: relative;
 }
 
 .expense-name{
@@ -1651,6 +1652,22 @@ max-width: 640px;
 }
 
 
+.expense-hint {
+  position: absolute;
+
+  right: 12px;
+  bottom: -18px;
+
+  font-size: 11px;
+  color: #9b6b6b;
+
+  opacity: 0;
+
+  transition: opacity 0.2s ease;
+
+  pointer-events: none;
+}
+
 
 </style>
 </head>
@@ -1883,6 +1900,10 @@ if (params.get("t")) {
       <button class="expense-action save">➕</button>
       <button class="expense-action remove">❌</button>
     </div>
+
+<div class="expense-hint">
+  Add budget first
+</div>
 
     <div class="add-expense-link">Add expense</div>
 
@@ -3379,6 +3400,8 @@ if (savedExpense) {
 
 });
 
+syncExpenseAvailability();
+
 saveBtn.addEventListener('click', () => {
 
   amountInput.dispatchEvent(
@@ -3444,16 +3467,30 @@ let toastShown = false;
   });
 });
 
-  function syncExpenseAvailability() {
-  const budget = Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
+function syncExpenseAvailability() {
+
+  const budget =
+    Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
+
+  const hint =
+    row.querySelector('.expense-hint');
 
   if (!budget || budget <= 0) {
+
     amountInput.disabled = true;
-    amountInput.title = "Please set Budget first";
+
+    if (hint) {
+      hint.style.opacity = '1';
+    }
+
   } else {
+
     amountInput.disabled = false;
-    amountInput.placeholder = amountInput.placeholder || "0";
-    amountInput.title = "";
+
+    if (hint) {
+      hint.style.opacity = '0';
+    }
+
   }
 }
 
