@@ -3223,16 +3223,22 @@ console.log("CATEGORY:", categoryName);
     remainingEl.textContent =
       remaining.toLocaleString();
 
+const remainingWrap =
+  category.querySelector('.money-input.remaining');
+
 if (remaining < 0) {
 
   category.classList.add('over-budget');
+
+  remainingWrap.classList.add('negative');
 
 } else {
 
   category.classList.remove('over-budget');
 
-}
+  remainingWrap.classList.remove('negative');
 
+}
 
     const percent =
       planned > 0
