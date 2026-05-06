@@ -1892,7 +1892,7 @@ if (params.get("t")) {
 
   <div class="details">
 
-    <div class="expense-row base-expense" style="display:none">
+    <div class="expense-row">
       <div class="text-input">
         <input
           type="text"
@@ -1982,7 +1982,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2078,7 +2078,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2171,7 +2171,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2265,7 +2265,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2359,7 +2359,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2453,7 +2453,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2547,7 +2547,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2641,7 +2641,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2735,7 +2735,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2829,7 +2829,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2923,7 +2923,7 @@ if (params.get("t")) {
   </div>
  <div class="details">
 
-  <div class="expense-row base-expense" style="display:none">
+  <div class="expense-row">
 
 
     <div class="text-input">
@@ -2969,10 +2969,8 @@ if (params.get("t")) {
 
 <script>
 function toggleDetails(el) {
-  const details = el.querySelector(".details");
-  details.style.display = details.style.display === "block" ? "none" : "block";
+  // cards always open
 }
-
 
 document.querySelectorAll(".category").forEach(category => {
 
