@@ -3223,6 +3223,17 @@ console.log("CATEGORY:", categoryName);
     remainingEl.textContent =
       remaining.toLocaleString();
 
+if (remaining < 0) {
+
+  category.classList.add('over-budget');
+
+} else {
+
+  category.classList.remove('over-budget');
+
+}
+
+
     const percent =
       planned > 0
         ? Math.min(
