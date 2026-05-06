@@ -3157,7 +3157,9 @@ category.__updateUI();
 const spentEl = category.querySelector('.spent-value');
 const progressBar = category.querySelector('.progress-bar');
 
-if (!budgetInput || !spentEl || !progressBar) return;
+if (!budgetInput || !spentEl || !progressBar) {
+  console.error("Missing UI elements");
+}
 
 budgetInput.addEventListener('focus', e => {
 
