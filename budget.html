@@ -3312,6 +3312,12 @@ budgetInput.value =
         .select("*")
         .eq("category_id", categoryRow.id);
 
+console.log(
+  "EXPENSES FOR",
+  categoryName,
+  expenses
+);
+
     expenses?.forEach(expense => {
 
       category.__spent +=
