@@ -3407,6 +3407,9 @@ function initExpenseRow(row) {
 
 const category = row.closest('.category');
 
+const categoryRow =
+  category.__categoryRow;
+
   row.__value = 0;
 
   const amountInput = row.querySelector('.expense-amount');
@@ -3433,7 +3436,7 @@ const saveBtn = row.querySelector('.expense-action.save');
 const { data: savedExpense, error } = await supabase
   .from("budget_expenses")
   .insert({
-    category_id: category.__categoryRow?.id,
+    category_id: categoryRow.id,
     expense_name: expenseName,
     amount: amount
   })
