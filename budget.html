@@ -1682,31 +1682,6 @@ transform: translateX(-50%) translateY(4px);
   pointer-events: none;
 }
 
-
-.expenses-scroll{
-  max-height: 320px;
-  overflow-y: auto;
-
-  margin-top: 12px;
-  padding-right: 6px;
-}
-
-/* scrollbar */
-
-.expenses-scroll::-webkit-scrollbar{
-  width: 8px;
-}
-
-.expenses-scroll::-webkit-scrollbar-thumb{
-  background: rgba(155,28,49,0.28);
-  border-radius: 999px;
-}
-
-.expenses-scroll::-webkit-scrollbar-track{
-  background: transparent;
-}
-
-
 </style>
 </head>
 
@@ -1914,12 +1889,9 @@ if (params.get("t")) {
 
   </div>
 
-<div class="details">
-
-  <div class="expenses-scroll">
+  <div class="details">
 
     <div class="expense-row expense-template" style="display:none">
-
       <div class="text-input">
         <input
           type="text"
@@ -1930,7 +1902,6 @@ if (params.get("t")) {
 
       <div class="money-input small">
         <span class="money-prefix">$</span>
-
         <input
           type="text"
           class="expense-amount"
@@ -1940,20 +1911,17 @@ if (params.get("t")) {
 
       <button class="expense-action save">➕</button>
       <button class="expense-action remove">❌</button>
-
     </div>
 
-  </div>
-
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+    <div class="add-expense-link">Add expense</div>
+
+  </div>
+</div>
+
 
 
 <!-- CATERING -->
@@ -2010,47 +1978,45 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
+
 
 <!-- BAR -->
 <div class="category">
@@ -2106,47 +2072,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- PHOTOGRAPHY -->
 <div class="category">
@@ -2200,47 +2163,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- ENTERTAINMENT -->
 <div class="category">
@@ -2295,47 +2255,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- FLOWERS -->
 <div class="category">
@@ -2390,47 +2347,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- DECOR -->
 <div class="category">
@@ -2485,47 +2439,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- STATIONERY -->
 <div class="category">
@@ -2580,47 +2531,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- ATTIRE -->
 <div class="category">
@@ -2675,47 +2623,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- HAIR & MAKEUP -->
 <div class="category">
@@ -2770,47 +2715,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- RINGS -->
 <div class="category">
@@ -2865,47 +2807,44 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+
+  </div>
+
+  </div>
 
 <!-- MISC -->
 <div class="category">
@@ -2960,47 +2899,43 @@ if (params.get("t")) {
     <div class="progress-bar"></div>
 
   </div>
+ <div class="details">
 
-<div class="details">
+<div class="expense-row expense-template" style="display:none">
 
-  <div class="expenses-scroll">
-
-    <div class="expense-row expense-template" style="display:none">
-
-      <div class="text-input">
-        <input
-          type="text"
-          class="expense-name"
-          placeholder="Expense description"
-        />
-      </div>
-
-      <div class="money-input small">
-        <span class="money-prefix">$</span>
-
-        <input
-          type="text"
-          class="expense-amount"
-          placeholder="0"
-        />
-      </div>
-
-      <button class="expense-action save">➕</button>
-      <button class="expense-action remove">❌</button>
-
+    <div class="text-input">
+      <input
+        type="text"
+        class="expense-name"
+        placeholder="Expense description"
+      />
     </div>
 
+    <div class="money-input small">
+      <span class="money-prefix">$</span>
+      <input
+        type="text"
+        class="expense-amount"
+        placeholder="0"
+      />
+    </div>
+
+    <button class="expense-action save">➕</button>
+
+
+    <button class="expense-action remove">❌</button>
   </div>
 
-  <div class="expense-hint">
-    Add budget first
-  </div>
-
-  <div class="add-expense-link">
-    Add expense
-  </div>
-
+<div class="expense-hint">
+  Add budget first
 </div>
+
+
+  <div class="add-expense-link">Add expense</div>
+
+ </div>
+
+  </div>
 </div>
 
 </div>
@@ -3288,22 +3223,16 @@ console.log("CATEGORY:", categoryName);
     remainingEl.textContent =
       remaining.toLocaleString();
 
-const remainingWrap =
-  category.querySelector('.money-input.remaining');
-
 if (remaining < 0) {
 
   category.classList.add('over-budget');
-
-  remainingWrap.classList.add('negative');
 
 } else {
 
   category.classList.remove('over-budget');
 
-  remainingWrap.classList.remove('negative');
-
 }
+
 
     const percent =
       planned > 0
