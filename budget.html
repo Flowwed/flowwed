@@ -3479,18 +3479,18 @@ function syncExpenseAvailability() {
 
     amountInput.readOnly = true;
 
-    if (hint) {
-      hint.style.opacity = '1';
-    }
-
+if (hint) {
+  hint.style.opacity = '1';
+  hint.style.display = 'block';
+}
   } else {
 
     amountInput.readOnly = false;
 
-    if (hint) {
-      hint.style.opacity = '0';
-    }
-
+if (hint) {
+  hint.style.opacity = '0';
+  hint.style.display = 'none';
+}
   }
 }
 
