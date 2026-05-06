@@ -3481,6 +3481,9 @@ function showToastOnce() {
   }, 1600);
 }
 
+const budgetInput =
+  category.querySelector('.budget-input');
+
 function highlightBudgetError() {
   amountInput.classList.add("input-error");
   budgetInput.closest(".money-input")?.classList.add("input-error");
