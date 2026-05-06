@@ -1651,23 +1651,37 @@ max-width: 640px;
   letter-spacing: 0.02em;
 }
 
-
 .expense-hint {
   position: absolute;
 
-  right: 12px;
-  bottom: -18px;
+left: 50%;
+top: 50%;
+transform: translateX(-50%) translateY(4px);
 
   font-size: 11px;
-  color: #9b6b6b;
+
+  color: #c73a3a;
+  font-weight: 700;
+
+  background: rgba(255,255,255,0.96);
+
+  padding: 4px 8px;
+  border-radius: 8px;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08);
+
+  z-index: 20;
 
   opacity: 0;
+  transform: translateY(4px);
 
-  transition: opacity 0.2s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 
   pointer-events: none;
 }
-
 
 </style>
 </head>
@@ -1785,7 +1799,7 @@ if (params.get("t")) {
 
   <!-- Assigned Budget -->
   <div class="card">
-    <h3>Assigned Budget</h3>
+    <h3>Unassigned Budget</h3>
     <div class="value" id="assignedBudgetValue">$0</div>
   </div>
 
@@ -1995,6 +2009,11 @@ if (params.get("t")) {
     <button class="expense-action remove">❌</button>
   </div>
 
+<div class="expense-hint">
+  Add budget first
+</div>
+
+
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2086,6 +2105,11 @@ if (params.get("t")) {
     <button class="expense-action remove">❌</button>
   </div>
 
+<div class="expense-hint">
+  Add budget first
+</div>
+
+
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2173,6 +2197,11 @@ if (params.get("t")) {
 
     <button class="expense-action remove">❌</button>
   </div>
+
+<div class="expense-hint">
+  Add budget first
+</div>
+
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2263,6 +2292,11 @@ if (params.get("t")) {
     <button class="expense-action remove">❌</button>
   </div>
 
+<div class="expense-hint">
+  Add budget first
+</div>
+
+
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2351,6 +2385,11 @@ if (params.get("t")) {
 
     <button class="expense-action remove">❌</button>
   </div>
+
+<div class="expense-hint">
+  Add budget first
+</div>
+
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2441,6 +2480,11 @@ if (params.get("t")) {
     <button class="expense-action remove">❌</button>
   </div>
 
+<div class="expense-hint">
+  Add budget first
+</div>
+
+
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2529,6 +2573,11 @@ if (params.get("t")) {
 
     <button class="expense-action remove">❌</button>
   </div>
+
+<div class="expense-hint">
+  Add budget first
+</div>
+
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2619,6 +2668,11 @@ if (params.get("t")) {
     <button class="expense-action remove">❌</button>
   </div>
 
+<div class="expense-hint">
+  Add budget first
+</div>
+
+
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2707,6 +2761,11 @@ if (params.get("t")) {
 
     <button class="expense-action remove">❌</button>
   </div>
+
+<div class="expense-hint">
+  Add budget first
+</div>
+
 
   <div class="add-expense-link">Add expense</div>
 
@@ -2797,6 +2856,11 @@ if (params.get("t")) {
     <button class="expense-action remove">❌</button>
   </div>
 
+<div class="expense-hint">
+  Add budget first
+</div>
+
+
   <div class="add-expense-link">Add expense</div>
 
 
@@ -2886,6 +2950,11 @@ if (params.get("t")) {
     <button class="expense-action remove">❌</button>
   </div>
 
+<div class="expense-hint">
+  Add budget first
+</div>
+
+
   <div class="add-expense-link">Add expense</div>
 
  </div>
@@ -2904,6 +2973,39 @@ function toggleDetails(el) {
   const details = el.querySelector(".details");
   details.style.display = details.style.display === "block" ? "none" : "block";
 }
+
+
+document.querySelectorAll(".category").forEach(category => {
+
+  const addBtn = category.querySelector(".add-expense-link");
+  const budgetInput = category.querySelector(".budget-input");
+  const hint = category.querySelector(".expense-hint");
+
+  addBtn.addEventListener("click", () => {
+
+    const budget = parseFloat(budgetInput.value) || 0;
+
+    if (budget <= 0) {
+
+      hint.style.opacity = "1";
+      hint.style.transform = "translateX(-50%) translateY(0)";
+
+      budgetInput.classList.add("input-error");
+
+      setTimeout(() => {
+        hint.style.opacity = "0";
+        hint.style.transform = "translateX(-50%) translateY(4px)";
+        budgetInput.classList.remove("input-error");
+      }, 2200);
+
+      return;
+    }
+
+  });
+
+});
+
+
 </script>
 
 
@@ -3899,10 +4001,16 @@ function updateOverviewTotals() {
   });
 
   /* Render — Assigned */
-  const assignedEl = document.getElementById('assignedBudgetValue');
-  if (assignedEl) {
-    assignedEl.textContent = `$${assigned.toLocaleString()}`;
-  }
+const unassigned = totalBudget - assigned;
+
+const unassignedEl =
+  document.getElementById('unassignedBudgetValue');
+
+if (unassignedEl) {
+  unassignedEl.textContent =
+    `$${unassigned.toLocaleString()}`;
+}
+
 
   /* Render — Spent */
   const spentEl = document.getElementById('totalSpentValue');
