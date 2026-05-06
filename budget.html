@@ -3511,8 +3511,13 @@ let toastShown = false;
 
 function syncExpenseAvailability() {
 
+  const budgetInput =
+    category.querySelector('.budget-input');
+
   const budget =
-    Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
+    Number(
+      budgetInput.value.replace(/[^\d]/g, '')
+    ) || 0;
 
   const hint =
     row.querySelector('.expense-hint');
