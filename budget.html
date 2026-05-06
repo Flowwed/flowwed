@@ -4192,7 +4192,12 @@ rows.push([
       const desc =
         row.querySelector(".expense-name")?.value || "";
 
-      const cost = Number(row.__value || 0);
+const cost =
+  Number(
+    row.querySelector(".expense-amount")
+      ?.value
+      ?.replace(/[^\d]/g, '')
+  ) || 0;
 
       rows.push([
         categoryName,
