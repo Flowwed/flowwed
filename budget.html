@@ -1651,23 +1651,17 @@ max-width: 640px;
   letter-spacing: 0.02em;
 }
 
-
-.expense-hint {
-  position: absolute;
-
-  right: 12px;
-  bottom: -18px;
+.expense-toast {
+  margin-top: 6px;
 
   font-size: 11px;
   color: #9b6b6b;
 
   opacity: 0;
+  pointer-events: none;
 
   transition: opacity 0.2s ease;
-
-  pointer-events: none;
 }
-
 
 </style>
 </head>
@@ -1738,6 +1732,12 @@ if (params.get("t")) {
   <a href="guest_memory.html">Guest Feedback</a>
 
 </div>
+
+<div class="expense-toast">
+  Set budget first
+</div>
+
+
 
 <div class="ios-banner">
 <span class="info-icon">i</span>
@@ -1900,10 +1900,6 @@ if (params.get("t")) {
       <button class="expense-action save">➕</button>
       <button class="expense-action remove">❌</button>
     </div>
-
-<div class="expense-hint">
-  Add budget first
-</div>
 
     <div class="add-expense-link">Add expense</div>
 
@@ -2888,6 +2884,7 @@ if (params.get("t")) {
 
   <div class="add-expense-link">Add expense</div>
 
+
  </div>
 
   </div>
@@ -3400,7 +3397,6 @@ if (savedExpense) {
 
 });
 
-syncExpenseAvailability();
 
 saveBtn.addEventListener('click', () => {
 
@@ -3467,35 +3463,6 @@ let toastShown = false;
   });
 });
 
-function syncExpenseAvailability() {
-
-  const budget =
-    Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
-
-  const hint =
-    row.querySelector('.expense-hint');
-
-  if (!budget || budget <= 0) {
-
-    amountInput.readOnly = true;
-
-if (hint) {
-  hint.style.opacity = '1';
-  hint.style.display = 'block';
-}
-  } else {
-
-    amountInput.readOnly = false;
-
-if (hint) {
-  hint.style.opacity = '0';
-  hint.style.display = 'none';
-}
-  }
-}
-
-// initial state
-syncExpenseAvailability();
 
 // react on budget change
 budgetInput.addEventListener('input', syncExpenseAvailability);
@@ -3599,6 +3566,30 @@ category.__spent -= value;
 addLink.addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
+
+
+const budget =
+  Number(
+    budgetInput.value.replace(/[^\d]/g, '')
+  ) || 0;
+
+if (!budget || budget <= 0) {
+
+  const toast =
+    category.querySelector('.expense-toast');
+
+  if (toast) {
+
+    toast.style.opacity = '1';
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+    }, 1600);
+
+  }
+
+  return;
+}
 
   const template = details.querySelector('.expense-row.base-expense');
   if (!template) return;
