@@ -1891,7 +1891,7 @@ if (params.get("t")) {
 
   <div class="details">
 
-    <div class="expense-row base-expense" style="display:none">
+    <div class="expense-row expense-template" style="display:none">
       <div class="text-input">
         <input
           type="text"
@@ -3310,7 +3310,7 @@ expenses?.forEach(expense => {
     Number(expense.amount || 0);
 
   const template =
-    details.querySelector('.expense-row.base-expense');
+    details.querySelector('.expense-row.expense-template');
 
   if (!template) return;
 
@@ -3396,7 +3396,7 @@ addLink.addEventListener('click', e => {
   e.preventDefault();
   e.stopPropagation();
 
-  const template = details.querySelector('.expense-row.base-expense');
+  const template = details.querySelector('.expense-row.expense-template');
   if (!template) return;
 
   const newRow = template.cloneNode(true);
@@ -3615,7 +3615,7 @@ function applyExpense() {
     // дать DOM обновиться
     setTimeout(() => {
       const rows = category
-        .querySelectorAll(".expense-row:not(.base-expense)");
+        .querySelectorAll(".expense-row:not(.expense-template)");
 
       const lastRow = rows[rows.length - 1];
       const nameInput = lastRow?.querySelector(".expense-name");
@@ -4095,7 +4095,7 @@ rows.push([
 
     let hasRows = false;
 
-    category.querySelectorAll(".expense-row:not(.base-expense)").forEach(row => {
+    category.querySelectorAll(".expense-row:not(.expense-template)").forEach(row => {
       const desc =
         row.querySelector(".expense-name")?.value || "";
 
@@ -4166,7 +4166,7 @@ function ensureFirstExpenseRow(category) {
   if (!details) return;
 
   const existing =
-    details.querySelectorAll('.expense-row:not(.base-expense)');
+    details.querySelectorAll('.expense-row:not(.expense-template)');
 
   if (existing.length > 0) return;
 
@@ -4176,7 +4176,7 @@ function ensureFirstExpenseRow(category) {
 
     setTimeout(() => {
       const firstRow =
-        details.querySelector('.expense-row:not(.base-expense)');
+        details.querySelector('.expense-row:not(.expense-template)');
       firstRow?.querySelector('.expense-name')?.focus();
     }, 0);
   }
