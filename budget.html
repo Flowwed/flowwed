@@ -3391,6 +3391,8 @@ addLink.addEventListener('click', e => {
 
 function initExpenseRow(row) {
 
+const category = row.closest('.category');
+
   row.__value = 0;
 
   const amountInput = row.querySelector('.expense-amount');
