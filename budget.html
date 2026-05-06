@@ -4165,8 +4165,7 @@ document.getElementById("exportCsvBtn")?.addEventListener("click", () => {
 rows.push([
   "CATEGORY",
   "EXPENSE DESCRIPTION",
-  "COST",
-  "CATEGORY TOTAL"
+  "COST"
 ]);
 
 rows.push([
@@ -4199,13 +4198,11 @@ const cost =
       ?.replace(/[^\d]/g, '')
   ) || 0;
 
-      rows.push([
-        categoryName,
-        desc,
-        formatMoney(cost),
-        formatMoney(categoryTotal)
-      ]);
-
+rows.push([
+  categoryName,
+  desc,
+  formatMoney(cost)
+]);
       hasRows = true;
     });
 
