@@ -3114,128 +3114,6 @@ loadCoupleName();
 <script type="module">
 
 
-
-// ✅ ENTER = save budget
-
-budgetInput.addEventListener('keydown', async e => {
-
-  if (e.key === 'Enter') {
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    console.log("ENTER WORKS");
-    console.log("CATEGORY ROW INSIDE ENTER:", categoryRow);
-
-    budgetInput.blur();
-
-    category.__updateUI();
-
-if (categoryRow) {
-
-  const planned =
-    Number(budgetInput.value.replace(/[^\d]/g, "")) || 0;
-
-  console.log("SAVING...", planned);
-
-  const { error } = await supabase
-    .from("budget_categories")
-    .update({
-      planned_budget: planned
-    })
-    .eq("id", categoryRow.id);
-
-  console.log("UPDATE ERROR:", error);
-category.__updateUI();
-
-}
-
-}
-
-});
-
-const budgetInput =
-  category.querySelector('.budget-input');
-
-const spentEl = category.querySelector('.spent-value');
-const progressBar = category.querySelector('.progress-bar');
-
-if (!budgetInput || !spentEl || !progressBar) {
-  console.error("Missing UI elements");
-}
-
-budgetInput.addEventListener('focus', e => {
-
-  e.stopPropagation();
-
-});
-
-
-// 🔴 ONE SOURCE OF TRUTH
-
-if (typeof category.__spent !== "number") {
-  category.__spent = 0;
-}
-
-
-
-category.__updateUI = function () {
-  const planned = Number(budgetInput.value.replace(/[^\d]/g, '')) || 0;
-
-
-  // ✅ НЕТ БЮДЖЕТА — НЕТ ПРОГРЕССА
-  if (!planned || planned <= 0) {
-    progressBar.style.width = '0%';
-    category.classList.remove('over-budget');
-
-    // ⬇️ Remaining = 0 если бюджета нет
-    const remainingEl = category.querySelector('.remaining-value');
-    if (remainingEl) {
-      remainingEl.innerText = '0';
-
-      // ✅ ВАЖНО: убрать красную подсветку
-      const remainingBox = remainingEl.closest('.money-input');
-      if (remainingBox) {
-        remainingBox.classList.remove('negative');
-      }
-    }
-
-    return;
-  }
-
-  const percent = Math.round((category.__spent / planned) * 100);
-
-  spentEl.innerText = category.__spent.toLocaleString();
-  progressBar.style.width = percent + '%';
-
-  category.classList.toggle('over-budget', percent > 100);
-
-  // ✅ Remaining = Budget - Spent
-  const remainingEl = category.querySelector('.remaining-value');
-  if (remainingEl) {
-    const remaining = planned - category.__spent;
-    remainingEl.innerText = remaining.toLocaleString();
-
-    const remainingBox = remainingEl.closest('.money-input');
-    if (remainingBox) {
-      remainingBox.classList.toggle('negative', remaining < 0);
-    }
-  }
-updateOverviewTotals();
-
-};
-
-
-// budget change
-budgetInput.addEventListener('input', () => {
-  category.__updateUI();
-});
-
-category.__updateUI();
-
-
-
-
 /* ===============================
    EXTRA COST (+ / UNDO)
 ================================ */
@@ -3732,9 +3610,6 @@ addLink.addEventListener('click', e => {
 
 
 </script>
-
-
-
 
 <div id="confirmModal" class="modal hidden">
   <div class="modal-box">
