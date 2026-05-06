@@ -143,6 +143,17 @@ h1 {
   padding-top: 12px;
 }
 
+.expenses-scroll{
+  max-height: 220px;
+  overflow-y: auto;
+
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+
+  padding-right:4px;
+}
+
 .item {
   display: flex;
   justify-content: space-between;
@@ -1891,7 +1902,11 @@ if (params.get("t")) {
 
   <div class="details">
 
+<div class="expenses-scroll">
+
     <div class="expense-row expense-template" style="display:none">
+
+
       <div class="text-input">
         <input
           type="text"
@@ -1912,6 +1927,8 @@ if (params.get("t")) {
       <button class="expense-action save">➕</button>
       <button class="expense-action remove">❌</button>
     </div>
+
+</div>
 
 <div class="expense-hint">
   Add budget first
