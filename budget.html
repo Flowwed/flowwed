@@ -3299,102 +3299,168 @@ document.querySelectorAll('.category').forEach(category => {
       ?.trim();
 
   const details = category.querySelector('.details');
-  const addLink = details?.querySelector('.add-expense-link');
+  const addLink =
+    details?.querySelector('.add-expense-link');
 
-  const budgetInput = category.querySelector('.budget-input');
+  const budgetInput =
+    category.querySelector('.budget-input');
 
+  const spentEl =
+    category.querySelector('.spent-value');
 
+  const remainingEl =
+    category.querySelector('.remaining-value');
 
-// =========================
-// LOAD OR CREATE CATEGORY
-// =========================
+  const progressBar =
+    category.querySelector('.progress-bar');
 
-(async () => {
+  category.__spent = 0;
 
-  let { data } = await supabase
-    .from("budget_categories")
-    .select("*")
-    .eq("wedding_id", wedding.id)
-    .eq("category_name", categoryName)
-    .single();
+  // =========================
+  // UPDATE UI
+  // =========================
 
-  if (!data) {
+  category.__updateUI = () => {
 
-    const { data: created, error } = await supabase
+    const planned =
+      Number(
+        budgetInput.value.replace(/[^\d]/g, "")
+      ) || 0;
+
+    spentEl.textContent =
+      category.__spent.toLocaleString();
+
+    const remaining =
+      planned - category.__spent;
+
+    remainingEl.textContent =
+      remaining.toLocaleString();
+
+    const percent =
+      planned > 0
+        ? Math.min(
+            (category.__spent / planned) * 100,
+            100
+          )
+        : 0;
+
+    progressBar.style.width = `${percent}%`;
+
+  };
+
+  // =========================
+  // LOAD OR CREATE CATEGORY
+  // =========================
+
+  (async () => {
+
+    let { data } = await supabase
       .from("budget_categories")
-      .insert({
-        wedding_id: wedding.id,
-        category_name: categoryName
-      })
-      .select()
+      .select("*")
+      .eq("wedding_id", wedding.id)
+      .eq("category_name", categoryName)
       .single();
 
-    if (error) {
-      console.error(error);
-      return;
+    if (!data) {
+
+      const { data: created, error } =
+        await supabase
+          .from("budget_categories")
+          .insert({
+            wedding_id: wedding.id,
+            category_name: categoryName
+          })
+          .select()
+          .single();
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      data = created;
     }
 
-    data = created;
-  }
+    categoryRow = data;
 
-  categoryRow = data;
+    console.log(
+      "CATEGORY LOADED:",
+      categoryRow
+    );
 
-  console.log("CATEGORY LOADED:", categoryRow);
+    // restore budget
+    if (categoryRow?.planned_budget) {
+      budgetInput.value =
+        categoryRow.planned_budget;
+    }
 
-const { data: expenses } = await supabase
-  .from("budget_expenses")
-  .select("*")
-  .eq("category_id", categoryRow.id);
+    // restore expenses
+    const { data: expenses } =
+      await supabase
+        .from("budget_expenses")
+        .select("*")
+        .eq("category_id", categoryRow.id);
 
-console.log("RESTORE EXPENSES:", expenses);
+    expenses?.forEach(expense => {
 
-expenses?.forEach(expense => {
+      category.__spent +=
+        Number(expense.amount || 0);
 
-  const template =
-    details.querySelector('.expense-row.base-expense');
+    });
 
-  if (!template) return;
+    category.__updateUI();
 
-  const newRow = template.cloneNode(true);
+  })();
 
-  newRow.classList.remove('base-expense');
-  newRow.style.display = 'flex';
+  // =========================
+  // SAVE BUDGET
+  // =========================
 
-  newRow.querySelector('.expense-name').value =
-    expense.expense_name || '';
+  budgetInput.addEventListener(
+    'keydown',
+    async e => {
 
-  newRow.querySelector('.expense-amount').value =
-    `$ ${Number(expense.amount || 0).toLocaleString()}`;
+      if (e.key !== 'Enter') return;
 
-  newRow.__value = Number(expense.amount || 0);
+      e.preventDefault();
 
-category.__spent += Number(expense.amount || 0);
+      if (!categoryRow) return;
 
-newRow.__expenseId = expense.id;
+      const planned =
+        Number(
+          budgetInput.value.replace(/[^\d]/g, "")
+        ) || 0;
 
-  details.insertBefore(
-    newRow,
-    addLink
+      const { error } = await supabase
+        .from("budget_categories")
+        .update({
+          planned_budget: planned
+        })
+        .eq("id", categoryRow.id);
+
+      console.log("UPDATE ERROR:", error);
+
+      category.__updateUI();
+
+    }
   );
 
-  initExpenseRow(newRow);
+  // live ui update
+  budgetInput.addEventListener(
+    'input',
+    () => {
+      category.__updateUI();
+    }
+  );
+
+  // initial render
+  category.__updateUI();
 
 });
 
 
-  if (categoryRow.planned_budget) {
-    budgetInput.value = categoryRow.planned_budget;
-  }
-
-category.__updateUI();
-
-
-})();
-
-
-
   // =========================
-  // EXPENSE ROW
+  // EXPENSE ROWSSS
   // =========================
 
 function initExpenseRow(row) {
