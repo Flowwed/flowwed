@@ -3111,8 +3111,9 @@ async function loadCoupleName() {
 loadCoupleName();
 </script>
 
-
 <script type="module">
+
+window.addEventListener("wedding-ready", () => {
 
 document.querySelectorAll('.category').forEach(category => {
 
@@ -3138,7 +3139,6 @@ document.querySelectorAll('.category').forEach(category => {
   }
 
 });
-
 /* ===============================
    EXTRA COST (+ / UNDO)
 ================================ */
@@ -3647,7 +3647,7 @@ category.__spent -= value;
     });
 }
 
-
+});
 
 </script>
 
