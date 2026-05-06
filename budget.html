@@ -3788,22 +3788,35 @@ document.querySelectorAll('.category').forEach(category => {
   }
 
 });
+
 </script>
 
 <div id="toast" style="
   position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
+
+  top: 24px;
+  right: 24px;
+
   background: rgba(40,40,40,0.92);
   color: #fff;
+
   padding: 12px 18px;
+
   border-radius: 14px;
+
   font-size: 14px;
   font-weight: 500;
+
   opacity: 0;
+
+  transform: translateY(-10px);
+
   pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+
   z-index: 99999;
 ">
   Set Budget First.
@@ -3812,18 +3825,30 @@ document.querySelectorAll('.category').forEach(category => {
 <!-- 🟢 SUCCESS TOAST -->
 <div id="toast-success" style="
   position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
+
+  top: 78px;
+  right: 24px;
+
   background: rgba(46,125,50,0.92);
   color: #fff;
+
   padding: 12px 18px;
+
   border-radius: 14px;
+
   font-size: 14px;
   font-weight: 500;
+
   opacity: 0;
+
+  transform: translateY(-10px);
+
   pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
+
+  transition:
+    opacity .25s ease,
+    transform .25s ease;
+
   z-index: 100000;
 ">
   Amount added and saved
