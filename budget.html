@@ -3344,6 +3344,8 @@ updateTotalBalanceBar();
 
     category.__updateUI();
 
+hideLoader();
+
 
   })();
 
@@ -4293,43 +4295,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 
-(async () => {
+window.hideLoader = function () {
 
   const overlay =
     document.getElementById("loadingOverlay");
 
-  try {
+  if (!overlay) return;
 
-    if (overlay) {
-      overlay.classList.remove("hide");
-    }
+  overlay.classList.add("hide");
 
-
-  } catch (err) {
-
-    console.error(err);
-
-  } finally {
-
-    requestAnimationFrame(() => {
-
-      if (overlay) {
-
-        overlay.classList.add("hide");
-
-        setTimeout(() => {
-          overlay.remove();
-        }, 500);
-
-      }
-
-    });
-
-  }
-
-})();
+  setTimeout(() => {
+    overlay.remove();
+  }, 500);
+};
 
 </script>
-
 </body>
 </html>
