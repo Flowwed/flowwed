@@ -3942,23 +3942,30 @@ function updateTotalBalanceBar() {
      EMPTY — нет Total Budget
   ================================ */
   if (!totalBudget) {
-    if (label) label.textContent = 'Set total budget';
+
+    if (label) {
+      label.textContent = 'Set total budget';
+    }
+
     return;
   }
 
-const spentRatio = spent / totalBudget;
+  const spentRatio =
+    spent / totalBudget;
 
-let assigned = 0;
+  let assigned = 0;
 
-document.querySelectorAll('.budget-input').forEach(input => {
+  document.querySelectorAll('.budget-input').forEach(input => {
 
-  assigned +=
-    Number(
-      input.value.replace(/[^\d]/g, '')
-    ) || 0;
+    assigned +=
+      Number(
+        input.value.replace(/[^\d]/g, '')
+      ) || 0;
 
-});
+  });
 
+  const remaining =
+    totalBudget - assigned;
 
 
   /* ===============================
