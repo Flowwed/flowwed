@@ -3509,15 +3509,26 @@ const { data: savedExpense, error } = await supabase
   .single();
 
 console.log("EXPENSE SAVE ERROR:", error);
-isSaving = false;
-saveBtn.disabled = false;
-if (savedExpense) {
+
+if (error) {
+
+  category.__spent -= amount;
+
+  category.__updateUI();
+
+  updateOverviewTotals();
+  updateTotalBalanceBar();
+
+} else if (savedExpense) {
+
   row.__expenseId = savedExpense.id;
+
 }
 
-  });
+isSaving = false;
+saveBtn.disabled = false;
 
-
+});
 
 
   syncExpenseAvailability();
