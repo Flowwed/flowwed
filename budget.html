@@ -4534,14 +4534,28 @@ window.hideLoader = function () {
 </script>
 
 <script>
-document.querySelectorAll(".modal").forEach(modal => {
-  modal.addEventListener("click", e => {
-    if (e.target === modal) {
-      modal.classList.add("hidden");
+
+const guideModal =
+  document.getElementById(
+    "guideModal"
+  );
+
+guideModal?.addEventListener(
+  "click",
+  e => {
+
+    if (
+      e.target === guideModal
+    ) {
+
+      guideModal.style.display =
+        "none";
     }
-  });
-});
+  }
+);
+
 </script>
+
 
 </body>
 </html>
