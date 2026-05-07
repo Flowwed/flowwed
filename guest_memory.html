@@ -745,6 +745,29 @@ window.addEventListener("load", () => {
 });
 </script>
 
+<script>
+
+const guideModal =
+  document.getElementById(
+    "guideModal"
+  );
+
+guideModal?.addEventListener(
+  "click",
+  e => {
+
+    if (
+      e.target === guideModal
+    ) {
+
+      guideModal.style.display =
+        "none";
+    }
+  }
+);
+
+</script>
+
 
 
 
