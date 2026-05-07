@@ -3515,7 +3515,7 @@ function initExpenseRow(row) {
   });
 
 
-  syncExpenseAvailability();
+  syncExpenseAvailability(category, row, amountInput);
 
 saveBtn.addEventListener('click', () => {
 
@@ -3592,7 +3592,7 @@ const budget =
   });
 });
 
-function syncExpenseAvailability() {
+function syncExpenseAvailability(category, row, amountInput) {
 
   const budgetInput =
     category.querySelector('.budget-input');
@@ -3625,11 +3625,13 @@ function syncExpenseAvailability() {
 }
 
 // initial state
-syncExpenseAvailability();
+syncExpenseAvailability(category, row, amountInput);
+
 
 // react on budget change
-budgetInput.addEventListener('input', syncExpenseAvailability);
-
+budgetInput.addEventListener('input', () => {
+  syncExpenseAvailability(category, row, amountInput);
+});
 
 function applyExpense() {
   const newValue = Number(amountInput.value) || 0;
@@ -3643,9 +3645,6 @@ function applyExpense() {
   updateTotalBalanceBar();
   showSuccessToast();
 
-  /* ===============================
-     🔑 AUTO-ADD NEXT ROW
-  ================================ */
 
 }
 
