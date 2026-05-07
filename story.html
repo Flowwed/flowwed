@@ -2278,12 +2278,37 @@ modal.style.display = "flex";
   });
 
 
-  // КРЕСТИК ЗАКРЫТИЯ — ТЕПЕРЬ РАБОТАЕТ ВСЕГДА
-  document.getElementById("closeModal").addEventListener("click", () => {
-    document.getElementById("storyModal").style.display = "none";
+document.getElementById("closeModal")
+  .addEventListener("click", () => {
+    document.getElementById(
+      "storyModal"
+    ).style.display = "none";
   });
 
+const storyModal =
+  document.getElementById(
+    "storyModal"
+  );
+
+storyModal.addEventListener(
+  "click",
+  e => {
+
+    if (e.target !== storyModal)
+      return;
+
+    storyModal.style.display =
+      "none";
+
+    document.getElementById(
+      "storyIframe"
+    ).src = "";
+  }
+);
+
 });
+
+
 </script>
 
 <!-- MODAL STRUCTURE -->
@@ -3180,27 +3205,30 @@ z-index:999999;
 
 <script>
 
-const guideModal =
-  document.getElementById(
-    "guideModal"
-  );
+document
+  .querySelectorAll(".modal-backdrop")
+  .forEach(modal => {
 
-guideModal?.addEventListener(
-  "click",
-  e => {
+    modal.addEventListener(
+      "click",
+      e => {
 
-    if (
-      e.target === guideModal
-    ) {
+        if (e.target !== modal) return;
 
-      guideModal.style.display =
-        "none";
-    }
-  }
-);
+        modal.style.display = "none";
+
+        const iframe =
+          modal.querySelector("iframe");
+
+        if (iframe) {
+          iframe.src = "";
+        }
+      }
+    );
+
+  });
 
 </script>
-
 
 </body>
 </html>
