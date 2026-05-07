@@ -4223,64 +4223,16 @@ if (unassignedEl) {
 }
 
 /* Total Budget input */
-const totalBudgetInput =
-  document.getElementById(
-    'totalBudgetInput'
-  );
-
+const totalBudgetInput = document.getElementById('totalBudgetInput');
 if (totalBudgetInput) {
-
-  function formatTotalBudget() {
-
-    const raw =
-      totalBudgetInput.value
-        .replace(/[^\d]/g, '');
-
-    totalBudgetInput.value =
-      Number(raw || 0)
-        .toLocaleString();
-
+  const handler = () => {
     updateOverviewTotals();
+    updateTotalBalanceBar(); // ✅ ВОТ ГЛАВНОЕ
+  };
 
-    updateTotalBalanceBar();
-  }
-
-  totalBudgetInput.addEventListener(
-    'input',
-    formatTotalBudget
-  );
-
-  totalBudgetInput.addEventListener(
-    'blur',
-    () => {
-
-      formatTotalBudget();
-
-      showSuccessToast(
-        "Amount saved"
-      );
-    }
-  );
-
-  totalBudgetInput.addEventListener(
-    'keydown',
-    e => {
-
-      if (e.key !== 'Enter') return;
-
-      e.preventDefault();
-
-      formatTotalBudget();
-
-      showSuccessToast(
-        "Amount saved"
-      );
-
-      totalBudgetInput.blur();
-    }
-  );
+  totalBudgetInput.addEventListener('input', handler);
+  totalBudgetInput.addEventListener('blur', handler);
 }
-
 
 /* Category budgets */
 document.querySelectorAll('.category .budget-input').forEach(input => {
