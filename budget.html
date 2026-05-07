@@ -1852,7 +1852,15 @@ if (params.get("t")) {
     </div>
   </div>
 
-  <!-- Assigned Budget -->
+
+<!-- Assigned Budget -->
+<div class="card">
+  <h3>Assigned Budget</h3>
+  <div class="value" id="assignedBudgetValue">$0</div>
+</div>
+
+
+  <!-- Unassigned Budget -->
   <div class="card">
     <h3>Unassigned Budget</h3>
     <div class="value" id="unassignedBudgetValue">$0</div>
@@ -1864,11 +1872,6 @@ if (params.get("t")) {
     <div class="value" id="totalSpentValue">$0</div>
   </div>
 
-  <!-- Total Remaining -->
-  <div class="card">
-    <h3>Total Remaining</h3>
-    <div class="value" id="totalRemainingValue">$0</div>
-  </div>
 
   <!-- Estimated Final -->
   <div class="card estimated-card">
@@ -3556,6 +3559,8 @@ function initExpenseRow(row) {
 
     updateTotalBalanceBar();
 
+showSuccessToast("Amount saved");
+
     /* сохранить id */
     if (savedExpense) {
       row.__expenseId = savedExpense.id;
@@ -3733,23 +3738,6 @@ syncExpenseAvailability(category, row, amountInput);
 budgetInput.addEventListener('input', () => {
   syncExpenseAvailability(category, row, amountInput);
 });
-
-function applyExpense() {
-  const newValue = Number(amountInput.value) || 0;
-  if (!newValue) return;
-
-  category.__spent -= row.__value;
-  row.__value = newValue;
-  category.__spent += newValue;
-
-  category.__updateUI();
-  updateTotalBalanceBar();
-  showSuccessToast();
-
-
-}
-
-
 
 removeBtn.addEventListener('click', e => {
 
@@ -4132,6 +4120,19 @@ function updateOverviewTotals() {
   document.querySelectorAll('.category .budget-input').forEach(input => {
     assigned += parseMoney(input.value);
   });
+
+
+const assignedEl =
+  document.getElementById(
+    'assignedBudgetValue'
+  );
+
+if (assignedEl) {
+
+  assignedEl.textContent =
+    `$${assigned.toLocaleString()}`;
+}
+
 
   /* Total Spent */
   let spent = 0;
