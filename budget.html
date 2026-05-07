@@ -473,12 +473,56 @@ h1 {
   outline:none;
 }
 
-.expense-action{
-  background:none;
-  border:none;
-  cursor:pointer;
-  font-size:16px;
+.expense-action {
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  background: rgba(255,255,255,0.7);
+
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease;
 }
+
+
+.expense-action:hover {
+
+  transform: translateY(-1px);
+
+  background: rgba(255,255,255,0.92);
+
+  box-shadow:
+    0 8px 18px rgba(199,58,58,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+.expense-action.save {
+  color: #2e7d32;
+}
+
+.expense-action.remove {
+  color: #c73a3a;
+}
+
 
 .add-expense-link{
   margin-top:8px;
@@ -678,7 +722,11 @@ h1 {
   font-weight: 700;   /* bold */
 }
 
-
+#totalBudgetInput::placeholder {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(122, 29, 43, 0.42);
+}
 
 /* === ERROR HIGHLIGHT === */
 .input-error {
@@ -1799,7 +1847,7 @@ if (params.get("t")) {
         type="text"
         id="totalBudgetInput"
         class="budget-input"
-        placeholder="0"
+        placeholder="Enter wedding budget"
       />
     </div>
   </div>
@@ -3513,6 +3561,48 @@ function initExpenseRow(row) {
       row.__expenseId = savedExpense.id;
     }
 
+
+const template =
+  category.querySelector(
+    '.expense-row.expense-template'
+  );
+
+if (template) {
+
+  const newRow =
+    template.cloneNode(true);
+
+  newRow.classList.remove(
+    'expense-template'
+  );
+
+  newRow.style.display = 'flex';
+
+  newRow.querySelector(
+    '.expense-name'
+  ).value = '';
+
+  newRow.querySelector(
+    '.expense-amount'
+  ).value = '';
+
+  const addLink =
+    category.querySelector(
+      '.add-expense-link'
+    );
+
+  category
+    .querySelector('.details')
+    .insertBefore(newRow, addLink);
+
+  initExpenseRow(newRow);
+
+  newRow
+    .querySelector('.expense-name')
+    ?.focus();
+}
+
+
   });
 
 
@@ -3883,7 +3973,7 @@ document.querySelectorAll('.category').forEach(category => {
 
   z-index: 100000;
 ">
-  Amount added and saved
+  Amount saved
 </div>
 
 <script>
