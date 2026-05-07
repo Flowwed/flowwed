@@ -3117,9 +3117,10 @@ document.querySelectorAll('.category').forEach(category => {
   const progressBar =
     category.querySelector('.progress-bar');
 
-  if (!budgetInput || !spentEl || !progressBar) {
-    console.error("Missing UI elements");
-  }
+if (!budgetInput || !spentEl || !progressBar) {
+  console.error("Missing UI elements");
+  return;
+}
 
 });
 /* ===============================
@@ -3726,6 +3727,7 @@ document.addEventListener("keydown", e => {
 
 });
 
+});
 
 </script>
 
