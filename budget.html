@@ -3526,6 +3526,30 @@ function initExpenseRow(row) {
     const oldValue = row.__value || 0;
 
 
+const { data: existingExpense } =
+  await supabase
+    .from("budget_expenses")
+    .select("id")
+    .eq(
+      "category_id",
+      category.__categoryRow.id
+    )
+    .eq(
+      "expense_name",
+      expenseName
+    )
+    .maybeSingle();
+
+if (existingExpense) {
+
+  showToastOnce(
+    "This expense already exists"
+  );
+
+  return;
+}
+
+
     /* ONLY AFTER SUCCESS */
 
     row.__value = amount;
@@ -3607,14 +3631,6 @@ console.log(
   error
 );
 
-if (error) {
-
-  showToastOnce(
-    "This expense already exists"
-  );
-
-  return;
-}
 
 if (savedExpense) {
 
