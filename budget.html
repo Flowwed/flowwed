@@ -3538,31 +3538,6 @@ function initExpenseRow(row) {
 const isEditing =
   !!row.__expenseId;
 
-const { data: existingExpense } =
-  await supabase
-    .from("budget_expenses")
-    .select("id")
-    .eq(
-      "category_id",
-      category.__categoryRow.id
-    )
-    .eq(
-      "expense_name",
-      expenseName
-    )
-    .maybeSingle();
-
-if (
-  existingExpense &&
-  !isEditing
-) {
-
-  showToastOnce(
-    "This expense already exists"
-  );
-
-  return;
-}
 
     /* ONLY AFTER SUCCESS */
 
