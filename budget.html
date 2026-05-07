@@ -3512,6 +3512,9 @@ console.log("EXPENSE SAVE ERROR:", error);
 
 if (error) {
 
+  row.__value = oldValue;
+
+  category.__spent += oldValue;
   category.__spent -= amount;
 
   category.__updateUI();
