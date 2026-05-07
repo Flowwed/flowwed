@@ -3624,47 +3624,6 @@ if (savedExpense) {
 
 
 
-const template =
-  category.querySelector(
-    '.expense-row.expense-template'
-  );
-
-if (template) {
-
-  const newRow =
-    template.cloneNode(true);
-
-  newRow.classList.remove(
-    'expense-template'
-  );
-
-  newRow.style.display = 'flex';
-
-  newRow.querySelector(
-    '.expense-name'
-  ).value = '';
-
-  newRow.querySelector(
-    '.expense-amount'
-  ).value = '';
-
-  const addLink =
-    category.querySelector(
-      '.add-expense-link'
-    );
-
-  category
-    .querySelector('.details')
-    .insertBefore(newRow, addLink);
-
-  initExpenseRow(newRow);
-
-  newRow
-    .querySelector('.expense-name')
-    ?.focus();
-}
-
-
   });
 
 
