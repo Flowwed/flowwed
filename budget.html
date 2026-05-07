@@ -1804,16 +1804,7 @@ if (params.get("t")) {
     </div>
   </div>
 
-
   <!-- Assigned Budget -->
-  <div class="card">
-    <h3>Assigned Budget</h3>
-    <div class="value" id="totalRemainingValue">$0</div>
-  </div>
-
-
-
-  <!-- Unassigned Budget -->
   <div class="card">
     <h3>Unassigned Budget</h3>
     <div class="value" id="unassignedBudgetValue">$0</div>
@@ -1825,6 +1816,11 @@ if (params.get("t")) {
     <div class="value" id="totalSpentValue">$0</div>
   </div>
 
+  <!-- Total Remaining -->
+  <div class="card">
+    <h3>Total Remaining</h3>
+    <div class="value" id="totalRemainingValue">$0</div>
+  </div>
 
   <!-- Estimated Final -->
   <div class="card estimated-card">
@@ -2996,9 +2992,6 @@ document.querySelectorAll(".category").forEach(category => {
 
 
 <script type="module">
-
-let isSaving = false;
-
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 window.supabase = createClient(
@@ -3440,14 +3433,14 @@ addLink.addEventListener('click', e => {
 });
 
 
-  // =========================
-  // EXPENSE ROWSSS
-  // =========================
+// =========================
+// EXPENSE ROWSSS
+// =========================
 
 function initExpenseRow(row) {
 
-if (row.__initialized) return;
-row.__initialized = true;
+  if (row.__initialized) return;
+  row.__initialized = true;
 
   const category = row.closest('.category');
 
@@ -3478,52 +3471,50 @@ row.__initialized = true;
 
     if (!expenseName || !amount) return;
 
-if (isSaving) return;
-isSaving = true;
+    const oldValue = row.__value || 0;
 
-saveBtn.disabled = true;
+    /* SAVE FIRST */
+    const { data: savedExpense, error } = await supabase
+      .from("budget_expenses")
+      .insert({
+        category_id: category.__categoryRow.id,
+        expense_name: expenseName,
+        amount: amount
+      })
+      .select()
+      .single();
 
- const oldValue = row.__value || 0;
+    console.log("EXPENSE SAVE ERROR:", error);
 
-row.__value = amount;
+    /* ЕСЛИ DUPLICATE ИЛИ ДРУГАЯ ОШИБКА */
+    if (error) {
 
-category.__spent -= oldValue;
-category.__spent += amount;
+      alert("Такой expense уже существует");
 
-/* UI FIRST — INSTANT */
-category.__updateUI();
+      return;
+    }
 
-updateOverviewTotals();
+    /* ONLY AFTER SUCCESS */
 
-updateTotalBalanceBar();
+    row.__value = amount;
 
-/* SAVE AFTER */
-const { data: savedExpense, error } = await supabase
-  .from("budget_expenses")
-  .insert({
-    category_id: category.__categoryRow.id,
-    expense_name: expenseName,
-    amount: amount
-  })
-  .select()
-  .single();
+    category.__spent -= oldValue;
+    category.__spent += amount;
 
-console.log("EXPENSE SAVE ERROR:", error);
+    category.__updateUI();
 
-if (error) {
+    updateOverviewTotals();
 
-  console.error(error);
+    updateTotalBalanceBar();
 
-} else if (savedExpense) {
+    /* сохранить id */
+    if (savedExpense) {
+      row.__expenseId = savedExpense.id;
+    }
 
-  row.__expenseId = savedExpense.id;
+  });
 
 }
-
-isSaving = false;
-saveBtn.disabled = false;
-
-});
 
   syncExpenseAvailability();
 
@@ -3954,31 +3945,12 @@ function updateTotalBalanceBar() {
      EMPTY — нет Total Budget
   ================================ */
   if (!totalBudget) {
-
-    if (label) {
-      label.textContent = 'Set total budget';
-    }
-
+    if (label) label.textContent = 'Set total budget';
     return;
   }
 
-  const spentRatio =
-    spent / totalBudget;
-
-  let assigned = 0;
-
-  document.querySelectorAll('.budget-input').forEach(input => {
-
-    assigned +=
-      Number(
-        input.value.replace(/[^\d]/g, '')
-      ) || 0;
-
-  });
-
-  const remaining =
-    totalBudget - assigned;
-
+  const spentRatio = spent / totalBudget;
+  const remaining = totalBudget - spent;
 
   /* ===============================
      🟢 GREEN — < 50%
@@ -4043,107 +4015,72 @@ if (label) {
 ================================ */
 
 function parseMoney(val) {
-  return Number(
-    String(val || '').replace(/[^\d]/g, '')
-  ) || 0;
+  return Number(String(val || '').replace(/[^\d]/g, '')) || 0;
 }
 
 function updateOverviewTotals() {
-
   /* Total Budget (USER INPUT) */
-  const totalBudgetInput =
-    document.getElementById('totalBudgetInput');
-
-  const totalBudget =
-    totalBudgetInput
-      ? parseMoney(totalBudgetInput.value)
-      : 0;
+  const totalBudgetInput = document.getElementById('totalBudgetInput');
+  const totalBudget = totalBudgetInput
+    ? parseMoney(totalBudgetInput.value)
+    : 0;
 
   /* Assigned Budget */
   let assigned = 0;
-
-  document.querySelectorAll(
-    '.category .budget-input'
-  ).forEach(input => {
-
+  document.querySelectorAll('.category .budget-input').forEach(input => {
     assigned += parseMoney(input.value);
-
   });
 
   /* Total Spent */
   let spent = 0;
-
   document.querySelectorAll('.category').forEach(category => {
-
     spent += Number(category.__spent || 0);
-
   });
 
-  /* Render — Unassigned */
-  const unassigned =
-    (totalBudget || 0) - assigned;
+  /* Render — Assigned */
+const unassigned = (totalBudget || 0) - assigned;
 
-  const unassignedEl =
-    document.getElementById('unassignedBudgetValue');
+const unassignedEl =
+  document.getElementById('unassignedBudgetValue');
 
-  if (unassignedEl) {
+if (unassignedEl) {
+  unassignedEl.textContent =
+    `$${unassigned.toLocaleString()}`;
+}
 
-    unassignedEl.textContent =
-      `$${unassigned.toLocaleString()}`;
-
-  }
 
   /* Render — Spent */
-  const spentEl =
-    document.getElementById('totalSpentValue');
-
+  const spentEl = document.getElementById('totalSpentValue');
   if (spentEl) {
-
-    spentEl.textContent =
-      `$${spent.toLocaleString()}`;
-
+    spentEl.textContent = `$${spent.toLocaleString()}`;
   }
 
-  /* Render — Assigned Budget */
-  const remainingEl =
-    document.getElementById('totalRemainingValue');
+  /* Render — Remaining
+     ❗ КЛЮЧЕВОЕ ИЗМЕНЕНИЕ ЗДЕСЬ */
+  const remainingEl = document.getElementById('totalRemainingValue');
 
-  if (remainingEl) {
-
-    remainingEl.textContent =
-      `$${assigned.toLocaleString()}`;
-
+  if (!totalBudget) {
+    // 👉 если глобальный бюджет не задан — не считаем
+    if (remainingEl) remainingEl.textContent = '—';
+  } else {
+    const remaining = totalBudget - spent;
+    if (remainingEl) {
+      remainingEl.textContent = `$${remaining.toLocaleString()}`;
+    }
   }
-
 }
 
 /* Total Budget input */
-const totalBudgetInput =
-  document.getElementById('totalBudgetInput');
-
+const totalBudgetInput = document.getElementById('totalBudgetInput');
 if (totalBudgetInput) {
-
   const handler = () => {
-
     updateOverviewTotals();
-
-    updateTotalBalanceBar();
-
+    updateTotalBalanceBar(); // ✅ ВОТ ГЛАВНОЕ
   };
 
-  totalBudgetInput.addEventListener(
-    'input',
-    handler
-  );
-
-  totalBudgetInput.addEventListener(
-    'blur',
-    handler
-  );
-
+  totalBudgetInput.addEventListener('input', handler);
+  totalBudgetInput.addEventListener('blur', handler);
 }
-
-
 
 /* Category budgets */
 document.querySelectorAll('.category .budget-input').forEach(input => {
@@ -4435,3 +4372,5 @@ window.hideLoader = function () {
 </script>
 </body>
 </html>
+
+
