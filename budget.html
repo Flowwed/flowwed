@@ -2996,6 +2996,9 @@ document.querySelectorAll(".category").forEach(category => {
 
 
 <script type="module">
+
+let isSaving = false;
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
 window.supabase = createClient(
@@ -3475,7 +3478,10 @@ row.__initialized = true;
 
     if (!expenseName || !amount) return;
 
+if (isSaving) return;
+isSaving = true;
 
+saveBtn.disabled = true;
 
  const oldValue = row.__value || 0;
 
@@ -3503,7 +3509,8 @@ const { data: savedExpense, error } = await supabase
   .single();
 
 console.log("EXPENSE SAVE ERROR:", error);
-
+isSaving = false;
+saveBtn.disabled = false;
 if (savedExpense) {
   row.__expenseId = savedExpense.id;
 }
