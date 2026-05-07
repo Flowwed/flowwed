@@ -3110,8 +3110,14 @@ window.dispatchEvent(
 const totalBudgetInput = document.getElementById("totalBudgetInput");
 
 if (wedding?.total_budget) {
-  totalBudgetInput.value = wedding.total_budget;
+
+  totalBudgetInput.value =
+
+    Number(
+      wedding.total_budget
+    ).toLocaleString();
 }
+
 
 totalBudgetInput.addEventListener("change", async () => {
 
