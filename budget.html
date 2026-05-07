@@ -3525,26 +3525,6 @@ function initExpenseRow(row) {
 
     const oldValue = row.__value || 0;
 
-    /* SAVE FIRST */
-    const { data: savedExpense, error } = await supabase
-      .from("budget_expenses")
-      .insert({
-        category_id: category.__categoryRow.id,
-        expense_name: expenseName,
-        amount: amount
-      })
-      .select()
-      .single();
-
-    console.log("EXPENSE SAVE ERROR:", error);
-
-    /* ЕСЛИ DUPLICATE ИЛИ ДРУГАЯ ОШИБКА */
-    if (error) {
-
-      showToastOnce("This expense already exists");
-
-      return;
-    }
 
     /* ONLY AFTER SUCCESS */
 
@@ -3561,10 +3541,87 @@ function initExpenseRow(row) {
 
 showSuccessToast("Amount saved");
 
-    /* сохранить id */
-    if (savedExpense) {
-      row.__expenseId = savedExpense.id;
-    }
+const template =
+  category.querySelector(
+    '.expense-row.expense-template'
+  );
+
+if (template) {
+
+  const newRow =
+    template.cloneNode(true);
+
+  newRow.classList.remove(
+    'expense-template'
+  );
+
+  newRow.style.display = 'flex';
+
+  newRow.__initialized = false;
+
+  newRow.querySelector(
+    '.expense-name'
+  ).value = '';
+
+  newRow.querySelector(
+    '.expense-amount'
+  ).value = '';
+
+  const details =
+    category.querySelector('.details');
+
+  const addLink =
+    category.querySelector(
+      '.add-expense-link'
+    );
+
+  details.insertBefore(
+    newRow,
+    addLink
+  );
+
+  initExpenseRow(newRow);
+
+  newRow
+    .querySelector('.expense-name')
+    ?.focus();
+}
+
+const { data: savedExpense, error } =
+  await supabase
+    .from("budget_expenses")
+    .insert({
+      category_id:
+        category.__categoryRow.id,
+
+      expense_name:
+        expenseName,
+
+      amount: amount
+    })
+    .select()
+    .single();
+
+console.log(
+  "EXPENSE SAVE ERROR:",
+  error
+);
+
+if (error) {
+
+  showToastOnce(
+    "This expense already exists"
+  );
+
+  return;
+}
+
+if (savedExpense) {
+
+  row.__expenseId =
+    savedExpense.id;
+}
+
 
 
 const template =
