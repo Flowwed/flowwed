@@ -3535,7 +3535,8 @@ function initExpenseRow(row) {
     if (!expenseName || !amount) return;
 
     const oldValue = row.__value || 0;
-
+const isEditing =
+  !!row.__expenseId;
 
 const { data: existingExpense } =
   await supabase
@@ -3551,7 +3552,10 @@ const { data: existingExpense } =
     )
     .maybeSingle();
 
-if (existingExpense) {
+if (
+  existingExpense &&
+  !isEditing
+) {
 
   showToastOnce(
     "This expense already exists"
@@ -3559,7 +3563,6 @@ if (existingExpense) {
 
   return;
 }
-
 
     /* ONLY AFTER SUCCESS */
 
@@ -3622,18 +3625,38 @@ if (template) {
     ?.focus();
 }
 
+const query =
+
+  isEditing
+
+    ? supabase
+        .from("budget_expenses")
+        .update({
+          expense_name:
+            expenseName,
+
+          amount: amount
+        })
+        .eq(
+          "id",
+          row.__expenseId
+        )
+
+    : supabase
+        .from("budget_expenses")
+        .insert({
+          category_id:
+            category.__categoryRow.id,
+
+          expense_name:
+            expenseName,
+
+          amount: amount
+        });
+
 const { data: savedExpense, error } =
-  await supabase
-    .from("budget_expenses")
-    .insert({
-      category_id:
-        category.__categoryRow.id,
 
-      expense_name:
-        expenseName,
-
-      amount: amount
-    })
+  await query
     .select()
     .single();
 
@@ -3641,7 +3664,6 @@ console.log(
   "EXPENSE SAVE ERROR:",
   error
 );
-
 
 if (savedExpense) {
 
