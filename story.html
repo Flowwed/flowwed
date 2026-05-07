@@ -3209,26 +3209,22 @@ document
   .querySelectorAll(".modal-backdrop")
   .forEach(modal => {
 
-    modal.addEventListener(
-      "click",
-      e => {
+    modal.addEventListener("click", e => {
 
-        if (e.target !== modal) return;
+      if (e.target !== modal) return;
 
-        modal.style.display = "none";
+      modal.style.display = "none";
 
-        const iframe =
-          modal.querySelector("iframe");
+      const iframe =
+        modal.querySelector("iframe");
 
-        if (iframe) {
-          iframe.src = "";
-        }
-      }
-    );
+      if (iframe) iframe.src = "";
+    });
 
   });
 
 </script>
+
 
 </body>
 </html>
