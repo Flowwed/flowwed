@@ -3490,7 +3490,7 @@ function initExpenseRow(row) {
     /* ЕСЛИ DUPLICATE ИЛИ ДРУГАЯ ОШИБКА */
     if (error) {
 
-      alert("Такой expense уже существует");
+      showToastOnce("This expense already exists");
 
       return;
     }
@@ -3535,21 +3535,35 @@ const toast = document.getElementById("toast");
 let toastTimeout = null;
 let toastLock = false;
 
-function showToastOnce() {
+function showToastOnce(
+  message = "Please add budget first"
+) {
+
   if (!toast || toastLock) return;
+
+  toast.textContent = message;
 
   toastLock = true;
 
   toast.style.opacity = "1";
-  toast.style.transform = "translateX(-50%) translateY(0)";
+
+  toast.style.transform =
+    "translateX(-50%) translateY(0)";
 
   clearTimeout(toastTimeout);
+
   toastTimeout = setTimeout(() => {
+
     toast.style.opacity = "0";
-    toast.style.transform = "translateX(-50%) translateY(10px)";
+
+    toast.style.transform =
+      "translateX(-50%) translateY(10px)";
+
     toastLock = false;
+
   }, 1600);
 }
+
 
 const budgetInput =
   category.querySelector('.budget-input');
