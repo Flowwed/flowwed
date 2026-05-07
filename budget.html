@@ -1804,7 +1804,16 @@ if (params.get("t")) {
     </div>
   </div>
 
+
   <!-- Assigned Budget -->
+  <div class="card">
+    <h3>Assigned Budget</h3>
+    <div class="value" id="totalRemainingValue">$0</div>
+  </div>
+
+
+
+  <!-- Unassigned Budget -->
   <div class="card">
     <h3>Unassigned Budget</h3>
     <div class="value" id="unassignedBudgetValue">$0</div>
@@ -1816,11 +1825,6 @@ if (params.get("t")) {
     <div class="value" id="totalSpentValue">$0</div>
   </div>
 
-  <!-- Total Remaining -->
-  <div class="card">
-    <h3>Total Remaining</h3>
-    <div class="value" id="totalRemainingValue">$0</div>
-  </div>
 
   <!-- Estimated Final -->
   <div class="card estimated-card">
@@ -3942,8 +3946,20 @@ function updateTotalBalanceBar() {
     return;
   }
 
-  const spentRatio = spent / totalBudget;
-  const remaining = totalBudget - spent;
+const spentRatio = spent / totalBudget;
+
+let assigned = 0;
+
+document.querySelectorAll('.budget-input').forEach(input => {
+
+  assigned +=
+    Number(
+      input.value.replace(/[^\d]/g, '')
+    ) || 0;
+
+});
+
+
 
   /* ===============================
      🟢 GREEN — < 50%
@@ -4008,72 +4024,107 @@ if (label) {
 ================================ */
 
 function parseMoney(val) {
-  return Number(String(val || '').replace(/[^\d]/g, '')) || 0;
+  return Number(
+    String(val || '').replace(/[^\d]/g, '')
+  ) || 0;
 }
 
 function updateOverviewTotals() {
+
   /* Total Budget (USER INPUT) */
-  const totalBudgetInput = document.getElementById('totalBudgetInput');
-  const totalBudget = totalBudgetInput
-    ? parseMoney(totalBudgetInput.value)
-    : 0;
+  const totalBudgetInput =
+    document.getElementById('totalBudgetInput');
+
+  const totalBudget =
+    totalBudgetInput
+      ? parseMoney(totalBudgetInput.value)
+      : 0;
 
   /* Assigned Budget */
   let assigned = 0;
-  document.querySelectorAll('.category .budget-input').forEach(input => {
+
+  document.querySelectorAll(
+    '.category .budget-input'
+  ).forEach(input => {
+
     assigned += parseMoney(input.value);
+
   });
 
   /* Total Spent */
   let spent = 0;
+
   document.querySelectorAll('.category').forEach(category => {
+
     spent += Number(category.__spent || 0);
+
   });
 
-  /* Render — Assigned */
-const unassigned = (totalBudget || 0) - assigned;
+  /* Render — Unassigned */
+  const unassigned =
+    (totalBudget || 0) - assigned;
 
-const unassignedEl =
-  document.getElementById('unassignedBudgetValue');
+  const unassignedEl =
+    document.getElementById('unassignedBudgetValue');
 
-if (unassignedEl) {
-  unassignedEl.textContent =
-    `$${unassigned.toLocaleString()}`;
-}
+  if (unassignedEl) {
 
+    unassignedEl.textContent =
+      `$${unassigned.toLocaleString()}`;
+
+  }
 
   /* Render — Spent */
-  const spentEl = document.getElementById('totalSpentValue');
+  const spentEl =
+    document.getElementById('totalSpentValue');
+
   if (spentEl) {
-    spentEl.textContent = `$${spent.toLocaleString()}`;
+
+    spentEl.textContent =
+      `$${spent.toLocaleString()}`;
+
   }
 
-  /* Render — Remaining
-     ❗ КЛЮЧЕВОЕ ИЗМЕНЕНИЕ ЗДЕСЬ */
-  const remainingEl = document.getElementById('totalRemainingValue');
+  /* Render — Assigned Budget */
+  const remainingEl =
+    document.getElementById('totalRemainingValue');
 
-  if (!totalBudget) {
-    // 👉 если глобальный бюджет не задан — не считаем
-    if (remainingEl) remainingEl.textContent = '—';
-  } else {
-    const remaining = totalBudget - spent;
-    if (remainingEl) {
-      remainingEl.textContent = `$${remaining.toLocaleString()}`;
-    }
+  if (remainingEl) {
+
+    remainingEl.textContent =
+      `$${assigned.toLocaleString()}`;
+
   }
+
 }
 
 /* Total Budget input */
-const totalBudgetInput = document.getElementById('totalBudgetInput');
+const totalBudgetInput =
+  document.getElementById('totalBudgetInput');
+
 if (totalBudgetInput) {
+
   const handler = () => {
+
     updateOverviewTotals();
-    updateTotalBalanceBar(); // ✅ ВОТ ГЛАВНОЕ
+
+    updateTotalBalanceBar();
+
   };
 
-  totalBudgetInput.addEventListener('input', handler);
-  totalBudgetInput.addEventListener('blur', handler);
+  totalBudgetInput.addEventListener(
+    'input',
+    handler
+  );
+
+  totalBudgetInput.addEventListener(
+    'blur',
+    handler
+  );
+
 }
+
+
 
 /* Category budgets */
 document.querySelectorAll('.category .budget-input').forEach(input => {
