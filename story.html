@@ -2916,15 +2916,22 @@ if (!header.innerText.trim()) {
     position: relative;
     box-shadow: 0 20px 60px rgba(0,0,0,0.4);
   ">
-    <div id="closeGuide" style="
-      position:absolute;
-      top:10px;
-      right:14px;
-      font-size:28px;
-      font-weight:bold;
-      cursor:pointer;
-      z-index:10;
-    ">×</div>
+<div id="closeGuide" style="
+  position:absolute;
+  top:10px;
+  right:14px;
+
+  font-size:28px;
+  font-weight:500;
+
+  opacity:.72;
+
+  cursor:pointer;
+
+  z-index:10;
+
+  transition:opacity .18s ease;
+">×</div>
 
     <iframe src="tttourstory.html" style="
       width:100%;
