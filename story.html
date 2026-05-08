@@ -2772,15 +2772,47 @@ caption.style.lineHeight = "1.45";
 
 caption.style.color = "#5c4a4a";
 
-caption.style.textAlign = "center";
+caption.style.textAlign = "left";
 
 caption.style.maxWidth = "110px";
 
 caption.style.wordBreak = "break-word";
 
+caption.style.display = "-webkit-box";
+caption.style.webkitLineClamp = "2";
+caption.style.webkitBoxOrient = "vertical";
+caption.style.overflow = "hidden";
 
-  wrapper.appendChild(caption);
+const showMore = document.createElement("div");
 
+showMore.innerText = "Show more";
+
+showMore.style.marginTop = "6px";
+showMore.style.fontSize = "12px";
+showMore.style.fontWeight = "600";
+showMore.style.color = "#8d1f1f";
+showMore.style.cursor = "pointer";
+
+let expanded = false;
+
+showMore.onclick = () => {
+
+  expanded = !expanded;
+
+  if (expanded) {
+
+    caption.style.webkitLineClamp = "unset";
+    showMore.innerText = "Show less";
+
+  } else {
+
+    caption.style.webkitLineClamp = "2";
+    showMore.innerText = "Show more";
+  }
+};
+
+wrapper.appendChild(caption);
+wrapper.appendChild(showMore);
 }
 
     // 🔥 ВОТ ГЛАВНЫЙ ФИКС (backend delete)
