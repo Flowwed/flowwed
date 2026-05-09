@@ -1871,6 +1871,7 @@ const token = window.APP_TOKEN;
 const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
+let bypassBeforeUnload = false;
 let isSaving = false;
 let isInitialLoading = true;
 
@@ -2967,6 +2968,26 @@ modal.style.display = "flex";
 window.pendingNavigation =
   link.href;
 
+document.getElementById("stayBtn").onclick = () => {
+
+  document.getElementById(
+    "unsavedModal"
+  ).style.display = "none";
+
+};
+
+document.getElementById("leaveBtn").onclick = () => {
+
+  hasUnsavedChanges = false;
+
+  bypassBeforeUnload = true;
+
+  window.location.href =
+    window.pendingNavigation;
+
+};
+
+
   });
 
 });
@@ -3402,55 +3423,16 @@ document
 
 <script>
 
-window.addEventListener("beforeunload", (e) => {
+window.onbeforeunload = null;
 
-  if (!hasUnsavedChanges) return;
+window.addEventListener("beforeunload", function(e) {
 
-  e.preventDefault();
+  e.stopImmediatePropagation();
 
-  e.returnValue = "";
-
-});
-
-document.querySelectorAll(".menu-dropdown a").forEach(link => {
-
-  link.addEventListener("click", (e) => {
-
-    if (!hasUnsavedChanges || isSaving) return;
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-
-    const modal =
-      document.getElementById("unsavedModal");
-
-    modal.style.display = "flex";
-
-    window.pendingNavigation =
-      link.href;
-
-  });
-
-});
-
-document.getElementById("stayBtn").onclick = () => {
-
-  document.getElementById(
-    "unsavedModal"
-  ).style.display = "none";
-
-};
-
-document.getElementById("leaveBtn").onclick = () => {
-
-  hasUnsavedChanges = false;
-
-  window.location.href =
-    window.pendingNavigation;
-
-};
+}, true);
 
 </script>
+
 
 </body>
 </html>
