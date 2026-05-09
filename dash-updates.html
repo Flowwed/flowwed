@@ -1029,6 +1029,56 @@ if (params.get("t")) {
 
   <div id="toast" class="toast">Message saved!</div>
 
+<div id="unsavedModal" style="
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+">
+
+  <div style="
+    width:380px;
+    background:white;
+    border-radius:20px;
+    padding:24px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.35);
+    text-align:center;
+  ">
+
+    <div style="
+      font-size:20px;
+      font-weight:700;
+      color:#9c1818;
+      margin-bottom:12px;
+    ">
+      Unsaved Changes
+    </div>
+
+    <div style="
+      font-size:15px;
+      line-height:1.5;
+      color:#555;
+      margin-bottom:22px;
+    ">
+      Please save your latest changes before leaving this page.
+    </div>
+
+    <button id="saveLeaveBtn" style="
+      width:100%;
+    ">
+      Save & Leave
+    </button>
+
+  </div>
+
+</div>
+
+
+
+
 <div id="qrOverlay" style="
   position:fixed;
   inset:0;
@@ -1575,13 +1625,12 @@ dropdown.querySelectorAll("a").forEach(link => {
 
     if (!hasUnsavedChanges) return;
 
-    const ok = confirm(
-      "You have unsaved changes. Leave anyway?"
-    );
+e.preventDefault();
 
-    if (!ok) {
-      e.preventDefault();
-    }
+const modal =
+  document.getElementById("unsavedModal");
+
+modal.style.display = "flex";
 
   });
 
@@ -1628,6 +1677,41 @@ window.addEventListener("beforeunload", (e) => {
   e.preventDefault();
 
   e.returnValue = "";
+
+});
+
+</script>
+
+
+<script>
+
+let pendingLeaveHref = null;
+
+document.querySelectorAll(".menu-dropdown a")
+.forEach(link => {
+
+  link.addEventListener("click", (e) => {
+
+    if (!hasUnsavedChanges) return;
+
+    e.preventDefault();
+
+    pendingLeaveHref = link.href;
+
+  });
+
+});
+
+document.getElementById("saveLeaveBtn")
+?.addEventListener("click", async () => {
+
+  await saveUpdate();
+
+  hasUnsavedChanges = false;
+
+  if (pendingLeaveHref) {
+    window.location.href = pendingLeaveHref;
+  }
 
 });
 
