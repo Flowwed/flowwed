@@ -3412,6 +3412,41 @@ window.addEventListener("beforeunload", (e) => {
 
 });
 
+document.querySelectorAll(".menu-dropdown a").forEach(link => {
+
+  link.addEventListener("click", (e) => {
+
+    if (!hasUnsavedChanges) return;
+
+    e.preventDefault();
+
+    const href = link.href;
+
+    const modal =
+      document.getElementById("unsavedModal");
+
+    modal.style.display = "flex";
+
+    document.getElementById("stayBtn").onclick = () => {
+
+      modal.style.display = "none";
+
+    };
+
+    document.getElementById("leaveBtn").onclick = () => {
+
+      hasUnsavedChanges = false;
+
+      window.location.href = href;
+
+    };
+
+  });
+
+});
+
+
+
 </script>
 
 </body>
