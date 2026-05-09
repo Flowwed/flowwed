@@ -1667,6 +1667,8 @@ fieldIds.forEach(id => {
 
   el.addEventListener("input", () => {
 
+hasUnsavedChanges = true;
+
     // ✅ обновление карты от адреса
     if (id === "venueAddress") {
       const mapLink = document.getElementById("mapLink");

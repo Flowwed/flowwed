@@ -1851,6 +1851,8 @@ const token = window.APP_TOKEN;
 
 const token = window.APP_TOKEN;
 
+let hasUnsavedChanges = false;
+
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
   const uploadBtn = document.getElementById("uploadBtn");
@@ -2534,6 +2536,9 @@ editorEl.style.display = "none";
 window.isSwitching = false;
 
 window.quill.on("text-change", () => {
+
+hasUnsavedChanges = true;
+
   // 🚫 НЕ сохраняем во время переключения вкладок
   if (window.isSwitching) return;
 
@@ -2761,7 +2766,7 @@ caption.style.maxWidth = "110px";
 caption.style.wordBreak = "break-word";
 
 caption.style.display = "-webkit-box";
-caption.style.webkitLineClamp = "2";
+caption.style.webkitLineClamp = "1";
 caption.style.webkitBoxOrient = "vertical";
 caption.style.overflow = "hidden";
 
@@ -2788,7 +2793,7 @@ showMore.onclick = () => {
 
   } else {
 
-    caption.style.webkitLineClamp = "2";
+    caption.style.webkitLineClamp = "1";
     showMore.innerText = "Show more";
   }
 };
@@ -2844,10 +2849,30 @@ const tokenNav = window.APP_TOKEN;
 
 /* прокинуть token во все ссылки меню */
 document.querySelectorAll(".top-nav a").forEach(a => {
+
   if (tokenNav) {
     a.href = a.href + "?t=" + tokenNav;
   }
 });
+
+document.querySelectorAll(".top-nav a").forEach(link => {
+
+  link.addEventListener("click", (e) => {
+
+    if (!hasUnsavedChanges) return;
+
+    const ok = confirm(
+      "You have unsaved changes. Leave anyway?"
+    );
+
+    if (!ok) {
+      e.preventDefault();
+    }
+
+  });
+
+});
+
 
 /* active nav link */
 document.addEventListener("DOMContentLoaded", () => {
@@ -2895,6 +2920,9 @@ header.addEventListener("focus", () => {
 
 // BLUR
 header.addEventListener("blur", () => {
+
+hasUnsavedChanges = true;
+
   if (!header.innerText.trim()) {
     header.innerText = HEADER_PLACEHOLDER;
     header.style.color = "#aaa";
@@ -3253,6 +3281,19 @@ document
 
 </script>
 
+<script>
+
+window.addEventListener("beforeunload", (e) => {
+
+  if (!hasUnsavedChanges) return;
+
+  e.preventDefault();
+
+  e.returnValue = "";
+
+});
+
+</script>
 
 </body>
 </html>
