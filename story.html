@@ -2956,42 +2956,46 @@ document.querySelectorAll(".menu-dropdown a").forEach(link => {
 
   link.addEventListener("click", (e) => {
 
-    if (!hasUnsavedChanges || isSaving) return;
+    // 🚫 всегда стопаем browser navigation
+    e.preventDefault();
 
-e.preventDefault();
+    // ✅ если всё сохранено → идём сразу
+    if (!hasUnsavedChanges || isSaving) {
 
-const modal =
-  document.getElementById("unsavedModal");
+      window.location.href = link.href;
+      return;
+    }
 
-modal.style.display = "flex";
+    // ✅ показываем modal
+    const modal =
+      document.getElementById("unsavedModal");
 
-window.pendingNavigation =
-  link.href;
+    modal.style.display = "flex";
 
-document.getElementById("stayBtn").onclick = () => {
-
-  document.getElementById(
-    "unsavedModal"
-  ).style.display = "none";
-
-};
-
-document.getElementById("leaveBtn").onclick = () => {
-
-  hasUnsavedChanges = false;
-
-  bypassBeforeUnload = true;
-
-  window.location.href =
-    window.pendingNavigation;
-
-};
-
+    window.pendingNavigation = link.href;
 
   });
 
 });
 
+document.getElementById("stayBtn")
+  .addEventListener("click", () => {
+
+    document.getElementById(
+      "unsavedModal"
+    ).style.display = "none";
+
+});
+
+document.getElementById("leaveBtn")
+  .addEventListener("click", () => {
+
+    hasUnsavedChanges = false;
+
+    window.location.href =
+      window.pendingNavigation;
+
+});
 
 /* active nav link */
 document.addEventListener("DOMContentLoaded", () => {
@@ -3421,17 +3425,6 @@ document
 
 </script>
 
-<script>
-
-window.onbeforeunload = null;
-
-window.addEventListener("beforeunload", function(e) {
-
-  e.stopImmediatePropagation();
-
-}, true);
-
-</script>
 
 
 </body>
