@@ -2017,9 +2017,18 @@ del.onclick = async () => {
     img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
   });
 
-  const text = document.createElement("div");
-  text.className = "caption-text";
-  text.innerText = row.caption || "—";
+const text = document.createElement("div");
+text.className = "caption-text";
+
+text.innerText = row.caption || "—";
+
+text.style.textAlign = "left";
+
+text.style.display = "-webkit-box";
+text.style.webkitLineClamp = "2";
+text.style.webkitBoxOrient = "vertical";
+
+text.style.overflow = "hidden";
 
   item.appendChild(del);
   item.appendChild(label);
@@ -2028,6 +2037,7 @@ del.onclick = async () => {
 
   return item;
 });
+
 
 const items = (await Promise.all(renderPromises))
   .filter(Boolean)
