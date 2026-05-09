@@ -2030,10 +2030,42 @@ text.style.webkitBoxOrient = "vertical";
 
 text.style.overflow = "hidden";
 
+const toggle = document.createElement("div");
+
+toggle.innerText = "Show more";
+
+toggle.style.marginTop = "4px";
+toggle.style.fontSize = "12px";
+toggle.style.fontWeight = "600";
+toggle.style.color = "#8d1f1f";
+toggle.style.cursor = "pointer";
+
+let expanded = false;
+
+toggle.onclick = () => {
+
+  expanded = !expanded;
+
+  if (expanded) {
+
+    text.style.webkitLineClamp = "unset";
+
+    toggle.innerText = "Show less";
+
+  } else {
+
+    text.style.webkitLineClamp = "2";
+
+    toggle.innerText = "Show more";
+  }
+};
+
+
   item.appendChild(del);
   item.appendChild(label);
   item.appendChild(img);
   item.appendChild(text);
+  item.appendChild(toggle);
 
   return item;
 });
