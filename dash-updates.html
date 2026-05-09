@@ -1147,6 +1147,8 @@ if (params.get("t")) {
 const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
+let isSaving = false;
+let isInitialLoading = true;
 
 const registryToggle =
   document.getElementById("registryToggle");
@@ -1277,6 +1279,8 @@ const registryToggle =
       };
 
       try {
+
+        isSaving = true;
         const updates = await fetchUpdates();
         updates.unshift(newUpdate);
 
@@ -1298,16 +1302,24 @@ const registryToggle =
           return;
         }
 
-        showToast("Update saved!");
+      hasUnsavedChanges = false;
 
-        hasUnsavedChanges = false;
+      showToast("Update saved!");
 
         await loadStoryText();
         quill.root.innerHTML = "";
-      } catch (error) {
-        console.error("SAVE ERROR:", error);
-        showToast("Save error");
-      }
+
+} catch (error) {
+
+  console.error("SAVE ERROR:", error);
+
+  showToast("Save error");
+
+} finally {
+
+  isSaving = false;
+
+}
     }
 
 function openModal(url, size = "large") {
@@ -1382,11 +1394,13 @@ function initQuill() {
 
   }
 
-  quill.on("text-change", () => {
+quill.on("text-change", () => {
 
+  if (!isInitialLoading) {
     hasUnsavedChanges = true;
+  }
 
-  });
+});
 
 }
 
@@ -1508,6 +1522,13 @@ async function initPage() {
 
     await loadStoryText();
 
+setTimeout(() => {
+
+  isInitialLoading = false;
+  hasUnsavedChanges = false;
+
+}, 100);
+
   } catch (err) {
 
     console.error(err);
@@ -1623,7 +1644,7 @@ dropdown.querySelectorAll("a").forEach(link => {
 
   link.addEventListener("click", (e) => {
 
-    if (!hasUnsavedChanges) return;
+    if (!hasUnsavedChanges || isSaving) return;
 
 e.preventDefault();
 
@@ -1672,7 +1693,7 @@ document.getElementById("storyModal")?.addEventListener("click", (e) => {
 
 window.addEventListener("beforeunload", (e) => {
 
-  if (!hasUnsavedChanges) return;
+  if (!hasUnsavedChanges || isSaving) return;
 
   e.preventDefault();
 
@@ -1692,7 +1713,7 @@ document.querySelectorAll(".menu-dropdown a")
 
   link.addEventListener("click", (e) => {
 
-    if (!hasUnsavedChanges) return;
+    if (!hasUnsavedChanges || isSaving) return;
 
     e.preventDefault();
 
