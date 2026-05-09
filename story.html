@@ -1726,6 +1726,7 @@ const originalText = btn.innerHTML;
 
 btn.classList.add("btn-loading");
 btn.innerHTML = `<span class="btn-spinner"></span>Saving...`;
+isSaving = true;
 
  console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
   if (!token) return alert("Missing token");
@@ -1786,10 +1787,28 @@ if (!res.ok) {
   console.error("SUPABASE ERROR:", errorText);
 }
 
-showToast(res.ok ? "Text saved" : "Save failed");
+if (!res.ok) {
+
+  const errorText = await res.text();
+
+  console.error("SUPABASE ERROR:", errorText);
+
+  showToast("Save failed");
+
+} else {
+
+  hasUnsavedChanges = false;
+
+  showToast("Text saved");
+
+}
 
 btn.classList.remove("btn-loading");
 btn.innerHTML = originalText;
+
+isSaving = false;
+
+
 
 });
 
@@ -1852,6 +1871,8 @@ const token = window.APP_TOKEN;
 const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
+let isSaving = false;
+let isInitialLoading = true;
 
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
@@ -1980,6 +2001,14 @@ function showPreview(file, isFinal = false) {
       await loadSlugFromGallery(token);
 
       await loadStoryFromSupabase();
+
+setTimeout(() => {
+
+  isInitialLoading = false;
+  hasUnsavedChanges = false;
+
+}, 100);
+
 
       await loadMiniGallery();
 
@@ -2537,7 +2566,10 @@ window.isSwitching = false;
 
 window.quill.on("text-change", () => {
 
-hasUnsavedChanges = true;
+  if (!isInitialLoading && !window.isSwitching) {
+    hasUnsavedChanges = true;
+  }
+
 
   // 🚫 НЕ сохраняем во время переключения вкладок
   if (window.isSwitching) return;
@@ -2859,7 +2891,7 @@ document.querySelectorAll(".top-nav a").forEach(link => {
 
   link.addEventListener("click", (e) => {
 
-    if (!hasUnsavedChanges) return;
+    if (!hasUnsavedChanges || isSaving) return;
 
     const ok = confirm(
       "You have unsaved changes. Leave anyway?"
