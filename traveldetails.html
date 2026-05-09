@@ -1515,6 +1515,10 @@ const sb = window.supabase.createClient(
 
     const storageKey = `venueMapDraft:${token || "no-token"}`;
 
+let hasUnsavedChanges = false;
+let isSaving = false;
+let isInitialLoading = true;
+
 const fieldIds = [
 
   "coupleName",
@@ -1564,19 +1568,25 @@ const fieldIds = [
       return data;
     }
 
-    function setFormData(data){
-      fieldIds.forEach(id => {
-        const el = document.getElementById(id);
+function setFormData(data){
 
+  fieldIds.forEach(id => {
 
-if (el && data[id] != null) {
-  el.value = data[id];
-  el.dispatchEvent(new Event("input"));
-}
+    const el = document.getElementById(id);
 
+    if (el && data[id] != null) {
 
-      });
+      el.value = data[id];
+
+      if (!isInitialLoading) {
+        el.dispatchEvent(new Event("input"));
+      }
+
     }
+
+  });
+
+}
 
     function saveDraft(){
       localStorage.setItem(storageKey, JSON.stringify(getFormData()));
@@ -1665,9 +1675,11 @@ fieldIds.forEach(id => {
   const el = document.getElementById(id);
   if (!el) return;
 
-  el.addEventListener("input", () => {
+el.addEventListener("input", () => {
 
-hasUnsavedChanges = true;
+  if (!isInitialLoading) {
+    hasUnsavedChanges = true;
+  }
 
     // ✅ обновление карты от адреса
     if (id === "venueAddress") {
@@ -1688,13 +1700,17 @@ hasUnsavedChanges = true;
 
     saveDraft();
 
-    const iframe = document.getElementById("modalFrame");
+const iframe = document.getElementById("modalFrame");
 
-    iframe.contentWindow.postMessage({
-      type: "LIVE_UPDATE",
-      field: id,
-      data: getFormData()
-    }, "*");
+if (iframe && iframe.contentWindow) {
+
+  iframe.contentWindow.postMessage({
+    type: "LIVE_UPDATE",
+    field: id,
+    data: getFormData()
+  }, "*");
+
+}
 
   });
 });
@@ -1742,10 +1758,28 @@ const faq = getFaqData();
 
   };
 
+try {
+
+  isSaving = true;
+
   await saveToSupabase(data);
 
+  hasUnsavedChanges = false;
+
   showToast("Saved");
-markAsSaved();
+
+} catch(err){
+
+  console.error(err);
+
+  showToast("Save failed", "error");
+
+} finally {
+
+  isSaving = false;
+
+}
+
 
 });
 
@@ -2010,6 +2044,11 @@ if (data.faq && Array.isArray(data.faq)) {
       .eq("site_edit_token", window.APP_TOKEN);
   }
 
+setTimeout(() => {
+  isInitialLoading = false;
+  hasUnsavedChanges = false;
+}, 100);
+
 requestAnimationFrame(() => {
 
   if (overlay) {
@@ -2068,10 +2107,13 @@ async function saveToSupabase(data) {
       { onConflict: "site_edit_token" }
     );
 
-  if (error) {
-    console.error("❌ FULL ERROR:", error);
-    alert(error.message + " | " + error.details);
-  }
+if (error) {
+
+  console.error("❌ FULL ERROR:", error);
+
+  throw error;
+}
+
 }
 
 
@@ -2877,7 +2919,7 @@ dropdown.querySelectorAll("a").forEach(link => {
   // 🔥 UNSAVED CHANGES WARNING
 link.addEventListener("click", (e) => {
 
-  if (!hasUnsavedChanges) return;
+  if (!hasUnsavedChanges || isSaving) return;
 
   e.preventDefault();
 
@@ -3190,7 +3232,7 @@ function markAsSaved() {
 // popup при выходе
 window.addEventListener("beforeunload", (e) => {
 
-  if (!hasUnsavedChanges) return;
+  if (!hasUnsavedChanges || isSaving) return;
 
   e.preventDefault();
 
