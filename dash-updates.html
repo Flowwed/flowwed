@@ -1096,6 +1096,8 @@ if (params.get("t")) {
 
 const token = window.APP_TOKEN;
 
+let hasUnsavedChanges = false;
+
 const registryToggle =
   document.getElementById("registryToggle");
 
@@ -1247,6 +1249,9 @@ const registryToggle =
         }
 
         showToast("Update saved!");
+
+        hasUnsavedChanges = false;
+
         await loadStoryText();
         quill.root.innerHTML = "";
       } catch (error) {
@@ -1303,27 +1308,38 @@ modal.classList.add("is-open");
       );
     }
 
+function initQuill() {
 
-    function initQuill() {
-      if (!window.Quill) {
-        console.error("Quill NOT loaded");
-        return;
-      }
+  if (!window.Quill) {
+    console.error("Quill NOT loaded");
+    return;
+  }
 
-      quill = new Quill("#editor", {
-        theme: "snow",
-        modules: {
-          toolbar: "#toolbar-container"
-        }
-      });
-
-      const toolbarEl = $("#toolbar-container");
-      if (toolbarEl) {
-        toolbarEl.addEventListener("mousedown", (event) => {
-          event.preventDefault();
-        });
-      }
+  quill = new Quill("#editor", {
+    theme: "snow",
+    modules: {
+      toolbar: "#toolbar-container"
     }
+  });
+
+  const toolbarEl = $("#toolbar-container");
+
+  if (toolbarEl) {
+
+    toolbarEl.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+    });
+
+  }
+
+  quill.on("text-change", () => {
+
+    hasUnsavedChanges = true;
+
+  });
+
+}
+
 
     function initButtons() {
       const saveBtn = $(".save-btn");
@@ -1552,6 +1568,27 @@ document.addEventListener("DOMContentLoaded", () => {
     dropdown.classList.remove("open");
   });
 
+
+dropdown.querySelectorAll("a").forEach(link => {
+
+  link.addEventListener("click", (e) => {
+
+    if (!hasUnsavedChanges) return;
+
+    const ok = confirm(
+      "You have unsaved changes. Leave anyway?"
+    );
+
+    if (!ok) {
+      e.preventDefault();
+    }
+
+  });
+
+});
+
+
+
 });
 
 </script>
@@ -1582,6 +1619,19 @@ document.getElementById("storyModal")?.addEventListener("click", (e) => {
 
 </script>
 
+<script>
+
+window.addEventListener("beforeunload", (e) => {
+
+  if (!hasUnsavedChanges) return;
+
+  e.preventDefault();
+
+  e.returnValue = "";
+
+});
+
+</script>
 
 </body>
 </html>
