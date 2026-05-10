@@ -1695,13 +1695,10 @@ modal.style.display = "flex";
 
 document.getElementById("saveLeaveBtn").onclick = async () => {
 
-  await saveUpdate();
-
-console.time("LEAVE");
+saveUpdate();
 
 window.location.href = targetHref;
 
-console.timeEnd("LEAVE");
 };
 
   });
