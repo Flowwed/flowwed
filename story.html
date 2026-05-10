@@ -1859,7 +1859,6 @@ const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
 
-let isProgrammaticUpdate = false;
 
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
@@ -2618,12 +2617,10 @@ window.isSwitching = false;
 
 window.quill.on("text-change", () => {
 
-if (isProgrammaticUpdate || window.isSwitching) return;
-
-hasUnsavedChanges = true;
-
   // 🚫 НЕ сохраняем во время переключения вкладок
   if (window.isSwitching) return;
+
+  hasUnsavedChanges = true;
 
   if (window.currentKey) {
     const current = window.storyData[window.currentKey] || {};
@@ -2634,6 +2631,8 @@ hasUnsavedChanges = true;
     };
   }
 });
+
+
 window.syncCurrentBlock = function () {
   if (window.currentKey) {
     const headerEl = document.getElementById("fakeHeader");
@@ -2677,7 +2676,6 @@ function openBlock(block) {
 
   editorEl.style.display = "block";
 
-isProgrammaticUpdate = true;
 
   window.quill.setText("");
 
@@ -2691,9 +2689,6 @@ headerEl.style.color = data.header ? "#000" : "#aaa";
 
   window.quill.root.innerHTML = data.body || "";
 
-setTimeout(() => {
-  isProgrammaticUpdate = false;
-}, 0);
 
   window.quill.root.dataset.placeholder =
     (placeholders[newKey] || "") +
