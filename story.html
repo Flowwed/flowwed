@@ -1733,6 +1733,11 @@ btn.innerHTML = `<span class="btn-spinner"></span>Saving...`;
 // 🔥 фиксируем активный блок
 window.syncCurrentBlock();
 
+if (!window.currentKey) {
+  showToast("Open a section first");
+  return;
+}
+
 // 🔥 берём header + текст
 const headerEl = document.getElementById("fakeHeader");
 
