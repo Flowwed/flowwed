@@ -1513,8 +1513,21 @@ if (params.get("t")) {
 </script>
 
 
-    <input type="file" id="fileInput" accept="image/*">
+<label style="
+  display:block;
+  margin-top:10px;
+  margin-bottom:-2px;
 
+  font-size:13px;
+  font-weight:600;
+
+  color:#8f1d1d;
+  text-align:left;
+">
+  Max 20 photos • 5MB per photo
+</label>
+
+<input type="file" id="fileInput" accept="image/*">
 
 
 <script>
@@ -2033,6 +2046,16 @@ uploadBtn.disabled = true;
 uploadBtn.innerHTML = "Uploading...";
 
   const file = fileInput.files[0];
+
+const MAX_SIZE = 5 * 1024 * 1024;
+
+if (file.size > MAX_SIZE) {
+  status.innerText = "⚠️ Photo must be under 5MB.";
+  uploadBtn.disabled = false;
+  uploadBtn.innerHTML = originalUploadText;
+  return;
+}
+
   const slot = slotSelect.value;
 
 const existing = await fetch(
