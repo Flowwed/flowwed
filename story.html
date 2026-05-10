@@ -3176,17 +3176,22 @@ dropdown.querySelectorAll("a").forEach(link => {
 
     modal.style.display = "flex";
 
-document.getElementById("saveLeaveBtn").onclick = async () => {
+    document.getElementById("saveLeaveBtn").onclick = async () => {
 
-  isSaving = true;
+      document.querySelector(".save-btn").click();
 
-  await saveUpdate();
+      window.location.href = targetHref;
 
-  hasUnsavedChanges = false;
+    };
 
-  window.location.href = targetHref;
+modal.onclick = (e) => {
+
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
 
 };
+
 
   });
 
@@ -3437,21 +3442,6 @@ document
   });
 
 </script>
-
-<script>
-
-window.addEventListener("beforeunload", (e) => {
-
-  if (!hasUnsavedChanges) return;
-
-  e.preventDefault();
-
-  e.returnValue = "";
-
-});
-
-</script>
-
 
 
 </body>

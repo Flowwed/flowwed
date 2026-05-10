@@ -1328,10 +1328,11 @@ documentUpdates.unshift(newUpdate);
           }
         );
 
-if (!res.ok) {
-  showToast("Save failed");
-  return false;
-}
+        if (!res.ok) {
+          showToast("Save failed");
+          return;
+        }
+
       hasUnsavedChanges = false;
 
       showToast("Update saved!");
@@ -1352,8 +1353,6 @@ setTimeout(() => {
   console.error("SAVE ERROR:", error);
 
   showToast("Save error");
-
-return true;
 
 } finally {
 
@@ -1703,18 +1702,9 @@ modal.style.display = "flex";
 
 document.getElementById("saveLeaveBtn").onclick = async () => {
 
-  isSaving = true;
+saveUpdate();
 
-  const ok = await saveUpdate();
-
-  if (!ok) {
-    isSaving = false;
-    return;
-  }
-
-  hasUnsavedChanges = false;
-
-  window.location.href = targetHref;
+window.location.href = targetHref;
 
 };
 
@@ -1778,22 +1768,6 @@ console.log("pendingLeaveHref =", pendingLeaveHref);
 
 
 </script>
-
-
-<script>
-
-window.addEventListener("beforeunload", (e) => {
-
-  if (!hasUnsavedChanges) return;
-
-  e.preventDefault();
-
-  e.returnValue = "";
-
-});
-
-</script>
-
 
 </body>
 </html>
