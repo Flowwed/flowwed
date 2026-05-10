@@ -2050,7 +2050,7 @@ uploadBtn.innerHTML = "Uploading...";
 const MAX_SIZE = 5 * 1024 * 1024;
 
 if (file.size > MAX_SIZE) {
-  status.innerText = "⚠️ Photo must be under 5MB";
+  status.innerText = "⚠️ Photo must be under 5MB. Choose another file.";
   uploadBtn.disabled = false;
   uploadBtn.innerHTML = originalUploadText;
   return;
