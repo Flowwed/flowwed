@@ -3077,16 +3077,37 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔥 ПОДСВЕТКА
   const currentPage = window.location.pathname.split("/").pop().toLowerCase();
 
-  dropdown.querySelectorAll("a").forEach(link => {
-    const href = link.getAttribute("href");
-    if (!href) return;
+dropdown.querySelectorAll("a").forEach(link => {
 
-    const linkPage = href.split("?")[0].split("/").pop().toLowerCase();
+  const href = link.getAttribute("href");
 
-    if (linkPage === currentPage) {
-      link.classList.add("active");
-    }
+  if (!href) return;
+
+  const linkPage =
+    href
+      .split("?")[0]
+      .split("/")
+      .pop()
+      .toLowerCase();
+
+  if (linkPage === currentPage) {
+    link.classList.add("active");
+  }
+
+  link.addEventListener("click", (e) => {
+
+    if (!hasUnsavedChanges) return;
+
+    e.preventDefault();
+
+    document
+      .getElementById("unsavedModal")
+      .style.display = "flex";
+
   });
+
+});
+
 
   // 🔥 open / close
   trigger.addEventListener("click", (e) => {
