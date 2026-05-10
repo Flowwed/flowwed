@@ -2648,19 +2648,32 @@ window.quill.on("text-change", () => {
     };
   }
 });
-window.syncCurrentBlock = function () {
-  if (window.currentKey) {
-    const headerEl = document.getElementById("fakeHeader");
 
-    window.storyData[window.currentKey] = {
-      header:
-        headerEl.innerText === HEADER_PLACEHOLDER
-          ? ""
-          : headerEl.innerText.trim(),
-      body: window.quill.root.innerHTML
-    };
-  }
+window.syncCurrentBlock = function () {
+
+  if (!window.currentKey) return;
+
+  const headerEl =
+    document.getElementById("fakeHeader");
+
+  window.storyData[window.currentKey] = {
+
+    header:
+      headerEl.innerText === HEADER_PLACEHOLDER
+        ? ""
+        : headerEl.innerText.trim(),
+
+    body: window.quill.root.innerHTML
+
+  };
+
+  // 🔥 помечаем страницу как изменённую
+  hasUnsavedChanges = true;
+
 };
+
+
+
   // =========================
   // 🔥 3. TAB LOGIC
   // =========================
@@ -3056,6 +3069,10 @@ header.addEventListener("keydown", function (e) {
 
 // FOCUS
 header.addEventListener("focus", () => {
+
+header.addEventListener("input", () => {
+  hasUnsavedChanges = true;
+});
   if (header.innerText.trim() === HEADER_PLACEHOLDER) {
     header.innerText = "";
   }
