@@ -1653,6 +1653,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // 🔥 open / close
+
+let menuHandlersAttached = false;
+
   trigger.addEventListener("click", (e) => {
     e.stopPropagation();
     dropdown.classList.toggle("open");
@@ -1662,6 +1665,8 @@ document.addEventListener("DOMContentLoaded", () => {
     dropdown.classList.remove("open");
   });
 
+if (menuHandlersAttached) return;
+menuHandlersAttached = true;
 
 dropdown.querySelectorAll("a").forEach(link => {
 
