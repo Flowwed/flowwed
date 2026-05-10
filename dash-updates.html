@@ -1702,9 +1702,13 @@ modal.style.display = "flex";
 
 document.getElementById("saveLeaveBtn").onclick = async () => {
 
-saveUpdate();
+  isSaving = true;
 
-window.location.href = targetHref;
+  await saveUpdate();
+
+  hasUnsavedChanges = false;
+
+  window.location.href = targetHref;
 
 };
 
