@@ -1339,7 +1339,14 @@ documentUpdates.unshift(newUpdate);
 
 renderUpdates(documentUpdates);
 
+isInitialLoading = true;
+
 quill.root.innerHTML = "";
+
+setTimeout(() => {
+  isInitialLoading = false;
+}, 50);
+
 
 } catch (error) {
 
