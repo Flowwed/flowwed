@@ -482,7 +482,7 @@ input[type=file]::file-selector-button {
   display: none;
   justify-content: center;
   align-items: center;
-   z-index: 99999999;          /* ← Поверх ВСЕГО сайта */
+  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
 }
 
 /* MODAL WINDOW */
@@ -1726,7 +1726,6 @@ const originalText = btn.innerHTML;
 
 btn.classList.add("btn-loading");
 btn.innerHTML = `<span class="btn-spinner"></span>Saving...`;
-isSaving = true;
 
  console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
   if (!token) return alert("Missing token");
@@ -1787,28 +1786,10 @@ if (!res.ok) {
   console.error("SUPABASE ERROR:", errorText);
 }
 
-if (!res.ok) {
-
-  const errorText = await res.text();
-
-  console.error("SUPABASE ERROR:", errorText);
-
-  showToast("Save failed");
-
-} else {
-
-  hasUnsavedChanges = false;
-
-  showToast("Text saved");
-
-}
+showToast(res.ok ? "Text saved" : "Save failed");
 
 btn.classList.remove("btn-loading");
 btn.innerHTML = originalText;
-
-isSaving = false;
-
-
 
 });
 
@@ -1871,9 +1852,6 @@ const token = window.APP_TOKEN;
 const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
-let bypassBeforeUnload = false;
-let isSaving = false;
-let isInitialLoading = true;
 
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
@@ -2002,14 +1980,6 @@ function showPreview(file, isFinal = false) {
       await loadSlugFromGallery(token);
 
       await loadStoryFromSupabase();
-
-setTimeout(() => {
-
-  isInitialLoading = false;
-  hasUnsavedChanges = false;
-
-}, 100);
-
 
       await loadMiniGallery();
 
@@ -2352,62 +2322,56 @@ storyModal.addEventListener(
 
 <div id="toast" class="toast">Message saved!</div>
 
-<div id="unsavedModal" class="modal-backdrop" style="display:none;">
+<div id="unsavedModal" style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
 
-  <div class="modal-window" style="
-    width:420px;
-    height:auto;
-    padding:28px;
-    border-radius:24px;
-    text-align:center;
+z-index:99999999;
+
+align-items:center;
+justify-content:center;
+">
+
+  <div style="
+  width:320px;
+  background:white;
+  border-radius:22px;
+  padding:24px;
+  text-align:center;
   ">
 
     <div style="
-      font-size:24px;
-      font-weight:700;
-      color:#8d1f1f;
-      margin-bottom:12px;
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:12px;
     ">
       Unsaved Changes
     </div>
 
     <div style="
-      font-size:16px;
-      line-height:1.5;
-      color:#555;
-      margin-bottom:26px;
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom:20px;
+    color:#666;
     ">
-      You have unsaved changes.<br>
-      Please save before leaving this page.
+      You have unsaved changes.
+      Leave this page anyway?
     </div>
 
     <div style="
-      display:flex;
-      gap:12px;
-      justify-content:center;
+    display:flex;
+    gap:10px;
+    justify-content:center;
     ">
 
-      <button
-        id="stayBtn"
-        class="ruby-btn"
-        style="
-          padding:10px 18px;
-          font-size:14px;
-        "
-      >
+      <button id="stayBtn">
         Stay
       </button>
 
-      <button
-        id="leaveBtn"
-        class="ruby-btn"
-        style="
-          padding:10px 18px;
-          font-size:14px;
-          background:#6f685e;
-        "
-      >
-        Leave Anyway
+      <button id="leaveBtn">
+        Leave
       </button>
 
     </div>
@@ -2415,6 +2379,8 @@ storyModal.addEventListener(
   </div>
 
 </div>
+
+
 
 <!-- CAPTION MODAL -->
 
@@ -2631,10 +2597,7 @@ window.isSwitching = false;
 
 window.quill.on("text-change", () => {
 
-  if (!isInitialLoading && !window.isSwitching) {
-    hasUnsavedChanges = true;
-  }
-
+hasUnsavedChanges = true;
 
   // 🚫 НЕ сохраняем во время переключения вкладок
   if (window.isSwitching) return;
@@ -2648,32 +2611,19 @@ window.quill.on("text-change", () => {
     };
   }
 });
-
 window.syncCurrentBlock = function () {
+  if (window.currentKey) {
+    const headerEl = document.getElementById("fakeHeader");
 
-  if (!window.currentKey) return;
-
-  const headerEl =
-    document.getElementById("fakeHeader");
-
-  window.storyData[window.currentKey] = {
-
-    header:
-      headerEl.innerText === HEADER_PLACEHOLDER
-        ? ""
-        : headerEl.innerText.trim(),
-
-    body: window.quill.root.innerHTML
-
-  };
-
-  // 🔥 помечаем страницу как изменённую
-  hasUnsavedChanges = true;
-
+    window.storyData[window.currentKey] = {
+      header:
+        headerEl.innerText === HEADER_PLACEHOLDER
+          ? ""
+          : headerEl.innerText.trim(),
+      body: window.quill.root.innerHTML
+    };
+  }
 };
-
-
-
   // =========================
   // 🔥 3. TAB LOGIC
   // =========================
@@ -2965,50 +2915,22 @@ document.querySelectorAll(".top-nav a").forEach(a => {
   }
 });
 
-document.querySelectorAll(".menu-dropdown a").forEach(link => {
+document.querySelectorAll(".top-nav a").forEach(link => {
 
   link.addEventListener("click", (e) => {
 
-    // 🚫 всегда стопаем browser navigation
-    e.preventDefault();
+    if (!hasUnsavedChanges) return;
 
-    // ✅ если всё сохранено → идём сразу
-    if (!hasUnsavedChanges || isSaving) {
+const modal =
+  document.getElementById("unsavedModal");
 
-      window.location.href = link.href;
-      return;
-    }
+modal.style.display = "flex";
 
-    // ✅ показываем modal
-    const modal =
-      document.getElementById("unsavedModal");
-
-    modal.style.display = "flex";
-
-    window.pendingNavigation = link.href;
 
   });
 
 });
 
-document.getElementById("stayBtn")
-  .addEventListener("click", () => {
-
-    document.getElementById(
-      "unsavedModal"
-    ).style.display = "none";
-
-});
-
-document.getElementById("leaveBtn")
-  .addEventListener("click", () => {
-
-    hasUnsavedChanges = false;
-
-    window.location.href =
-      window.pendingNavigation;
-
-});
 
 /* active nav link */
 document.addEventListener("DOMContentLoaded", () => {
@@ -3020,27 +2942,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-
-document.getElementById("stayBtn")
-  .addEventListener("click", () => {
-
-    document.getElementById(
-      "unsavedModal"
-    ).style.display = "none";
-
-});
-
-document.getElementById("leaveBtn")
-  .addEventListener("click", () => {
-
-    window.location.href =
-      window.pendingNavigation;
-
-});
-
-
-
 
 </script>
 
@@ -3069,10 +2970,6 @@ header.addEventListener("keydown", function (e) {
 
 // FOCUS
 header.addEventListener("focus", () => {
-
-header.addEventListener("input", () => {
-  hasUnsavedChanges = true;
-});
   if (header.innerText.trim() === HEADER_PLACEHOLDER) {
     header.innerText = "";
   }
@@ -3168,6 +3065,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!trigger || !dropdown || !sourceNav) return;
 
   const token = window.APP_TOKEN;
+
+
 
   // 🔥 строим меню
   dropdown.innerHTML =
@@ -3442,7 +3341,19 @@ document
 
 </script>
 
+<script>
 
+window.addEventListener("beforeunload", (e) => {
+
+  if (!hasUnsavedChanges) return;
+
+  e.preventDefault();
+
+  e.returnValue = "";
+
+});
+
+</script>
 
 </body>
 </html>
