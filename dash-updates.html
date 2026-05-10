@@ -1173,6 +1173,8 @@ let hasUnsavedChanges = false;
 let isSaving = false;
 let isInitialLoading = true;
 
+let documentUpdates = [];
+
 const registryToggle =
   document.getElementById("registryToggle");
 
@@ -1285,8 +1287,13 @@ const registryToggle =
       if (!token || !quill) return;
 
       try {
-        const updates = await fetchUpdates();
-        renderUpdates(updates);
+
+const updates = await fetchUpdates();
+
+documentUpdates = updates;
+
+renderUpdates(updates);
+
       } catch (error) {
         console.error("LOAD ERROR:", error);
       }
@@ -1304,8 +1311,9 @@ const registryToggle =
       try {
 
         isSaving = true;
-        const updates = await fetchUpdates();
-        updates.unshift(newUpdate);
+
+documentUpdates.unshift(newUpdate);
+
 
         const res = await fetch(
           `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
@@ -1315,7 +1323,7 @@ const registryToggle =
               "Content-Type": "application/json"
             }),
             body: JSON.stringify({
-              wed_updates: updates
+              wed_updates: documentUpdates
             })
           }
         );
@@ -1329,8 +1337,9 @@ const registryToggle =
 
       showToast("Update saved!");
 
-        await loadStoryText();
-        quill.root.innerHTML = "";
+renderUpdates(documentUpdates);
+
+quill.root.innerHTML = "";
 
 } catch (error) {
 
