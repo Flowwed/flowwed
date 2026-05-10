@@ -1733,10 +1733,6 @@ btn.innerHTML = `<span class="btn-spinner"></span>Saving...`;
 // 🔥 фиксируем активный блок
 window.syncCurrentBlock();
 
-if (!window.currentKey) {
-  showToast("Open a section first");
-  return;
-}
 
 // 🔥 берём header + текст
 const headerEl = document.getElementById("fakeHeader");
@@ -3163,6 +3159,36 @@ dropdown.querySelectorAll("a").forEach(link => {
   document.addEventListener("click", () => {
     dropdown.classList.remove("open");
   });
+
+dropdown.querySelectorAll("a").forEach(link => {
+
+  link.addEventListener("click", (e) => {
+
+    if (!hasUnsavedChanges) return;
+
+    e.preventDefault();
+
+    const modal =
+      document.getElementById("unsavedModal");
+
+    const targetHref =
+      link.getAttribute("href");
+
+    modal.style.display = "flex";
+
+    document.getElementById("saveLeaveBtn").onclick = async () => {
+
+      document.querySelector(".save-btn").click();
+
+      window.location.href = targetHref;
+
+    };
+
+  });
+
+});
+
+
 
 });
 
