@@ -2939,6 +2939,8 @@ document.querySelectorAll(".top-nav a").forEach(link => {
     const modal =
       document.getElementById("unsavedModal");
 
+const targetHref = link.href;
+
     modal.style.display = "flex";
 
 document.getElementById("saveLeaveBtn").onclick = async () => {
@@ -2947,7 +2949,7 @@ document.getElementById("saveLeaveBtn").onclick = async () => {
 
 setTimeout(() => {
 
-  window.location.href = link.href;
+  window.location.href = targetHref;
 
 }, 700);
 
@@ -3262,6 +3264,7 @@ function showConfirm(text) {
 
     document.getElementById("confirmText")
       .innerText = text;
+
 
     modal.style.display = "flex";
 
