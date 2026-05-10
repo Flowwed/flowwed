@@ -1328,11 +1328,10 @@ documentUpdates.unshift(newUpdate);
           }
         );
 
-        if (!res.ok) {
-          showToast("Save failed");
-          return;
-        }
-
+if (!res.ok) {
+  showToast("Save failed");
+  return false;
+}
       hasUnsavedChanges = false;
 
       showToast("Update saved!");
@@ -1353,6 +1352,8 @@ setTimeout(() => {
   console.error("SAVE ERROR:", error);
 
   showToast("Save error");
+
+return true;
 
 } finally {
 
@@ -1704,7 +1705,12 @@ document.getElementById("saveLeaveBtn").onclick = async () => {
 
   isSaving = true;
 
-  await saveUpdate();
+  const ok = await saveUpdate();
+
+  if (!ok) {
+    isSaving = false;
+    return;
+  }
 
   hasUnsavedChanges = false;
 
