@@ -2930,6 +2930,26 @@ link.addEventListener("click", (e) => {
 
   document.getElementById("saveLeaveBtn").onclick = async () => {
 
+const btn = document.getElementById("saveLeaveBtn");
+
+btn.disabled = true;
+
+btn.innerHTML = `
+  <span style="
+    display:inline-block;
+    width:14px;
+    height:14px;
+    border:2px solid rgba(255,255,255,0.45);
+    border-top:2px solid #fff;
+    border-radius:50%;
+    margin-right:8px;
+    vertical-align:middle;
+    animation:spin .7s linear infinite;
+  "></span>
+
+  Saving...
+`;
+
     const f = getFormData();
 
     const schedule = getScheduleData();
@@ -3295,6 +3315,15 @@ window.addEventListener("beforeunload", (e) => {
   </div>
 
 </div>
+
+
+<style>
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
 
 </body>
 </html>
