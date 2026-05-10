@@ -2941,6 +2941,18 @@ document.querySelectorAll(".top-nav a").forEach(link => {
 
     modal.style.display = "flex";
 
+document.getElementById("saveLeaveBtn").onclick = async () => {
+
+  document.getElementById("saveDraftBtn").click();
+
+setTimeout(() => {
+
+  window.location.href = link.href;
+
+}, 700);
+
+};
+
   });
 
 });
