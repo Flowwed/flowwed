@@ -1697,8 +1697,11 @@ document.getElementById("saveLeaveBtn").onclick = async () => {
 
   await saveUpdate();
 
-  window.location.href = targetHref;
+console.time("LEAVE");
 
+window.location.href = targetHref;
+
+console.timeEnd("LEAVE");
 };
 
   });
