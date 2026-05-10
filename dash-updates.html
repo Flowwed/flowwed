@@ -1769,5 +1769,21 @@ console.log("pendingLeaveHref =", pendingLeaveHref);
 
 </script>
 
+
+<script>
+
+window.addEventListener("beforeunload", (e) => {
+
+  if (!hasUnsavedChanges) return;
+
+  e.preventDefault();
+
+  e.returnValue = "";
+
+});
+
+</script>
+
+
 </body>
 </html>
