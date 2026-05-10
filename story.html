@@ -2921,16 +2921,16 @@ document.querySelectorAll(".top-nav a").forEach(link => {
 
     if (!hasUnsavedChanges) return;
 
-const modal =
-  document.getElementById("unsavedModal");
+    e.preventDefault();
 
-modal.style.display = "flex";
+    const modal =
+      document.getElementById("unsavedModal");
 
+    modal.style.display = "flex";
 
   });
 
 });
-
 
 /* active nav link */
 document.addEventListener("DOMContentLoaded", () => {
