@@ -1789,7 +1789,7 @@ uploadBtn.onclick = async () => {
   const file = fileInput.files[0];
 
 if (file.size > 5 * 1024 * 1024) {
-  status.innerText = "⚠️ Photo must be under 5MB.";
+  status.innerText = "⚠️ Photo must be under 5MB. Choose another file.";
   return;
 }
 
