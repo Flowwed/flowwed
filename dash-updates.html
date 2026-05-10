@@ -1674,7 +1674,8 @@ e.preventDefault();
 const modal =
   document.getElementById("unsavedModal");
 
-const targetHref = link.href;
+const targetHref =
+  link.getAttribute("href");
 
 modal.style.display = "flex";
 
