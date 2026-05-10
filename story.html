@@ -2323,56 +2323,48 @@ storyModal.addEventListener(
 <div id="toast" class="toast">Message saved!</div>
 
 <div id="unsavedModal" style="
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-
-z-index:99999999;
-
-align-items:center;
-justify-content:center;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
 ">
 
   <div style="
-  width:320px;
-  background:white;
-  border-radius:22px;
-  padding:24px;
-  text-align:center;
+    width:380px;
+    background:white;
+    border-radius:20px;
+    padding:24px;
+    box-shadow:0 25px 60px rgba(0,0,0,0.35);
+    text-align:center;
   ">
 
     <div style="
-    font-size:18px;
-    font-weight:700;
-    margin-bottom:12px;
+      font-size:20px;
+      font-weight:700;
+      color:#9c1818;
+      margin-bottom:12px;
     ">
       Unsaved Changes
     </div>
 
     <div style="
-    font-size:14px;
-    line-height:1.5;
-    margin-bottom:20px;
-    color:#666;
+      font-size:15px;
+      line-height:1.5;
+      color:#555;
+      margin-bottom:22px;
     ">
-      You have unsaved changes.
-      Leave this page anyway?
+      Please save your latest changes before leaving this page.
     </div>
 
-    <div style="
-    display:flex;
-    gap:10px;
-    justify-content:center;
+    <button id="saveLeaveBtn" style="
+      width:100%;
     ">
+      Save & Leave
+    </button>
 
-      <button id="stayBtn">
-        Stay
-      </button>
-
-      <button id="leaveBtn">
-        Leave
-      </button>
 
     </div>
 
