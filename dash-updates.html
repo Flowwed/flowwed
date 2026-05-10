@@ -1681,14 +1681,9 @@ modal.style.display = "flex";
 
 document.getElementById("saveLeaveBtn").onclick = async () => {
 
-  document.getElementById("saveDraftBtn").click();
-
-setTimeout(() => {
+  await saveUpdate();
 
   window.location.href = targetHref;
-
-}, 700);
-
 
 };
 
@@ -1757,23 +1752,12 @@ document.querySelectorAll(".menu-dropdown a")
     e.preventDefault();
 
     pendingLeaveHref = link.href;
+console.log("pendingLeaveHref =", pendingLeaveHref);
 
   });
 
 });
 
-document.getElementById("saveLeaveBtn")
-?.addEventListener("click", async () => {
-
-  await saveUpdate();
-
-  hasUnsavedChanges = false;
-
-  if (pendingLeaveHref) {
-    window.location.href = pendingLeaveHref;
-  }
-
-});
 
 </script>
 
