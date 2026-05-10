@@ -1786,6 +1786,12 @@ if (!res.ok) {
   console.error("SUPABASE ERROR:", errorText);
 }
 
+
+if (res.ok) {
+  hasUnsavedChanges = false;
+}
+
+
 showToast(res.ok ? "Text saved" : "Save failed");
 
 btn.classList.remove("btn-loading");
@@ -1852,6 +1858,8 @@ const token = window.APP_TOKEN;
 const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
+
+let isProgrammaticUpdate = false;
 
   const tokenDisplay = document.getElementById("tokenDisplay");
   const slugDisplay = document.getElementById("slugDisplay");
@@ -2610,6 +2618,8 @@ window.isSwitching = false;
 
 window.quill.on("text-change", () => {
 
+if (isProgrammaticUpdate) return;
+
 hasUnsavedChanges = true;
 
   // 🚫 НЕ сохраняем во время переключения вкладок
@@ -2667,6 +2677,8 @@ function openBlock(block) {
 
   editorEl.style.display = "block";
 
+isProgrammaticUpdate = true;
+
   window.quill.setText("");
 
   const data = window.storyData[newKey] || { header: "", body: "" };
@@ -2678,6 +2690,10 @@ headerEl.style.color = data.header ? "#000" : "#aaa";
 
 
   window.quill.root.innerHTML = data.body || "";
+
+setTimeout(() => {
+  isProgrammaticUpdate = false;
+}, 0);
 
   window.quill.root.dataset.placeholder =
     (placeholders[newKey] || "") +
@@ -2955,6 +2971,7 @@ setTimeout(() => {
 }, 700);
 
 };
+
 
   });
 
@@ -3391,19 +3408,6 @@ document
 
 </script>
 
-<script>
-
-window.addEventListener("beforeunload", (e) => {
-
-  if (!hasUnsavedChanges) return;
-
-  e.preventDefault();
-
-  e.returnValue = "";
-
-});
-
-</script>
 
 </body>
 </html>
