@@ -1723,19 +1723,6 @@ document.getElementById("storyModal")?.addEventListener("click", (e) => {
 
 </script>
 
-<script>
-
-window.addEventListener("beforeunload", (e) => {
-
-  if (!hasUnsavedChanges || isSaving) return;
-
-  e.preventDefault();
-
-  e.returnValue = "";
-
-});
-
-</script>
 
 
 <script>
