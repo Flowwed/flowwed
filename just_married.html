@@ -1187,6 +1187,19 @@ max-width: 620px;
 }
 
 
+.upload-note {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: -2px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #8f1d1d;
+
+  text-align: left;
+}
+
 
 </style>
 
@@ -1386,7 +1399,14 @@ if (params.get("t")) {
 
     </select>
 
-    <input type="file" id="fileInput" accept="image/*" />
+    <label class="upload-note">
+  Max 125 photos • 5MB per photo
+</label>
+
+<input type="file" id="fileInput" accept="image/*" />
+
+
+
     <button id="uploadBtn">Upload Photo to Your Page</button>
 
     <div class="progress-container" id="progressContainer">
@@ -1767,6 +1787,12 @@ uploadBtn.onclick = async () => {
   }
 
   const file = fileInput.files[0];
+
+if (file.size > 5 * 1024 * 1024) {
+  status.innerText = "⚠️ Photo must be under 5MB.";
+  return;
+}
+
   const slot = slotSelect.value;
 
   // 🔎 ПРОВЕРКА: есть ли уже фото
