@@ -806,20 +806,19 @@ preview.src = localVideoURL;
 
 uploadBtn.onclick = async () => {
 
-  const file = fileInput.files[0];
+const file = fileInput.files[0];
 
-const MAX_SIZE = 80 * 1024 * 1024; // 80MB
+if (!file) {
+  status.innerText = "Choose video first";
+  return;
+}
+
+const MAX_SIZE = 80 * 1024 * 1024;
 
 if (file.size > MAX_SIZE) {
   status.innerText = "❌ Video too large (max 80MB)";
   return;
 }
-
-  if (!file) {
-    status.innerText = "Choose video first";
-    return;
-  }
-
 
   if (!slug) {
     status.innerText = "No slug";
@@ -990,6 +989,10 @@ deleteBtn.onclick = async () => {
   preview.src = "";
   preview.style.display = "none";
   fileInput.value = "";
+
+  fileName.innerText =
+  "MP4 only • Max 80MB";
+
   previewBox.classList.add("placeholder");
   status.innerText = "🗑 Deleted";
 
