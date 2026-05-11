@@ -909,6 +909,10 @@ const videoUrl = `${SUPABASE_URL}/storage/v1/object/public/galleries/${realPath}
 
     status.innerText = "✅ Uploaded!";
 
+setTimeout(() => {
+  status.innerText = "";
+}, 2000);
+
 uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalText;
 
@@ -988,6 +992,10 @@ deleteBtn.onclick = async () => {
   fileInput.value = "";
   previewBox.classList.add("placeholder");
   status.innerText = "🗑 Deleted";
+
+setTimeout(() => {
+  status.innerText = "";
+}, 2000);
 
   currentVideoPath = null;
 
