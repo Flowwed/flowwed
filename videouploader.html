@@ -1058,6 +1058,8 @@ chooseFileBtn.onclick = () => {
 fileInput.addEventListener("change", e => {
   const file = e.target.files[0];
 
+  status.innerText = "";
+
   if (file) {
     fileName.innerText = file.name;
   } else {
