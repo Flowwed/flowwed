@@ -1795,12 +1795,18 @@ const res = await fetch(
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: "Bearer " + SUPABASE_KEY,
+
+// 🔥 ДОБАВИТЬ
+      "x-edit-token": token,
+
       "Content-Type": "application/json",
       Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
     },
     body: JSON.stringify(payload)
   }
 );
+
+
 
 if (!res.ok) {
   const errorText = await res.text();
@@ -1963,6 +1969,7 @@ function showPreview(file, isFinal = false) {
           headers: {
             apikey: SUPABASE_KEY,
             Authorization: "Bearer " + SUPABASE_KEY,
+"x-edit-token": token,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({ p_token: token })
@@ -2165,6 +2172,7 @@ const saveRes = await fetch(
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: "Bearer " + SUPABASE_KEY,
+ "x-edit-token": token,
       "Content-Type": "application/json",
       Prefer: "resolution=merge-duplicates,return=representation"
     },
@@ -2281,6 +2289,7 @@ const res = await fetch(
     headers: {
       apikey: SUPABASE_KEY,
       Authorization: "Bearer " + SUPABASE_KEY,
+ "x-edit-token": token,
       "Content-Type": "application/json",
       Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
     },
@@ -3293,6 +3302,7 @@ btn.innerText = "Saving...";
       headers: {
         apikey: SUPABASE_KEY,
         Authorization: "Bearer " + SUPABASE_KEY,
+ "x-edit-token": token,
         "Content-Type": "application/json",
         Prefer: "resolution=merge-duplicates"
       },
@@ -3345,6 +3355,7 @@ document.getElementById("storyToggle")
       headers: {
         apikey: SUPABASE_KEY,
         Authorization: "Bearer " + SUPABASE_KEY,
+ "x-edit-token": token,
         "Content-Type": "application/json"
       },
 
