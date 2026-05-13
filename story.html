@@ -1501,12 +1501,16 @@ if (params.get("t")) {
 <script>
   const select = document.getElementById("slotSelect");
 
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 35; i++) {
     const slotNum = i + 2; // img2 → img21
     const option = document.createElement("option");
 
     option.value = "img" + slotNum;
-    option.textContent = "Photo " + (i + 1);
+    option.textContent =
+    i === 0
+    ? "Photo 1 (Top Cover Photo)"
+    : "Photo " + (i + 1);
+
 
     select.appendChild(option);
   }
@@ -1524,7 +1528,7 @@ if (params.get("t")) {
   color:#8f1d1d;
   text-align:left;
 ">
-  Max 20 photos • 5MB per photo
+  Max 35 photos • 5MB per photo
 </label>
 
 <input type="file" id="fileInput" accept="image/*">
