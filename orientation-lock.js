@@ -1,4 +1,4 @@
-(function(){
+(function () {
 
   const overlay = document.createElement("div");
 
@@ -6,11 +6,6 @@
 
   overlay.style.position = "fixed";
   overlay.style.inset = "0";
-
-  overlay.style.top = "0";
-  overlay.style.left = "0";
-  overlay.style.right = "0";
-  overlay.style.bottom = "0";
 
   overlay.style.zIndex = "999999";
 
@@ -22,7 +17,6 @@
   overlay.style.background = "rgba(0,0,0,.55)";
   overlay.style.backdropFilter = "blur(12px)";
 
-  overlay.style.touchAction = "none";
   overlay.style.pointerEvents = "all";
 
   overlay.innerHTML = `
@@ -52,42 +46,40 @@
         0 30px 80px rgba(0,0,0,.35);
     ">
 
-<button
-  onclick="
-    if(history.length > 1){
-      history.back();
-    } else {
-      window.location.href='dashboard.html';
-    }
-  "
-  style="
-    position:absolute;
-    top:18px;
-    left:18px;
+      <button
+        id="iosBackBtn"
+        style="
+          position:absolute;
+          top:18px;
+          left:18px;
 
-    width:42px;
-    height:42px;
+          width:42px;
+          height:42px;
 
-    border:none;
-    border-radius:50%;
+          border:none;
+          border-radius:50%;
 
-    background:rgba(255,255,255,.72);
+          background:rgba(255,255,255,.72);
 
-    backdrop-filter:blur(10px);
+          backdrop-filter:blur(10px);
 
-    font-size:22px;
-    color:#732323;
+          font-size:22px;
+          color:#732323;
 
-    cursor:pointer;
+          cursor:pointer;
 
-    z-index:999999;
+          z-index:999999;
 
-    box-shadow:
-      0 6px 18px rgba(0,0,0,.18);
-  "
->
-  ←
-</button>
+          box-shadow:
+            0 6px 18px rgba(0,0,0,.18);
+
+          -webkit-tap-highlight-color: transparent;
+          touch-action: manipulation;
+        "
+      >
+        ←
+      </button>
+
       <div style="
         font-size:38px;
         margin-bottom:18px;
@@ -118,43 +110,48 @@
 
   document.body.appendChild(overlay);
 
-  function isMobile(){
+  const backBtn = document.getElementById("iosBackBtn");
+
+  backBtn.addEventListener("click", () => {
+
+    if (window.history.length > 1) {
+
+      window.history.back();
+
+    } else {
+
+      window.location.href = "dashboard.html";
+
+    }
+
+  });
+
+  function isMobile() {
     return window.innerWidth < 900;
   }
 
-  function isPortrait(){
+  function isPortrait() {
     return window.matchMedia("(orientation: portrait)").matches;
   }
 
-  function updateOrientationNotice(){
+  function updateOrientationNotice() {
 
     if (isMobile() && isPortrait()) {
 
       overlay.style.display = "flex";
 
+      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
-
-      document.body.style.height = "100dvh";
-
-      document.body.style.touchAction = "none";
-
-
-      overlay.style.pointerEvents = "all";
 
     } else {
 
       overlay.style.display = "none";
 
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
 
-      document.body.style.height = "";
-
-      document.body.style.touchAction = "";
-
-
-      overlay.style.pointerEvents = "";
-
     }
+
   }
 
   updateOrientationNotice();
