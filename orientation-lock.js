@@ -1,197 +1,302 @@
-// === PERFECT CENTERED iOS OVERLAY ===
+// === iOS Landscape Overlay ===
+// shows ONLY on mobile portrait
+// hides automatically in landscape
 
 (function () {
 
-  // lock scroll
-  document.documentElement.style.overflow = "hidden";
-  document.body.style.overflow = "hidden";
+  // =========================
+  // SAFE BACK
+  // =========================
 
-  // ===== BACK ACTION =====
-  const goBack = () => {
-    if (history.length > 1) {
-      history.back();
-    } else {
-      location.href = "/";
-    }
-  };
+  function goBackSafe() {
 
-  // ===== OVERLAY =====
+    try {
+
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+    } catch (e) {}
+
+    location.replace("/");
+
+  }
+
+  // =========================
+  // CREATE OVERLAY
+  // =========================
+
   const overlay = document.createElement("div");
 
-  Object.assign(overlay.style, {
-    position: "fixed",
-    inset: "0",
-    zIndex: "999998",
+  overlay.id = "iosRotateOverlay";
 
-    background: "rgba(0,0,0,0.76)",
+  overlay.style.cssText = `
+    position:fixed;
+    inset:0;
 
-    backdropFilter: "blur(10px)",
-    WebkitBackdropFilter: "blur(10px)",
+    z-index:999999999;
 
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display:none;
 
-    overflow: "hidden",
+    align-items:center;
+    justify-content:center;
 
-    cursor: "pointer"
-  });
+    background:rgba(0,0,0,.74);
 
-  // ===== CENTER BLOCK =====
-  const box = document.createElement("div");
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
 
-  Object.assign(box.style, {
-    width: "100%",
-    maxWidth: "320px",
+    overflow:hidden;
 
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    padding:24px;
 
-    textAlign: "center",
-
-    color: "#fff",
-
-    fontFamily:
-      '-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif',
-
-    padding: "24px",
-
-    boxSizing: "border-box",
-
-    // ЭТО ДЕЛАЕТ ИДЕАЛЬНЫЙ CENTER
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
-  });
-
-  // ===== ICON =====
-  const icon = document.createElement("div");
-
-  icon.innerHTML = `
-    <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M21 12a9 9 0 1 1-2.64-6.36"
-        stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-      />
-      <path
-        d="M21 3v6h-6"
-        stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
+    box-sizing:border-box;
   `;
 
-  Object.assign(icon.style, {
-    marginBottom: "18px",
-    opacity: "0.95"
-  });
+  // =========================
+  // HTML
+  // =========================
 
-  // ===== TITLE =====
-  const title = document.createElement("div");
+  overlay.innerHTML = `
 
-  title.innerHTML = `Please rotate your phone`;
+    <!-- ROUND iOS BACK -->
+    <button id="rotateBackBtn" style="
+      position:absolute;
+      top:18px;
+      left:18px;
 
-  Object.assign(title.style, {
-    fontSize: "18px",
-    lineHeight: "1.3",
-    fontWeight: "600",
-    letterSpacing: "-0.02em",
-    marginBottom: "14px"
-  });
+      width:44px;
+      height:44px;
 
-  // ===== DESCRIPTION =====
-  const desc = document.createElement("div");
+      border:none;
+      outline:none;
 
-  desc.innerHTML = `
-    This admin panel is view-only on mobile devices.<br>
-    Use desktop for full access.
+      border-radius:999px;
+
+      background:rgba(255,255,255,.14);
+
+      color:white;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      font-size:24px;
+      font-weight:500;
+
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+
+      box-shadow:
+        0 6px 22px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+      cursor:pointer;
+
+      transition:.15s ease;
+
+      z-index:2;
+    ">
+      ‹
+    </button>
+
+    <!-- CENTER -->
+    <div style="
+      width:100%;
+      max-width:280px;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+
+      text-align:center;
+
+      color:white;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        'SF Pro Display',
+        'SF Pro Text',
+        sans-serif;
+
+      position:absolute;
+      top:50%;
+      left:50%;
+
+      transform:translate(-50%,-50%);
+    ">
+
+      <!-- ICON -->
+      <div style="
+        margin-bottom:18px;
+        opacity:.95;
+      ">
+
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M21 12a9 9 0 1 1-2.64-6.36"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+
+          <path
+            d="M21 3v6h-6"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+
+      </div>
+
+      <!-- TITLE -->
+      <div style="
+        font-size:19px;
+        line-height:1.35;
+        font-weight:600;
+
+        letter-spacing:-0.02em;
+
+        margin-bottom:12px;
+      ">
+        Rotate your phone
+      </div>
+
+      <!-- TEXT -->
+      <div style="
+        font-size:14px;
+        line-height:1.6;
+        opacity:.72;
+      ">
+        This page works only in landscape mode.
+      </div>
+
+    </div>
   `;
-
-  Object.assign(desc.style, {
-    fontSize: "14px",
-    lineHeight: "1.55",
-    fontWeight: "400",
-    opacity: "0.74"
-  });
-
-  // ===== ROUND iOS BACK BUTTON =====
-  const backBtn = document.createElement("button");
-
-  backBtn.innerHTML = `
-    <span style="
-      font-size:20px;
-      line-height:1;
-      margin-left:-1px;
-    ">‹</span>
-  `;
-
-  Object.assign(backBtn.style, {
-    position: "fixed",
-    top: "18px",
-    left: "18px",
-
-    width: "44px",
-    height: "44px",
-
-    zIndex: "999999",
-
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-
-    border: "none",
-    outline: "none",
-
-    borderRadius: "999px",
-
-    background: "rgba(255,255,255,0.14)",
-    color: "#fff",
-
-    backdropFilter: "blur(16px)",
-    WebkitBackdropFilter: "blur(16px)",
-
-    boxShadow:
-      "0 6px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.08)",
-
-    cursor: "pointer",
-
-    transition: "0.15s ease"
-  });
-
-  // hover/tap
-  backBtn.onmouseenter = () => {
-    backBtn.style.background = "rgba(255,255,255,0.22)";
-    backBtn.style.transform = "scale(1.05)";
-  };
-
-  backBtn.onmouseleave = () => {
-    backBtn.style.background = "rgba(255,255,255,0.14)";
-    backBtn.style.transform = "scale(1)";
-  };
-
-  // actions
-  overlay.onclick = goBack;
-
-  backBtn.onclick = (e) => {
-    e.stopPropagation();
-    goBack();
-  };
-
-  // build
-  box.appendChild(icon);
-  box.appendChild(title);
-  box.appendChild(desc);
-
-  overlay.appendChild(box);
 
   document.body.appendChild(overlay);
-  document.body.appendChild(backBtn);
+
+  // =========================
+  // BUTTON
+  // =========================
+
+  const backBtn =
+    document.getElementById(
+      "rotateBackBtn"
+    );
+
+  backBtn.onclick = function (e) {
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    goBackSafe();
+
+  };
+
+  // =========================
+  // OVERLAY CLICK
+  // =========================
+
+  overlay.onclick = function () {
+    goBackSafe();
+  };
+
+  // =========================
+  // DEVICE CHECKS
+  // =========================
+
+  function isMobile() {
+
+    return (
+      /Android|iPhone|iPad|iPod/i.test(
+        navigator.userAgent
+      )
+      ||
+      window.innerWidth < 900
+    );
+
+  }
+
+  function isPortrait() {
+
+    return (
+      window.innerHeight >
+      window.innerWidth
+    );
+
+  }
+
+  // =========================
+  // UPDATE
+  // =========================
+
+  function updateOverlay() {
+
+    const shouldShow =
+      isMobile() &&
+      isPortrait();
+
+    if (shouldShow) {
+
+      overlay.style.display = "flex";
+
+      document.documentElement.style.overflow =
+        "hidden";
+
+      document.body.style.overflow =
+        "hidden";
+
+    } else {
+
+      overlay.style.display = "none";
+
+      document.documentElement.style.overflow =
+        "";
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+  }
+
+  // =========================
+  // INIT
+  // =========================
+
+  updateOverlay();
+
+  // IMPORTANT:
+  // iOS SAFARI FIX
+  setTimeout(updateOverlay, 300);
+
+  // EVENTS
+  window.addEventListener(
+    "resize",
+    updateOverlay
+  );
+
+  window.addEventListener(
+    "orientationchange",
+    function () {
+
+      setTimeout(
+        updateOverlay,
+        250
+      );
+
+    }
+  );
 
 })();
