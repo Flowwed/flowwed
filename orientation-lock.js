@@ -161,39 +161,15 @@
         sans-serif;
     ">
 
-      <!-- ICON -->
-      <div style="
-        margin-bottom:12px;
-        opacity:.96;
 
-        display:flex;
-        align-items:center;
-        justify-content:center;
-      ">
+<!-- ICON -->
+<div style="
+  font-size:42px;
+  margin-bottom:12px;
+">
+  💻
+</div>
 
-        <svg
-          width="42"
-          height="42"
-          viewBox="0 0 24 24"
-          fill="none"
-        >
-          <path
-            d="M21 12a9 9 0 1 1-2.64-6.36"
-            stroke="white"
-            stroke-width="2"
-            stroke-linecap="round"
-          />
-
-          <path
-            d="M21 3v6h-6"
-            stroke="white"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-
-      </div>
 
       <!-- TITLE -->
       <div style="
@@ -206,7 +182,7 @@
 
         margin-bottom:14px;
       ">
-        Rotate your phone
+        Mobile Not Supported
       </div>
 
       <!-- TEXT -->
@@ -221,10 +197,7 @@
         max-width:290px;
       ">
 
-        View-only mode on mobile devices.
-        <br><br>
-
-        Use laptop for full access.
+       Use laptop for full access.
 
       </div>
 
