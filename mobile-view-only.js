@@ -211,28 +211,6 @@ lockLayer.style.cssText = `
     true
   );
 
-  // =========================
-  // BLOCK SCROLL
-  // =========================
-
-  window.addEventListener(
-    "touchmove",
-    function (e) {
-
-      if (!isMobile()) return;
-
-      const menu =
-        e.target.closest(
-          MENU_SELECTOR
-        );
-
-      if (menu) return;
-
-      e.preventDefault();
-
-    },
-    { passive:false }
-  );
 
   // =========================
   // INIT
