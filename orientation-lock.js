@@ -1,6 +1,7 @@
+// === Full overlay + working iOS-style Back button ===
 
 (function () {
-  // Создаем overlay
+  // Overlay
   const overlay = document.createElement("div");
 
   Object.assign(overlay.style, {
@@ -8,71 +9,85 @@
     inset: "0",
     width: "100%",
     height: "100%",
-    background: "rgba(15,15,15,0.75)",
+    background: "rgba(15,15,15,0.72)",
     backdropFilter: "blur(6px)",
+    WebkitBackdropFilter: "blur(6px)",
     zIndex: "999999",
-    pointerEvents: "all",
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    padding: "20px",
-    boxSizing: "border-box"
+    pointerEvents: "auto"
   });
 
-  // Блокируем скролл страницы
+  // Блокируем страницу под overlay
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
 
-  // Создаем iOS-style кнопку Back
-  const backBtn = document.createElement("button");
+  // Контейнер кнопки
+  const topBar = document.createElement("div");
 
+  Object.assign(topBar.style, {
+    position: "absolute",
+    top: "20px",
+    left: "20px",
+    zIndex: "1000000"
+  });
+
+  // iOS-style Back button
+  const backBtn = document.createElement("button");
   backBtn.innerHTML = "← Back";
 
   Object.assign(backBtn.style, {
     appearance: "none",
     border: "none",
-    outline: "none",
-    background: "rgba(255,255,255,0.15)",
+    background: "rgba(255,255,255,0.16)",
     color: "#fff",
-    fontSize: "17px",
-    fontFamily:
-      '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
     padding: "10px 18px",
     borderRadius: "14px",
+    fontSize: "17px",
+    fontWeight: "500",
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
     cursor: "pointer",
     backdropFilter: "blur(12px)",
     WebkitBackdropFilter: "blur(12px)",
-    boxShadow: "0 4px 18px rgba(0,0,0,0.25)",
-    transition: "all 0.2s ease"
+    boxShadow: "0 4px 18px rgba(0,0,0,.25)"
   });
 
-  // Hover эффект
-  backBtn.addEventListener("mouseenter", () => {
+  // Hover
+  backBtn.onmouseenter = () => {
     backBtn.style.background = "rgba(255,255,255,0.25)";
-  });
+  };
 
-  backBtn.addEventListener("mouseleave", () => {
-    backBtn.style.background = "rgba(255,255,255,0.15)";
-  });
+  backBtn.onmouseleave = () => {
+    backBtn.style.background = "rgba(255,255,255,0.16)";
+  };
 
-  // Возврат назад
-  backBtn.addEventListener("click", () => {
-    history.back();
-  });
-
-  // Отключаем клики по overlay
-  overlay.addEventListener("click", (e) => {
+  // ВАЖНО:
+  // Если есть история -> назад
+  // Если нет -> fallback
+  backBtn.onclick = function (e) {
     e.stopPropagation();
-    e.preventDefault();
-  });
 
-  // Кнопка должна работать
-  backBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-  });
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // fallback если страница открыта напрямую
+      window.location.href = "/";
+      // или:
+      // window.close();
+    }
+  };
 
-  overlay.appendChild(backBtn);
+  topBar.appendChild(backBtn);
+  overlay.appendChild(topBar);
 
-  // Добавляем overlay поверх страницы
+  // Полностью блокируем клики по странице
+  overlay.addEventListener(
+    "click",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    },
+    true
+  );
+
   document.body.appendChild(overlay);
 })();
