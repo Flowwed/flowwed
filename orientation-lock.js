@@ -15,8 +15,8 @@
   overlay.style.justifyContent = "center";
 
   overlay.style.background = "rgba(0,0,0,.55)";
-  overlay.style.backdropFilter = "blur(12px)";
 
+  overlay.style.backdropFilter = "blur(12px)";
   overlay.style.webkitBackdropFilter = "blur(12px)";
 
   overlay.style.pointerEvents = "auto";
@@ -46,8 +46,6 @@
 
       box-shadow:
         0 30px 80px rgba(0,0,0,.35);
-
-      pointer-events:auto;
     ">
 
       <button
@@ -83,14 +81,10 @@
           box-shadow:
             0 6px 18px rgba(0,0,0,.18);
 
-          pointer-events:auto;
-
           -webkit-appearance:none;
           appearance:none;
 
           -webkit-tap-highlight-color:transparent;
-
-          touch-action:manipulation;
         "
       >
         ←
@@ -126,67 +120,64 @@
 
   document.body.appendChild(overlay);
 
-  const backBtn = document.getElementById("iosBackBtn");
+  const backBtn =
+    document.getElementById("iosBackBtn");
 
-  function goBack(e) {
+  backBtn.addEventListener("click", function (e) {
 
     e.preventDefault();
     e.stopPropagation();
 
-    try {
+    if (
+      document.referrer &&
+      document.referrer !== location.href
+    ) {
 
-      if (window.history.length > 1) {
+      history.back();
 
-        window.history.back();
+    } else {
 
-      } else {
-
-        window.location.replace("dashboard.html");
-
-      }
-
-    } catch {
-
-      window.location.replace("dashboard.html");
+      window.location.href =
+        "dashboard.html";
 
     }
 
-  }
-
-  backBtn.addEventListener(
-    "click",
-    goBack
-  );
-
-  backBtn.addEventListener(
-    "touchend",
-    goBack,
-    { passive: false }
-  );
+  });
 
   function isMobile() {
     return window.innerWidth < 900;
   }
 
   function isPortrait() {
-    return window.matchMedia("(orientation: portrait)").matches;
+    return window.matchMedia(
+      "(orientation: portrait)"
+    ).matches;
   }
 
   function updateOrientationNotice() {
 
-    if (isMobile() && isPortrait()) {
+    if (
+      isMobile() &&
+      isPortrait()
+    ) {
 
       overlay.style.display = "flex";
 
-      document.body.style.overflow = "hidden";
-      document.body.style.height = "100dvh";
+      document.body.style.overflow =
+        "hidden";
+
+      document.body.style.height =
+        "100dvh";
 
     } else {
 
       overlay.style.display = "none";
 
-      document.body.style.overflow = "";
-      document.body.style.height = "";
+      document.body.style.overflow =
+        "";
+
+      document.body.style.height =
+        "";
 
     }
 
