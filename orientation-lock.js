@@ -1,53 +1,56 @@
-// === Full overlay + working iOS-style Back button ===
+// === Overlay + рабочая iOS Back кнопка ===
 
 (function () {
-  // Overlay
+
+  // OVERLAY
   const overlay = document.createElement("div");
 
   Object.assign(overlay.style, {
     position: "fixed",
     inset: "0",
-    width: "100%",
-    height: "100%",
-    background: "rgba(15,15,15,0.72)",
+    background: "rgba(0,0,0,0.72)",
     backdropFilter: "blur(6px)",
     WebkitBackdropFilter: "blur(6px)",
-    zIndex: "999999",
-    pointerEvents: "auto"
+    zIndex: "999998"
   });
 
-  // Блокируем страницу под overlay
+  // Блокируем страницу
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
 
-  // Контейнер кнопки
-  const topBar = document.createElement("div");
-
-  Object.assign(topBar.style, {
-    position: "absolute",
-    top: "20px",
-    left: "20px",
-    zIndex: "1000000"
-  });
-
-  // iOS-style Back button
+  // BACK BUTTON
   const backBtn = document.createElement("button");
+
   backBtn.innerHTML = "← Back";
 
   Object.assign(backBtn.style, {
+    position: "fixed",
+    top: "20px",
+    left: "20px",
+
+    zIndex: "999999", // ВЫШЕ overlay
+
     appearance: "none",
     border: "none",
-    background: "rgba(255,255,255,0.16)",
-    color: "#fff",
+    outline: "none",
+
     padding: "10px 18px",
     borderRadius: "14px",
+
+    background: "rgba(255,255,255,0.16)",
+    color: "#fff",
+
     fontSize: "17px",
     fontWeight: "500",
+
     fontFamily:
-      '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
+      '-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',
+
     cursor: "pointer",
+
     backdropFilter: "blur(12px)",
     WebkitBackdropFilter: "blur(12px)",
+
     boxShadow: "0 4px 18px rgba(0,0,0,.25)"
   });
 
@@ -60,34 +63,19 @@
     backBtn.style.background = "rgba(255,255,255,0.16)";
   };
 
-  // ВАЖНО:
-  // Если есть история -> назад
-  // Если нет -> fallback
-  backBtn.onclick = function (e) {
-    e.stopPropagation();
+  // BACK ACTION
+  backBtn.onclick = () => {
 
-    if (window.history.length > 1) {
-      window.history.back();
+    if (history.length > 1) {
+      history.back();
     } else {
-      // fallback если страница открыта напрямую
-      window.location.href = "/";
-      // или:
-      // window.close();
+      location.href = "/";
     }
+
   };
 
-  topBar.appendChild(backBtn);
-  overlay.appendChild(topBar);
-
-  // Полностью блокируем клики по странице
-  overlay.addEventListener(
-    "click",
-    function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    },
-    true
-  );
-
+  // Добавляем
   document.body.appendChild(overlay);
+  document.body.appendChild(backBtn);
+
 })();
