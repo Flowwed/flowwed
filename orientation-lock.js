@@ -1,6 +1,8 @@
-// === iOS Landscape Overlay ===
-// shows ONLY on mobile portrait
-// hides automatically in landscape
+// ==========================================
+// iOS LANDSCAPE OVERLAY
+// shows only on MOBILE PORTRAIT
+// hides automatically in LANDSCAPE
+// ==========================================
 
 (function () {
 
@@ -24,12 +26,42 @@
   }
 
   // =========================
+  // MOBILE CHECK
+  // =========================
+
+  function isMobile() {
+
+    return (
+      /Android|iPhone|iPad|iPod/i.test(
+        navigator.userAgent
+      ) ||
+      window.innerWidth < 900
+    );
+
+  }
+
+  // =========================
+  // PORTRAIT CHECK
+  // =========================
+
+  function isPortrait() {
+
+    return (
+      window.innerHeight >
+      window.innerWidth
+    );
+
+  }
+
+  // =========================
   // CREATE OVERLAY
   // =========================
 
-  const overlay = document.createElement("div");
+  const overlay =
+    document.createElement("div");
 
-  overlay.id = "iosRotateOverlay";
+  overlay.id =
+    "iosRotateOverlay";
 
   overlay.style.cssText = `
     position:fixed;
@@ -39,19 +71,14 @@
 
     display:none;
 
-    align-items:center;
-    justify-content:center;
+    background:rgba(24,24,28,.42);
 
-    background:rgba(18,18,18,.52);
-
-    backdrop-filter:blur(8px);
--webkit-backdrop-filter:blur(8px);
+    backdrop-filter:blur(7px);
+    -webkit-backdrop-filter:blur(7px);
 
     overflow:hidden;
 
-    padding:24px;
-
-    box-sizing:border-box;
+    cursor:pointer;
   `;
 
   // =========================
@@ -89,22 +116,33 @@
       -webkit-backdrop-filter:blur(16px);
 
       box-shadow:
-        0 6px 22px rgba(0,0,0,.28),
+        0 6px 22px rgba(0,0,0,.18),
         inset 0 1px 0 rgba(255,255,255,.08);
 
       cursor:pointer;
 
       transition:.15s ease;
 
-      z-index:2;
+      z-index:10;
     ">
       ‹
     </button>
 
-    <!-- CENTER -->
+    <!-- PERFECT CENTER -->
     <div style="
+      position:absolute;
+
+      top:50%;
+      left:50%;
+
+      transform:translate(-50%,-50%);
+
       width:100%;
-      max-width:280px;
+      max-width:310px;
+
+      padding:0 16px;
+
+      box-sizing:border-box;
 
       display:flex;
       flex-direction:column;
@@ -121,23 +159,21 @@
         'SF Pro Display',
         'SF Pro Text',
         sans-serif;
-
-      position:absolute;
-      top:50%;
-      left:50%;
-
-      transform:translate(-50%,-50%);
     ">
 
       <!-- ICON -->
       <div style="
-        margin-bottom:18px;
-        opacity:.95;
+        margin-bottom:12px;
+        opacity:.96;
+
+        display:flex;
+        align-items:center;
+        justify-content:center;
       ">
 
         <svg
-          width="40"
-          height="40"
+          width="42"
+          height="42"
           viewBox="0 0 24 24"
           fill="none"
         >
@@ -161,31 +197,50 @@
 
       <!-- TITLE -->
       <div style="
-        font-size:19px;
-        line-height:1.35;
+        font-size:24px;
+        line-height:1.12;
+
         font-weight:600;
 
-        letter-spacing:-0.02em;
+        letter-spacing:-0.03em;
 
-        margin-bottom:12px;
+        margin-bottom:14px;
       ">
         Rotate your phone
       </div>
 
       <!-- TEXT -->
-<div style="
-  font-size:14px;
-  line-height:1.65;
-  opacity:.78;
-">
-  This admin panel is view-only on mobile devices.<br><br>
-  Rotate your phone to continue browsing.<br><br>
-  For full access, use a laptop or desktop.
-</div>
+      <div style="
+        font-size:16px;
+        line-height:1.45;
+
+        font-weight:400;
+
+        opacity:.84;
+
+        max-width:290px;
+      ">
+
+        This admin panel is view-only on mobile devices.
+        <br><br>
+
+        Rotate your phone to continue browsing.
+        <br><br>
+
+        For full access, use a laptop or desktop.
+
+      </div>
+
     </div>
   `;
 
-  document.body.appendChild(overlay);
+  // =========================
+  // APPEND
+  // =========================
+
+  document.body.appendChild(
+    overlay
+  );
 
   // =========================
   // BUTTON
@@ -214,31 +269,6 @@
   };
 
   // =========================
-  // DEVICE CHECKS
-  // =========================
-
-  function isMobile() {
-
-    return (
-      /Android|iPhone|iPad|iPod/i.test(
-        navigator.userAgent
-      )
-      ||
-      window.innerWidth < 900
-    );
-
-  }
-
-  function isPortrait() {
-
-    return (
-      window.innerHeight >
-      window.innerWidth
-    );
-
-  }
-
-  // =========================
   // UPDATE
   // =========================
 
@@ -250,7 +280,8 @@
 
     if (shouldShow) {
 
-      overlay.style.display = "flex";
+      overlay.style.display =
+        "block";
 
       document.documentElement.style.overflow =
         "hidden";
@@ -260,7 +291,8 @@
 
     } else {
 
-      overlay.style.display = "none";
+      overlay.style.display =
+        "none";
 
       document.documentElement.style.overflow =
         "";
@@ -278,11 +310,16 @@
 
   updateOverlay();
 
-  // IMPORTANT:
-  // iOS SAFARI FIX
-  setTimeout(updateOverlay, 300);
+  // iOS Safari fix
+  setTimeout(
+    updateOverlay,
+    300
+  );
 
+  // =========================
   // EVENTS
+  // =========================
+
   window.addEventListener(
     "resize",
     updateOverlay
