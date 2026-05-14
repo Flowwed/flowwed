@@ -5,13 +5,7 @@
   overlay.id = "landscapeNotice";
 
   overlay.style.position = "fixed";
-  overlay.style.top = "0";
-  overlay.style.left = "0";
-  overlay.style.right = "0";
-  overlay.style.bottom = "0";
-
-  overlay.style.width = "100vw";
-  overlay.style.height = "100dvh";
+  overlay.style.inset = "0";
 
   overlay.style.zIndex = "999999";
 
@@ -34,7 +28,7 @@
       width:92vw;
       max-width:520px;
 
-      padding:54px 34px 42px;
+      padding:48px 34px;
 
       border-radius:32px;
 
@@ -53,6 +47,48 @@
       box-shadow:
         0 30px 80px rgba(0,0,0,.35);
     ">
+
+      <button
+        id="iosBackBtn"
+        type="button"
+        style="
+          position:absolute;
+          top:18px;
+          left:18px;
+
+          width:42px;
+          height:42px;
+
+          border:none;
+          border-radius:50%;
+
+          background:rgba(255,255,255,.72);
+
+          backdrop-filter:blur(10px);
+          -webkit-backdrop-filter:blur(10px);
+
+          font-size:22px;
+          color:#732323;
+
+          cursor:pointer;
+
+          z-index:9999999;
+
+          display:flex;
+          align-items:center;
+          justify-content:center;
+
+          box-shadow:
+            0 6px 18px rgba(0,0,0,.18);
+
+          -webkit-appearance:none;
+          appearance:none;
+
+          -webkit-tap-highlight-color:transparent;
+        "
+      >
+        ←
+      </button>
 
       <div style="
         font-size:38px;
@@ -74,43 +110,10 @@
         font-size:18px;
         line-height:1.7;
         opacity:.85;
-        margin-bottom:28px;
       ">
         This admin panel is view-only on mobile devices.<br>
         For full access, use a laptop or desktop.
       </div>
-
-      <button
-        id="iosBackBtn"
-        type="button"
-        style="
-          width:100%;
-
-          padding:16px 0;
-
-          border:none;
-          border-radius:18px;
-
-          background:#a52126;
-
-          color:#fff;
-
-          font-size:18px;
-          font-weight:600;
-
-          cursor:pointer;
-
-          box-shadow:
-            0 12px 28px rgba(0,0,0,.22);
-
-          -webkit-appearance:none;
-          appearance:none;
-
-          -webkit-tap-highlight-color:transparent;
-        "
-      >
-        ← Back
-      </button>
 
     </div>
   `;
@@ -120,51 +123,26 @@
   const backBtn =
     document.getElementById("iosBackBtn");
 
-  function goBack(e) {
+  backBtn.addEventListener("click", function (e) {
 
     e.preventDefault();
     e.stopPropagation();
-
-    const fallback =
-      "dashboard.html";
 
     if (
       document.referrer &&
       document.referrer !== location.href
     ) {
 
-      window.location.href =
-        document.referrer;
-
-      return;
-    }
-
-    if (history.length > 1) {
-
       history.back();
 
-      setTimeout(() => {
+    } else {
 
-        if (
-          location.pathname.includes(
-            fallback
-          )
-        ) return;
+      window.location.href =
+        "dashboard.html";
 
-        window.location.href =
-          fallback;
-
-      }, 400);
-
-      return;
     }
 
-    window.location.href =
-      fallback;
-
-  }
-
-  backBtn.onclick = goBack;
+  });
 
   function isMobile() {
     return window.innerWidth < 900;
@@ -183,18 +161,22 @@
       isPortrait()
     ) {
 
-      overlay.style.display =
-        "flex";
+      overlay.style.display = "flex";
 
       document.body.style.overflow =
         "hidden";
 
+      document.body.style.height =
+        "100dvh";
+
     } else {
 
-      overlay.style.display =
-        "none";
+      overlay.style.display = "none";
 
       document.body.style.overflow =
+        "";
+
+      document.body.style.height =
         "";
 
     }
