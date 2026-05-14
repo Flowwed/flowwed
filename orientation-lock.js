@@ -52,35 +52,42 @@
         0 30px 80px rgba(0,0,0,.35);
     ">
 
-      <button
-        onclick="history.back()"
-        style="
-          position:absolute;
-          top:18px;
-          left:18px;
+<button
+  onclick="
+    if(history.length > 1){
+      history.back();
+    } else {
+      window.location.href='dashboard.html';
+    }
+  "
+  style="
+    position:absolute;
+    top:18px;
+    left:18px;
 
-          width:42px;
-          height:42px;
+    width:42px;
+    height:42px;
 
-          border:none;
-          border-radius:50%;
+    border:none;
+    border-radius:50%;
 
-          background:rgba(255,255,255,.72);
+    background:rgba(255,255,255,.72);
 
-          backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
 
-          font-size:22px;
-          color:#732323;
+    font-size:22px;
+    color:#732323;
 
-          cursor:pointer;
+    cursor:pointer;
 
-          box-shadow:
-            0 6px 18px rgba(0,0,0,.18);
-        "
-      >
-        ←
-      </button>
+    z-index:999999;
 
+    box-shadow:
+      0 6px 18px rgba(0,0,0,.18);
+  "
+>
+  ←
+</button>
       <div style="
         font-size:38px;
         margin-bottom:18px;
