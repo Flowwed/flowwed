@@ -1,5 +1,6 @@
 // ==========================================
-// MOBILE VIEW-ONLY LOCK
+// MOBILE READ-ONLY MODE
+// keeps page alive,
 // blocks interaction on mobile
 // except MENU button
 // ==========================================
@@ -20,36 +21,37 @@
   function isMobile() {
 
     return (
+      window.matchMedia("(pointer:coarse)").matches ||
       /Android|iPhone|iPad|iPod/i.test(
         navigator.userAgent
-      ) ||
-      window.innerWidth < 900
+      )
     );
 
   }
 
   // =========================
-  // CREATE OVERLAY
+  // OVERLAY (visual only)
   // =========================
 
   const lockLayer =
     document.createElement("div");
 
   lockLayer.id =
-    "mobileViewOnlyLock";
+    "mobileReadOnlyLayer";
 
-lockLayer.style.cssText = `
-  position:fixed;
-  inset:0;
+  lockLayer.style.cssText = `
+    position:fixed;
+    inset:0;
 
-  z-index:99999998;
+    z-index:99999998;
 
-  display:none;
+    display:none;
 
-  background:rgba(0,0,0,0.001);
+    background:rgba(0,0,0,0.001);
 
-  touch-action:none;
-`;
+    pointer-events:none;
+  `;
+
   document.body.appendChild(
     lockLayer
   );
@@ -98,9 +100,10 @@ lockLayer.style.cssText = `
     text-align:center;
 
     opacity:0;
+
     pointer-events:none;
 
-    transition:.2s ease;
+    transition:opacity .2s ease;
   `;
 
   document.body.appendChild(
@@ -119,12 +122,6 @@ lockLayer.style.cssText = `
     message.style.opacity =
       "1";
 
-    document.body.style.userSelect =
-      "none";
-
-    document.body.style.webkitUserSelect =
-      "none";
-
   }
 
   // =========================
@@ -138,12 +135,6 @@ lockLayer.style.cssText = `
 
     message.style.opacity =
       "0";
-
-    document.body.style.userSelect =
-      "";
-
-    document.body.style.webkitUserSelect =
-      "";
 
   }
 
@@ -162,7 +153,7 @@ lockLayer.style.cssText = `
   }
 
   // =========================
-  // BLOCK ALL CLICKS
+  // BLOCK INTERACTION
   // =========================
 
   document.addEventListener(
@@ -177,9 +168,29 @@ lockLayer.style.cssText = `
         );
 
       // MENU allowed
-      if (menu) {
-        return;
-      }
+      if (menu) return;
+
+      // block only interactive elements
+      const interactive =
+        e.target.closest(`
+          a,
+          button,
+          input,
+          textarea,
+          select,
+          option,
+          label,
+          summary,
+          details,
+          iframe,
+          video,
+          audio,
+          [role="button"],
+          [onclick],
+          [contenteditable="true"]
+        `);
+
+      if (!interactive) return;
 
       e.preventDefault();
       e.stopPropagation();
@@ -189,7 +200,7 @@ lockLayer.style.cssText = `
   );
 
   // =========================
-  // BLOCK INPUTS
+  // BLOCK INPUT FOCUS
   // =========================
 
   document.addEventListener(
@@ -205,12 +216,44 @@ lockLayer.style.cssText = `
 
       if (menu) return;
 
+      const blocked =
+        e.target.closest(`
+          input,
+          textarea,
+          select,
+          [contenteditable="true"]
+        `);
+
+      if (!blocked) return;
+
       e.target.blur();
 
     },
     true
   );
 
+  // =========================
+  // PREVENT TEXT SELECTION
+  // =========================
+
+  document.addEventListener(
+    "selectstart",
+    function (e) {
+
+      if (!isMobile()) return;
+
+      const menu =
+        e.target.closest(
+          MENU_SELECTOR
+        );
+
+      if (menu) return;
+
+      e.preventDefault();
+
+    },
+    true
+  );
 
   // =========================
   // INIT
