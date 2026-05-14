@@ -1,166 +1,78 @@
+
 (function () {
-
-  function goBackNow() {
-
-    // iOS/Safari-safe
-    setTimeout(() => {
-
-      if (window.history.length > 1) {
-        window.history.back();
-      } else {
-        window.location.href = "dashboard.html";
-      }
-
-    }, 0);
-
-  }
-
+  // Создаем overlay
   const overlay = document.createElement("div");
 
-  overlay.style.cssText = `
-    position:fixed;
-    inset:0;
-    z-index:2147483647;
+  Object.assign(overlay.style, {
+    position: "fixed",
+    inset: "0",
+    width: "100%",
+    height: "100%",
+    background: "rgba(15,15,15,0.75)",
+    backdropFilter: "blur(6px)",
+    zIndex: "999999",
+    pointerEvents: "all",
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    padding: "20px",
+    boxSizing: "border-box"
+  });
 
-    display:none;
+  // Блокируем скролл страницы
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.overflow = "hidden";
 
-    background:rgba(0,0,0,.58);
+  // Создаем iOS-style кнопку Back
+  const backBtn = document.createElement("button");
 
-    align-items:center;
-    justify-content:center;
-  `;
+  backBtn.innerHTML = "← Back";
 
-  const panel = document.createElement("div");
+  Object.assign(backBtn.style, {
+    appearance: "none",
+    border: "none",
+    outline: "none",
+    background: "rgba(255,255,255,0.15)",
+    color: "#fff",
+    fontSize: "17px",
+    fontFamily:
+      '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
+    padding: "10px 18px",
+    borderRadius: "14px",
+    cursor: "pointer",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
+    boxShadow: "0 4px 18px rgba(0,0,0,0.25)",
+    transition: "all 0.2s ease"
+  });
 
-  panel.style.cssText = `
-    position:relative;
+  // Hover эффект
+  backBtn.addEventListener("mouseenter", () => {
+    backBtn.style.background = "rgba(255,255,255,0.25)";
+  });
 
-    width:92vw;
-    max-width:520px;
+  backBtn.addEventListener("mouseleave", () => {
+    backBtn.style.background = "rgba(255,255,255,0.15)";
+  });
 
-    padding:56px 34px;
+  // Возврат назад
+  backBtn.addEventListener("click", () => {
+    history.back();
+  });
 
-    border-radius:32px;
+  // Отключаем клики по overlay
+  overlay.addEventListener("click", (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  });
 
-    background:white;
+  // Кнопка должна работать
+  backBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 
-    text-align:center;
+  overlay.appendChild(backBtn);
 
-    font-family:Inter,system-ui;
-
-    color:#732323;
-  `;
-
-  const back = document.createElement("button");
-
-  back.innerHTML = "←";
-
-  back.style.cssText = `
-    position:absolute;
-    top:18px;
-    left:18px;
-
-    width:46px;
-    height:46px;
-
-    border:none;
-    border-radius:50%;
-
-    background:#fff;
-
-    font-size:24px;
-
-    cursor:pointer;
-
-    z-index:999999999;
-
-    pointer-events:auto;
-  `;
-
-  // 🔥 ВАЖНО:
-  // onclick вместо addEventListener
-  back.onclick = goBackNow;
-
-  panel.innerHTML += `
-    <div style="
-      font-size:42px;
-      margin-bottom:18px;
-    ">
-      ↻
-    </div>
-
-    <div style="
-      font-size:30px;
-      font-weight:700;
-      line-height:1.35;
-      margin-bottom:16px;
-    ">
-      Rotate your phone
-    </div>
-
-    <div style="
-      font-size:18px;
-      line-height:1.7;
-      opacity:.8;
-    ">
-      Please use landscape mode.
-    </div>
-  `;
-
-  panel.appendChild(back);
-
-  overlay.appendChild(panel);
-
+  // Добавляем overlay поверх страницы
   document.body.appendChild(overlay);
-
-  function mobile() {
-    return window.innerWidth < 900;
-  }
-
-  function portrait() {
-    return window.innerHeight >
-           window.innerWidth;
-  }
-
-  function update() {
-
-    if (
-      mobile() &&
-      portrait()
-    ) {
-
-      overlay.style.display = "flex";
-
-      document.documentElement.style.overflow =
-        "hidden";
-
-      document.body.style.overflow =
-        "hidden";
-
-    } else {
-
-      overlay.style.display = "none";
-
-      document.documentElement.style.overflow =
-        "";
-
-      document.body.style.overflow =
-        "";
-
-    }
-
-  }
-
-  update();
-
-  window.addEventListener(
-    "resize",
-    update
-  );
-
-  window.addEventListener(
-    "orientationchange",
-    update
-  );
-
 })();
