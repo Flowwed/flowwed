@@ -42,10 +42,10 @@
     align-items:center;
     justify-content:center;
 
-    background:rgba(0,0,0,.74);
+    background:rgba(18,18,18,.52);
 
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(8px);
+-webkit-backdrop-filter:blur(8px);
 
     overflow:hidden;
 
