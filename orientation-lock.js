@@ -17,7 +17,9 @@
   overlay.style.background = "rgba(0,0,0,.55)";
   overlay.style.backdropFilter = "blur(12px)";
 
-  overlay.style.pointerEvents = "all";
+  overlay.style.webkitBackdropFilter = "blur(12px)";
+
+  overlay.style.pointerEvents = "auto";
 
   overlay.innerHTML = `
     <div style="
@@ -44,10 +46,13 @@
 
       box-shadow:
         0 30px 80px rgba(0,0,0,.35);
+
+      pointer-events:auto;
     ">
 
       <button
         id="iosBackBtn"
+        type="button"
         style="
           position:absolute;
           top:18px;
@@ -62,19 +67,30 @@
           background:rgba(255,255,255,.72);
 
           backdrop-filter:blur(10px);
+          -webkit-backdrop-filter:blur(10px);
 
           font-size:22px;
           color:#732323;
 
           cursor:pointer;
 
-          z-index:999999;
+          z-index:9999999;
+
+          display:flex;
+          align-items:center;
+          justify-content:center;
 
           box-shadow:
             0 6px 18px rgba(0,0,0,.18);
 
-          -webkit-tap-highlight-color: transparent;
-          touch-action: manipulation;
+          pointer-events:auto;
+
+          -webkit-appearance:none;
+          appearance:none;
+
+          -webkit-tap-highlight-color:transparent;
+
+          touch-action:manipulation;
         "
       >
         ←
@@ -112,19 +128,41 @@
 
   const backBtn = document.getElementById("iosBackBtn");
 
-  backBtn.addEventListener("click", () => {
+  function goBack(e) {
 
-    if (window.history.length > 1) {
+    e.preventDefault();
+    e.stopPropagation();
 
-      window.history.back();
+    try {
 
-    } else {
+      if (window.history.length > 1) {
 
-      window.location.href = "dashboard.html";
+        window.history.back();
+
+      } else {
+
+        window.location.replace("dashboard.html");
+
+      }
+
+    } catch {
+
+      window.location.replace("dashboard.html");
 
     }
 
-  });
+  }
+
+  backBtn.addEventListener(
+    "click",
+    goBack
+  );
+
+  backBtn.addEventListener(
+    "touchend",
+    goBack,
+    { passive: false }
+  );
 
   function isMobile() {
     return window.innerWidth < 900;
@@ -140,15 +178,15 @@
 
       overlay.style.display = "flex";
 
-      document.documentElement.style.overflow = "hidden";
       document.body.style.overflow = "hidden";
+      document.body.style.height = "100dvh";
 
     } else {
 
       overlay.style.display = "none";
 
-      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
+      document.body.style.height = "";
 
     }
 
