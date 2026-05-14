@@ -1152,24 +1152,31 @@ function visitSite() {
 
     if (isMobile() && isPortrait()) {
 
-overlay.style.display = "flex";
+      overlay.style.display = "flex";
 
-document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden";
 
-document.body.style.height = "100dvh";
+      document.body.style.height = "100dvh";
 
-document.body.style.touchAction = "none";
+      document.body.style.touchAction = "none";
 
+      document.body.style.pointerEvents = "none";
+
+      overlay.style.pointerEvents = "all";
 
     } else {
 
-overlay.style.display = "none";
+      overlay.style.display = "none";
 
-document.body.style.overflow = "";
+      document.body.style.overflow = "";
 
-document.body.style.height = "";
+      document.body.style.height = "";
 
-document.body.style.touchAction = "";
+      document.body.style.touchAction = "";
+
+      document.body.style.pointerEvents = "";
+
+      overlay.style.pointerEvents = "";
 
     }
   }
@@ -1177,7 +1184,16 @@ document.body.style.touchAction = "";
   updateOrientationNotice();
 
   window.addEventListener("resize", updateOrientationNotice);
-  window.addEventListener("orientationchange", updateOrientationNotice);
+
+  window.addEventListener(
+    "orientationchange",
+    updateOrientationNotice
+  );
+
+  window.addEventListener(
+    "pageshow",
+    updateOrientationNotice
+  );
 
 })();
 </script>
