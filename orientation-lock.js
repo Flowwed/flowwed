@@ -1,12 +1,12 @@
-// === iOS Style Rotate Overlay + Back Button ===
+// === PERFECT CENTERED iOS OVERLAY ===
 
 (function () {
 
-  // Блокируем скролл
+  // lock scroll
   document.documentElement.style.overflow = "hidden";
   document.body.style.overflow = "hidden";
 
-  // ===== BACK FUNCTION =====
+  // ===== BACK ACTION =====
   const goBack = () => {
     if (history.length > 1) {
       history.back();
@@ -23,7 +23,7 @@
     inset: "0",
     zIndex: "999998",
 
-    background: "rgba(0,0,0,0.72)",
+    background: "rgba(0,0,0,0.76)",
 
     backdropFilter: "blur(10px)",
     WebkitBackdropFilter: "blur(10px)",
@@ -32,41 +32,56 @@
     alignItems: "center",
     justifyContent: "center",
 
-    padding: "30px",
-    boxSizing: "border-box",
+    overflow: "hidden",
 
     cursor: "pointer"
   });
 
-  // ===== CENTER CONTENT =====
-  const content = document.createElement("div");
+  // ===== CENTER BLOCK =====
+  const box = document.createElement("div");
 
-  Object.assign(content.style, {
+  Object.assign(box.style, {
+    width: "100%",
+    maxWidth: "320px",
+
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+
     textAlign: "center",
+
     color: "#fff",
-    maxWidth: "420px",
 
     fontFamily:
       '-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",sans-serif',
 
-    transform: "translateY(-6%)"
+    padding: "24px",
+
+    boxSizing: "border-box",
+
+    // ЭТО ДЕЛАЕТ ИДЕАЛЬНЫЙ CENTER
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   });
 
-  // ===== ROTATE ICON =====
+  // ===== ICON =====
   const icon = document.createElement("div");
 
   icon.innerHTML = `
-    <svg width="58" height="58" viewBox="0 0 24 24" fill="none">
+    <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
       <path
         d="M21 12a9 9 0 1 1-2.64-6.36"
         stroke="white"
-        stroke-width="2.2"
+        stroke-width="2"
         stroke-linecap="round"
       />
       <path
         d="M21 3v6h-6"
         stroke="white"
-        stroke-width="2.2"
+        stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
@@ -74,46 +89,47 @@
   `;
 
   Object.assign(icon.style, {
-    marginBottom: "24px",
+    marginBottom: "18px",
     opacity: "0.95"
   });
 
   // ===== TITLE =====
   const title = document.createElement("div");
 
-  title.innerHTML = `
-    Please rotate your phone
-  `;
+  title.innerHTML = `Please rotate your phone`;
 
   Object.assign(title.style, {
-    fontSize: "42px",
-    lineHeight: "1.12",
-    fontWeight: "700",
-    letterSpacing: "-0.03em",
-    marginBottom: "26px"
+    fontSize: "18px",
+    lineHeight: "1.3",
+    fontWeight: "600",
+    letterSpacing: "-0.02em",
+    marginBottom: "14px"
   });
 
   // ===== DESCRIPTION =====
   const desc = document.createElement("div");
 
   desc.innerHTML = `
-    This admin panel is view-only on mobile devices.<br><br>
-    For full access, use a laptop or desktop.
+    This admin panel is view-only on mobile devices.<br>
+    Use desktop for full access.
   `;
 
   Object.assign(desc.style, {
-    fontSize: "22px",
+    fontSize: "14px",
     lineHeight: "1.55",
     fontWeight: "400",
-    opacity: "0.82"
+    opacity: "0.74"
   });
 
-  // ===== iOS BACK BUTTON =====
+  // ===== ROUND iOS BACK BUTTON =====
   const backBtn = document.createElement("button");
 
   backBtn.innerHTML = `
-    <span style="font-size:22px">‹</span>
-    <span>Back</span>
+    <span style="
+      font-size:20px;
+      line-height:1;
+      margin-left:-1px;
+    ">‹</span>
   `;
 
   Object.assign(backBtn.style, {
@@ -121,14 +137,14 @@
     top: "18px",
     left: "18px",
 
-    zIndex: "999999",
+    width: "44px",
+    height: "44px",
 
-    height: "52px",
-    padding: "0 18px",
+    zIndex: "999999",
 
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    justifyContent: "center",
 
     border: "none",
     outline: "none",
@@ -138,27 +154,21 @@
     background: "rgba(255,255,255,0.14)",
     color: "#fff",
 
-    fontSize: "20px",
-    fontWeight: "500",
-
-    fontFamily:
-      '-apple-system,BlinkMacSystemFont,"SF Pro Text",sans-serif',
-
     backdropFilter: "blur(16px)",
     WebkitBackdropFilter: "blur(16px)",
 
     boxShadow:
-      "0 6px 24px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.08)",
+      "0 6px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.08)",
 
     cursor: "pointer",
 
-    transition: "0.18s ease"
+    transition: "0.15s ease"
   });
 
-  // Hover / tap
+  // hover/tap
   backBtn.onmouseenter = () => {
     backBtn.style.background = "rgba(255,255,255,0.22)";
-    backBtn.style.transform = "scale(1.03)";
+    backBtn.style.transform = "scale(1.05)";
   };
 
   backBtn.onmouseleave = () => {
@@ -166,20 +176,20 @@
     backBtn.style.transform = "scale(1)";
   };
 
-  // ===== ACTIONS =====
+  // actions
+  overlay.onclick = goBack;
+
   backBtn.onclick = (e) => {
     e.stopPropagation();
     goBack();
   };
 
-  overlay.onclick = goBack;
+  // build
+  box.appendChild(icon);
+  box.appendChild(title);
+  box.appendChild(desc);
 
-  // ===== BUILD =====
-  content.appendChild(icon);
-  content.appendChild(title);
-  content.appendChild(desc);
-
-  overlay.appendChild(content);
+  overlay.appendChild(box);
 
   document.body.appendChild(overlay);
   document.body.appendChild(backBtn);
