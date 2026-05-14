@@ -131,7 +131,6 @@
 
       document.body.style.touchAction = "none";
 
-      document.body.style.pointerEvents = "none";
 
       overlay.style.pointerEvents = "all";
 
@@ -145,7 +144,6 @@
 
       document.body.style.touchAction = "";
 
-      document.body.style.pointerEvents = "";
 
       overlay.style.pointerEvents = "";
 
