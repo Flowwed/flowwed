@@ -173,14 +173,15 @@
       </div>
 
       <!-- TEXT -->
-      <div style="
-        font-size:14px;
-        line-height:1.6;
-        opacity:.72;
-      ">
-        This page works only in landscape mode.
-      </div>
-
+<div style="
+  font-size:14px;
+  line-height:1.65;
+  opacity:.78;
+">
+  This admin panel is view-only on mobile devices.<br><br>
+  Rotate your phone to continue browsing.<br><br>
+  For full access, use a laptop or desktop.
+</div>
     </div>
   `;
 
