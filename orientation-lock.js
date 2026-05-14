@@ -221,13 +221,10 @@
         max-width:290px;
       ">
 
-        This admin panel is view-only on mobile devices.
+        View-only mode on mobile devices.
         <br><br>
 
-        Rotate your phone to continue browsing.
-        <br><br>
-
-        For full access, use a laptop or desktop.
+        Use laptop for full access.
 
       </div>
 
