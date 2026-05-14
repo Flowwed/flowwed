@@ -1,22 +1,29 @@
 // ==========================================
-// MOBILE ACCESS LIMIT
-// full landing page works normally
-// but protected actions are blocked
-// on mobile devices
+// iOS LANDSCAPE OVERLAY
+// shows only on MOBILE PORTRAIT
+// hides automatically in LANDSCAPE
 // ==========================================
 
 (function () {
 
   // =========================
-  // SETTINGS
+  // SAFE BACK
   // =========================
 
-  const BLOCKED_SELECTORS = `
-    .try-free,
-    [data-desktop-only],
-    a[href="/app"],
-    a[href="/dashboard"]
-  `;
+  function goBackSafe() {
+
+    try {
+
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+
+    } catch (e) {}
+
+    location.replace("/");
+
+  }
 
   // =========================
   // MOBILE CHECK
@@ -25,254 +32,306 @@
   function isMobile() {
 
     return (
-      window.matchMedia(
-        "(pointer:coarse)"
-      ).matches
-      ||
-      /Android|iPhone|iPad|iPod/i
-        .test(navigator.userAgent)
+      /Android|iPhone|iPad|iPod/i.test(
+        navigator.userAgent
+      ) ||
+      window.innerWidth < 900
     );
 
   }
 
   // =========================
-  // CREATE POPUP
+  // PORTRAIT CHECK
   // =========================
 
-  function createPopup() {
+  function isPortrait() {
 
-    // already exists
-    if (
-      document.getElementById(
-        "desktopOnlyPopup"
-      )
-    ) {
-      return;
-    }
+    return (
+      window.innerHeight >
+      window.innerWidth
+    );
 
-    // =========================
-    // OVERLAY
-    // =========================
+  }
 
-    const popup =
-      document.createElement("div");
+  // =========================
+  // CREATE OVERLAY
+  // =========================
 
-    popup.id =
-      "desktopOnlyPopup";
+  const overlay =
+    document.createElement("div");
 
-    popup.style.cssText = `
-      position:fixed;
-      inset:0;
+  overlay.id =
+    "iosRotateOverlay";
 
-      z-index:999999999;
+  overlay.style.cssText = `
+    position:fixed;
+    inset:0;
+
+    z-index:999999999;
+
+    display:none;
+
+    background:rgba(24,24,28,.42);
+
+    backdrop-filter:blur(7px);
+    -webkit-backdrop-filter:blur(7px);
+
+    overflow:hidden;
+
+    cursor:pointer;
+  `;
+
+  // =========================
+  // HTML
+  // =========================
+
+  overlay.innerHTML = `
+
+    <!-- ROUND iOS BACK -->
+    <button id="rotateBackBtn" style="
+      position:absolute;
+      top:18px;
+      left:18px;
+
+      width:44px;
+      height:44px;
+
+      border:none;
+      outline:none;
+
+      border-radius:999px;
+
+      background:rgba(255,255,255,.14);
+
+      color:white;
 
       display:flex;
       align-items:center;
       justify-content:center;
 
-      padding:20px;
+      font-size:24px;
+      font-weight:500;
 
-      background:
-        rgba(10,10,14,.46);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
 
-      backdrop-filter:blur(10px);
-      -webkit-backdrop-filter:blur(10px);
+      box-shadow:
+        0 6px 22px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.08);
 
-      opacity:0;
-      pointer-events:none;
+      cursor:pointer;
 
-      transition:
-        opacity .18s ease;
-    `;
+      transition:.15s ease;
 
-    // =========================
-    // BOX
-    // =========================
+      z-index:10;
+    ">
+      ‹
+    </button>
 
-    popup.innerHTML = `
+    <!-- PERFECT CENTER -->
+    <div style="
+      position:absolute;
 
+      top:50%;
+      left:50%;
+
+      transform:translate(-50%,-50%);
+
+      width:100%;
+      max-width:310px;
+
+      padding:0 16px;
+
+      box-sizing:border-box;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+
+      text-align:center;
+
+      color:white;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        'SF Pro Display',
+        'SF Pro Text',
+        sans-serif;
+    ">
+
+      <!-- ICON -->
       <div style="
-        width:min(100%,340px);
+        margin-bottom:12px;
+        opacity:.96;
 
-        border-radius:28px;
-
-        padding:28px 24px;
-
-        box-sizing:border-box;
-
-        background:
-          rgba(22,22,26,.92);
-
-        color:white;
-
-        text-align:center;
-
-        font-family:
-          -apple-system,
-          BlinkMacSystemFont,
-          'SF Pro Display',
-          sans-serif;
-
-        box-shadow:
-          0 20px 60px rgba(0,0,0,.35);
+        display:flex;
+        align-items:center;
+        justify-content:center;
       ">
 
-        <!-- ICON -->
-        <div style="
-          font-size:40px;
-          margin-bottom:14px;
-        ">
-          💻
-        </div>
+        <svg
+          width="42"
+          height="42"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M21 12a9 9 0 1 1-2.64-6.36"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
 
-        <!-- TITLE -->
-        <div style="
-          font-size:24px;
-          line-height:1.1;
-
-          font-weight:650;
-
-          letter-spacing:-0.03em;
-
-          margin-bottom:14px;
-        ">
-          Mobile Experience Is Not Supported
-        </div>
-
-        <!-- TEXT -->
-        <div style="
-          font-size:15px;
-          line-height:1.5;
-
-          opacity:.82;
-
-          margin-bottom:22px;
-        ">
-
-          Laptop or Desktop Only 
-          
-
-          <br><br>
-
-          You can still explore
-          the landing page on mobile.
-
-        </div>
-
-        <!-- BUTTON -->
-        <button id="desktopOnlyCloseBtn" style="
-          width:100%;
-
-          height:48px;
-
-          border:none;
-          outline:none;
-
-          border-radius:16px;
-
-          background:white;
-
-          color:black;
-
-          font-size:15px;
-          font-weight:600;
-
-          cursor:pointer;
-        ">
-          OK
-        </button>
+          <path
+            d="M21 3v6h-6"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
 
       </div>
-    `;
 
-    document.body.appendChild(
-      popup
+      <!-- TITLE -->
+      <div style="
+        font-size:24px;
+        line-height:1.12;
+
+        font-weight:600;
+
+        letter-spacing:-0.03em;
+
+        margin-bottom:14px;
+      ">
+        Rotate your phone
+      </div>
+
+      <!-- TEXT -->
+      <div style="
+        font-size:16px;
+        line-height:1.45;
+
+        font-weight:400;
+
+        opacity:.84;
+
+        max-width:290px;
+      ">
+
+        View-only mode on mobile devices.
+        <br><br>
+
+        Use laptop for full access.
+
+      </div>
+
+    </div>
+  `;
+
+  // =========================
+  // APPEND
+  // =========================
+
+  document.body.appendChild(
+    overlay
+  );
+
+  // =========================
+  // BUTTON
+  // =========================
+
+  const backBtn =
+    document.getElementById(
+      "rotateBackBtn"
     );
 
-    // =========================
-    // OPEN
-    // =========================
+  backBtn.onclick = function (e) {
 
-    requestAnimationFrame(() => {
+    e.preventDefault();
+    e.stopPropagation();
 
-      popup.style.opacity =
-        "1";
+    goBackSafe();
 
-      popup.style.pointerEvents =
-        "auto";
+  };
 
-    });
+  // =========================
+  // OVERLAY CLICK
+  // =========================
 
-    // =========================
-    // CLOSE
-    // =========================
+  overlay.onclick = function () {
+    goBackSafe();
+  };
 
-    function closePopup() {
+  // =========================
+  // UPDATE
+  // =========================
 
-      popup.style.opacity =
-        "0";
+  function updateOverlay() {
 
-      popup.style.pointerEvents =
+const shouldShow =
+  isMobile();
+
+
+    if (shouldShow) {
+
+      overlay.style.display =
+        "block";
+
+      document.documentElement.style.overflow =
+        "hidden";
+
+      document.body.style.overflow =
+        "hidden";
+
+    } else {
+
+      overlay.style.display =
         "none";
 
-      setTimeout(() => {
-        popup.remove();
-      }, 180);
+      document.documentElement.style.overflow =
+        "";
+
+      document.body.style.overflow =
+        "";
 
     }
-
-    // button
-    document
-      .getElementById(
-        "desktopOnlyCloseBtn"
-      )
-      .addEventListener(
-        "click",
-        closePopup
-      );
-
-    // overlay click
-    popup.addEventListener(
-      "click",
-      function (e) {
-
-        if (e.target === popup) {
-          closePopup();
-        }
-
-      }
-    );
 
   }
 
   // =========================
-  // BLOCK MOBILE ACTIONS
+  // INIT
   // =========================
 
-  document.addEventListener(
-    "click",
-    function (e) {
+  updateOverlay();
 
-      // desktop allowed
-      if (!isMobile()) return;
+  // iOS Safari fix
+  setTimeout(
+    updateOverlay,
+    300
+  );
 
-      // protected action
-      const blocked =
-        e.target.closest(
-          BLOCKED_SELECTORS
-        );
+  // =========================
+  // EVENTS
+  // =========================
 
-      if (!blocked) return;
+  window.addEventListener(
+    "resize",
+    updateOverlay
+  );
 
-      // stop navigation
-      e.preventDefault();
-      e.stopPropagation();
+  window.addEventListener(
+    "orientationchange",
+    function () {
 
-      // show popup
-      createPopup();
+      setTimeout(
+        updateOverlay,
+        250
+      );
 
-    },
-    true
+    }
   );
 
 })();
