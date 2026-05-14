@@ -1,63 +1,68 @@
-(function(){
+(function () {
+
+  function goBackSafe() {
+
+    try {
+
+      if (
+        window.history.length > 1
+      ) {
+
+        window.history.back();
+        return;
+
+      }
+
+    } catch (e) {}
+
+    location.replace("dashboard.html");
+
+  }
 
   const overlay = document.createElement("div");
 
-  overlay.id = "landscapeNotice";
-
-  overlay.style.position = "fixed";
-  overlay.style.top = "0";
-  overlay.style.left = "0";
-  overlay.style.right = "0";
-  overlay.style.width = "100%";
-  overlay.style.height = "100dvh";
-
-  overlay.style.zIndex = "999999";
-
-  overlay.style.background = "rgba(0,0,0,.55)";
-  overlay.style.backdropFilter = "blur(12px)";
-
-  overlay.style.display = "none";
+  overlay.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:999999999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.55);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+  `;
 
   overlay.innerHTML = `
     <div style="
       position:relative;
-
       width:92vw;
       max-width:520px;
-
-      padding:60px 42px 160px;
-
+      padding:56px 34px 42px;
+      border-radius:32px;
       text-align:center;
-
       background:linear-gradient(
         to bottom,
-        rgba(255,255,255,.96),
-        rgba(255,245,248,.94)
+        rgba(255,255,255,.98),
+        rgba(255,245,248,.95)
       );
-
-      backdrop-filter: blur(12px) saturate(160%);
-      -webkit-backdrop-filter: blur(12px) saturate(160%);
-
       color:#732323;
-
       font-family:Inter,system-ui;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
     ">
 
-      <button onclick="noticeGoBack()" style="
+      <button id="rotateBackBtn" style="
         position:absolute;
         top:18px;
         left:18px;
 
-        width:42px;
-        height:42px;
+        width:44px;
+        height:44px;
 
         border:none;
         border-radius:50%;
 
-        background:rgba(255,255,255,.72);
-
-        backdrop-filter:blur(10px);
-        -webkit-backdrop-filter:blur(10px);
+        background:white;
 
         font-size:22px;
         color:#732323;
@@ -66,14 +71,18 @@
         align-items:center;
         justify-content:center;
 
+        cursor:pointer;
+
         box-shadow:
-          0 6px 18px rgba(0,0,0,.18);
+          0 8px 24px rgba(0,0,0,.18);
+
+        z-index:100000000;
       ">
         ←
       </button>
 
       <div style="
-        font-size:38px;
+        font-size:42px;
         margin-bottom:18px;
       ">
         ↻
@@ -81,92 +90,55 @@
 
       <div style="
         font-size:28px;
-        line-height:1.4;
-        font-weight:600;
+        line-height:1.35;
+        font-weight:700;
         margin-bottom:16px;
       ">
-        Please rotate your phone
+        Rotate your phone
       </div>
 
       <div style="
         font-size:18px;
         line-height:1.7;
-        opacity:.85;
+        opacity:.82;
       ">
-        This admin panel is view-only on mobile devices.<br>
-        For full access, use a laptop or desktop.
+        This page works only in landscape mode.
       </div>
-
-<div style="
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-
-  padding:18px 24px 28px;
-
-  display:flex;
-  justify-content:center;
-
-  background:linear-gradient(
-    to top,
-    rgba(255,245,248,.96),
-    rgba(255,245,248,.85)
-  );
-
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  box-shadow:0 -12px 40px rgba(0,0,0,.25);
-">
-  <button onclick="noticeGoBack()" style="
-    width:100%;
-    max-width:420px;
-
-    padding:16px 0;
-    border:none;
-    border-radius:16px;
-
-    font-size:20px;
-    font-weight:600;
-
-    background:#a52126;
-    color:white;
-
-    box-shadow:0 12px 28px rgba(0,0,0,.25);
-  ">
-    ← Back
-  </button>
-</div>
 
     </div>
   `;
 
   document.body.appendChild(overlay);
 
-  function noticeGoBack(){
+  const btn =
+    document.getElementById("rotateBackBtn");
 
-    if (history.length > 1) {
-      history.back();
-    } else {
-      window.location.href = "dashboard.html";
-    }
+  btn.onclick = function (e) {
 
-  }
+    e.preventDefault();
+    e.stopPropagation();
+
+    goBackSafe();
+
+  };
 
   function isMobile() {
     return window.innerWidth < 900;
   }
 
   function isPortrait() {
-    return window.matchMedia("(orientation: portrait)").matches;
+    return window.innerHeight >
+           window.innerWidth;
   }
 
   function update() {
 
-    if (isMobile() && isPortrait()) {
+    if (
+      isMobile() &&
+      isPortrait()
+    ) {
 
-      overlay.style.display = "block";
+      overlay.style.display = "flex";
 
       document.body.style.overflow = "hidden";
 
@@ -180,10 +152,16 @@
 
   }
 
-  window.addEventListener("pageshow", update);
-  window.addEventListener("resize", update);
-  window.addEventListener("orientationchange", update);
-
   update();
+
+  addEventListener(
+    "resize",
+    update
+  );
+
+  addEventListener(
+    "orientationchange",
+    update
+  );
 
 })();
