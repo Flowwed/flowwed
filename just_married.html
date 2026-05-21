@@ -1795,6 +1795,18 @@ if (file.size > 5 * 1024 * 1024) {
 
   const slot = slotSelect.value;
 
+
+await fetch(
+  `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${slot}`,
+  {
+    method: "DELETE",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    }
+  }
+);
+
   // 🔎 ПРОВЕРКА: есть ли уже фото
   const checkRes = await fetch(
     `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}&select=slot`,
