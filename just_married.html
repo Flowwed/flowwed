@@ -1997,7 +1997,10 @@ del.onclick = async () => {
 
 
   // удаляем фото
-  await fetch("/.netlify/functions/delete-photo", {
+
+console.log("DELETE PATH:", path);
+
+  const res = await fetch("/.netlify/functions/delete-photo", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -2008,6 +2011,8 @@ del.onclick = async () => {
       path: path
     })
   });
+
+console.log("DELETE RESPONSE:", await res.text());
 
   // 🔥 удаляем caption
   await fetch(
