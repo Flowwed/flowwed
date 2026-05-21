@@ -1993,7 +1993,9 @@ console.log("ROW PATH:", row.slot, path);
   del.innerText = "×";
 
 
-del.onclick = async () => {
+item.remove();
+
+
   const ok = await showConfirm("Delete this photo?");
   if (!ok) return;
 
@@ -2058,11 +2060,10 @@ await loadCaptionsFromSupabase();
 
   const img = document.createElement("img");
 
-  await new Promise((resolve) => {
-    img.onload = resolve;
-    img.onerror = resolve;
-    img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
-  });
+
+img.src =
+  `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
+
 
 const text = document.createElement("div");
 text.className = "caption-text";
