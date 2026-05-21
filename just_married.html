@@ -1797,7 +1797,7 @@ if (file.size > 5 * 1024 * 1024) {
 
   // 🔎 ПРОВЕРКА: есть ли уже фото
   const checkRes = await fetch(
-   `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${slot}&page_key=eq.just_married&select=slot`,
+    `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}&select=slot`,
     {
       headers: {
         apikey: SUPABASE_KEY,
@@ -1846,12 +1846,6 @@ if (file.size > 5 * 1024 * 1024) {
     }
 
     const data = await res.json();
-
-    const serverPath = data.path;
-
-    window.lastUploadedPath = serverPath;
-
-
     const uploadURL = data.url || data.signedUrl || data.uploadURL;
 
     if (!uploadURL) {
@@ -1866,27 +1860,21 @@ if (file.size > 5 * 1024 * 1024) {
       progressBar.style.width = p + "%";
     });
 
-
-await fetch(
-  `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
-  {
-    method: "POST",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY,
-      "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates,return=minimal"
-    },
-    body: JSON.stringify({
-      edit_token: token,
-      slot: slot,
-      page_key: "just_married",
-      path: serverPath,
-      caption: ""
-    })
-  }
-);
-
+    await fetch(
+      `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}`,
+      {
+        method: "PATCH",
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY,
+          "Content-Type": "application/json",
+          Prefer: "return=minimal"
+        },
+        body: JSON.stringify({
+          path: `${slug}/${slot}/${file.name}`
+        })
+      }
+    );
 
     lastUploadedFile = file;
 
@@ -1955,7 +1943,14 @@ function resetUploaderForm() {
 
 async function loadCaptionsFromSupabase() {
 
+  const overlay = document.getElementById("loadingOverlay");
+
+  if (overlay) {
+    overlay.classList.remove("hide");
+  }
+
   if (!token) return;
+
 
   // 1️⃣ captions
   const capRes = await fetch(
@@ -1969,21 +1964,44 @@ async function loadCaptionsFromSupabase() {
   );
 
   const captions = await capRes.json();
-
-console.log("CAPTIONS AFTER RELOAD:", captions);
-
   if (!Array.isArray(captions)) return;
 
+
+
+  // 2️⃣ images (slot → path)
+const imgRes = await fetch(
+  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&page_key=eq.just_married&slot=like.img%25&slot=not.like.jm_img%25&select=slot,path,updated_at&order=updated_at.desc.nullslast`,
+  {
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY
+    }
+  }
+);
+  const images = await imgRes.json();
+  if (!Array.isArray(images)) return;
+
+console.log("IMG51 ROWS:", images.filter(x => x.slot === "img51"));
+
+
+console.log("IMAGES RAW:", images);
+console.log("CAPTIONS RAW:", captions);
+
+const slotToPath = {};
+images.forEach(img => {
+  // не даём пустому или старому path перезатирать нормальный
+  if (img.path && !slotToPath[img.slot]) {
+    slotToPath[img.slot] = img.path;
+  }
+});
 
 // 3️⃣ render
 const gallery = document.getElementById("captionGallery");
 gallery.innerHTML = "";
 
 const renderPromises = captions.map(async (row) => {
-  const path = row.path;
+  const path = slotToPath[row.slot];
   if (!path) return null;
-
-console.log("ROW PATH:", row.slot, path);
 
   const item = document.createElement("div");
   item.className = "caption-item";
@@ -1999,10 +2017,7 @@ del.onclick = async () => {
 
 
   // удаляем фото
-
-console.log("DELETE PATH:", path);
-
-  const res = await fetch("/.netlify/functions/delete-photo", {
+  await fetch("/.netlify/functions/delete-photo", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -2013,8 +2028,6 @@ console.log("DELETE PATH:", path);
       path: path
     })
   });
-
-console.log("DELETE RESPONSE:", await res.text());
 
   // 🔥 удаляем caption
   await fetch(
@@ -2115,6 +2128,10 @@ items.forEach(el => gallery.appendChild(el));
 requestAnimationFrame(() => {
   gallery.style.opacity = "1";
 });
+
+if (overlay) {
+  overlay.classList.add("hide");
+}
 
 
 // 🎵 MUSIC PREVIEW (STEP 3)
@@ -2298,7 +2315,7 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
 
   // 1️⃣ СОХРАНЯЕМ caption В SUPABASE (UPSERT)
   await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
     {
       method: "POST",
       headers: {
@@ -2311,8 +2328,7 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
         edit_token: token,
         slot: slotSelect.value,
         caption: caption,
-        page_key: "just_married",
-        path: window.lastUploadedPath
+        page_key: "just_married"
       })
     }
   );
@@ -2329,7 +2345,7 @@ document.getElementById("captionCancelBtn").addEventListener("click", async () =
   if (lastUploadedFile) {
     // создаём пустую caption-запись, чтобы фото попало в галерею
     await fetch(
-      `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
+      `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
       {
         method: "POST",
         headers: {
@@ -2342,8 +2358,7 @@ document.getElementById("captionCancelBtn").addEventListener("click", async () =
           edit_token: token,
           slot: slotSelect.value,
           caption: "",
-          page_key: "just_married",
-          path: window.lastUploadedPath
+          page_key: "just_married"
         })
       }
     );
@@ -2738,15 +2753,6 @@ document
 </script>
 
 <script src="orientation-lock.js"></script>
-
-
-<script>
-window.addEventListener("load", () => {
-  document
-    .getElementById("loadingOverlay")
-    ?.classList.add("hide");
-});
-</script>
 
 
 </body>
