@@ -1871,12 +1871,12 @@ if (file.size > 5 * 1024 * 1024) {
           Prefer: "return=minimal"
         },
         body: JSON.stringify({
-          path: `${slug}/${slot}/${file.name}`
+          path: `${window.slug}/${slot}/${file.name}`
         })
       }
     );
 
-const photoPath = `${slug}/${slot}/${file.name}`;
+const photoPath = `${window.slug}/${slot}/${file.name}`;
 
 window.lastUploadedPath = photoPath;
 
