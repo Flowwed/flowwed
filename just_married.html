@@ -1970,6 +1970,8 @@ async function loadCaptionsFromSupabase() {
 
   const captions = await capRes.json();
 
+console.log("CAPTIONS AFTER RELOAD:", captions);
+
   if (!Array.isArray(captions)) return;
 
 
