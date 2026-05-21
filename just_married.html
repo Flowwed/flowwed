@@ -2014,9 +2014,11 @@ console.log("DELETE PATH:", path);
     })
   });
 
+
+
 console.log("DELETE RESPONSE:", await res.text());
 
-  // 🔥 удаляем caption
+// 🔥 удаляем caption row из Supabase
 
 const delRes = await fetch(
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}&page_key=eq.just_married`,
@@ -2030,12 +2032,22 @@ const delRes = await fetch(
   }
 );
 
-console.log("SUPABASE DELETE STATUS:", delRes.status);
+console.log(
+  "SUPABASE DELETE STATUS:",
+  delRes.status
+);
 
 console.log(
   "SUPABASE DELETE RESPONSE:",
   await delRes.text()
 );
+
+// 🔥 reload gallery
+await loadCaptionsFromSupabase();
+
+};
+
+
 
   const photoNumber = Number(row.slot.replace("img", "")) - 50;
   item.dataset.num = photoNumber;
