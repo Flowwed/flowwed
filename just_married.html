@@ -2041,11 +2041,6 @@ del.onclick = async () => {
     }
   );
 
-const overlay = document.getElementById("loadingOverlay");
-
-if (overlay) {
-  overlay.querySelector(".loading-text").innerText = "Deleting...";
-}
 
 
   await loadCaptionsFromSupabase();
