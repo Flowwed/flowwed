@@ -2319,11 +2319,6 @@ const res = await fetch(
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
     {
 
-console.log("STATUS:", res.status);
-
-const txt = await res.text();
-
-console.log("SUPABASE:", txt);
 
       method: "POST",
       headers: {
@@ -2341,6 +2336,13 @@ console.log("SUPABASE:", txt);
     }
   );
 
+console.log("STATUS:", res.status);
+
+const txt = await res.text();
+
+console.log("SUPABASE:", txt);
+
+
   await loadCaptionsFromSupabase();
   closeCaptionModal();
   resetUploaderForm();
@@ -2357,12 +2359,7 @@ const res = await fetch(
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
 
 
-console.log("STATUS:", res.status);
-
-const txt = await res.text();
-
-console.log("SUPABASE:", txt);
-
+{
 
         method: "POST",
         headers: {
@@ -2379,6 +2376,13 @@ console.log("SUPABASE:", txt);
         })
       }
     );
+
+console.log("STATUS:", res.status);
+
+const txt = await res.text();
+
+console.log("SUPABASE:", txt);
+
 
     // перерисовать галерею
     await loadCaptionsFromSupabase();
