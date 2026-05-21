@@ -1795,18 +1795,6 @@ if (file.size > 5 * 1024 * 1024) {
 
   const slot = slotSelect.value;
 
-
-await fetch(
-  `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${slot}`,
-  {
-    method: "DELETE",
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY
-    }
-  }
-);
-
   // 🔎 ПРОВЕРКА: есть ли уже фото
   const checkRes = await fetch(
     `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}&select=slot`,
@@ -1887,6 +1875,10 @@ await fetch(
         })
       }
     );
+
+const photoPath = `${slug}/${slot}/${file.name}`;
+
+window.lastUploadedPath = photoPath;
 
     lastUploadedFile = file;
 
@@ -2012,7 +2004,7 @@ const gallery = document.getElementById("captionGallery");
 gallery.innerHTML = "";
 
 const renderPromises = captions.map(async (row) => {
-  const path = slotToPath[row.slot];
+  const path = row.path || slotToPath[row.slot];
   if (!path) return null;
 
   const item = document.createElement("div");
@@ -2043,9 +2035,8 @@ del.onclick = async () => {
 
   // 🔥 удаляем caption
   await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}&page_key=eq.just_married`,
+    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}`,
     {
-
       method: "DELETE",
       headers: {
         apikey: SUPABASE_KEY,
@@ -2054,12 +2045,10 @@ del.onclick = async () => {
     }
   );
 
-console.log("caption deleted", row.slot);
 
 
   await loadCaptionsFromSupabase();
 };
-
 
 
 
@@ -2343,7 +2332,8 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
         edit_token: token,
         slot: slotSelect.value,
         caption: caption,
-        page_key: "just_married"
+        page_key: "just_married",
+        path: window.lastUploadedPath
       })
     }
   );
@@ -2373,7 +2363,8 @@ document.getElementById("captionCancelBtn").addEventListener("click", async () =
           edit_token: token,
           slot: slotSelect.value,
           caption: "",
-          page_key: "just_married"
+          page_key: "just_married",
+          path: window.lastUploadedPath
         })
       }
     );
