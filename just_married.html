@@ -2314,9 +2314,17 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
   }
 
   // 1️⃣ СОХРАНЯЕМ caption В SUPABASE (UPSERT)
-  await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
+
+const res = await fetch(
+  `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
     {
+
+console.log("STATUS:", res.status);
+
+const txt = await res.text();
+
+console.log("SUPABASE:", txt);
+
       method: "POST",
       headers: {
         apikey: SUPABASE_KEY,
@@ -2344,9 +2352,18 @@ document.getElementById("captionAddBtn").addEventListener("click", async () => {
 document.getElementById("captionCancelBtn").addEventListener("click", async () => {
   if (lastUploadedFile) {
     // создаём пустую caption-запись, чтобы фото попало в галерею
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
-      {
+
+const res = await fetch(
+  `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
+
+
+console.log("STATUS:", res.status);
+
+const txt = await res.text();
+
+console.log("SUPABASE:", txt);
+
+
         method: "POST",
         headers: {
           apikey: SUPABASE_KEY,
