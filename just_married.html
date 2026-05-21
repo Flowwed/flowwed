@@ -1788,6 +1788,9 @@ uploadBtn.onclick = async () => {
 
   const file = fileInput.files[0];
 
+const optimizedFile =
+  await optimizeImage(file);
+
 const thumbBlob =
   await createThumbnail(file);
 
@@ -1860,11 +1863,10 @@ if (file.size > 5 * 1024 * 1024) {
     progressContainer.style.display = "block";
     status.innerText = "";
 
-    await uploadFileWithProgress(uploadURL, thumbBlob, (p) => {
+await uploadFileWithProgress(uploadURL, optimizedFile, (p) => {
+  progressBar.style.width = p + "%";
+});
 
-
-      progressBar.style.width = p + "%";
-    });
 
     await fetch(
       `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}`,
@@ -1971,7 +1973,64 @@ async function createThumbnail(file) {
   });
 }
 
+async function optimizeImage(file) {
 
+  const img = new Image();
+
+  const url =
+    URL.createObjectURL(file);
+
+  img.src = url;
+
+  await img.decode();
+
+  const canvas =
+    document.createElement("canvas");
+
+  const maxWidth = 1600;
+
+  let width = img.width;
+  let height = img.height;
+
+  if (width > maxWidth) {
+
+    height =
+      height * (maxWidth / width);
+
+    width = maxWidth;
+  }
+
+  canvas.width = width;
+  canvas.height = height;
+
+  const ctx =
+    canvas.getContext("2d");
+
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    width,
+    height
+  );
+
+  const blob = await new Promise(resolve => {
+
+    canvas.toBlob(resolve,
+      "image/jpeg",
+      0.78
+    );
+
+  });
+
+  return new File(
+    [blob],
+    file.name.replace(/\.\w+$/, ".jpg"),
+    {
+      type: "image/jpeg"
+    }
+  );
+}
 
 
   function uploadFileWithProgress(url, file, onProgress) {
