@@ -1788,6 +1788,10 @@ uploadBtn.onclick = async () => {
 
   const file = fileInput.files[0];
 
+const thumbBlob =
+  await createThumbnail(file);
+
+
 if (file.size > 5 * 1024 * 1024) {
   status.innerText = "⚠️ Photo must be under 5MB. Choose another file.";
   return;
@@ -1856,7 +1860,9 @@ if (file.size > 5 * 1024 * 1024) {
     progressContainer.style.display = "block";
     status.innerText = "";
 
-    await uploadFileWithProgress(uploadURL, file, (p) => {
+    await uploadFileWithProgress(uploadURL, thumbBlob, (p) => {
+
+
       progressBar.style.width = p + "%";
     });
 
@@ -1918,6 +1924,54 @@ function resetUploaderForm() {
   previewBox.classList.add("placeholder");
   status.innerText = "";
 }
+
+
+async function createThumbnail(file) {
+
+  const img = new Image();
+
+  const url = URL.createObjectURL(file);
+
+  img.src = url;
+
+  await img.decode();
+
+  const canvas =
+    document.createElement("canvas");
+
+  const maxWidth = 900;
+
+  const scale =
+    maxWidth / img.width;
+
+  canvas.width = maxWidth;
+
+  canvas.height =
+    img.height * scale;
+
+  const ctx =
+    canvas.getContext("2d");
+
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  return new Promise(resolve => {
+
+    canvas.toBlob(blob => {
+
+      resolve(blob);
+
+    }, "image/jpeg", 0.72);
+
+  });
+}
+
+
 
 
   function uploadFileWithProgress(url, file, onProgress) {
