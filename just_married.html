@@ -1997,6 +1997,11 @@ del.onclick = async () => {
   const ok = await showConfirm("Delete this photo?");
   if (!ok) return;
 
+
+  // удаляем фото
+
+console.log("DELETE PATH:", path);
+
   const res = await fetch("/.netlify/functions/delete-photo", {
     method: "POST",
     headers: {
@@ -2009,8 +2014,9 @@ del.onclick = async () => {
     })
   });
 
-  console.log("DELETE RESPONSE:", await res.text());
+console.log("DELETE RESPONSE:", await res.text());
 
+  // 🔥 удаляем caption
   await fetch(
     `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}&page_key=eq.just_married`,
     {
@@ -2022,8 +2028,11 @@ del.onclick = async () => {
     }
   );
 
-  item.remove();
+
+
+  await loadCaptionsFromSupabase();
 };
+
 
 
   const photoNumber = Number(row.slot.replace("img", "")) - 50;
@@ -2035,10 +2044,11 @@ del.onclick = async () => {
 
   const img = document.createElement("img");
 
-
-img.src =
-  `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
-
+  await new Promise((resolve) => {
+    img.onload = resolve;
+    img.onerror = resolve;
+    img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
+  });
 
 const text = document.createElement("div");
 text.className = "caption-text";
@@ -2111,7 +2121,7 @@ requestAnimationFrame(() => {
 const musicInput = document.getElementById("musicInput");
 const musicPreview = document.getElementById("musicPreview");
 
-
+}
 </script>
 
 
