@@ -1947,17 +1947,7 @@ function resetUploaderForm() {
 
 async function loadCaptionsFromSupabase() {
 
-  const overlay = document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    overlay.classList.remove("hide");
-  }
-
-  if (!token) {
-  if (overlay) overlay.classList.add("hide");
-  return;
-}
-
+  if (!token) return;
 
   // 1️⃣ captions
   const capRes = await fetch(
@@ -1971,29 +1961,23 @@ async function loadCaptionsFromSupabase() {
   );
 
   const captions = await capRes.json();
-  if (!Array.isArray(captions)) {
-  if (overlay) overlay.classList.add("hide");
-  return;
-}
 
+  if (!Array.isArray(captions)) return;
 
-
-  // 2️⃣ images (slot → path)
-const imgRes = await fetch(
-  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&page_key=eq.just_married&slot=like.img%25&slot=not.like.jm_img%25&select=slot,path,updated_at&order=updated_at.desc.nullslast`,
-  {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY
+  // 2️⃣ images
+  const imgRes = await fetch(
+    `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&page_key=eq.just_married&slot=like.img%25&slot=not.like.jm_img%25&select=slot,path,updated_at&order=updated_at.desc.nullslast`,
+    {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY
+      }
     }
-  }
-);
-  const images = await imgRes.json();
-  if (!Array.isArray(images)) {
-  if (overlay) overlay.classList.add("hide");
-  return;
-}
+  );
 
+  const images = await imgRes.json();
+
+  if (!Array.isArray(images)) return;
 
 
 console.log("IMG51 ROWS:", images.filter(x => x.slot === "img51"));
@@ -2770,6 +2754,15 @@ document
 </script>
 
 <script src="orientation-lock.js"></script>
+
+
+<script>
+window.addEventListener("load", () => {
+  document
+    .getElementById("loadingOverlay")
+    ?.classList.add("hide");
+});
+</script>
 
 
 </body>
