@@ -1797,7 +1797,7 @@ if (file.size > 5 * 1024 * 1024) {
 
   // 🔎 ПРОВЕРКА: есть ли уже фото
   const checkRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}&select=slot`,
+   `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${slot}&page_key=eq.just_married&select=slot`,
     {
       headers: {
         apikey: SUPABASE_KEY,
