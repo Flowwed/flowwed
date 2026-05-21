@@ -1946,14 +1946,6 @@ async function loadCaptionsFromSupabase() {
   const overlay = document.getElementById("loadingOverlay");
 
   if (overlay) {
-
-    const text =
-      overlay.querySelector(".loading-text");
-
-    if (text && !text.innerText.trim()) {
-      text.innerText = "Loading...";
-    }
-
     overlay.classList.remove("hide");
   }
 
@@ -1973,6 +1965,7 @@ async function loadCaptionsFromSupabase() {
 
   const captions = await capRes.json();
   if (!Array.isArray(captions)) return;
+
 
 
   // 2️⃣ images (slot → path)
@@ -2047,6 +2040,13 @@ del.onclick = async () => {
       }
     }
   );
+
+const overlay = document.getElementById("loadingOverlay");
+
+if (overlay) {
+  overlay.querySelector(".loading-text").innerText = "Deleting...";
+}
+
 
   await loadCaptionsFromSupabase();
 };
