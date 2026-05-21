@@ -1946,6 +1946,14 @@ async function loadCaptionsFromSupabase() {
   const overlay = document.getElementById("loadingOverlay");
 
   if (overlay) {
+
+    const text =
+      overlay.querySelector(".loading-text");
+
+    if (text && !text.innerText.trim()) {
+      text.innerText = "Loading...";
+    }
+
     overlay.classList.remove("hide");
   }
 
@@ -1965,6 +1973,7 @@ async function loadCaptionsFromSupabase() {
 
   const captions = await capRes.json();
   if (!Array.isArray(captions)) return;
+
 
   // 2️⃣ images (slot → path)
 const imgRes = await fetch(
@@ -2012,6 +2021,7 @@ const renderPromises = captions.map(async (row) => {
 del.onclick = async () => {
   const ok = await showConfirm("Delete this photo?");
   if (!ok) return;
+
 
   // удаляем фото
   await fetch("/.netlify/functions/delete-photo", {
