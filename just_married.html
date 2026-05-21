@@ -1846,6 +1846,12 @@ if (file.size > 5 * 1024 * 1024) {
     }
 
     const data = await res.json();
+
+    const serverPath = data.path;
+
+    window.lastUploadedPath = serverPath;
+
+
     const uploadURL = data.url || data.signedUrl || data.uploadURL;
 
     if (!uploadURL) {
@@ -1860,25 +1866,27 @@ if (file.size > 5 * 1024 * 1024) {
       progressBar.style.width = p + "%";
     });
 
-    await fetch(
-      `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&slot=eq.${slot}`,
-      {
-        method: "PATCH",
-        headers: {
-          apikey: SUPABASE_KEY,
-          Authorization: "Bearer " + SUPABASE_KEY,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal"
-        },
-        body: JSON.stringify({
-          path: `${window.slug}/${slot}/${file.name}`
-        })
-      }
-    );
 
-const photoPath = `${window.slug}/${slot}/${file.name}`;
+await fetch(
+  `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot,page_key`,
+  {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: "Bearer " + SUPABASE_KEY,
+      "Content-Type": "application/json",
+      Prefer: "resolution=merge-duplicates,return=minimal"
+    },
+    body: JSON.stringify({
+      edit_token: token,
+      slot: slot,
+      page_key: "just_married",
+      path: serverPath,
+      caption: ""
+    })
+  }
+);
 
-window.lastUploadedPath = photoPath;
 
     lastUploadedFile = file;
 
@@ -1964,43 +1972,16 @@ async function loadCaptionsFromSupabase() {
 
   if (!Array.isArray(captions)) return;
 
-  // 2️⃣ images
-  const imgRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&page_key=eq.just_married&slot=like.img%25&slot=not.like.jm_img%25&select=slot,path,updated_at&order=updated_at.desc.nullslast`,
-    {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY
-      }
-    }
-  );
-
-  const images = await imgRes.json();
-
-  if (!Array.isArray(images)) return;
-
-
-console.log("IMG51 ROWS:", images.filter(x => x.slot === "img51"));
-
-
-console.log("IMAGES RAW:", images);
-console.log("CAPTIONS RAW:", captions);
-
-const slotToPath = {};
-images.forEach(img => {
-  // не даём пустому или старому path перезатирать нормальный
-  if (img.path && !slotToPath[img.slot]) {
-    slotToPath[img.slot] = img.path;
-  }
-});
 
 // 3️⃣ render
 const gallery = document.getElementById("captionGallery");
 gallery.innerHTML = "";
 
 const renderPromises = captions.map(async (row) => {
-  const path = row.path || slotToPath[row.slot];
+  const path = row.path;
   if (!path) return null;
+
+console.log("ROW PATH:", row.slot, path);
 
   const item = document.createElement("div");
   item.className = "caption-item";
