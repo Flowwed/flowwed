@@ -1953,7 +1953,10 @@ async function loadCaptionsFromSupabase() {
     overlay.classList.remove("hide");
   }
 
-  if (!token) return;
+  if (!token) {
+  if (overlay) overlay.classList.add("hide");
+  return;
+}
 
 
   // 1️⃣ captions
@@ -1968,7 +1971,10 @@ async function loadCaptionsFromSupabase() {
   );
 
   const captions = await capRes.json();
-  if (!Array.isArray(captions)) return;
+  if (!Array.isArray(captions)) {
+  if (overlay) overlay.classList.add("hide");
+  return;
+}
 
 
 
@@ -1983,7 +1989,12 @@ const imgRes = await fetch(
   }
 );
   const images = await imgRes.json();
-  if (!Array.isArray(images)) return;
+  if (!Array.isArray(images)) {
+  if (overlay) overlay.classList.add("hide");
+  return;
+}
+
+
 
 console.log("IMG51 ROWS:", images.filter(x => x.slot === "img51"));
 
