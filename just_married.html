@@ -1628,22 +1628,29 @@ async function loadSlugFromGallery(token) {
     const rows = await res.json();
     console.log(rows);
 
-    if (Array.isArray(rows) && rows.length > 0) {
-      window.slug = rows[0].slug;
 
-      slugDisplay.innerText = "Slug: " + slug;
+if (Array.isArray(rows) && rows.length > 0) {
 
-      const musicUploadBtn = document.getElementById("musicUploadBtn");
-      if (musicUploadBtn) {
-        musicUploadBtn.disabled = false;
-      }
+  window.slug = rows[0].slug;
 
-      window.dispatchEvent(new Event("slug-ready"));
+  slugDisplay.innerText =
+    "Slug: " + slug;
 
-      loadCaptionsFromSupabase();
-    } else {
-      slugDisplay.innerText = "❌ No rows returned for token";
-    }
+  const musicUploadBtn =
+    document.getElementById("musicUploadBtn");
+
+  if (musicUploadBtn) {
+    musicUploadBtn.disabled = false;
+  }
+
+  window.dispatchEvent(
+    new Event("slug-ready")
+  );
+
+}
+
+// 🔥 ВСЕГДА запускаем
+await loadCaptionsFromSupabase();
 
   } catch (err) {
     slugDisplay.innerText = "Error loading slug: " + err.message;
