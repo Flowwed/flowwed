@@ -2062,189 +2062,236 @@ async function loadCaptionsFromSupabase() {
     overlay.classList.remove("hide");
   }
 
-  if (!token) return;
+  try {
 
+    if (!token) return;
 
-  // 1️⃣ captions
-  const capRes = await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.just_married&order=created_at.asc`,
-    {
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY
+    // 1️⃣ captions
+    const capRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&page_key=eq.just_married&order=created_at.asc`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
+        }
       }
-    }
-  );
+    );
 
-  const captions = await capRes.json();
-  if (!Array.isArray(captions)) return;
+    const captions = await capRes.json();
 
-
-
-  // 2️⃣ images (slot → path)
-const imgRes = await fetch(
-  `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&page_key=eq.just_married&slot=like.img%25&slot=not.like.jm_img%25&select=slot,path,updated_at&order=updated_at.desc.nullslast`,
-  {
-    headers: {
-      apikey: SUPABASE_KEY,
-      Authorization: "Bearer " + SUPABASE_KEY
-    }
-  }
-);
-  const images = await imgRes.json();
-  if (!Array.isArray(images)) return;
-
-console.log("IMG51 ROWS:", images.filter(x => x.slot === "img51"));
-
-
-console.log("IMAGES RAW:", images);
-console.log("CAPTIONS RAW:", captions);
-
-const slotToPath = {};
-images.forEach(img => {
-  // не даём пустому или старому path перезатирать нормальный
-  if (img.path && !slotToPath[img.slot]) {
-    slotToPath[img.slot] = img.path;
-  }
-});
-
-// 3️⃣ render
-const gallery = document.getElementById("captionGallery");
-gallery.innerHTML = "";
-
-const renderPromises = captions.map(async (row) => {
-  const path = slotToPath[row.slot];
-  if (!path) return null;
-
-  const item = document.createElement("div");
-  item.className = "caption-item";
-
-  const del = document.createElement("div");
-  del.className = "delete-btn";
-  del.innerText = "×";
-
-
-del.onclick = async () => {
-  const ok = await showConfirm("Delete this photo?");
-  if (!ok) return;
-
-
-  // удаляем фото
-  await fetch("/.netlify/functions/delete-photo", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      token,
-      slot: row.slot,
-      path: path
-    })
-  });
-
-  // 🔥 удаляем caption
-  await fetch(
-    `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}&page_key=eq.just_married`,
-    {
-      method: "DELETE",
-      headers: {
-        apikey: SUPABASE_KEY,
-        Authorization: "Bearer " + SUPABASE_KEY
+    // 2️⃣ images (slot → path)
+    const imgRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/gallery_images?edit_token=eq.${token}&page_key=eq.just_married&slot=like.img%25&slot=not.like.jm_img%25&select=slot,path,updated_at&order=updated_at.desc.nullslast`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: "Bearer " + SUPABASE_KEY
+        }
       }
+    );
+
+    const images = await imgRes.json();
+
+    // 🔥 безопасные массивы
+    const safeCaptions =
+      Array.isArray(captions) ? captions : [];
+
+    const safeImages =
+      Array.isArray(images) ? images : [];
+
+    console.log(
+      "IMG51 ROWS:",
+      safeImages.filter(x => x.slot === "img51")
+    );
+
+    console.log("IMAGES RAW:", safeImages);
+    console.log("CAPTIONS RAW:", safeCaptions);
+
+    const slotToPath = {};
+
+    safeImages.forEach(img => {
+
+      // не даём пустому path перезатирать нормальный
+      if (img.path && !slotToPath[img.slot]) {
+        slotToPath[img.slot] = img.path;
+      }
+
+    });
+
+    // 3️⃣ render
+    const gallery =
+      document.getElementById("captionGallery");
+
+    gallery.innerHTML = "";
+
+    const renderPromises = safeCaptions.map(async (row) => {
+
+      const path = slotToPath[row.slot];
+
+      if (!path) return null;
+
+      const item = document.createElement("div");
+      item.className = "caption-item";
+
+      const del = document.createElement("div");
+      del.className = "delete-btn";
+      del.innerText = "×";
+
+      del.onclick = async () => {
+
+        const ok =
+          await showConfirm("Delete this photo?");
+
+        if (!ok) return;
+
+        // удаляем фото
+        await fetch("/.netlify/functions/delete-photo", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            token,
+            slot: row.slot,
+            path: path
+          })
+        });
+
+        // удаляем caption
+        await fetch(
+          `${SUPABASE_URL}/rest/v1/guests_photo_captions?edit_token=eq.${token}&slot=eq.${row.slot}&page_key=eq.just_married`,
+          {
+            method: "DELETE",
+            headers: {
+              apikey: SUPABASE_KEY,
+              Authorization: "Bearer " + SUPABASE_KEY
+            }
+          }
+        );
+
+        await loadCaptionsFromSupabase();
+      };
+
+      const photoNumber =
+        Number(row.slot.replace("img", "")) - 50;
+
+      item.dataset.num = photoNumber;
+
+      const label =
+        document.createElement("div");
+
+      label.className = "photo-label";
+      label.innerText = `Photo ${photoNumber}`;
+
+      const img =
+        document.createElement("img");
+
+      await new Promise((resolve) => {
+
+        img.onload = resolve;
+        img.onerror = resolve;
+
+        img.src =
+          `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
+
+      });
+
+      const text =
+        document.createElement("div");
+
+      text.className = "caption-text";
+
+      text.innerText =
+        row.caption || "—";
+
+      text.style.textAlign = "left";
+
+      text.style.display = "-webkit-box";
+      text.style.webkitLineClamp = "1";
+      text.style.webkitBoxOrient = "vertical";
+
+      text.style.overflow = "hidden";
+
+      const toggle =
+        document.createElement("div");
+
+      toggle.innerText = "Show more";
+
+      toggle.style.marginTop = "4px";
+      toggle.style.fontSize = "12px";
+      toggle.style.fontWeight = "600";
+      toggle.style.color = "#8d1f1f";
+      toggle.style.cursor = "pointer";
+
+      let expanded = false;
+
+      toggle.onclick = () => {
+
+        expanded = !expanded;
+
+        if (expanded) {
+
+          text.style.webkitLineClamp = "unset";
+
+          toggle.innerText = "Show less";
+
+        } else {
+
+          text.style.webkitLineClamp = "1";
+
+          toggle.innerText = "Show more";
+
+        }
+
+      };
+
+      item.appendChild(del);
+      item.appendChild(label);
+      item.appendChild(img);
+      item.appendChild(text);
+      item.appendChild(toggle);
+
+      return item;
+
+    });
+
+    const items =
+      (await Promise.all(renderPromises))
+      .filter(Boolean)
+      .sort((a, b) =>
+        Number(a.dataset.num) -
+        Number(b.dataset.num)
+      );
+
+    gallery.innerHTML = "";
+
+    items.forEach(el =>
+      gallery.appendChild(el)
+    );
+
+    requestAnimationFrame(() => {
+      gallery.style.opacity = "1";
+    });
+
+  } catch (err) {
+
+    console.error(
+      "Gallery load failed:",
+      err
+    );
+
+  } finally {
+
+    // 🔥 overlay ВСЕГДА скрывается
+    if (overlay) {
+      overlay.classList.add("hide");
     }
-  );
 
-
-
-  await loadCaptionsFromSupabase();
-};
-
-
-
-  const photoNumber = Number(row.slot.replace("img", "")) - 50;
-  item.dataset.num = photoNumber;
-
-  const label = document.createElement("div");
-  label.className = "photo-label";
-  label.innerText = `Photo ${photoNumber}`;
-
-  const img = document.createElement("img");
-
-  await new Promise((resolve) => {
-    img.onload = resolve;
-    img.onerror = resolve;
-    img.src = `https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/galleries/${path}`;
-  });
-
-const text = document.createElement("div");
-text.className = "caption-text";
-
-text.innerText = row.caption || "—";
-
-text.style.textAlign = "left";
-
-text.style.display = "-webkit-box";
-text.style.webkitLineClamp = "1";
-text.style.webkitBoxOrient = "vertical";
-
-text.style.overflow = "hidden";
-
-const toggle = document.createElement("div");
-
-toggle.innerText = "Show more";
-
-toggle.style.marginTop = "4px";
-toggle.style.fontSize = "12px";
-toggle.style.fontWeight = "600";
-toggle.style.color = "#8d1f1f";
-toggle.style.cursor = "pointer";
-
-let expanded = false;
-
-toggle.onclick = () => {
-
-  expanded = !expanded;
-
-  if (expanded) {
-
-    text.style.webkitLineClamp = "unset";
-
-    toggle.innerText = "Show less";
-
-  } else {
-
-    text.style.webkitLineClamp = "1";
-
-    toggle.innerText = "Show more";
   }
-};
-
-
-  item.appendChild(del);
-  item.appendChild(label);
-  item.appendChild(img);
-  item.appendChild(text);
-  item.appendChild(toggle);
-
-  return item;
-});
-
-
-const items = (await Promise.all(renderPromises))
-  .filter(Boolean)
-  .sort((a, b) => Number(a.dataset.num) - Number(b.dataset.num));
-
-gallery.innerHTML = "";
-items.forEach(el => gallery.appendChild(el));
-
-
-requestAnimationFrame(() => {
-  gallery.style.opacity = "1";
-});
-
-if (overlay) {
-  overlay.classList.add("hide");
 }
+
+
+
 
 
 // 🎵 MUSIC PREVIEW (STEP 3)
@@ -2253,8 +2300,6 @@ const musicPreview = document.getElementById("musicPreview");
 
 }
 </script>
-
-
 
 
 <!-- CAPTION MODAL -->
