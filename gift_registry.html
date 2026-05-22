@@ -1139,8 +1139,13 @@ async function loadCoupleName(){
 
   const slug = data.slug || "";
 
-if (!slug.includes("-")) {
+if (
+  !slug.includes("-") ||
+  slug.startsWith("trial-")
+) {
+
   document.getElementById("coupleSmallName").textContent = "";
+
   return;
 }
 
@@ -1562,7 +1567,7 @@ async function loadFund() {
     .from("honeymoon_fund")
     .select("*")
     .eq("edit_token", window.APP_TOKEN)
-    .single();
+    .maybeSingle();
 
   if (!data) return;
 
