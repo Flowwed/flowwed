@@ -1781,6 +1781,26 @@ uploadBtn.onclick = async () => {
 
   const originalUploadText = uploadBtn.innerHTML;
 
+// 🔥 TRIAL LIMIT
+const isTrial =
+  token &&
+  token.toLowerCase().startsWith("trial");
+
+if (isTrial) {
+
+  const currentPhotos =
+    document.querySelectorAll(".caption-item").length;
+
+  if (currentPhotos >= 5) {
+
+    await showAlertBox(
+      "Trial mode allows up to 5 photos."
+    );
+
+    return;
+  }
+}
+
   const fileInput = document.getElementById("fileInput");
 
   if (!fileInput.files.length) {
