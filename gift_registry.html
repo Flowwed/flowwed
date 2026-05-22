@@ -1139,9 +1139,10 @@ async function loadCoupleName(){
 
   const slug = data.slug || "";
 
+
 if (
   !slug.includes("-") ||
-  slug.startsWith("trial-")
+  slug.toLowerCase().startsWith("trial-")
 ) {
 
   document.getElementById("coupleSmallName").textContent = "";
@@ -1149,9 +1150,8 @@ if (
   return;
 }
 
+
 const [a,b] = slug.split("-");
-
-
 
   document.getElementById("coupleSmallName").textContent =
     `${cap(a)} & ${cap(b)}`;
