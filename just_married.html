@@ -2056,13 +2056,14 @@ async function optimizeImage(file) {
 
 async function loadCaptionsFromSupabase() {
 
-  const overlay = document.getElementById("loadingOverlay");
-
-  if (overlay) {
-    overlay.classList.remove("hide");
-  }
+  const overlay =
+    document.getElementById("loadingOverlay");
 
   try {
+
+    if (overlay) {
+      overlay.classList.remove("hide");
+    }
 
     if (!token) return;
 
@@ -2289,9 +2290,6 @@ async function loadCaptionsFromSupabase() {
 
   }
 }
-
-
-
 
 
 // 🎵 MUSIC PREVIEW (STEP 3)
