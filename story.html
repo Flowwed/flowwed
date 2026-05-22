@@ -2039,6 +2039,27 @@ function showPreview(file, isFinal = false) {
 
 const originalUploadText = uploadBtn.innerHTML;
 
+
+// 🔥 TRIAL LIMIT
+const isTrial =
+  token &&
+  token.toLowerCase().startsWith("trial");
+
+if (isTrial) {
+
+  const currentPhotos =
+    document.querySelectorAll("#miniGallery img").length;
+
+  if (currentPhotos >= 10) {
+
+    await showAlertBox(
+      "Trial mode allows up to 10 photos."
+    );
+
+    return;
+  }
+}
+
   const fileInput = document.getElementById("fileInput");
 
   if (!fileInput.files.length) {
