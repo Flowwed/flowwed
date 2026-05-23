@@ -2035,6 +2035,81 @@ function showPreview(file, isFinal = false) {
 
 })();
 
+
+function showAlertBox(message) {
+
+  return new Promise(resolve => {
+
+    const bg = document.createElement("div");
+
+    bg.style.position = "fixed";
+    bg.style.inset = "0";
+    bg.style.background = "rgba(0,0,0,0.45)";
+    bg.style.display = "flex";
+    bg.style.alignItems = "center";
+    bg.style.justifyContent = "center";
+    bg.style.zIndex = "999999999";
+
+    bg.innerHTML = `
+
+      <div style="
+        width:320px;
+        background:white;
+        border-radius:22px;
+        padding:24px;
+        text-align:center;
+        box-shadow:0 25px 60px rgba(0,0,0,0.35);
+      ">
+
+        <div style="
+          font-size:18px;
+          font-weight:700;
+          color:#9c1818;
+          margin-bottom:14px;
+        ">
+          Trial Limit
+        </div>
+
+        <div style="
+          font-size:15px;
+          line-height:1.5;
+          color:#555;
+          margin-bottom:20px;
+        ">
+          ${message}
+        </div>
+
+        <button id="alertOkBtn" style="
+          padding:12px 24px;
+          border:none;
+          border-radius:14px;
+          background:#9c1818;
+          color:white;
+          font-weight:700;
+          cursor:pointer;
+        ">
+          OK
+        </button>
+
+      </div>
+    `;
+
+    document.body.appendChild(bg);
+
+    document
+      .getElementById("alertOkBtn")
+      .onclick = () => {
+
+        bg.remove();
+        resolve();
+
+      };
+
+  });
+
+}
+
+
   uploadBtn.onclick = async () => {
 
 const originalUploadText = uploadBtn.innerHTML;
@@ -2052,7 +2127,7 @@ if (isTrial) {
 
   if (currentPhotos >= 10) {
 
-    alert(
+    await showAlertBox(
       "Trial mode allows up to 10 photos."
     );
 
