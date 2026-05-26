@@ -2312,44 +2312,133 @@ const musicPreview = document.getElementById("musicPreview");
 
 
 <!-- CAPTION MODAL -->
-<div class="modal-backdrop" id="captionModal">
-  <div class="modal-window" style="width:420px; height:auto; padding:24px;">
+
+<div id="captionModal" style="
+display:none;
+position:fixed;
+
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+
+z-index:99999999;
+">
+
+
+
+  <div style="
+  width:560px;
+
+  background:
+  linear-gradient(
+    to bottom,
+    rgba(255,255,255,.92),
+    rgba(255,245,248,.88)
+  );
+
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+
+  border-radius:20px;
+
+  padding:32px;
+
+  box-shadow:
+    0 24px 60px rgba(120,30,50,.25),
+    inset 0 1px 0 rgba(255,255,255,.7);
+  ">
 
     <div style="
-      font-size:20px;
-      font-weight:700;
-      margin-bottom:16px;
-      color:#8f1d1d;
+    font-size:22px;
+    font-weight:600;
+    line-height:1.4;
+
+    margin-bottom:22px;
+
+    color:#8f1d1d;
     ">
-      Would you like to add a note to your photo?
+      Add a note to your photo?
     </div>
 
     <textarea
       id="captionInput"
-      placeholder="Write a short note that will appear below the photo"
+      placeholder="Write a short note..."
       style="
-        width:100%;
-        min-height:90px;
-        border-radius:14px;
-        border:1px solid #ccc;
-        padding:12px;
-        font-size:15px;
-        resize:none;
-        box-sizing:border-box;
+      width:100%;
+      height:160px;
+
+      border:none;
+      outline:none;
+
+      border-radius:16px;
+
+      padding:12px;
+
+      box-sizing:border-box;
+
+      resize:none;
+
+      font-size:16px;
+      line-height:1.45;
+
+      background:rgba(255,255,255,.7);
+
+      color:#5c2b2b;
       "
     ></textarea>
 
-    <div style="display:flex; gap:12px; margin-top:18px;">
-      <button id="captionAddBtn" class="editor-btn save-btn" style="flex:1;">
-        Save 
+    <div style="
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+
+    margin-top:14px;
+    ">
+
+      <button
+        id="captionCancelBtn"
+        style="
+        padding:12px 24px;
+        border:none;
+        border-radius:999px;
+
+        background:#f1f1f1;
+        color:#5c2b2b;
+
+        font-size:15px;
+        font-weight:600;
+
+        cursor:pointer;
+        ">
+        Skip
       </button>
-      <button id="captionCancelBtn" class="editor-btn update-btn" style="flex:1;">
-        Skip 
+
+      <button
+        id="captionAddBtn"
+        style="
+        padding:12px 24px;
+        border:none;
+        border-radius:999px;
+
+        background:#8d1f1f;
+        color:white;
+
+        font-size:15px;
+        font-weight:600;
+
+
+        cursor:pointer;
+        ">
+        Save
       </button>
+
     </div>
 
   </div>
+
 </div>
+
+
 
 <script>
 
