@@ -74,6 +74,7 @@ margin: 40px auto 28px;
   /* ← ПОНИЗИЛ ВЫСОТУ */
   height: 12px;
 
+  transform: translateY(2px);
 }
 
 .info-text {
@@ -246,6 +247,8 @@ input[type=file] {
       rgba(255,245,248,.88)
     );
 
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
   box-shadow:
     0 8px 20px rgba(0,0,0,.12),
@@ -258,6 +261,7 @@ input[type=file] {
 
 input[type=file]:hover {
 
+  transform: translateY(-1px);
 
   box-shadow:
     0 12px 24px rgba(0,0,0,.16),
@@ -408,7 +412,7 @@ input[type=file]::file-selector-button {
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 1000;            /* ← Поверх ВСЕГО сайта */
+  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
 }
 
 /* MODAL WINDOW */
@@ -419,7 +423,7 @@ input[type=file]::file-selector-button {
   height: 75vh;
   border-radius: 18px;
   overflow: hidden;
-  z-index: 1001;           /* ← поверх backdrop */
+  z-index: 9999999;           /* ← поверх backdrop */
   display: flex;
   flex-direction: column;
 }
@@ -454,7 +458,7 @@ input[type=file]::file-selector-button {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
-  z-index: 1003;
+  z-index: 999999999;
 }
 
 .toast.show {
@@ -478,6 +482,7 @@ margin-left: 90px;
     rgba(230,230,230,0.9) 100%
   );
 
+  backdrop-filter: blur(6px);
 
   color: #b40012;
   font-size: 16px;
@@ -490,6 +495,9 @@ margin-left: 90px;
     0 12px 28px rgba(0,0,0,0.22),   /* outer soft depth */
     inset 0 1px 0 rgba(255,255,255,0.95), /* top highlight */
     inset 0 -1px 0 rgba(0,0,0,0.08);      /* bottom edge */
+
+  /* subtle lift */
+  transform: translateY(-1px);
 }
 
 /* Send Email — прозрачная кнопка с hover */
@@ -530,6 +538,7 @@ margin-left: 90px;
 .info-action-btn:hover {
   background: rgba(180, 0, 18, 0.12);
 
+  transform: translateY(-2px) scale(1.02);
 
   box-shadow:
     0 10px 20px rgba(0,0,0,0.22),
@@ -540,6 +549,7 @@ margin-left: 90px;
 
 /* active */
 .info-action-btn:active {
+  transform: translateY(0);
   box-shadow:
     0 3px 8px rgba(0,0,0,0.18),
     inset 0 2px 4px rgba(0,0,0,0.2);
@@ -731,12 +741,14 @@ margin-left: 90px;
 .see-web-btn:hover {
   background: linear-gradient(180deg, #fff5f6, #f7d9dc);
   color: #8f0010;
+  transform: translateY(-1px);
   box-shadow:
     0 10px 20px rgba(0,0,0,0.18),
     inset 0 1px 0 rgba(255,255,255,0.95);
 }
 
 .see-web-btn:active {
+  transform: translateY(0);
   box-shadow:
     0 4px 10px rgba(0,0,0,0.18),
     inset 0 2px 4px rgba(0,0,0,0.2);
@@ -748,7 +760,7 @@ margin-left: 90px;
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 1003;           /* больше, чем у любых модалок */
+  z-index: 999999999;           /* больше, чем у любых модалок */
 }
 
 .confirm-box {
@@ -860,9 +872,11 @@ margin-left: 90px;
         inset 0 3px 6px rgba(255,255,255,0.22),
         inset 0 -6px 14px rgba(70,0,20,0.35);
 
+      backdrop-filter: blur(14px) saturate(160%);
     }
 
 button:hover {
+  transform: translateY(-1px);
 
   box-shadow:
     0 8px 18px rgba(0,0,0,0.22),
@@ -870,6 +884,7 @@ button:hover {
     inset 0 2px 5px rgba(255,255,255,0.18);
 }
     button:active {
+  transform: scale(0.98);
 }
 
 .mini-pill {
@@ -898,7 +913,7 @@ button:hover {
   top: 32px;
   left: 110px;  width: fit-content;
 
-  z-index: 1001;  /* 👈 выше ВСЕГО */
+  z-index: 9999999;  /* 👈 выше ВСЕГО */
 }
 
 .menu-trigger {
@@ -954,6 +969,8 @@ max-width: 620px;
   border-radius: 18px;
 
   border: 1px solid rgba(255,255,255,0.55);
+  backdrop-filter: blur(18px);
+
   color: #555;
   font-size: 17.5px;
   font-weight: 550;
@@ -1003,6 +1020,8 @@ max-width: 620px;
   left: 0;
 
   background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(18px);
+
   border-radius: 16px;
   padding: 6px 0;
 
@@ -1098,7 +1117,7 @@ max-width: 620px;
       rgba(255,220,230,.55)
     );
 
-  z-index: 1000;
+  z-index: 999999;
 
   opacity: 1;
   transition: opacity .45s ease;
@@ -1240,6 +1259,7 @@ max-width: 620px;
   padding:14px 16px;
 
   background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(14px);
 
   border-radius:16px;
 
@@ -2298,7 +2318,7 @@ top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 
-z-index:1002;
+z-index:99999999;
 ">
 
 
@@ -2811,7 +2831,7 @@ window.addEventListener("slug-ready", async () => {
       font-size:32px;
       font-weight:bold;
       cursor:pointer;
-      z-index:1001;
+      z-index:9999999;
     ">×</div>
 
     <iframe id="webPreviewIframe" class="modal-iframe"></iframe>
@@ -2861,7 +2881,7 @@ const token = window.APP_TOKEN;
       font-size:32px;
       font-weight:bold;
       cursor:pointer;
-      z-index:1001;
+      z-index:9999999;
     ">×</div>
 
     <iframe id="storyIframe" class="modal-iframe"></iframe>
