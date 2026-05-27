@@ -2279,12 +2279,6 @@ const saveRes = await fetch(
   }
 );
 
-console.log("SAVE RES OK:", saveRes.ok);
-
-const saveError = await saveRes.text();
-
-console.log("SAVE RESPONSE:", saveError);
-
 const savedData = await saveRes.json();
 console.log("SAVED ROW:", savedData);
 
