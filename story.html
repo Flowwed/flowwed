@@ -2258,12 +2258,6 @@ const pageKey = "story";
 
 const saveRes = await fetch(
 
-console.log("SAVE RES OK:", saveRes.ok);
-
-const saveError = await saveRes.text();
-
-console.log("SAVE RESPONSE:", saveError);
-
   `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
   {
 
@@ -2284,6 +2278,12 @@ console.log("SAVE RESPONSE:", saveError);
     })
   }
 );
+
+console.log("SAVE RES OK:", saveRes.ok);
+
+const saveError = await saveRes.text();
+
+console.log("SAVE RESPONSE:", saveError);
 
 const savedData = await saveRes.json();
 console.log("SAVED ROW:", savedData);
