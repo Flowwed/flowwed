@@ -3366,7 +3366,6 @@ modal.onclick = (e) => {
 /* =========================
    CAPTION SAVE
 ========================= */
-
 document.getElementById("captionCancelBtn")
   .addEventListener("click", async () => {
 
@@ -3375,8 +3374,18 @@ document.getElementById("captionCancelBtn")
 
     await loadMiniGallery();
 
-});
+    preview.style.display = "none";
 
+    miniPreview.style.display = "none";
+
+    preview.src = "";
+    miniPreview.src = "";
+
+    previewBox.classList.add("placeholder");
+
+    document.getElementById("fileInput").value = "";
+
+});
 
 document.getElementById("captionAddBtn")
   .addEventListener("click", async () => {
