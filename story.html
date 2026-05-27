@@ -478,7 +478,7 @@ input[type=file]::file-selector-button {
   display: none;
   justify-content: center;
   align-items: center;
-  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
+  z-index: 1000;            /* ← Поверх ВСЕГО сайта */
 }
 
 /* MODAL WINDOW */
@@ -489,7 +489,7 @@ input[type=file]::file-selector-button {
   height: 75vh;
   border-radius: 18px;
   overflow: hidden;
-  z-index: 9999999;           /* ← поверх backdrop */
+  z-index: 1001;           /* ← поверх backdrop */
   display: flex;
   flex-direction: column;
 }
@@ -524,7 +524,7 @@ input[type=file]::file-selector-button {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
-  z-index: 999999999;
+  z-index: 1003;
 }
 
 .toast.show {
@@ -547,7 +547,6 @@ input[type=file]::file-selector-button {
     rgba(230,230,230,0.9) 100%
   );
 
-  backdrop-filter: blur(6px);
 
   color: #b40012;
   font-size: 16px;
@@ -924,7 +923,6 @@ width: 100%;
   border-radius: 14px;
 
   background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(6px);
 
   font-size: 14px;
   font-weight: 600;
@@ -1024,7 +1022,7 @@ width: 100%;
   top: 30px;
   left: 110px;  width: fit-content;
 
-  z-index: 9999999;  /* 👈 выше ВСЕГО */
+  z-index: 1001;  /* 👈 выше ВСЕГО */
 }
 
 .menu-trigger {
@@ -1220,7 +1218,7 @@ top: 2px;
     );
 
 
-  z-index: 999999;
+  z-index: 1000;
 
   opacity: 1;
   transition: opacity .45s ease;
@@ -2024,7 +2022,7 @@ function showAlertBox(title, message) {
     bg.style.display = "flex";
     bg.style.alignItems = "center";
     bg.style.justifyContent = "center";
-    bg.style.zIndex = "999999999";
+    bg.style.zIndex = "1003";
 
     bg.innerHTML = `
 
@@ -2428,7 +2426,7 @@ storyModal.addEventListener(
       font-size:32px;
       font-weight:bold;
       cursor:pointer;
-      z-index:9999999;
+      z-index:1001;
     ">×</div>
 
     <iframe id="storyIframe" class="modal-iframe"></iframe>
@@ -2445,7 +2443,7 @@ storyModal.addEventListener(
   display:none;
   align-items:center;
   justify-content:center;
-  z-index:999999;
+  z-index:1000;
 ">
 
   <div style="
@@ -2521,7 +2519,7 @@ top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 
-z-index:99999999;
+z-index:1002;
 ">
 
 
@@ -3162,7 +3160,7 @@ if (!header.innerText.trim()) {
     align-items: flex-start;
     padding-right: 4vw;
     padding-top: 8vh;
-    z-index: 999999;
+    z-index: 1000;
 ">
 
   <div style="
@@ -3521,7 +3519,7 @@ top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 
-z-index:999999;
+z-index:1000;
 ">
 
 
