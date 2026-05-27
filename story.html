@@ -3384,8 +3384,6 @@ document.getElementById("captionAddBtn")
 const btn =
   document.getElementById("captionAddBtn");
 
-btn.disabled = true;
-btn.innerText = "Saving...";
 
   const caption =
     document.getElementById("captionInput")
@@ -3402,6 +3400,10 @@ await showAlertBox(
 
   return;
 }
+
+btn.disabled = true;
+btn.innerText = "Saving...";
+
 
 btn.classList.add("btn-loading");
 btn.innerHTML =
