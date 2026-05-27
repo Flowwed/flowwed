@@ -1748,8 +1748,6 @@ document.addEventListener("DOMContentLoaded", () => {
 const btn = document.querySelector(".save-btn");
 const originalText = btn.innerHTML;
 
-btn.classList.add("btn-loading");
-btn.innerHTML = `<span class="btn-spinner"></span>Saving...`;
 
  console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
   if (!token) return alert("Missing token");
@@ -3402,10 +3400,12 @@ await showAlertBox(
   "Maximum 30 words allowed."
 );
 
-btn.classList.remove("btn-loading");
-btn.innerHTML = originalText;
   return;
 }
+
+btn.classList.add("btn-loading");
+btn.innerHTML =
+  `<span class="btn-spinner"></span>Saving...`;
 
   await fetch(
     `${SUPABASE_URL}/rest/v1/guests_photo_captions?on_conflict=edit_token,slot`,
