@@ -2036,7 +2036,7 @@ function showPreview(file, isFinal = false) {
 })();
 
 
-function showAlertBox(message) {
+function showAlertBox(title, message) {
 
   return new Promise(resolve => {
 
@@ -2061,14 +2061,16 @@ function showAlertBox(message) {
         box-shadow:0 25px 60px rgba(0,0,0,0.35);
       ">
 
+
         <div style="
           font-size:18px;
           font-weight:700;
           color:#9c1818;
           margin-bottom:14px;
         ">
-          Trial Limit
+           ${title}
         </div>
+
 
         <div style="
           font-size:15px;
@@ -2127,10 +2129,10 @@ if (isTrial) {
 
   if (currentPhotos >= 10) {
 
-    await showAlertBox(
-      "Trial mode allows up to 10 photos."
-    );
-
+await showAlertBox(
+  "Trial Limit",
+  "Trial mode allows up to 10 photos."
+);
     return;
   }
 }
@@ -3395,9 +3397,10 @@ const words = caption.split(/\s+/).filter(Boolean);
 
 if (words.length > 30) {
 
-  await showAlertBox(
-    "Maximum number of words is 30.\nPlease shorten your caption."
-  );
+await showAlertBox(
+  "Word Limit",
+  "Maximum 30 words allowed."
+);
 
   return;
 }
