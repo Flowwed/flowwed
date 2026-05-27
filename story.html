@@ -2242,7 +2242,7 @@ uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalUploadText;
 
 status.innerText = "✅ Uploaded!";
-showPreview(file, true);
+
 
 const container = document.getElementById("miniGallery");
 
@@ -3443,12 +3443,24 @@ btn.innerHTML =
   document.getElementById("captionModal")
     .style.display = "none";
 
-  showToast("Caption saved");
+showToast("Caption saved");
 
-  await loadMiniGallery();
+await loadMiniGallery();
+
+preview.style.display = "none";
+
+miniPreview.style.display = "none";
+
+preview.src = "";
+miniPreview.src = "";
+
+previewBox.classList.add("placeholder");
+
+document.getElementById("fileInput").value = "";
 
 btn.disabled = false;
 btn.innerText = "Save";
+
 
 
 });
