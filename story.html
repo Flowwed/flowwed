@@ -3402,6 +3402,8 @@ await showAlertBox(
   "Maximum 30 words allowed."
 );
 
+btn.classList.remove("btn-loading");
+btn.innerHTML = originalText;
   return;
 }
 
