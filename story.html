@@ -2677,8 +2677,13 @@ window.storyData = {
       }
     );
 
-    const data = await res.json();
-    if (!data || !data.length) return;
+
+const data = await res.json();
+
+if (!data || !data.length) {
+  document.getElementById("storyToggle").checked = true;
+  return;
+}
 
 document.getElementById("storyToggle").checked =
   data[0].story_enabled ?? true;
@@ -2702,6 +2707,7 @@ function parseHTML(html) {
     body: temp.innerHTML
   };
 }
+
 
 window.storyData = {
   how_we_met: parseHTML(data[0].how_we_met),
