@@ -3,7 +3,7 @@
   const token =
     new URLSearchParams(location.search).get("t");
 
-  console.log("TOKEN =", token);
+  if (!token) return;
 
   const SUPABASE_URL =
     "https://octwwpatppbenqwkcqaw.supabase.co";
@@ -26,10 +26,41 @@
     }
   );
 
-  console.log("STATUS =", r.status);
+  const isProtected = await r.json();
 
-  const txt = await r.text();
+  if (!isProtected) return;
 
-  console.log("BODY =", txt);
+  const pass = prompt("Enter password");
+
+  if (!pass) {
+    document.body.innerHTML = "";
+    return;
+  }
+
+  const r2 = await fetch(
+    `${SUPABASE_URL}/rest/v1/rpc/check_token_password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`
+      },
+      body: JSON.stringify({
+        p_token: token,
+        p_password: pass
+      })
+    }
+  );
+
+  const ok = await r2.json();
+
+  if (!ok) {
+    document.body.innerHTML = "";
+    alert("Wrong password");
+    return;
+  }
+
+  console.log("ACCESS GRANTED");
 
 })();
