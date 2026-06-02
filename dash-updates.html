@@ -1235,55 +1235,114 @@ const registryToggle =
       return true;
     }
 
-    function renderUpdates(updates) {
-      const feed = $("#updatesFeed");
-      if (!feed) return;
+function renderUpdates(updates) {
 
-      if (!Array.isArray(updates) || !updates.length) {
-        feed.innerHTML = "";
-        return;
-      }
+  const feed = $("#updatesFeed");
+  if (!feed) return;
 
-      const html = updates
-        .map((item) => {
-          const date = item?.created_at ? formatReadableDate(item.created_at) : "";
-          const content = item?.content || "";
+  if (!Array.isArray(updates) || !updates.length) {
+    feed.innerHTML = "";
+    return;
+  }
 
-return `
-  <div class="update-item">
+  const html = updates
+    .map((item, index) => {
 
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:8px;
-    ">
+      const date =
+        item?.created_at
+          ? formatReadableDate(item.created_at)
+          : "";
 
-      <p class="update-item-date" style="margin:0;">
-        <strong>${date}</strong>
-      </p>
+      const content =
+        item?.content || "";
 
-      <span style="
-        color:#b41111;
-        cursor:pointer;
-        font-size:13px;
-        font-weight:600;
-      ">
-        🗑 Delete
-      </span>
+      return `
+        <div class="update-item">
 
-    </div>
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:8px;
+          ">
 
-    ${content}
+            <p class="update-item-date" style="margin:0;">
+              <strong>${date}</strong>
+            </p>
 
-  </div>
-`;
+            <span
+              class="delete-update"
+              data-index="${index}"
+              style="
+                color:#b41111;
+                cursor:pointer;
+                font-size:13px;
+                font-weight:600;
+              "
+            >
+              🗑 Delete
+            </span>
 
-        })
-        .join("");
+          </div>
 
-      feed.innerHTML = html;
+          ${content}
+
+        </div>
+      `;
+
+    })
+    .join("");
+
+  feed.innerHTML = html;
+
+
+feed.querySelectorAll(".delete-update").forEach(btn => {
+
+  btn.addEventListener("click", () => {
+
+    const index = Number(btn.dataset.index);
+
+    deleteUpdate(index);
+
+  });
+
+});
+
+
+}
+
+
+async function deleteUpdate(index) {
+
+  if (!confirm("Delete this update? This action cannot be undone.")) {
+    return;
+  }
+
+  documentUpdates.splice(index, 1);
+
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
+      headers: getAuthHeaders({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
+        wed_updates: documentUpdates
+      })
     }
+  );
+
+  if (!res.ok) {
+    showToast("Delete failed");
+    return;
+  }
+
+  renderUpdates(documentUpdates);
+
+  showToast("Update deleted");
+
+}
 
     async function fetchUpdates() {
       const res = await fetch(
