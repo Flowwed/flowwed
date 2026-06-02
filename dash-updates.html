@@ -1248,12 +1248,37 @@ const registryToggle =
         .map((item) => {
           const date = item?.created_at ? formatReadableDate(item.created_at) : "";
           const content = item?.content || "";
-          return `
-            <div class="update-item">
-              <p class="update-item-date"><strong>${date}</strong></p>
-              ${content}
-            </div>
-          `;
+
+return `
+  <div class="update-item">
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:8px;
+    ">
+
+      <p class="update-item-date" style="margin:0;">
+        <strong>${date}</strong>
+      </p>
+
+      <span style="
+        color:#b41111;
+        cursor:pointer;
+        font-size:13px;
+        font-weight:600;
+      ">
+        🗑 Delete
+      </span>
+
+    </div>
+
+    ${content}
+
+  </div>
+`;
+
         })
         .join("");
 
