@@ -1071,14 +1071,29 @@ if (params.get("t")) {
       justify-content:center;
     ">
 
-      <button id="cancelDeleteBtn" class="ruby-btn">
-        Cancel
-      </button>
+<button
+  id="cancelDeleteBtn"
+  class="ruby-btn"
+  style="
+    background:#d9d9d9;
+    color:#555;
+    box-shadow:none;
+  "
+>
+  Cancel
+</button>
 
-      <button id="confirmDeleteBtn" class="ruby-btn">
-        Delete
-      </button>
-
+<button
+  id="confirmDeleteBtn"
+  class="ruby-btn"
+  style="
+    background:#b41111;
+    box-shadow:
+      0 4px 10px rgba(180,17,17,0.25);
+  "
+>
+  Delete
+</button>
     </div>
 
   </div>
@@ -1374,38 +1389,11 @@ feed.querySelectorAll(".delete-update").forEach(btn => {
 
 async function deleteUpdate(index) {
 
-deleteIndex = index;
+  deleteIndex = index;
 
-document.getElementById("deleteModal").style.display = "flex";
-
-return;
-
-  documentUpdates.splice(index, 1);
-
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
-    {
-      method: "PATCH",
-      headers: getAuthHeaders({
-        "Content-Type": "application/json"
-      }),
-      body: JSON.stringify({
-        wed_updates: documentUpdates
-      })
-    }
-  );
-
-  if (!res.ok) {
-    showToast("Delete failed");
-    return;
-  }
-
-  renderUpdates(documentUpdates);
-
-  showToast("Update deleted");
+  document.getElementById("deleteModal").style.display = "flex";
 
 }
-
     async function fetchUpdates() {
       const res = await fetch(
         `${SUPABASE_URL}/rest/v1/our_story_page?select=wed_updates&edit_token=eq.${token}`,
