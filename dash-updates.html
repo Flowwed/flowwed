@@ -1632,6 +1632,51 @@ sendSmsBtn?.addEventListener("click", () => {
   openSMSQRModal(token);
 });
 
+
+document.getElementById("cancelDeleteBtn")?.addEventListener("click", () => {
+
+  deleteIndex = null;
+
+  document.getElementById("deleteModal").style.display = "none";
+
+});
+
+document.getElementById("confirmDeleteBtn")?.addEventListener("click", async () => {
+
+  if (deleteIndex === null) return;
+
+  const index = deleteIndex;
+
+  deleteIndex = null;
+
+  document.getElementById("deleteModal").style.display = "none";
+
+  documentUpdates.splice(index, 1);
+
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/our_story_page?edit_token=eq.${token}`,
+    {
+      method: "PATCH",
+      headers: getAuthHeaders({
+        "Content-Type": "application/json"
+      }),
+      body: JSON.stringify({
+        wed_updates: documentUpdates
+      })
+    }
+  );
+
+  if (!res.ok) {
+    showToast("Delete failed");
+    return;
+  }
+
+  renderUpdates(documentUpdates);
+
+  showToast("Update deleted");
+
+});
+
       closeBtn?.addEventListener("click", closeModal);
     }
 
