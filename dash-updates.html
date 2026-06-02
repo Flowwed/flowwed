@@ -1417,17 +1417,13 @@ function initQuill() {
   }
 
 
-quill = new Quill("#editor", {
-  theme: "snow",
+  quill = new Quill("#editor", {
+    theme: "snow",
+    modules: {
+      toolbar: "#toolbar-container"
+    }
+  });
 
-  placeholder:
-    "Share an update with your guests. 
-     \n\nEach update will automatically include the date it was posted and will be saved in chronological order, from newest to oldest.",
-
-  modules: {
-    toolbar: "#toolbar-container"
-  }
-});
 
   const toolbarEl = $("#toolbar-container");
 
