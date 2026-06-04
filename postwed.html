@@ -3561,21 +3561,52 @@ document.querySelectorAll("#checkMapLink, #previewMapLink").forEach(link => {
 
     e.preventDefault();
 
-    const address = addressInput.value.trim();
+const venueInput =
+  document.getElementById("venueInput");
 
-    if (!address) {
-      alert("Please enter the venue address first.");
+const addressInput =
+  document.getElementById("venueAddressInput");
+
+document
+.querySelectorAll("#checkMapLink, #previewMapLink")
+.forEach(link => {
+
+  link.addEventListener("click", (e) => {
+
+    e.preventDefault();
+
+    const venue =
+      venueInput.value.trim();
+
+    const address =
+      addressInput.value.trim();
+
+    let query = "";
+
+    if (venue && address) {
+      query = `${venue}, ${address}`;
+    }
+    else if (venue) {
+      query = venue;
+    }
+    else if (address) {
+      query = address;
+    }
+
+    if (!query) {
+      alert("Please enter venue or address first.");
       return;
     }
 
     mapFrame.src =
-      `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+      `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 
     mapModal.style.display = "flex";
 
   });
 
 });
+
 
 closeMap.onclick = () => {
   mapModal.style.display = "none";
