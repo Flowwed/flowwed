@@ -461,9 +461,6 @@ input[type=file]::file-selector-button {
   scrollbar-gutter: stable;  /* не прыгает */
 }
 
-#editor {
-  display: none;   /* ⬅️ скрыт по умолчанию */
-}
 
 .editor-actions {
   margin-bottom: 14px;   /* ← подними/отлепи от Quill */
@@ -2734,7 +2731,7 @@ if (firstBlock) {
   // 🔥 2. INIT EDITOR
   // =========================
 window.quill = new Quill(editorEl, { theme: "snow" });
-editorEl.style.display = "none";
+// editorEl.style.display = "none";
 
 // 🔥 флаг переключения (если ещё нет — оставь)
 window.isSwitching = false;
@@ -2855,7 +2852,7 @@ window.storyData[window.currentKey] = {
       }
 
       block.classList.remove("active");
-      editorEl.style.display = "none";
+      // editorEl.style.display = "none";
     });
   });
 
