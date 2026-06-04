@@ -3548,24 +3548,21 @@ border:0;
 
 <script>
 
-const addressInput = document.getElementById("venueAddressInput");
-
-const mapModal = document.getElementById("mapModal");
-const mapFrame = document.getElementById("mapModalFrame");
-const closeMap = document.getElementById("closeMapModal");
-
-/* обе ссылки */
-document.querySelectorAll("#checkMapLink, #previewMapLink").forEach(link => {
-
-  link.addEventListener("click", (e) => {
-
-    e.preventDefault();
-
 const venueInput =
   document.getElementById("venueInput");
 
 const addressInput =
   document.getElementById("venueAddressInput");
+
+const mapModal =
+  document.getElementById("mapModal");
+
+const mapFrame =
+  document.getElementById("mapModalFrame");
+
+const closeMap =
+  document.getElementById("closeMapModal");
+
 
 document
 .querySelectorAll("#checkMapLink, #previewMapLink")
@@ -3612,7 +3609,6 @@ closeMap.onclick = () => {
 };
 
 </script>
-
 <script>
 
 document.addEventListener("DOMContentLoaded", () => {
