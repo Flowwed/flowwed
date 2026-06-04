@@ -2029,6 +2029,25 @@ if (data && data.faq && Array.isArray(data.faq)) {
       siteData.wedding_date
         ? formatDate(siteData.wedding_date)
         : "—";
+const venueNameEl = document.getElementById("venueName");
+const venueAddressEl = document.getElementById("venueAddress");
+
+if (venueNameEl && siteData.venue) {
+  venueNameEl.value = siteData.venue;
+}
+
+if (venueAddressEl && siteData.address) {
+  venueAddressEl.value = siteData.address;
+}
+
+const mapLink = document.getElementById("mapLink");
+
+if (mapLink && siteData.address) {
+  mapLink.href =
+    "https://maps.google.com/?q=" +
+    encodeURIComponent(siteData.address);
+}
+
 
 // 🔥 ВОТ ЭТО ДОБАВИЛИ
   if (siteData.couple_name) {
@@ -2036,13 +2055,15 @@ if (data && data.faq && Array.isArray(data.faq)) {
   }
 
     // ОБНОВЛЯЕМ ТОЛЬКО 2 ПОЛЯ
-    await sb
-      .from("wedding_info")
-      .update({
-        couple_name: siteData.couple_name,
-        wedding_date: siteData.wedding_date
-      })
-      .eq("site_edit_token", window.APP_TOKEN);
+await sb
+  .from("wedding_info")
+  .update({
+    couple_name: siteData.couple_name,
+    wedding_date: siteData.wedding_date,
+    venue_name: siteData.venue,
+    venue_address: siteData.address
+  })
+  .eq("site_edit_token", window.APP_TOKEN);
   }
 
 setTimeout(() => {
@@ -2143,7 +2164,7 @@ async function loadFromSites() {
 
   const { data, error } = await sb
     .from("sites")
-    .select("couple_name, wedding_date")
+    .select("couple_name, wedding_date, venue, address")
     .eq("edit_token", token)
     .single();
 
