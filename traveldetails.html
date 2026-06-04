@@ -1614,23 +1614,57 @@ function setFormData(data){
       return `${parseInt(d,10)} ${months[parseInt(m,10)-1]} ${y}`;
     }
 
+
 function normalizeTime24(value) {
 
   if (!value) return "";
 
-  let v = value.trim().toUpperCase();
+  let v = String(value)
+    .trim()
+    .toUpperCase();
 
-  const m = v.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+  // 15 → 15:00
+  if (/^\d{1,2}$/.test(v)) {
+    return v.padStart(2, "0") + ":00";
+  }
 
-  if (!m) return v;
+  // 15:30
+  if (/^\d{1,2}:\d{2}$/.test(v)) {
+    const [h, m] = v.split(":");
+    return h.padStart(2, "0") + ":" + m;
+  }
 
-  let h = parseInt(m[1]);
+  // 3PM / 3 PM
+  let m = v.match(/^(\d{1,2})\s*(AM|PM)$/);
 
-  if (m[3] === "PM" && h !== 12) h += 12;
-  if (m[3] === "AM" && h === 12) h = 0;
+  if (m) {
 
-  return String(h).padStart(2, "0") + ":" + m[2];
+    let h = parseInt(m[1]);
+
+    if (m[2] === "PM" && h !== 12) h += 12;
+    if (m[2] === "AM" && h === 12) h = 0;
+
+    return String(h).padStart(2, "0") + ":00";
+  }
+
+  // 3:30PM / 3:30 PM
+  m = v.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+
+  if (m) {
+
+    let h = parseInt(m[1]);
+
+    if (m[3] === "PM" && h !== 12) h += 12;
+    if (m[3] === "AM" && h === 12) h = 0;
+
+    return String(h).padStart(2, "0") +
+      ":" +
+      m[2];
+  }
+
+  return v;
 }
+
 
 function getScheduleData() {
 
