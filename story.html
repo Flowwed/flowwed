@@ -2821,6 +2821,8 @@ console.log("QUILL LENGTH", window.quill.getLength());
     (placeholders[newKey] || "") +
     "\n\nThis section will not appear on your website until you add some content.";
 
+console.log("EDITOR HTML:", window.quill.root.innerHTML);
+
   // 🔥 ВОТ ЗДЕСЬ (в самом конце, НЕ внутри if)
   setTimeout(() => {
     window.isSwitching = false;
