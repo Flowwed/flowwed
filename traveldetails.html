@@ -1763,11 +1763,21 @@ try {
 
   isSaving = true;
 
-  await saveToSupabase(data);
 
-  hasUnsavedChanges = false;
+await saveToSupabase(data);
 
-  showToast("Saved");
+await sb
+  .from("sites")
+  .update({
+    venue: data.venue_name,
+    address: data.venue_address
+  })
+  .eq("edit_token", window.APP_TOKEN);
+
+hasUnsavedChanges = false;
+
+showToast("Saved");
+
 
 } catch(err){
 
