@@ -2813,6 +2813,9 @@ headerEl.style.color = data.header ? "#000" : "#aaa";
 
   window.quill.root.innerHTML = data.body || "";
 
+console.log("AFTER LOAD", window.quill.root.innerHTML);
+console.log("QUILL LENGTH", window.quill.getLength());
+
 
   window.quill.root.dataset.placeholder =
     (placeholders[newKey] || "") +
