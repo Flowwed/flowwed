@@ -2702,6 +2702,8 @@ function parseHTML(html) {
     h2.remove(); // удаляем header из body
   }
 
+console.log("PARSED BODY:", temp.innerHTML);
+
   return {
     header,
     body: temp.innerHTML
