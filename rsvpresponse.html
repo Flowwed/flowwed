@@ -1079,15 +1079,30 @@ mapLink.addEventListener("click",(e)=>{
 
 e.preventDefault();
 
-const address =
-document.querySelector('[data-preview="address"]').textContent.trim();
+const venue =
+document.querySelector('[data-preview="venue"]')?.textContent.trim() || "";
 
-if(!address) return;
+const address =
+document.querySelector('[data-preview="address"]')?.textContent.trim() || "";
+
+let query = "";
+
+if (venue && address) {
+  query = `${venue}, ${address}`;
+}
+else if (venue) {
+  query = venue;
+}
+else if (address) {
+  query = address;
+}
+
+if (!query) return;
 
 mapFrame.src =
-`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+`https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;
 
-mapModal.style.display="flex";
+mapModal.style.display = "flex";
 
 });
 
@@ -1109,8 +1124,6 @@ const link = url.toString();
 
 const text = "You're invited! RSVP here: " + link;
 
-
-  // 📱 если есть native share (iPhone / Android)
   if (navigator.share) {
     try {
       await navigator.share({
@@ -1118,17 +1131,14 @@ const text = "You're invited! RSVP here: " + link;
       });
       return;
     } catch (err) {
-      // если пользователь отменил — ничего страшного
     }
   }
 
-  // fallback → SMS
   const smsLink = `sms:?body=${encodeURIComponent(text)}`;
   window.location.href = smsLink;
 };
 
 }
-
 
 </script>
 

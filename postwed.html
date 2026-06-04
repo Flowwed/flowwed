@@ -3581,10 +3581,10 @@ document
     let query = "";
 
     if (venue && address) {
-      query = `${venue} restaurant, ${address}`;
+      query = `${venue}, ${address}`;
     }
     else if (venue) {
-      query = `${venue} restaurant`;
+      query = venue;
     }
     else if (address) {
       query = address;
@@ -3592,19 +3592,6 @@ document
 
     if (!query) {
       alert("Please enter venue or address first.");
-      return;
-    }
-
-    const isMobile =
-      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-    if (isMobile) {
-
-      window.open(
-        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
-        "_blank"
-      );
-
       return;
     }
 
@@ -3622,8 +3609,6 @@ closeMap.onclick = () => {
 };
 
 </script>
-
-
 <script>
 
 document.addEventListener("DOMContentLoaded", () => {
