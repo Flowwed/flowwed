@@ -1614,6 +1614,24 @@ function setFormData(data){
       return `${parseInt(d,10)} ${months[parseInt(m,10)-1]} ${y}`;
     }
 
+function normalizeTime24(value) {
+
+  if (!value) return "";
+
+  let v = value.trim().toUpperCase();
+
+  const m = v.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
+
+  if (!m) return v;
+
+  let h = parseInt(m[1]);
+
+  if (m[3] === "PM" && h !== 12) h += 12;
+  if (m[3] === "AM" && h === 12) h = 0;
+
+  return String(h).padStart(2, "0") + ":" + m[2];
+}
+
 function getScheduleData() {
 
   const items = [];
@@ -1632,8 +1650,9 @@ function getScheduleData() {
     const text =
       (textEl?.value || "").trim();
 
-    const time =
-      (timeEl?.value || "").trim();
+const time =
+  normalizeTime24(timeEl?.value || "");
+
 
     if (!text && !time) return;
 
@@ -1770,8 +1789,10 @@ await sb
   .from("sites")
   .update({
     venue: data.venue_name,
-    address: data.venue_address
+    address: data.venue_address,
+    wedding_time: data.schedule?.[0]?.time || ""
   })
+
   .eq("edit_token", window.APP_TOKEN);
 
 hasUnsavedChanges = false;
