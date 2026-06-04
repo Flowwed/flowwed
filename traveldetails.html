@@ -2052,12 +2052,13 @@ if (venueAddressEl && siteData.address) {
 
 const mapLink = document.getElementById("mapLink");
 
-if (mapLink && siteData.address) {
+if (mapLink) {
   mapLink.href =
     "https://maps.google.com/?q=" +
-    encodeURIComponent(siteData.address);
+    encodeURIComponent(
+      `${siteData.venue}, ${siteData.address}`
+    );
 }
-
 
 // 🔥 ВОТ ЭТО ДОБАВИЛИ
   if (siteData.couple_name) {
