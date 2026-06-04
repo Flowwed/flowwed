@@ -2811,7 +2811,9 @@ headerEl.innerText = data.header || HEADER_PLACEHOLDER;
 headerEl.style.color = data.header ? "#000" : "#aaa";
 
 
-window.quill.setText("TEST");
+window.quill.clipboard.dangerouslyPasteHTML(
+  data.body || ""
+);
 
 console.log("AFTER LOAD", window.quill.root.innerHTML);
 console.log("QUILL LENGTH", window.quill.getLength());
