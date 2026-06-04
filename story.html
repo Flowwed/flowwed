@@ -2742,6 +2742,8 @@ window.quill.on("text-change", () => {
   // 🚫 НЕ сохраняем во время переключения вкладок
   if (window.isSwitching) return;
 
+console.log("UNSAVED = TRUE");
+
   hasUnsavedChanges = true;
 
   if (window.currentKey) {
