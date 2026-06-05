@@ -1948,6 +1948,62 @@ travelToggle.checked =
   toggles.travel !== false;
 
 
+
+  // 🔹 2. НОВЫЕ ДАННЫЕ (sites — ТОЛЬКО для header)
+  const siteData = await loadFromSites();
+
+  if (siteData) {
+
+    // HEADER
+    document.getElementById("coupleNameDisplay").textContent =
+      siteData.couple_name || "—";
+
+    document.getElementById("weddingDateDisplay").textContent =
+      siteData.wedding_date
+        ? formatDate(siteData.wedding_date)
+        : "—";
+const venueNameEl = document.getElementById("venueName");
+const venueAddressEl = document.getElementById("venueAddress");
+
+/*
+if (venueNameEl && siteData.venue) {
+  venueNameEl.value = siteData.venue;
+}
+
+if (venueAddressEl && siteData.address) {
+  venueAddressEl.value = siteData.address;
+}
+*/
+
+const mapLink = document.getElementById("mapLink");
+
+if (mapLink) {
+  mapLink.href =
+    "https://maps.google.com/?q=" +
+    encodeURIComponent(
+      `${siteData.venue}, ${siteData.address}`
+    );
+}
+
+// 🔥 ВОТ ЭТО ДОБАВИЛИ
+  if (siteData.couple_name) {
+    coupleFullName = siteData.couple_name;
+  }
+
+    // ОБНОВЛЯЕМ ТОЛЬКО 2 ПОЛЯ
+
+await sb
+  .from("wedding_info")
+  .update({
+    couple_name: siteData.couple_name,
+    wedding_date: siteData.wedding_date,
+    venue_name: siteData.venue,
+    venue_address: siteData.address
+  })
+  .eq("site_edit_token", window.APP_TOKEN);
+
+  }
+
 // 🔹 1. СТАРЫЕ ДАННЫЕ (форма)
 const data = await loadFromSupabase();
 
@@ -2101,74 +2157,6 @@ if (data && data.faq && Array.isArray(data.faq)) {
 }
 
 
-  // 🔹 2. НОВЫЕ ДАННЫЕ (sites — ТОЛЬКО для header)
-  const siteData = await loadFromSites();
-
-  if (siteData) {
-
-    // HEADER
-    document.getElementById("coupleNameDisplay").textContent =
-      siteData.couple_name || "—";
-
-    document.getElementById("weddingDateDisplay").textContent =
-      siteData.wedding_date
-        ? formatDate(siteData.wedding_date)
-        : "—";
-const venueNameEl = document.getElementById("venueName");
-const venueAddressEl = document.getElementById("venueAddress");
-
-/*
-if (venueNameEl && siteData.venue) {
-  venueNameEl.value = siteData.venue;
-}
-
-if (venueAddressEl && siteData.address) {
-  venueAddressEl.value = siteData.address;
-}
-*/
-
-const mapLink = document.getElementById("mapLink");
-
-if (mapLink) {
-  mapLink.href =
-    "https://maps.google.com/?q=" +
-    encodeURIComponent(
-      `${siteData.venue}, ${siteData.address}`
-    );
-}
-
-// 🔥 ВОТ ЭТО ДОБАВИЛИ
-  if (siteData.couple_name) {
-    coupleFullName = siteData.couple_name;
-  }
-
-    // ОБНОВЛЯЕМ ТОЛЬКО 2 ПОЛЯ
-
-await sb
-  .from("wedding_info")
-  .update({
-    couple_name: siteData.couple_name,
-    wedding_date: siteData.wedding_date,
-    venue_name: siteData.venue,
-    venue_address: siteData.address
-  })
-  .eq("site_edit_token", window.APP_TOKEN);
-
-const fresh = await loadFromSupabase();
-
-console.log(
-  "AFTER SYNC:",
-  fresh?.venue_name,
-  fresh?.venue_address
-);
-
-document.getElementById("venueName").value =
-  fresh?.venue_name || "";
-
-document.getElementById("venueAddress").value =
-  fresh?.venue_address || "";
-
-  }
 
 
 setTimeout(() => {
