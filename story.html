@@ -3308,6 +3308,7 @@ dropdown.querySelectorAll("a").forEach(link => {
 
     modal.style.display = "flex";
 
+
     document.getElementById("saveLeaveBtn").onclick = async () => {
 
 const btn = document.getElementById("saveLeaveBtn");
@@ -3329,11 +3330,12 @@ btn.innerHTML = `
 
   Saving...
 `;
-      document.querySelector(".save-btn").click();
 
-      window.location.href = targetHref;
-
-    };
+await new Promise(resolve => {
+  const saveBtn = document.querySelector(".save-btn");
+  saveBtn.click();
+  setTimeout(resolve, 1200);
+});
 
 modal.onclick = (e) => {
 
