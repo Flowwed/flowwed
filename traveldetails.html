@@ -1977,8 +1977,8 @@ const weddingDateEl =
   document.getElementById("weddingDateDisplay");
 
 if (weddingDateEl) {
-  weddingDateEl.value =
-    siteData.wedding_date || "";
+weddingDateEl.value =
+  siteData.wedding_date?.split("T")[0] || "";
 }
 
 weddingDateEl?.addEventListener("change", async () => {
