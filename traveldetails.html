@@ -2030,6 +2030,14 @@ if (data) {
         }, {})
       : {}),
 
+
+// если schedule пустой, берём время из новой колонки
+...( (!data.schedule || data.schedule.length === 0) && data.wedding_time
+  ? {
+      scheduleTime1: data.wedding_time
+    }
+  : {}),
+
     airport: data.airport,
     transferTime: data.transfer_time,
     flightsText: data.flights_text,
@@ -2245,6 +2253,8 @@ async function saveSitesMirror(data) {
     .eq("edit_token", window.APP_TOKEN);
 
 }
+
+
 
 async function loadFromSupabase() {
 
@@ -3115,6 +3125,9 @@ btn.innerHTML = `
       faq_a4: f.faqA4,
 
       schedule: schedule,
+
+      wedding_time: schedule?.[0]?.time || null,
+
       faq: faq
     };
 

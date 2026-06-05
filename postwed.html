@@ -2208,43 +2208,16 @@ if (field.dataset.sync === "venue") {
 
 if (field.dataset.sync === "time") {
 
-
-const resultRead = await supabase
-  .from("wedding_info")
-  .select("*")
-  .eq("site_edit_token", token);
-
-console.log("FULL WEDDING_INFO:", resultRead);
-
-const weddingData = resultRead.data?.[0];
-
-
-
-  const schedule = weddingData?.schedule || [];
-
-  console.log("SCHEDULE BEFORE:", schedule);
-  console.log("TIME VALUE:", value);
-
-  if (schedule.length > 0) {
-    schedule[0].time = value;
-  } else {
-    schedule.push({
-      text: "Wedding Ceremony",
-      time: value
-    });
-  }
-
   const result = await supabase
     .from("wedding_info")
     .update({
-      schedule
+      wedding_time: value
     })
     .eq("site_edit_token", token);
 
   console.log("TIME SYNC:", result);
 
 }
-
   });
 
 });
