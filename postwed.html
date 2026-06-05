@@ -2227,7 +2227,11 @@ if (field.dataset.sync === "time") {
     .eq("site_edit_token", token)
     .single();
 
-  const schedule = weddingData?.schedule || [];
+const schedule = weddingData?.schedule || [];
+
+console.log("SCHEDULE BEFORE:", schedule);
+console.log("TIME VALUE:", value);
+
 
   if (schedule.length > 0) {
     schedule[0].time = value;
