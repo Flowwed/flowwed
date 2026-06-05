@@ -2434,6 +2434,22 @@ preview.textContent = value;
 });
 
 }
+
+const editWeddingDateBtn =
+  document.getElementById("editWeddingDateBtn");
+
+const weddingDatePopup =
+  document.getElementById("weddingDatePopup");
+
+editWeddingDateBtn?.addEventListener("click", () => {
+
+  weddingDatePopup.style.display =
+    weddingDatePopup.style.display === "block"
+      ? "none"
+      : "block";
+
+});
+
 loadWeddingData();
 
 // ======================================================
