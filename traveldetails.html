@@ -1838,16 +1838,8 @@ try {
 
 
 await saveToSupabase(data);
+await saveSitesMirror(data);
 
-await sb
-  .from("sites")
-  .update({
-    venue: data.venue_name,
-    address: data.venue_address,
-    wedding_time: data.schedule?.[0]?.time || ""
-  })
-
-  .eq("edit_token", window.APP_TOKEN);
 
 hasUnsavedChanges = false;
 
@@ -2234,6 +2226,18 @@ if (error) {
 
 }
 
+async function saveSitesMirror(data) {
+
+  await sb
+    .from("sites")
+    .update({
+      venue: data.venue_name,
+      address: data.venue_address,
+      wedding_time: data.schedule?.[0]?.time || ""
+    })
+    .eq("edit_token", window.APP_TOKEN);
+
+}
 
 async function loadFromSupabase() {
 
@@ -3107,11 +3111,12 @@ btn.innerHTML = `
       faq: faq
     };
 
-    await saveToSupabase(data);
+await saveToSupabase(data);
+await saveSitesMirror(data);
 
-    markAsSaved();
+markAsSaved();
 
-    window.location.href = href;
+window.location.href = href;
 
   };
 
@@ -3349,6 +3354,7 @@ document.addEventListener("keydown", async (e) => {
   };
 
 await saveToSupabase(data);
+await saveSitesMirror(data);
 
 showToast("Saved");
 
