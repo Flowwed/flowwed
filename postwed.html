@@ -2191,6 +2191,30 @@ document.querySelectorAll("[data-sync]").forEach(field => {
     console.log("UPDATE RESULT:", data);
     console.log("UPDATE ERROR:", error);
 
+// ===== RSVP → Travel sync =====
+
+if (field.dataset.sync === "venue") {
+
+  await supabase
+    .from("wedding_info")
+    .update({
+      venue_name: value
+    })
+    .eq("site_edit_token", token);
+
+}
+
+if (field.dataset.sync === "address") {
+
+  await supabase
+    .from("wedding_info")
+    .update({
+      venue_address: value
+    })
+    .eq("site_edit_token", token);
+
+}
+
   });
 
 });
