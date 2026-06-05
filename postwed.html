@@ -2195,26 +2195,31 @@ document.querySelectorAll("[data-sync]").forEach(field => {
 
 if (field.dataset.sync === "venue") {
 
-  await supabase
+  const result = await supabase
     .from("wedding_info")
     .update({
       venue_name: value
     })
-    .eq("site_edit_token", token);
+    .eq("site_edit_token", token)
+    .select();
+
+  console.log("VENUE SYNC:", result);
 
 }
 
 if (field.dataset.sync === "address") {
 
-  await supabase
+  const result = await supabase
     .from("wedding_info")
     .update({
       venue_address: value
     })
-    .eq("site_edit_token", token);
+    .eq("site_edit_token", token)
+    .select();
+
+  console.log("ADDRESS SYNC:", result);
 
 }
-
   });
 
 });
