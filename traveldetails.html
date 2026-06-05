@@ -1979,6 +1979,29 @@ if (weddingDateEl) {
     siteData.wedding_date || "";
 }
 
+weddingDateEl?.addEventListener("change", async () => {
+
+  const value = weddingDateEl.value;
+
+  await sb
+    .from("sites")
+    .update({
+      wedding_date: value
+    })
+    .eq("edit_token", window.APP_TOKEN);
+
+  await sb
+    .from("wedding_info")
+    .update({
+      wedding_date: value
+    })
+    .eq("site_edit_token", window.APP_TOKEN);
+
+  console.log("DATE SYNC:", value);
+
+});
+
+
 const venueNameEl = document.getElementById("venueName");
 const venueAddressEl = document.getElementById("venueAddress");
 
