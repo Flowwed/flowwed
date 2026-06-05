@@ -1736,12 +1736,32 @@ el.addEventListener("input", () => {
   }
 
     // ✅ обновление карты от адреса
-    if (id === "venueAddress") {
-      const mapLink = document.getElementById("mapLink");
-      if (mapLink) {
-        mapLink.href = "https://maps.google.com/?q=" + encodeURIComponent(el.value);
-      }
-    }
+if (
+  id === "venueAddress" ||
+  id === "venueName"
+) {
+
+  const mapLink =
+    document.getElementById("mapLink");
+
+  const venue =
+    document.getElementById("venueName")?.value?.trim() || "";
+
+  const address =
+    document.getElementById("venueAddress")?.value?.trim() || "";
+
+  const query =
+    `${venue} ${address}`.trim();
+
+  if (mapLink) {
+
+    mapLink.href =
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(query);
+
+  }
+}
+
 
     if (id === "coupleName") {
       document.getElementById("coupleNameDisplay").textContent = el.value || "—";
@@ -2032,18 +2052,26 @@ document.querySelectorAll(".infoPreset").forEach(cb => {
 });
 
 
-
-
 // ✅ правильная инициализация карты
 const mapLink = document.getElementById("mapLink");
 const venueInput = document.getElementById("venueAddress");
+const venueNameInput = document.getElementById("venueName");
 
-if (mapLink && venueInput && venueInput.value) {
-  mapLink.href = "https://maps.google.com/?q=" + encodeURIComponent(venueInput.value);
+if (mapLink) {
+
+  const venue =
+    venueNameInput?.value?.trim() || "";
+
+  const address =
+    venueInput?.value?.trim() || "";
+
+  const query =
+    `${venue} ${address}`.trim();
+
+  mapLink.href =
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent(query);
 }
-
-
-
 
  // 🔥 ВОССТАНОВЛЕНИЕ FAQ
 if (data && data.faq && Array.isArray(data.faq)) {
