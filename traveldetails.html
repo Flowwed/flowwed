@@ -1992,17 +1992,18 @@ if (mapLink) {
 
     // ОБНОВЛЯЕМ ТОЛЬКО 2 ПОЛЯ
 
-await sb
-  .from("wedding_info")
-  .update({
-    couple_name: siteData.couple_name,
-    wedding_date: siteData.wedding_date,
-    venue_name: siteData.venue,
-    venue_address: siteData.address
-  })
-  .eq("site_edit_token", window.APP_TOKEN);
 
-  }
+if (siteData.venue || siteData.address) {
+  await sb
+    .from("wedding_info")
+    .update({
+      couple_name: siteData.couple_name,
+      wedding_date: siteData.wedding_date,
+      venue_name: siteData.venue,
+      venue_address: siteData.address
+    })
+    .eq("site_edit_token", window.APP_TOKEN);
+}
 
 // 🔹 1. СТАРЫЕ ДАННЫЕ (форма)
 const data = await loadFromSupabase();

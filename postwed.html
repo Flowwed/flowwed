@@ -2218,6 +2218,38 @@ if (field.dataset.sync === "address") {
   console.log("ADDRESS SYNC:", result);
 
 }
+
+if (field.dataset.sync === "time") {
+
+  const { data: weddingData } = await supabase
+    .from("wedding_info")
+    .select("schedule")
+    .eq("site_edit_token", token)
+    .single();
+
+  const schedule = weddingData?.schedule || [];
+
+  if (schedule.length > 0) {
+    schedule[0].time = value;
+  } else {
+    schedule.push({
+      text: "Wedding Ceremony",
+      time: value
+    });
+  }
+
+  const result = await supabase
+    .from("wedding_info")
+    .update({
+      schedule
+    })
+    .eq("site_edit_token", token);
+
+  console.log("TIME SYNC:", result);
+
+}
+
+
   });
 
 });
