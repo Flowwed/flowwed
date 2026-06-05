@@ -2178,6 +2178,22 @@ setFormData(mapped);
 }
 
 
+const editDateBtn =
+  document.getElementById("editDateBtn");
+
+const dateEditorPopup =
+  document.getElementById("dateEditorPopup");
+
+editDateBtn?.addEventListener("click", () => {
+
+  dateEditorPopup.style.display =
+    dateEditorPopup.style.display === "block"
+      ? "none"
+      : "block";
+
+});
+
+
 // 🔥 SYNC CHECKBOXES AFTER DATA LOAD
 
 // FAQ
