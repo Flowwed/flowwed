@@ -1722,7 +1722,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-async function saveStory() {
+window.saveStory = async function () {
 
 const btn = document.querySelector(".save-btn");
 const originalText = btn.innerHTML;
