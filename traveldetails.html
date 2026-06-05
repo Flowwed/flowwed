@@ -1839,6 +1839,8 @@ try {
 
   isSaving = true;
 
+console.log("FIRST EVENT:", schedule?.[0]);
+console.log("WEDDING TIME:", data.wedding_time);
 
 await saveToSupabase(data);
 await saveSitesMirror(data);
