@@ -1957,6 +1957,8 @@ travelToggle.checked =
   // 🔹 2. НОВЫЕ ДАННЫЕ (sites — ТОЛЬКО для header)
   const siteData = await loadFromSites();
 
+console.log("SITE DATA:", siteData);
+
   if (siteData) {
 
     // HEADER
@@ -1998,7 +2000,15 @@ if (mapLink) {
     // ОБНОВЛЯЕМ ТОЛЬКО 2 ПОЛЯ
 
 
-if (siteData.venue || siteData.address) {
+if (
+  siteData.venue ||
+  siteData.address ||
+  siteData.wedding_time
+) {
+
+
+
+
   await sb
     .from("wedding_info")
     .update({
