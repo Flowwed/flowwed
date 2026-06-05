@@ -1994,8 +1994,12 @@ const weddingDateEl =
   document.getElementById("weddingDateDisplay");
 
 if (weddingDateEl) {
-weddingDateEl.value =
-  siteData.wedding_date?.split("T")[0] || "";
+
+weddingDateEl.textContent =
+  siteData.wedding_date
+    ? formatDate(siteData.wedding_date.split("T")[0])
+    : "—";
+
 }
 
 weddingDateEl?.addEventListener("change", async () => {
