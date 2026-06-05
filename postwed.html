@@ -2786,6 +2786,14 @@ tbody.addEventListener("keydown", (e) => {
    ADVANCED TOAST (success/error)
 ============================ */
 window.showToastBox = function (msg, type = "success") {
+
+const box = document.getElementById("toastBox");
+
+if (box.children.length > 0) {
+  return;
+}
+
+
   const box = document.getElementById("toastBox");
   const toast = document.createElement("div");
 
