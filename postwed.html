@@ -2200,8 +2200,7 @@ if (field.dataset.sync === "venue") {
     .update({
       venue_name: value
     })
-    .eq("site_edit_token", token)
-    .select();
+    .eq("site_edit_token", token);
 
   console.log("VENUE SYNC:", result);
 
@@ -2214,8 +2213,7 @@ if (field.dataset.sync === "address") {
     .update({
       venue_address: value
     })
-    .eq("site_edit_token", token)
-    .select();
+    .eq("site_edit_token", token);
 
   console.log("ADDRESS SYNC:", result);
 
