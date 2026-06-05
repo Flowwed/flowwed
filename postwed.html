@@ -2441,12 +2441,36 @@ const editWeddingDateBtn =
 const weddingDatePopup =
   document.getElementById("weddingDatePopup");
 
+const weddingDateEditor =
+  document.getElementById("weddingDateEditor");
+
 editWeddingDateBtn?.addEventListener("click", () => {
 
   weddingDatePopup.style.display =
     weddingDatePopup.style.display === "block"
       ? "none"
       : "block";
+
+});
+
+
+weddingDateEditor?.addEventListener("change", () => {
+
+  const value = weddingDateEditor.value;
+
+  if (!value) return;
+
+  const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  const [y,m,d] = value.split("-");
+
+  document.getElementById("weddingDateDisplay").textContent =
+    `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+
+  console.log("RSVP NEW DATE:", value);
 
 });
 
