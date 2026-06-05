@@ -2213,25 +2213,21 @@ async function saveToSupabase(data) {
 
   const token = window.APP_TOKEN;
 
-  console.log("📦 DATA:", data);
-  console.log("🔑 TOKEN:", token);
-
-  const { error } = await sb
+  const result = await sb
     .from("wedding_info")
     .upsert(
       [{ site_edit_token: token, ...data }],
       { onConflict: "site_edit_token" }
-    );
+    )
+    .select();
 
-if (error) {
+  console.log("UPSERT RESULT:", result);
 
-  console.error("❌ FULL ERROR:", error);
-
-  throw error;
+  if (result.error) {
+    console.error(result.error);
+    throw result.error;
+  }
 }
-
-}
-
 
 async function loadFromSupabase() {
 
