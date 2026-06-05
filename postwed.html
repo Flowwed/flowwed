@@ -1643,11 +1643,63 @@ RSVP Details
 
 <!-- WEDDING DETAILS -->
 
-
 <div class="field">
+
 <label>Wedding Date</label>
-<input id="weddingDateInput" type="date" class="couple-field" data-sync="date">
+
+<div
+  style="
+    display:flex;
+    align-items:center;
+    gap:8px;
+    position:relative;
+    margin-top:6px;
+  "
+>
+
+  <div id="weddingDateDisplay">
+    —
+  </div>
+
+  <span
+    id="editWeddingDateBtn"
+    style="
+      cursor:pointer;
+      font-size:18px;
+    "
+    title="Edit wedding date"
+  >
+    ✏️
+  </span>
+
+  <div
+    id="weddingDatePopup"
+    style="
+      display:none;
+      position:absolute;
+      top:28px;
+      left:0;
+      background:white;
+      border:1px solid #ddd;
+      border-radius:12px;
+      padding:12px;
+      box-shadow:0 8px 24px rgba(0,0,0,.12);
+      z-index:9999;
+    "
+  >
+
+    <input
+      id="weddingDateEditor"
+      type="date"
+      class="couple-field"
+    >
+
+  </div>
+
 </div>
+
+</div>
+
 
 <div class="field">
 <label>Wedding Time</label>
@@ -2319,6 +2371,10 @@ updateMealOptions();
 
 const rsvp = document.getElementById("rsvpDate");
 const date = document.getElementById("weddingDateInput");
+
+const weddingDateDisplay =
+  document.getElementById("weddingDateDisplay");
+
 const time = document.getElementById("weddingTimeInput");
 const venue = document.getElementById("venueInput");
 const address = document.getElementById("venueAddressInput");
@@ -2326,8 +2382,28 @@ const address = document.getElementById("venueAddressInput");
 /* заполнение */
 
 if(rsvp) rsvp.value = data.rsvp_date || "";
-if(date && data.wedding_date)
-date.value = data.wedding_date.split("T")[0];
+
+if (data.wedding_date) {
+
+  const rawDate =
+    data.wedding_date.split("T")[0];
+
+  if (weddingDateDisplay) {
+
+    const months = [
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    ];
+
+    const [y,m,d] = rawDate.split("-");
+
+    weddingDateDisplay.textContent =
+      `${parseInt(d)} ${months[parseInt(m)-1]} ${y}`;
+  }
+
+}
+
+
 if(time) time.value = data.wedding_time || "";
 if(venue) venue.value = data.venue || "";
 if(address) address.value = data.address || "";
