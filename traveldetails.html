@@ -2005,7 +2005,8 @@ if (siteData.venue || siteData.address) {
       couple_name: siteData.couple_name,
       wedding_date: siteData.wedding_date,
       venue_name: siteData.venue,
-      venue_address: siteData.address
+      venue_address: siteData.address,
+      wedding_time: siteData.wedding_time
     })
     .eq("site_edit_token", window.APP_TOKEN);
 }
@@ -2289,7 +2290,7 @@ async function loadFromSites() {
 
   const { data, error } = await sb
     .from("sites")
-    .select("couple_name, wedding_date, venue, address")
+    .select("couple_name, wedding_date, venue, address, wedding_time")
     .eq("edit_token", token)
     .single();
 
