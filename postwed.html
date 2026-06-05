@@ -2296,6 +2296,34 @@ if (!error) {
 });
 
 
+document.querySelectorAll("[data-sync]").forEach(field => {
+
+  field.addEventListener("keydown", (e) => {
+
+    if (e.key !== "Enter") return;
+
+    e.preventDefault();
+
+    const visibleFields = [...document.querySelectorAll("[data-sync]")]
+      .filter(el =>
+        el.offsetParent !== null
+      );
+
+    const index =
+      visibleFields.indexOf(field);
+
+    const nextField =
+      visibleFields[index + 1];
+
+    if (nextField) {
+      nextField.focus();
+    }
+
+  });
+
+});
+
+
 async function loadWeddingData(){
 
 const token = window.APP_TOKEN;
