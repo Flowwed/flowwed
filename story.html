@@ -1719,18 +1719,20 @@ document.addEventListener("DOMContentLoaded", () => {
   // ===============================
   // 2) SAVE BUTTON — SAVE TEXT ONLY
   // ===============================
- document.querySelector(".save-btn").addEventListener("click", async () => {
+
+
+
+async function saveStory() {
 
 const btn = document.querySelector(".save-btn");
 const originalText = btn.innerHTML;
 
+console.log("SAVE CLICKED");
 
- console.log("SAVE CLICKED"); // 👈 ОБЯЗАТЕЛЬНО
-  if (!token) return alert("Missing token");
+if (!token) return alert("Missing token");
 
 // 🔥 фиксируем активный блок
 window.syncCurrentBlock();
-
 
 // 🔥 берём header + текст
 const headerEl = document.getElementById("fakeHeader");
@@ -1754,9 +1756,8 @@ function buildHTML(block) {
 const payload = {
   edit_token: token,
 
-story_enabled:
+  story_enabled:
     document.getElementById("storyToggle").checked,
-
 
   how_we_met: buildHTML(window.storyData.how_we_met),
   growing_together: buildHTML(window.storyData.growing_together),
@@ -1764,6 +1765,7 @@ story_enabled:
   new_chapter: buildHTML(window.storyData.new_chapter),
   custom: buildHTML(window.storyData.custom)
 };
+
 console.log("PAYLOAD SENT:", payload);
 
 const res = await fetch(
@@ -1774,7 +1776,7 @@ const res = await fetch(
       apikey: SUPABASE_KEY,
       Authorization: "Bearer " + SUPABASE_KEY,
       "Content-Type": "application/json",
-      Prefer: "resolution=merge-duplicates" // ✅ правильный upsert
+      Prefer: "resolution=merge-duplicates"
     },
     body: JSON.stringify(payload)
   }
@@ -1782,24 +1784,27 @@ const res = await fetch(
 
 console.log("SAVE FINISHED", res.ok);
 
-
 if (!res.ok) {
   const errorText = await res.text();
   console.error("SUPABASE ERROR:", errorText);
 }
 
-
 if (res.ok) {
   hasUnsavedChanges = false;
 }
-
 
 showToast(res.ok ? "Text saved" : "Save failed");
 
 btn.classList.remove("btn-loading");
 btn.innerHTML = originalText;
 
+}
+
+
+document.querySelector(".save-btn").addEventListener("click", async () => {
+  await saveStory();
 });
+
 
 }); // ← ВОТ ЭТОГО НЕ ХВАТАЛО
 
@@ -3331,11 +3336,12 @@ btn.innerHTML = `
   Saving...
 `;
 
-await new Promise(resolve => {
-  const saveBtn = document.querySelector(".save-btn");
-  saveBtn.click();
-  setTimeout(resolve, 1200);
-});
+await saveStory();
+
+window.location.href = targetHref;
+};
+
+
 
 modal.onclick = (e) => {
 
