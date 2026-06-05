@@ -2208,14 +2208,17 @@ if (field.dataset.sync === "venue") {
 
 if (field.dataset.sync === "time") {
 
-  const { data: weddingData, error } = await supabase
-    .from("wedding_info")
-    .select("schedule")
-    .eq("site_edit_token", token)
-    .maybeSingle();
 
-  console.log("SCHEDULE READ:", weddingData);
-  console.log("SCHEDULE ERROR:", error);
+const resultRead = await supabase
+  .from("wedding_info")
+  .select("*")
+  .eq("site_edit_token", token);
+
+console.log("FULL WEDDING_INFO:", resultRead);
+
+const weddingData = resultRead.data?.[0];
+
+
 
   const schedule = weddingData?.schedule || [];
 
