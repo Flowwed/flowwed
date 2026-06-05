@@ -3282,6 +3282,8 @@ await saveSitesMirror(data);
 
 markAsSaved();
 
+
+
 window.location.href = href;
 
   };
@@ -3474,10 +3476,6 @@ document.addEventListener("keydown", async (e) => {
 
   const index = inputs.indexOf(e.target);
 
-  // 👉 прыжок на следующее поле
-  // if (index > -1 && index < inputs.length - 1) {
-   // inputs[index + 1].focus();
-  // }
 
   // 👉 AUTO SAVE
   const f = getFormData();
@@ -3525,6 +3523,10 @@ await saveSitesMirror(data);
 showToast("Saved");
 
 markAsSaved();
+
+if (index > -1 && index < inputs.length - 1) {
+  inputs[index + 1].focus();
+}
 
 });
 
