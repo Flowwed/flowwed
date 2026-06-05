@@ -987,14 +987,31 @@ window.APP_TOKEN = token;
   font-weight:600;
   color:#9c1818;
 ">
-  <div id="coupleNameDisplay">—</div>
+
+<div id="coupleNameDisplay">—</div>
+
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+
+  <div id="weddingDateDisplay">—</div>
+
+  <span
+    id="editDateBtn"
+    style="cursor:pointer;font-size:18px;"
+    title="Edit wedding date"
+  >
+    ✏️
+  </span>
+
+</div>
 
 <input
-  id="weddingDateDisplay"
+  id="hiddenDatePicker"
   type="date"
-  class="couple-field"
-/>
+  style="display:none;"
+>
+
 </div>
+
 
 <div style="
   margin-top:14px;
@@ -2130,6 +2147,20 @@ for (let i = 5; i <= scheduleLength; i++) {
 setFormData(mapped);
 
 }
+
+
+const editDateBtn =
+  document.getElementById("editDateBtn");
+
+const hiddenDatePicker =
+  document.getElementById("hiddenDatePicker");
+
+editDateBtn?.addEventListener("click", () => {
+
+  hiddenDatePicker.showPicker();
+
+});
+
 
 // 🔥 SYNC CHECKBOXES AFTER DATA LOAD
 
