@@ -988,7 +988,12 @@ window.APP_TOKEN = token;
   color:#9c1818;
 ">
   <div id="coupleNameDisplay">—</div>
-  <div id="weddingDateDisplay">—</div>
+
+<input
+  id="weddingDateDisplay"
+  type="date"
+  class="couple-field"
+/>
 </div>
 
 <div style="
@@ -1965,10 +1970,15 @@ console.log("SITE DATA:", siteData);
     document.getElementById("coupleNameDisplay").textContent =
       siteData.couple_name || "—";
 
-    document.getElementById("weddingDateDisplay").textContent =
-      siteData.wedding_date
-        ? formatDate(siteData.wedding_date)
-        : "—";
+
+const weddingDateEl =
+  document.getElementById("weddingDateDisplay");
+
+if (weddingDateEl) {
+  weddingDateEl.value =
+    siteData.wedding_date || "";
+}
+
 const venueNameEl = document.getElementById("venueName");
 const venueAddressEl = document.getElementById("venueAddress");
 
