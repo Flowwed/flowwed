@@ -2050,7 +2050,7 @@ if (data) {
 // всегда берём первое время из новой колонки
 ...(data.wedding_time
   ? {
-      scheduleTime1: data.wedding_time
+       scheduleTime1: data.wedding_time.slice(0, 5)
     }
   : {}),
 
