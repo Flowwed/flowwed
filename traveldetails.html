@@ -1828,6 +1828,9 @@ const faq = getFaqData();
     faq_a4: f.faqA4,
 
     schedule: schedule,
+
+    wedding_time: schedule?.[0]?.time || null,
+
     faq: faq
 
   };
@@ -2225,12 +2228,15 @@ async function saveToSupabase(data) {
   console.log("📦 DATA:", data);
   console.log("🔑 TOKEN:", token);
 
-  const { error } = await sb
-    .from("wedding_info")
-    .upsert(
-      [{ site_edit_token: token, ...data }],
-      { onConflict: "site_edit_token" }
-    );
+const { data: saved, error } = await sb
+  .from("wedding_info")
+  .upsert(
+    [{ site_edit_token: token, ...data }],
+    { onConflict: "site_edit_token" }
+  )
+  .select();
+
+console.log("UPSERT RESULT:", saved);
 
 if (error) {
 
