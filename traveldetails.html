@@ -2154,7 +2154,16 @@ await sb
   })
   .eq("site_edit_token", window.APP_TOKEN);
 
+const fresh = await loadFromSupabase();
+
+console.log(
+  "AFTER SYNC:",
+  fresh?.venue_name,
+  fresh?.venue_address
+);
+
   }
+
 
 setTimeout(() => {
   isInitialLoading = false;
