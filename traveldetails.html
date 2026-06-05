@@ -2125,6 +2125,7 @@ if (data && data.faq && Array.isArray(data.faq)) {
 const venueNameEl = document.getElementById("venueName");
 const venueAddressEl = document.getElementById("venueAddress");
 
+/*
 if (venueNameEl && siteData.venue) {
   venueNameEl.value = siteData.venue;
 }
@@ -2132,6 +2133,7 @@ if (venueNameEl && siteData.venue) {
 if (venueAddressEl && siteData.address) {
   venueAddressEl.value = siteData.address;
 }
+*/
 
 const mapLink = document.getElementById("mapLink");
 
@@ -2213,21 +2215,25 @@ async function saveToSupabase(data) {
 
   const token = window.APP_TOKEN;
 
-  const result = await sb
+  console.log("📦 DATA:", data);
+  console.log("🔑 TOKEN:", token);
+
+  const { error } = await sb
     .from("wedding_info")
     .upsert(
       [{ site_edit_token: token, ...data }],
       { onConflict: "site_edit_token" }
-    )
-    .select();
+    );
 
-  console.log("UPSERT RESULT:", result);
+if (error) {
 
-  if (result.error) {
-    console.error(result.error);
-    throw result.error;
-  }
+  console.error("❌ FULL ERROR:", error);
+
+  throw error;
 }
+
+}
+
 
 async function loadFromSupabase() {
 
