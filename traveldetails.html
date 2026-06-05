@@ -2047,8 +2047,8 @@ if (data) {
       : {}),
 
 
-// если schedule пустой, берём время из новой колонки
-...( (!data.schedule || data.schedule.length === 0) && data.wedding_time
+// всегда берём первое время из новой колонки
+...(data.wedding_time
   ? {
       scheduleTime1: data.wedding_time
     }
