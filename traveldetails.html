@@ -2178,11 +2178,17 @@ setFormData(mapped);
 }
 
 
+const weddingDateDisplay =
+  document.getElementById("weddingDateDisplay");
+
 const editDateBtn =
   document.getElementById("editDateBtn");
 
 const dateEditorPopup =
   document.getElementById("dateEditorPopup");
+
+const dateEditor =
+  document.getElementById("dateEditor");
 
 editDateBtn?.addEventListener("click", () => {
 
@@ -2192,6 +2198,18 @@ editDateBtn?.addEventListener("click", () => {
       : "block";
 
 });
+
+dateEditor?.addEventListener("change", () => {
+
+  const value = dateEditor.value;
+
+  if (!value) return;
+
+  weddingDateDisplay.textContent =
+    formatDate(value);
+
+});
+
 
 
 // 🔥 SYNC CHECKBOXES AFTER DATA LOAD
