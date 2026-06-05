@@ -2210,6 +2210,13 @@ dateEditor?.addEventListener("change", async () => {
 
 console.log("NEW DATE:", value);
 
+await sb
+  .from("sites")
+  .update({
+    wedding_date: value
+  })
+  .eq("edit_token", window.APP_TOKEN);
+
 });
 
 
