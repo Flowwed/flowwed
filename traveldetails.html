@@ -1004,11 +1004,28 @@ window.APP_TOKEN = token;
 
 </div>
 
-<input
-  id="hiddenDatePicker"
-  type="date"
-  style="display:none;"
+
+<div
+  id="dateEditorPopup"
+  style="
+    display:none;
+    position:absolute;
+    background:white;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,.12);
+    z-index:9999;
+  "
 >
+
+  <input
+    id="dateEditor"
+    type="date"
+  >
+
+</div>
+
 
 </div>
 
@@ -2152,18 +2169,30 @@ setFormData(mapped);
 
 }
 
-
 const editDateBtn =
   document.getElementById("editDateBtn");
 
-const hiddenDatePicker =
-  document.getElementById("hiddenDatePicker");
+const dateEditorPopup =
+  document.getElementById("dateEditorPopup");
+
+const dateEditor =
+  document.getElementById("dateEditor");
 
 editDateBtn?.addEventListener("click", () => {
 
-  hiddenDatePicker.showPicker();
+  const rect =
+    editDateBtn.getBoundingClientRect();
+
+  dateEditorPopup.style.display = "block";
+
+  dateEditorPopup.style.left =
+    `${rect.left}px`;
+
+  dateEditorPopup.style.top =
+    `${rect.bottom + 8}px`;
 
 });
+
 
 
 // 🔥 SYNC CHECKBOXES AFTER DATA LOAD
