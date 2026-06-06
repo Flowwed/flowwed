@@ -3,148 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seating Chart — Quick User Guide</title>
-
+<title>Seating Chart — Premium Guide</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body {
-  margin: 0;
-  padding: 50px 20px;
-  font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(to bottom, #fff2f4, #ffd9e5, #f7b7c9, #e94a7633);
-  color: #6f2a3a;
+body{
+margin:0;padding:46px 18px;
+font-family:"Segoe UI",Inter,sans-serif;
+background:linear-gradient(180deg,#fff1f4,#ffffff);
+color:#6a2a2a;
 }
-
-.wrap {
-  max-width: 960px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(20px);
-  border-radius: 30px;
-  padding: 48px 56px;
-  box-shadow:
-    0 36px 90px rgba(40,60,120,0.28),
-    inset 0 0 0 1px rgba(255,255,255,0.55);
+.wrap{
+max-width:980px;margin:auto;
+background:rgba(255,255,255,.76);
+backdrop-filter:blur(20px) saturate(180%);
+border-radius:24px;
+padding:34px 38px 42px;
+box-shadow:0 18px 40px rgba(0,0,0,.18),0 8px 20px rgba(0,0,0,.12),inset 0 2px 6px rgba(255,255,255,.35);
 }
-
-h1 {
-  margin: 0 0 18px;
-  font-size: 30px;
-  font-weight: 750;
-  color: #9b1c31;
+h1{
+text-align:center;
+font-size:34px;
+font-weight:650;
+background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);
+-webkit-background-clip:text;
+color:transparent;
+margin:0 0 10px;
 }
-
-p {
-  font-size: 18px;
-  line-height: 1.7;
+.top-divider-line{
+height:2px;
+background:linear-gradient(to right,#b41111,#e89999,#b41111);
+margin:10px 0 26px;
 }
-
-h2 {
-  margin: 36px 0 14px;
-  font-size: 20px;
-  font-weight: 650;
-  color: #9b1c31;
+.intro{
+background:#fff7f7;
+border:2px solid #ffcccc;
+border-radius:16px;
+padding:16px 18px;
+display:flex;
+gap:12px;
+box-shadow:0 4px 12px rgba(0,0,0,.10);
+font-size:15px;
+line-height:1.55;
+font-weight:600;
 }
-
-.grid {
-  margin-top: 26px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 28px 24px;
+.info-icon{
+min-width:24px;height:24px;border-radius:50%;
+background:#b41111;color:white;
+display:flex;align-items:center;justify-content:center;
+font-weight:800;
 }
-
-.item { text-align: center; }
-
-.btn {
-  margin: 0 auto 12px;
-  width: 76px;
-  height: 76px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    #9b1c31;
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -12px 24px rgba(0,20,80,0.45),
-    0 18px 36px rgba(40,60,120,0.35);
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.tag{
+padding:7px 12px;border-radius:999px;
+background:#fff7f7;border:1px solid #ffd0d0;
+font-size:13px;font-weight:700;color:#9c1818;
 }
-
-.btn i { font-size: 26px; color: #fff; }
-
-.label {
-  font-size: 15px;
-  line-height: 1.45;
-  font-weight: 600;
+h2{margin:34px 0 16px;color:#9c1818}
+.steps{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:18px;
 }
-
-.small {
-  font-size: 14px;
-  opacity: 0.85;
-  font-weight: 500;
+.card{
+background:rgba(255,255,255,.86);
+border:2px solid #ffcccc;
+border-radius:18px;
+padding:18px;
+box-shadow:0 8px 18px rgba(0,0,0,.10);
+transition:.25s;
+}
+.card:hover{
+transform:translateY(-3px);
+box-shadow:0 14px 26px rgba(0,0,0,.16),0 0 18px rgba(180,17,17,.10);
+}
+.card-head{
+display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.icon-btn{
+width:46px;height:46px;border-radius:14px;
+background:#b41111;color:white;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 10px rgba(0,0,0,.25);
+}
+.card-title{font-size:16px;font-weight:800;color:#9c1818}
+.card p{margin:0;font-size:14px;line-height:1.55}
+.note{
+margin-top:16px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:14px;
+padding:14px 16px;
+display:flex;
+gap:10px;
+font-size:14px;
+font-weight:600;
+}
+.note-icon{
+width:20px;height:20px;border-radius:50%;
+background:#b41111;color:white;
+display:flex;align-items:center;justify-content:center;
+font-size:11px;
+}
+.footer-box{
+margin-top:30px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.88);
+border:2px solid #b41111;
+}
+.footer-box p{
+margin:0;
+font-size:15px;
+line-height:1.6;
+font-weight:650;
 }
 </style>
 </head>
-
 <body>
+
 <div class="wrap">
 
-  <p>
-    <strong>Seating Chart</strong> helps you organize where each guest will sit.
-    It gives you a clear overview of tables and makes planning effortless.
-  </p>
+<h1>Seating Chart</h1>
+<div class="top-divider-line"></div>
 
-  <p>
-    You can create tables, adjust seats, and assign guests in just a few clicks.
-  </p>
+<div class="intro">
+<div class="info-icon">i</div>
+<div>
+Seating Chart helps you organize where every guest will sit during your wedding celebration.
+Create tables, assign guests, manage plus-ones, monitor seat capacity, and export your final seating plan from one central dashboard.
+</div>
+</div>
 
-  <h2>How to Arrange Seating</h2>
+<div class="tag-row">
+<div class="tag">Tables</div>
+<div class="tag">Seat Capacity</div>
+<div class="tag">Guest Assignment</div>
+<div class="tag">Plus Ones</div>
+<div class="tag">Email Updates</div>
+<div class="tag">CSV Export</div>
+<div class="tag">Live Save</div>
+<div class="tag">Wedding Seating</div>
+</div>
 
-  <div class="grid">
+<h2>How to Use This Page</h2>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-table"></i></div>
-      <div class="label">
-        <strong>Create Tables</strong><br>
-        <span class="small">Add or remove tables as needed.</span>
-      </div>
-    </div>
+<div class="steps">
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-chair"></i></div>
-      <div class="label">
-        <strong>Set Seats</strong><br>
-        <span class="small">Choose how many guests fit at each table.</span>
-      </div>
-    </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-table"></i></div><div class="card-title">1. Create Tables</div></div><p>Create new tables or remove tables that are no longer needed.</p></div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-user-plus"></i></div>
-      <div class="label">
-        <strong>Assign Guests</strong><br>
-        <span class="small">Place each guest at a table.</span>
-      </div>
-    </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-chair"></i></div><div class="card-title">2. Set Seat Capacity</div></div><p>Adjust the number of seats available at each table using the seat controls.</p></div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-file-export"></i></div>
-      <div class="label">
-        <strong>Export & Share</strong><br>
-        <span class="small">Print or send your seating plan.</span>
-      </div>
-    </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-users"></i></div><div class="card-title">3. Review RSVP Guests</div></div><p>Confirmed and maybe guests are automatically available for seating assignments.</p></div>
 
-  </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-filter"></i></div><div class="card-title">4. Filter Guest Lists</div></div><p>Switch between All, Confirmed, and Maybe guests for easier planning.</p></div>
 
-  <h2>Why It Matters</h2>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-user-check"></i></div><div class="card-title">5. Assign Guests to Tables</div></div><p>Assign guests to a table with one click using the table selection buttons.</p></div>
 
-  <p>
-    A clear seating plan makes your celebration smooth and stress-free.
-    It helps your venue, your guests, and you enjoy the day without chaos.
-  </p>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-user-group"></i></div><div class="card-title">6. Manage Plus-Ones</div></div><p>The system automatically counts additional guests and reserves the required seats.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-right-left"></i></div><div class="card-title">7. Move Guests Between Tables</div></div><p>Guests can be reassigned to another table at any time.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="card-title">8. Prevent Overbooking</div></div><p>If a table exceeds its capacity, the system warns you immediately.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-list-check"></i></div><div class="card-title">9. Review Table Occupancy</div></div><p>See how many guests are assigned and how many seats remain available.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-eye"></i></div><div class="card-title">10. Expand Large Tables</div></div><p>Use Show All to display the full guest list for tables containing many guests.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-envelope"></i></div><div class="card-title">11. Email Seating Updates</div></div><p>Send seating-related updates directly to selected guests.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-file-arrow-down"></i></div><div class="card-title">12. Export & Print Seating Plan</div></div><p>Download the seating plan as a CSV file for planners, venues, and vendors.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-cloud-arrow-up"></i></div><div class="card-title">13. Automatic Saving</div></div><p>Your seating layout is automatically saved while you work.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-chair"></i></div><div class="card-title">14. Monitor Remaining Seats</div></div><p>Each table shows remaining capacity so you can balance guest distribution efficiently.</p></div>
+
+</div>
+
+<h2>Important Notes</h2>
+
+<div class="note"><div class="note-icon">i</div><div>Seating capacity includes all confirmed guests and their registered plus-ones.</div></div>
+
+<div class="note"><div class="note-icon">i</div><div>The system prevents assigning more guests than a table can accommodate.</div></div>
+
+<div class="note"><div class="note-icon">i</div><div>Review your seating plan carefully before exporting or sharing it with vendors.</div></div>
+
+<div class="note"><div class="note-icon">i</div><div>Seating assignments can be updated at any time before the wedding.</div></div>
+
+<div class="footer-box">
+<p>
+In short: create tables, assign guests, manage seating capacity, accommodate plus-ones,
+export reports, and organize your complete wedding seating plan from one dashboard.
+</p>
+</div>
 
 </div>
 </body>

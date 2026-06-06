@@ -3,88 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guest Hub — Quick User Guide</title>
-
+<title>Guest Hub — Premium Guide</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body {
-  margin: 0;
-  padding: 50px 20px;
-  font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(to bottom, #ffeef3, #ffd9e5, #f8b6ca, #e94a7633);
-  color: #7a3a4a;
-}
-
-.wrap {
-  max-width: 940px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(18px);
-  border-radius: 28px;
-  padding: 46px 52px;
-  box-shadow:
-    0 30px 70px rgba(0,0,0,0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.45);
-}
-
-h1 {
-  margin: 0 0 18px;
-  font-size: 28px;
-  font-weight: 700;
-  color: #a02449;
-}
-
-p {
-  font-size: 18px;
-  line-height: 1.7;
-}
-
-h2 {
-  margin: 34px 0 12px;
-  font-size: 20px;
-  font-weight: 650;
-  color: #a02449;
-}
-
-.grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 26px 22px;
-}
-
-.item {
-  text-align: center;
-}
-
-.btn {
-  margin: 0 auto 10px;
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    #9c1818;
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -10px 20px rgba(80,0,20,0.45),
-    0 14px 30px rgba(0,0,0,0.3);
-}
-
-.btn i {
-  font-size: 26px;
-  color: #fff;
-}
-
-.label {
-  font-size: 15px;
-  line-height: 1.4;
-  font-weight: 600;
-}
+body{margin:0;padding:46px 18px;font-family:"Segoe UI",Inter,sans-serif;background:linear-gradient(180deg,#fff1f4,#ffffff);color:#6a2a2a}
+.wrap{max-width:980px;margin:auto;background:rgba(255,255,255,.76);backdrop-filter:blur(20px) saturate(180%);border-radius:24px;padding:34px 38px 42px;box-shadow:0 18px 40px rgba(0,0,0,.18),0 8px 20px rgba(0,0,0,.12),inset 0 2px 6px rgba(255,255,255,.35)}
+h1{text-align:center;font-size:34px;font-weight:650;background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);-webkit-background-clip:text;color:transparent;margin:0 0 10px}
+.top-divider-line{height:2px;background:linear-gradient(to right,#b41111,#e89999,#b41111);margin:10px 0 26px}
+.intro,.why-box{background:#fff7f7;border:2px solid #ffcccc;border-radius:16px;padding:16px 18px;display:flex;gap:12px;font-size:15px;line-height:1.6;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,.10)}
+.info-icon{min-width:24px;height:24px;border-radius:50%;background:#b41111;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.why-box{margin-top:20px}
+.why-title{font-size:17px;font-weight:800;color:#9c1818;margin-bottom:8px}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.tag{padding:7px 12px;border-radius:999px;background:#fff7f7;border:1px solid #ffd0d0;font-size:13px;font-weight:700;color:#9c1818}
+h2{margin:34px 0 16px;color:#9c1818}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:rgba(255,255,255,.86);border:2px solid #ffcccc;border-radius:18px;padding:18px;box-shadow:0 8px 18px rgba(0,0,0,.10);transition:.25s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 26px rgba(0,0,0,.16),0 0 18px rgba(180,17,17,.10)}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.icon-btn{width:46px;height:46px;border-radius:14px;background:#b41111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.card-title{font-size:16px;font-weight:800;color:#9c1818}
+.card p{margin:0;font-size:14px;line-height:1.55;color:#7e2a2a;font-weight:550}
+.note{margin-top:16px;background:#fff7f7;border:1px solid #ffd0d0;border-radius:14px;padding:14px 16px;display:flex;gap:10px;font-size:14px;line-height:1.55;color:#7e2a2a;font-weight:600}
+.note-icon{width:20px;height:20px;min-width:20px;border-radius:50%;background:#b41111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+.footer-box{margin-top:30px;padding:18px;border-radius:18px;background:rgba(255,255,255,.88);border:2px solid #b41111}
+.footer-box p{margin:0;font-size:15px;line-height:1.6;font-weight:650;color:#7e2a2a}
+@media(max-width:768px){body{padding:22px 14px}.wrap{padding:26px 18px 32px}.steps{grid-template-columns:1fr}h1{font-size:28px}}
 </style>
 </head>
 
@@ -92,68 +37,175 @@ h2 {
 
 <div class="wrap">
 
-  <p>
-    Welcome to your <strong>Guest Hub</strong> page — the heart of your guest experience.
-</p>
-<p>
-    All you need to do here is build your guest list.
-</p>
-<p>
-   Your Guest Hub is seamlessly synced across the rest of your dashboard, allowing you to manage further communication with your guests — from sending updates and Save the Dates to 
-   collecting RSVPs and sharing wedding details via email and SMS. 
- </p>
+<h1>Guest Hub</h1>
+<div class="top-divider-line"></div>
 
-  <h2>How This Page Works</h2>
-
-  <p>
-    The Guest Hub is designed to make guest management simple and stress-free.
-    There is no “Save” button — the system works for you in <strong>real time</strong>.
-    Changes are saved automatically.
-  </p>
-
-  <div class="grid">
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-user-plus"></i></div>
-      <div class="label">
-        <strong>Add Guests</strong><br>
-        Use the form to add guests with their name, email, and phone number.
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-table"></i></div>
-      <div class="label">
-        <strong>Guest List</strong><br>
-        Your full guest list appears in the table. Click any cell to edit it directly.
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-chart-pie"></i></div>
-      <div class="label">
-        <strong>RSVP Stats</strong><br>
-        Check your guests’ RSVP status here, or visit your RSVP Reports page if you'd like.      
-     </div>
-    </div>
-
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-file-arrow-down"></i></div>
-      <div class="label">
-        <strong>Download &amp; Print</strong><br>
-        Download your guest list as an Excel file for printing, sharing, or backup.
-      </div>
-    </div>
-
-
+<div class="intro">
+  <div class="info-icon">i</div>
+  <div>
+    Guest Hub is the central database for your wedding guests.
+    Add, organize, edit, and manage guest information from one place.
   </div>
+</div>
 
-  <p style="margin-top:32px;">
-    <strong>Guest Hub</strong> works quietly in the background, keeping everything organized for you automatically. 
-            Communication stays effortless, and your wedding planning remains beautifully on track — so you can focus on what truly matters.
+<div class="why-box">
+  <div class="info-icon"><i class="fa-solid fa-circle-info"></i></div>
+  <div>
+    <div class="why-title">Why Guest Hub Matters</div>
+
+    All you need to do here is build your guest list.
+    <br><br>
+    Your Guest Hub is automatically connected to the rest of your wedding dashboard,
+    so once your guests are added, you won't need to enter their information again.
+    <br><br>
+    You can then use the same guest list to send Save the Dates, share wedding updates,
+    collect RSVPs, create seating charts, request guest memories, and communicate
+    through email or SMS from anywhere in your dashboard.
+  </div>
+</div>
+
+<div class="tag-row">
+  <div class="tag">Guest Database</div>
+  <div class="tag">Guest List</div>
+  <div class="tag">Email Updates</div>
+  <div class="tag">SMS Messages</div>
+  <div class="tag">Guest Contacts</div>
+  <div class="tag">CSV Export</div>
+  <div class="tag">Wedding CRM</div>
+  <div class="tag">Guest Management</div>
+</div>
+
+<h2>How to Use This Page</h2>
+
+<div class="steps">
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-user-plus"></i></div>
+    <div class="card-title">1. Add New Guests</div>
+  </div>
+  <p>Enter the guest's name, email address, and optional phone number to add them to your wedding guest list.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-address-book"></i></div>
+    <div class="card-title">2. Build Your Guest List</div>
+  </div>
+  <p>Create the main guest list that will be used across your wedding dashboard.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-pen-to-square"></i></div>
+    <div class="card-title">3. Edit Guest Information</div>
+  </div>
+  <p>Update names, emails, and phone numbers directly inside the guest table whenever information changes.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-envelope"></i></div>
+    <div class="card-title">4. Store Contact Details</div>
+  </div>
+  <p>Keep guest email addresses and phone numbers organized in one central place.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-check"></i></div>
+    <div class="card-title">5. Select Individual Guests</div>
+  </div>
+  <p>Use checkboxes to choose specific guests for communication, export, or management actions.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-check-double"></i></div>
+    <div class="card-title">6. Select Multiple Guests</div>
+  </div>
+  <p>Use Select All when you want to work with the full guest list at once.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-paper-plane"></i></div>
+    <div class="card-title">7. Send Email Updates</div>
+  </div>
+  <p>Open the email composer and send wedding updates, reminders, or announcements to selected guests.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-mobile-screen"></i></div>
+    <div class="card-title">8. Send SMS Notifications</div>
+  </div>
+  <p>Use SMS communication when you need to reach guests quickly.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-chart-line"></i></div>
+    <div class="card-title">9. Monitor Delivery Status</div>
+  </div>
+  <p>Track sending progress and review highlighted guests if any message fails to deliver.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-file-csv"></i></div>
+    <div class="card-title">10. Export Guest Data</div>
+  </div>
+  <p>Download and print your guest list as a CSV file for planners, vendors, or offline records.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-trash"></i></div>
+    <div class="card-title">11. Remove Guests</div>
+  </div>
+  <p>Delete guests that are no longer needed while keeping your guest list clean and accurate.</p>
+</div>
+
+<div class="card">
+  <div class="card-head">
+    <div class="icon-btn"><i class="fa-solid fa-users-viewfinder"></i></div>
+    <div class="card-title">12. Check RSVP Reports</div>
+  </div>
+  <p>Use the RSVP Reports shortcut to review guest responses and attendance information.</p>
+</div>
+
+</div>
+
+<h2>Important Notes</h2>
+
+<div class="note">
+  <div class="note-icon">i</div>
+  <div>Guest Hub is the main guest list used throughout your wedding dashboard.</div>
+</div>
+
+<div class="note">
+  <div class="note-icon">i</div>
+  <div>Each guest should have a unique email address to avoid duplicate records.</div>
+</div>
+
+<div class="note">
+  <div class="note-icon">i</div>
+  <div>Keep guest information updated to make sure emails, SMS messages, RSVPs, and reports work correctly.</div>
+</div>
+
+<div class="note">
+  <div class="note-icon">i</div>
+  <div>Deleting a guest may affect how that guest appears in other connected dashboard pages.</div>
+</div>
+
+<div class="footer-box">
+  <p>
+    In short: build your guest list once, and use it across your wedding dashboard
+    to send updates, manage RSVPs, create seating charts, request memories,
+    and communicate with guests from one connected system.
   </p>
-
+</div>
 
 </div>
 

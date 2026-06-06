@@ -3,163 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Guest Memories — Quick User Guide</title>
-
+<title>Keepsake Box — Premium V2 Guide</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body {
-  margin: 0;
-  padding: 50px 20px;
-  font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(to bottom, #fff2f4, #ffd9e5, #f7b7c9, #e94a7633);
-  color: #6f2a3a;
-}
-
-.wrap {
-  max-width: 960px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(20px);
-  border-radius: 30px;
-  padding: 48px 56px;
-  box-shadow:
-    0 36px 90px rgba(40,60,120,0.28),
-    inset 0 0 0 1px rgba(255,255,255,0.55);
-}
-
-h1 {
-  margin: 0 0 18px;
-  font-size: 30px;
-  font-weight: 750;
-  color: #9b1c31;
-}
-
-p {
-  font-size: 18px;
-  line-height: 1.7;
-}
-
-h2 {
-  margin: 36px 0 14px;
-  font-size: 20px;
-  font-weight: 650;
-  color: #9b1c31;
-}
-
-.grid {
-  margin-top: 26px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 28px 24px;
-}
-
-.item { text-align: center; }
-
-.btn {
-  margin: 0 auto 12px;
-  width: 76px;
-  height: 76px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    #9b1c31;
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -12px 24px rgba(0,20,80,0.45),
-    0 18px 36px rgba(40,60,120,0.35);
-}
-
-.btn i { font-size: 26px; color: #fff; }
-
-.label {
-  font-size: 15px;
-  line-height: 1.45;
-  font-weight: 600;
-}
-
-.small {
-  font-size: 14px;
-  opacity: 0.85;
-  font-weight: 500;
-}
+body{margin:0;padding:46px 18px;font-family:'Segoe UI',Inter,sans-serif;background:linear-gradient(180deg,#fff1f4,#ffffff);color:#6a2a2a}
+.wrap{max-width:980px;margin:auto;background:rgba(255,255,255,.76);backdrop-filter:blur(20px) saturate(180%);border-radius:24px;padding:34px 38px 42px;box-shadow:0 18px 40px rgba(0,0,0,.18),0 8px 20px rgba(0,0,0,.12),inset 0 2px 6px rgba(255,255,255,.35)}
+h1{text-align:center;font-size:34px;font-weight:650;background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);-webkit-background-clip:text;color:transparent;margin:0 0 10px}
+.top-divider-line{height:2px;background:linear-gradient(to right,#b41111,#e89999,#b41111);margin:10px 0 26px}
+.intro{background:#fff7f7;border:2px solid #ffcccc;border-radius:16px;padding:16px 18px;display:flex;gap:12px;box-shadow:0 4px 12px rgba(0,0,0,.10);font-size:15px;line-height:1.6;font-weight:600}
+.info-icon{min-width:24px;height:24px;border-radius:50%;background:#b41111;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.tag{padding:7px 12px;border-radius:999px;background:#fff7f7;border:1px solid #ffd0d0;font-size:13px;font-weight:700;color:#9c1818}
+h2{margin:34px 0 16px;color:#9c1818}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:rgba(255,255,255,.86);border:2px solid #ffcccc;border-radius:18px;padding:18px;box-shadow:0 8px 18px rgba(0,0,0,.10);transition:.25s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 26px rgba(0,0,0,.16),0 0 18px rgba(180,17,17,.10)}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.icon-btn{width:46px;height:46px;border-radius:14px;background:#b41111;color:white;display:flex;align-items:center;justify-content:center;font-size:18px}
+.card-title{font-size:16px;font-weight:800;color:#9c1818}
+.card p{margin:0;font-size:14px;line-height:1.55}
+.note{margin-top:16px;background:#fff7f7;border:1px solid #ffd0d0;border-radius:14px;padding:14px 16px;display:flex;gap:10px;font-size:14px;font-weight:600}
+.note-icon{width:20px;height:20px;border-radius:50%;background:#b41111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+.footer-box{margin-top:30px;padding:18px;border-radius:18px;background:rgba(255,255,255,.88);border:2px solid #b41111}
+.footer-box p{margin:0;font-size:15px;line-height:1.6;font-weight:650}
 </style>
 </head>
-
 <body>
+
 <div class="wrap">
 
-  <p>
-    <strong>Guest Memories & Messages</strong> is where your guests’
-    photos and notes come together after the wedding.
-  </p>
+<h1>Keepsake Box</h1>
+<div class="top-divider-line"></div>
 
-  <p>
-    Every message and image shared by your guests is saved here —
-    organized and easy to explore anytime.
-  </p>
+<div class="intro">
+<div class="info-icon">i</div>
+<div>
+Keepsake Box is your personal wedding memory archive. Every message and photo submitted through Guest Memories is automatically collected here, allowing you to revisit heartfelt wishes, shared photos, and special moments long after your celebration has ended.
+</div>
+</div>
 
-  <h2>How It Works</h2>
+<div class="tag-row">
+<div class="tag">Wedding Memories</div>
+<div class="tag">Guest Messages</div>
+<div class="tag">Photo Archive</div>
+<div class="tag">Memory Folders</div>
+<div class="tag">Keepsake Collection</div>
+<div class="tag">Wedding Story</div>
+<div class="tag">Shared Moments</div>
+<div class="tag">Digital Archive</div>
+</div>
 
-  <div class="grid">
+<h2>How to Use This Page</h2>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-folder"></i></div>
-      <div class="label">
-        <strong>Browse by Guest</strong><br>
-        <span class="small">Each guest has their own folder.</span>
-      </div>
-    </div>
+<div class="steps">
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-comments"></i></div>
-      <div class="label">
-        <strong>Read Messages</strong><br>
-        <span class="small">See notes and memories they shared.</span>
-      </div>
-    </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-box-archive"></i></div><div class="card-title">1. View Your Keepsake Collection</div></div><p>All guest memories submitted through Guest Memories automatically appear inside your Keepsake Box.</p></div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-image"></i></div>
-      <div class="label">
-        <strong>View Photos</strong><br>
-        <span class="small">Open and explore guest uploads.</span>
-      </div>
-    </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-folder-open"></i></div><div class="card-title">2. Browse Memory Folders</div></div><p>Each guest is organized into a dedicated folder, making memories easy to find and revisit.</p></div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-expand"></i></div>
-      <div class="label">
-        <strong>Open Full View</strong><br>
-        <span class="small">Click any photo to enlarge it.</span>
-      </div>
-    </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-folder-tree"></i></div><div class="card-title">3. Expand Guest Folders</div></div><p>Click a folder to reveal the memories, messages, and photos submitted by that guest.</p></div>
 
-  </div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-envelope-open-text"></i></div><div class="card-title">4. Read Personal Messages</div></div><p>Enjoy heartfelt wishes, stories, reflections, and memories shared by family and friends.</p></div>
 
-  <h2>Using These Memories</h2>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-camera"></i></div><div class="card-title">5. View Shared Photos</div></div><p>Browse photos submitted by guests and relive meaningful moments from your wedding celebration.</p></div>
 
-  <p>
-    You can copy any photos or messages shared by your guests
-    and reuse them in your <strong>“Just Married” album</strong>.
-  </p>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-expand"></i></div><div class="card-title">6. Open Photos Full Screen</div></div><p>Click any photo to view it in a larger format and enjoy every detail.</p></div>
 
-  <p>
-    It’s a simple way to turn guest moments into a beautiful
-    post-wedding story on your website.
-  </p>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-users"></i></div><div class="card-title">7. Explore Guest Contributions</div></div><p>See what each guest contributed and appreciate their unique perspective on your wedding day.</p></div>
 
-  <h2>Why It Matters</h2>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-layer-group"></i></div><div class="card-title">8. Memories Stay Organized</div></div><p>Messages and photos are grouped automatically, creating a structured and easy-to-navigate archive.</p></div>
 
-  <p>
-    Your guests see the wedding through their own eyes.
-    This archive lets you relive those moments —
-    candid, emotional, and completely unique.
-  </p>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-heart"></i></div><div class="card-title">9. Revisit Special Moments</div></div><p>Return anytime to relive the memories shared by your guests.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-book-open"></i></div><div class="card-title">10. Build Your Wedding Story</div></div><p>Together, guest messages and photos create a lasting record of your wedding experience.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-gem"></i></div><div class="card-title">11. Create a Lasting Keepsake</div></div><p>Your Keepsake Box becomes a digital treasure chest of memories that can be enjoyed for years.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="card-title">12. Preserve Your Wedding Legacy</div></div><p>Capture not only what happened on your wedding day, but how it was experienced by the people who shared it with you.</p></div>
 
 </div>
+
+<h2>Important Notes</h2>
+
+<div class="note"><div class="note-icon">i</div><div>Guest Memories submissions automatically appear inside Keepsake Box without any additional action.</div></div>
+
+<div class="note"><div class="note-icon">i</div><div>Each guest receives a dedicated folder that groups their messages and photos together.</div></div>
+
+<div class="note"><div class="note-icon">i</div><div>Keepsake Box is designed for viewing and preserving memories, while Guest Memories is used to collect them.</div></div>
+
+<div class="note"><div class="note-icon">i</div><div>Your Keepsake Box becomes more meaningful over time as additional memories and photos are collected.</div></div>
+
+<div class="footer-box">
+<p>
+In short: Keepsake Box transforms guest messages and photos into a beautiful wedding memory archive, allowing you to revisit special moments, explore shared experiences, and preserve your wedding story for years to come.
+</p>
+</div>
+
+</div>
+
 </body>
 </html>

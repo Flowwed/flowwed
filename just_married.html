@@ -407,26 +407,35 @@ input[type=file]::file-selector-button {
 /* MODAL BACKDROP — MUST cover ENTIRE SCREEN */
 .modal-backdrop {
   position: fixed;
-  inset: 0;                    /* ← заменяет top:0; left:0; width:100vw; height:100vh */
-  background: rgba(0,0,0,0.55);
+  inset: 0;
+
   display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;            /* ← Поверх ВСЕГО сайта */
+
+  justify-content: flex-end;   /* справа */
+  align-items: flex-start;     /* сверху */
+
+  padding-right: 4vw;
+  padding-top: 8vh;
+
+  background: rgba(0,0,0,0.45);
+
+  z-index: 999999;
 }
 
-/* MODAL WINDOW */
+
 .modal-window {
-  position: relative;
+  width: 560px;
+  height: 64vh;
+
   background: white;
-  width: 75vw;
-  height: 75vh;
   border-radius: 18px;
   overflow: hidden;
-  z-index: 9999999;           /* ← поверх backdrop */
-  display: flex;
-  flex-direction: column;
+
+  position: relative;
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
+
 
 
 /* iframe must NEVER sit above X */

@@ -3,175 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Story — Quick User Guide</title>
-
+<title>Our Story — Premium Guide</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body {
-  margin: 0;
-  padding: 50px 20px;
-  font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(to bottom, #fff2f4, #ffd9e5, #f7b7c9, #e94a7633);
-  color: #6f2a3a;
-}
-
-.wrap {
-  max-width: 960px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(20px);
-  border-radius: 30px;
-  padding: 48px 56px;
-  box-shadow:
-    0 36px 90px rgba(40,60,120,0.28),
-    inset 0 0 0 1px rgba(255,255,255,0.55);
-}
-
-h1 {
-  margin: 0 0 18px;
-  font-size: 30px;
-  font-weight: 750;
-  color: #9b1c31;
-}
-
-p {
-  font-size: 18px;
-  line-height: 1.7;
-}
-
-h2 {
-  margin: 36px 0 14px;
-  font-size: 20px;
-  font-weight: 650;
-  color: #9b1c31;
-}
-
-.grid {
-  margin-top: 26px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 28px 24px;
-}
-
-.item { text-align: center; }
-
-.btn {
-  margin: 0 auto 12px;
-  width: 76px;
-  height: 76px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    #9b1c31;
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -12px 24px rgba(0,20,80,0.45),
-    0 18px 36px rgba(40,60,120,0.35);
-}
-
-.btn i { font-size: 26px; color: #fff; }
-
-.label {
-  font-size: 15px;
-  line-height: 1.45;
-  font-weight: 600;
-}
-
-.small {
-  font-size: 14px;
-  opacity: 0.85;
-  font-weight: 500;
-}
+body{margin:0;padding:46px 18px;font-family:"Segoe UI",Inter,sans-serif;background:linear-gradient(180deg,#fff1f4,#ffffff);color:#6a2a2a}
+.wrap{max-width:980px;margin:auto;background:rgba(255,255,255,.76);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-radius:24px;padding:34px 38px 42px;box-shadow:0 18px 40px rgba(0,0,0,.18),0 8px 20px rgba(0,0,0,.12),inset 0 2px 6px rgba(255,255,255,.35)}
+h1{text-align:center;font-size:34px;font-weight:650;background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);-webkit-background-clip:text;color:transparent;margin:0 0 10px;letter-spacing:-.6px}
+.top-divider-line{height:2px;background:linear-gradient(to right,#b41111,#e89999,#b41111);margin:10px 0 26px;border-radius:2px}
+.intro{background:#fff7f7;border:2px solid #ffcccc;border-radius:16px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 4px 12px rgba(0,0,0,.10),inset 0 1px 4px rgba(255,255,255,.55);font-size:15px;line-height:1.6;font-weight:600;color:#7e2a2a}
+.info-icon{min-width:24px;height:24px;border-radius:50%;background:#b41111;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;box-shadow:0 3px 8px rgba(0,0,0,.25),inset 0 2px 3px rgba(255,255,255,.25)}
+.tag-row{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+.tag{padding:7px 12px;border-radius:999px;background:#fff7f7;border:1px solid #ffd0d0;color:#9c1818;font-size:13px;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.08),inset 0 1px 3px rgba(255,255,255,.7)}
+h2{margin:34px 0 16px;font-size:21px;color:#9c1818;font-weight:750}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.card{background:rgba(255,255,255,.86);border:2px solid #ffcccc;border-radius:18px;padding:18px;box-shadow:0 8px 18px rgba(0,0,0,.10),inset 0 1px 4px rgba(255,255,255,.55);transition:.25s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 26px rgba(0,0,0,.16),0 0 18px rgba(180,17,17,.10),inset 0 1px 5px rgba(255,255,255,.6)}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.icon-btn{width:46px;height:46px;border-radius:14px;background:linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,.04)),#b41111;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.25),inset 0 2px 4px rgba(255,255,255,.18),inset 0 -4px 10px rgba(60,0,20,.3);color:white;font-size:19px;flex-shrink:0}
+.card-title{font-size:16px;font-weight:800;color:#9c1818}
+.card p{margin:0;font-size:14px;line-height:1.55;color:#7e2a2a;font-weight:550}
+.note{margin-top:16px;background:#fff7f7;border:1px solid #ffd0d0;border-radius:14px;padding:14px 16px;display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.55;color:#7e2a2a;font-weight:600;box-shadow:0 5px 12px rgba(0,0,0,.08),inset 0 1px 3px rgba(255,255,255,.6)}
+.note-icon{width:20px;height:20px;min-width:20px;border-radius:50%;background:#b41111;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-top:1px}
+.footer-box{margin-top:30px;padding:18px;border-radius:18px;background:rgba(255,255,255,.88);border:2px solid #b41111;box-shadow:0 0 12px rgba(180,17,17,.14),inset 0 0 6px rgba(255,255,255,.45)}
+.footer-box p{margin:0;font-size:15px;line-height:1.6;font-weight:650;color:#7e2a2a}
+@media(max-width:768px){body{padding:22px 14px}.wrap{padding:26px 18px 32px;border-radius:20px}h1{font-size:28px}.steps{grid-template-columns:1fr}.intro{font-size:14px}.card{padding:16px}}
 </style>
 </head>
 
 <body>
 <div class="wrap">
 
-  <p>
-    <strong>Our Story</strong> page lets you share your journey together — from the moment you first met to the moment you said “yes”.
+<h1>Our Story</h1>
+<div class="top-divider-line"></div>
 
-  </p>
-
-  <p>
-    You can create up to 5 story sections, edit them anytime,
-    and instantly see how they will appear on your wedding website.
-  </p>
-
-  <h2>How to Build Your Story</h2>
-
-  <div class="grid">
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-layer-group"></i></div>
-      <div class="label">
-        <strong>Select a Section</strong><br>
-        <span class="small">Click a section tab to edit each part of your story.</span>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-heading"></i></div>
-      <div class="label">
-        <strong>Add a Header</strong><br>
-        <span class="small">Give each section a meaningful title.</span>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-pen"></i></div>
-      <div class="label">
-        <strong>Write Your Story</strong><br>
-        <span class="small">Use the editor to share your story in your own words.</span>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-floppy-disk"></i></div>
-      <div class="label">
-        <strong>Save Changes</strong><br>
-        <span class="small">Your changes are saved instantly and stored securely.</span>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-eye"></i></div>
-      <div class="label">
-        <strong>Preview Page</strong><br>
-        <span class="small">See exactly how guests will view your story.</span>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-image"></i></div>
-      <div class="label">
-        <strong>Add Photos</strong><br>
-        <span class="small">Upload up to 35 images to bring your story to life.</span>
-      </div>
-    </div>
-
-
-<div class="item">
-  <div class="btn"><i class="fa-solid fa-paper-plane"></i></div>
-  <div class="label">
-    <strong>Notify Guests</strong><br>
-    <span class="small">Send Email & SMS notifications when your story is published or updated.</span>
-  </div>
+<div class="intro">
+<div class="info-icon">i</div>
+<div>
+Our Story lets you create a beautiful relationship timeline for your wedding website.
+Write your story in up to five sections, upload photos, add notes to images, preview the guest page,
+and share the journey that brought you together.
+</div>
 </div>
 
-  </div>
+<div class="tag-row">
+<div class="tag">Love Story</div>
+<div class="tag">Story Sections</div>
+<div class="tag">Photo Gallery</div>
+<div class="tag">Photo Notes</div>
+<div class="tag">Guest View</div>
+<div class="tag">Wedding Website</div>
+<div class="tag">Timeline</div>
+<div class="tag">Preview</div>
+</div>
 
-  <h2>Why It Matters</h2>
+<h2>How to Use This Page</h2>
 
-  <p>
-    Your story is the heart of your wedding website.
-    It helps guests better understand your journey and the story behind your relationship.
-  
+<div class="steps">
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-toggle-on"></i></div><div class="card-title">1. Enable Your Story Page</div></div><p>Use the page visibility option to show or hide your Our Story page from guests. Keep it hidden while editing, then enable it when your story is ready.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-book-open"></i></div><div class="card-title">2. Build Story Sections</div></div><p>Create up to five story sections to describe your journey together, from how you met to the beginning of your new chapter.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-heading"></i></div><div class="card-title">3. Add Section Titles</div></div><p>Give each section a meaningful title, such as “How We Met,” “The Proposal,” or any custom chapter that fits your relationship.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-pen"></i></div><div class="card-title">4. Write Your Story</div></div><p>Use the text editor to write your story in your own words. You can update each section whenever you want.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-heart"></i></div><div class="card-title">5. Tell It Your Way</div></div><p>Share memories, milestones, funny moments, emotional details, or anything you want guests to know about your journey together.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-camera"></i></div><div class="card-title">6. Upload Photos</div></div><p>Add photos to your Our Story page. You can upload up to 35 photos, with each photo limited to 5MB.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-image"></i></div><div class="card-title">7. Choose Photo Slots</div></div><p>Select the photo slot before uploading. Photo 1 is used as the top cover photo, while the remaining photos appear in the story gallery.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-message"></i></div><div class="card-title">8. Add Photo Notes</div></div><p>After uploading a photo, you can add a short note or caption to explain the memory, place, or moment behind the image.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-images"></i></div><div class="card-title">9. Review Your Gallery</div></div><p>Use the gallery area to review uploaded photos, captions, and the visual flow of your Our Story page.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-floppy-disk"></i></div><div class="card-title">10. Save Text Changes</div></div><p>Click Save Text Changes after editing your story sections. This keeps your latest text updates safely stored.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-eye"></i></div><div class="card-title">11. Preview Guest View</div></div><p>Use Preview Your Page Updates to see exactly how your Our Story page will appear to wedding guests.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-envelope"></i></div><div class="card-title">12. Send Updates</div></div><p>If you want to notify guests about your updated story page, use the update option to open the guest communication tool.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-arrows-rotate"></i></div><div class="card-title">13. Update Anytime</div></div><p>You can return anytime to rewrite sections, replace photos, add captions, or expand your relationship timeline.</p></div>
+
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-gem"></i></div><div class="card-title">14. Share Your Journey</div></div><p>Together, your text and photos create a personal story page that lets guests experience the journey behind your wedding celebration.</p></div>
+
+</div>
+
+<h2>Important Notes</h2>
+
+<div class="note"><div class="note-icon">i</div><div>You can create up to five story sections for your Our Story page.</div></div>
+<div class="note"><div class="note-icon">i</div><div>You can upload up to 35 photos, with a maximum size of 5MB per photo.</div></div>
+<div class="note"><div class="note-icon">i</div><div>Photo 1 is used as the top cover photo, so choose a strong image for that slot.</div></div>
+<div class="note"><div class="note-icon">i</div><div>Always save your text changes before leaving the page or opening the guest preview.</div></div>
+<div class="note"><div class="note-icon">i</div><div>Guests will only see the Our Story page if the webpage is enabled.</div></div>
+
+<div class="footer-box">
+<p>
+In short: write your story, organize it into sections, upload photos, add meaningful notes,
+preview the guest page, and create a beautiful relationship timeline for your wedding website.
 </p>
+</div>
 
 </div>
 </body>

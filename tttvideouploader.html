@@ -3,88 +3,221 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Web Video — Quick User Guide</title>
+<title>Web Video — Premium Guide</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body {
-  margin: 0;
-  padding: 50px 20px;
-  font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(to bottom, #ffeef3, #ffd9e5, #f8b6ca, #e94a7633);
-  color: #7a3a4a;
+
+body{
+margin:0;
+padding:46px 18px;
+font-family:"Segoe UI",Inter,sans-serif;
+background:linear-gradient(180deg,#fff1f4,#ffffff);
+color:#6a2a2a;
 }
 
-.wrap {
-  max-width: 940px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(18px);
-  border-radius: 28px;
-  padding: 46px 52px;
-  box-shadow:
-    0 30px 70px rgba(0,0,0,0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.45);
+.wrap{
+max-width:980px;
+margin:auto;
+background:rgba(255,255,255,.76);
+backdrop-filter:blur(20px) saturate(180%);
+border-radius:24px;
+padding:34px 38px 42px;
+box-shadow:
+0 18px 40px rgba(0,0,0,.18),
+0 8px 20px rgba(0,0,0,.12),
+inset 0 2px 6px rgba(255,255,255,.35);
 }
 
-h1 {
-  margin: 0 0 18px;
-  font-size: 28px;
-  font-weight: 700;
-  color: #a02449;
+h1{
+text-align:center;
+font-size:34px;
+font-weight:650;
+background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);
+-webkit-background-clip:text;
+color:transparent;
+margin:0 0 10px;
 }
 
-p {
-  font-size: 18px;
-  line-height: 1.7;
+.top-divider-line{
+height:2px;
+background:linear-gradient(to right,#b41111,#e89999,#b41111);
+margin:10px 0 26px;
 }
 
-h2 {
-  margin: 34px 0 12px;
-  font-size: 20px;
-  font-weight: 650;
-  color: #a02449;
+.intro{
+background:#fff7f7;
+border:2px solid #ffcccc;
+border-radius:16px;
+padding:16px 18px;
+display:flex;
+gap:12px;
+font-size:15px;
+line-height:1.6;
+font-weight:600;
+box-shadow:0 4px 12px rgba(0,0,0,.10);
 }
 
-.grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 26px 22px;
+.info-icon{
+min-width:24px;
+height:24px;
+border-radius:50%;
+background:#b41111;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:800;
 }
 
-.item {
-  text-align: center;
+.why-box{
+margin-top:20px;
+background:#fff7f7;
+border:2px solid #ffcccc;
+border-radius:16px;
+padding:16px 18px;
+display:flex;
+gap:12px;
+font-size:15px;
+line-height:1.6;
+font-weight:600;
+box-shadow:0 4px 12px rgba(0,0,0,.10);
 }
 
-.btn {
-  margin: 0 auto 10px;
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    #9c1818;
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -10px 20px rgba(80,0,20,0.45),
-    0 14px 30px rgba(0,0,0,0.3);
+.why-title{
+font-size:17px;
+font-weight:800;
+color:#9c1818;
+margin-bottom:8px;
 }
 
-.btn i {
-  font-size: 26px;
-  color: #fff;
+.tag-row{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-top:18px;
 }
 
-.label {
-  font-size: 15px;
-  line-height: 1.4;
-  font-weight: 600;
+.tag{
+padding:7px 12px;
+border-radius:999px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+font-size:13px;
+font-weight:700;
+color:#9c1818;
 }
+
+h2{
+margin:34px 0 16px;
+color:#9c1818;
+}
+
+.steps{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:18px;
+}
+
+.card{
+background:rgba(255,255,255,.86);
+border:2px solid #ffcccc;
+border-radius:18px;
+padding:18px;
+box-shadow:0 8px 18px rgba(0,0,0,.10);
+transition:.25s ease;
+}
+
+.card:hover{
+transform:translateY(-3px);
+box-shadow:
+0 14px 26px rgba(0,0,0,.16),
+0 0 18px rgba(180,17,17,.10);
+}
+
+.card-head{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:10px;
+}
+
+.icon-btn{
+width:46px;
+height:46px;
+border-radius:14px;
+background:#b41111;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+flex-shrink:0;
+}
+
+.card-title{
+font-size:16px;
+font-weight:800;
+color:#9c1818;
+}
+
+.card p{
+margin:0;
+font-size:14px;
+line-height:1.55;
+color:#7e2a2a;
+font-weight:550;
+}
+
+.note{
+margin-top:16px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:14px;
+padding:14px 16px;
+display:flex;
+gap:10px;
+font-size:14px;
+line-height:1.55;
+font-weight:600;
+}
+
+.note-icon{
+width:20px;
+height:20px;
+min-width:20px;
+border-radius:50%;
+background:#b41111;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+}
+
+.footer-box{
+margin-top:30px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.88);
+border:2px solid #b41111;
+}
+
+.footer-box p{
+margin:0;
+font-size:15px;
+line-height:1.6;
+font-weight:650;
+}
+
+@media(max-width:768px){
+body{padding:22px 14px;}
+.wrap{padding:26px 18px 32px;}
+.steps{grid-template-columns:1fr;}
+h1{font-size:28px;}
+}
+
 </style>
 </head>
 
@@ -92,71 +225,141 @@ h2 {
 
 <div class="wrap">
 
-  <p>
-    Welcome to your <strong>Web Video</strong> page — where your landing page comes to life.
-  </p>
+<h1>Web Video</h1>
 
-  <p>
-    This is where you manage the video shown on your wedding page and create a more engaging experience for your guests.
-  </p>
+<div class="top-divider-line"></div>
 
-  <p>
-    A sample video may appear here by default, but you are free to change it as you wish. Once your order is completed, your 
-    <strong>Save the Date video card</strong> and <strong>cinematic RSVP invitation</strong> will be automatically uploaded to this page.
-  </p>
+<div class="intro">
+<div class="info-icon">i</div>
+<div>
+Web Video allows you to upload and manage the main video displayed on your wedding website landing page.
+Your <strong>Save the Date and RSVP</strong> videos will automatically appear here once completed. You can replace them with your own video anytime.
 
-  <h2>How This Page Works</h2>
-
-  <p>
-    Everything here is simple and flexible. You can upload, preview, or replace videos whenever you like.
-  </p>
-
-  <div class="grid">
-
-<div class="item">
-  <div class="btn">
-    <i class="fa-solid fa-play"></i>
-  </div>
-
-  <div class="label">
-    <strong>Sample Video</strong><br>
-    A sample video is included by default to help you preview the experience.
-  </div>
 </div>
-
-<div class="item">
-  <div class="btn">
-    <i class="fa-solid fa-video"></i>
-  </div>
-
-  <div class="label">
-    <strong>Upload Your Video</strong><br>
-    Upload any video up to 150 MB and replace our sample video anytime.
-  </div>
 </div>
 
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-eye"></i></div>
-      <div class="label">
-        <strong>Preview</strong><br>
-        Preview your landing page and see changes in real time.
-      </div>
-    </div>
+<h2>How to Use This Page</h2>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-film"></i></div>
-      <div class="label">
-        <strong>Auto-Loaded Content</strong><br>
-        Your Save the Date and RSVP videos will appear here once completed. You can replace them with your own anytime.
-      </div>
-    </div>
+<div class="steps">
 
-  </div>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-folder-open"></i></div>
+<div class="card-title">1. Choose Your Video</div>
+</div>
+<p>
+Click Choose Video and select the MP4 file you would like to display on your wedding website.
+</p>
+</div>
 
-  <p style="margin-top:32px;">
-    <strong>Web Video</strong> gives you full control over your page — whether you use our prepared content or upload your own, your story is always in your hands.
-  </p>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-eye"></i></div>
+<div class="card-title">2. Preview Before Uploading</div>
+</div>
+<p>
+Use the preview window to review your selected video before uploading it to your website.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+<div class="card-title">3. Upload Your Video</div>
+</div>
+<p>
+Click Upload Video to publish the video to your wedding website landing page.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-chart-simple"></i></div>
+<div class="card-title">4. Track Upload Progress</div>
+</div>
+<p>
+Watch the progress bar while your video uploads to the website.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-repeat"></i></div>
+<div class="card-title">5. Replace an Existing Video</div>
+</div>
+<p>
+Upload a new video at any time if you'd like to update or change your landing page experience.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-trash"></i></div>
+<div class="card-title">6. Delete a Video</div>
+</div>
+<p>
+Use Delete Video to remove the currently published video from your website.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-globe"></i></div>
+<div class="card-title">7. Preview Your Website</div>
+</div>
+<p>
+Click Preview Your Page to see exactly how visitors will experience your landing page.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-film"></i></div>
+<div class="card-title">8. Keep Your Video Updated</div>
+</div>
+<p>
+Return anytime to upload a new video, refresh your content, or improve your website presentation.
+</p>
+</div>
+
+</div>
+
+<h2>Important Notes</h2>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Only MP4 videos are supported on this page.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+The uploaded video becomes the main video displayed on your wedding website landing page.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+You can replace or delete your video at any time.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Always preview your page after uploading to confirm everything looks correct.
+</div>
+</div>
+
+<div class="footer-box">
+<p>
+In short: choose a video, upload it to your wedding website, preview the guest experience, and manage the main video displayed on your landing page.
+</p>
+</div>
 
 </div>
 

@@ -3,93 +3,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Just Married — Quick User Guide</title>
-
+<title>Gallery — Premium Guide</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body {
-  margin: 0;
-  padding: 50px 20px;
-  font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(to bottom, #fff2f4, #ffd9e5, #f7b7c9, #e94a7633);
-  color: #6f2a3a;
+body{
+margin:0;
+padding:46px 18px;
+font-family:"Segoe UI",Inter,sans-serif;
+background:linear-gradient(180deg,#fff1f4,#ffffff);
+color:#6a2a2a;
 }
 
-.wrap {
-  max-width: 980px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(20px);
-  border-radius: 30px;
-  padding: 48px 56px;
-  box-shadow:
-    0 36px 90px rgba(110,15,30,0.28),
-    inset 0 0 0 1px rgba(255,255,255,0.55);
+.wrap{
+max-width:980px;
+margin:auto;
+background:rgba(255,255,255,.76);
+backdrop-filter:blur(20px) saturate(180%);
+-webkit-backdrop-filter:blur(20px) saturate(180%);
+border-radius:24px;
+padding:34px 38px 42px;
+box-shadow:
+0 18px 40px rgba(0,0,0,.18),
+0 8px 20px rgba(0,0,0,.12),
+inset 0 2px 6px rgba(255,255,255,.35);
 }
 
-h1 {
-  margin: 0 0 18px;
-  font-size: 30px;
-  font-weight: 750;
-  color: #9b1c31;
+h1{
+text-align:center;
+font-size:34px;
+font-weight:650;
+background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);
+-webkit-background-clip:text;
+color:transparent;
+margin:0 0 10px;
+letter-spacing:-.6px;
 }
 
-p {
-  font-size: 18px;
-  line-height: 1.7;
+.top-divider-line{
+height:2px;
+background:linear-gradient(to right,#b41111,#e89999,#b41111);
+margin:10px 0 26px;
+border-radius:2px;
 }
 
-h2 {
-  margin: 36px 0 14px;
-  font-size: 20px;
-  font-weight: 650;
-  color: #9b1c31;
+.intro,.why-box{
+background:#fff7f7;
+border:2px solid #ffcccc;
+border-radius:16px;
+padding:16px 18px;
+display:flex;
+gap:12px;
+align-items:flex-start;
+box-shadow:
+0 4px 12px rgba(0,0,0,.10),
+inset 0 1px 4px rgba(255,255,255,.55);
+font-size:15px;
+line-height:1.6;
+font-weight:600;
+color:#7e2a2a;
 }
 
-.grid {
-  margin-top: 26px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 28px 24px;
+.why-box{
+margin-top:20px;
 }
 
-.item {
-  text-align: center;
+.info-icon{
+min-width:24px;
+height:24px;
+border-radius:50%;
+background:#b41111;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:13px;
+font-weight:800;
+box-shadow:
+0 3px 8px rgba(0,0,0,.25),
+inset 0 2px 3px rgba(255,255,255,.25);
 }
 
-.btn {
-  margin: 0 auto 12px;
-  width: 76px;
-  height: 76px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    #9b1c31;
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -12px 24px rgba(80,0,20,0.45),
-    0 18px 36px rgba(110,15,30,0.35);
+.why-title{
+font-size:17px;
+font-weight:800;
+color:#9c1818;
+margin-bottom:8px;
 }
 
-.btn i {
-  font-size: 26px;
-  color: #fff;
+.tag-row{
+margin-top:18px;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
 }
 
-.label {
-  font-size: 15px;
-  line-height: 1.45;
-  font-weight: 600;
+.tag{
+padding:7px 12px;
+border-radius:999px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+color:#9c1818;
+font-size:13px;
+font-weight:700;
+box-shadow:
+0 4px 10px rgba(0,0,0,.08),
+inset 0 1px 3px rgba(255,255,255,.7);
 }
 
-.small {
-  font-size: 14px;
-  opacity: 0.85;
-  font-weight: 500;
+h2{
+margin:34px 0 16px;
+font-size:21px;
+color:#9c1818;
+font-weight:750;
+}
+
+.steps{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:18px;
+}
+
+.card{
+background:rgba(255,255,255,.86);
+border:2px solid #ffcccc;
+border-radius:18px;
+padding:18px;
+box-shadow:
+0 8px 18px rgba(0,0,0,.10),
+inset 0 1px 4px rgba(255,255,255,.55);
+transition:.25s ease;
+}
+
+.card:hover{
+transform:translateY(-3px);
+box-shadow:
+0 14px 26px rgba(0,0,0,.16),
+0 0 18px rgba(180,17,17,.10),
+inset 0 1px 5px rgba(255,255,255,.6);
+}
+
+.card-head{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:10px;
+}
+
+.icon-btn{
+width:46px;
+height:46px;
+border-radius:14px;
+background:
+linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,.04)),
+#b41111;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:
+0 4px 10px rgba(0,0,0,.25),
+inset 0 2px 4px rgba(255,255,255,.18),
+inset 0 -4px 10px rgba(60,0,20,.3);
+color:white;
+font-size:19px;
+flex-shrink:0;
+}
+
+.card-title{
+font-size:16px;
+font-weight:800;
+color:#9c1818;
+}
+
+.card p{
+margin:0;
+font-size:14px;
+line-height:1.55;
+color:#7e2a2a;
+font-weight:550;
+}
+
+.note{
+margin-top:16px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:14px;
+padding:14px 16px;
+display:flex;
+gap:10px;
+align-items:flex-start;
+font-size:14px;
+line-height:1.55;
+color:#7e2a2a;
+font-weight:600;
+box-shadow:
+0 5px 12px rgba(0,0,0,.08),
+inset 0 1px 3px rgba(255,255,255,.6);
+}
+
+.note-icon{
+width:20px;
+height:20px;
+min-width:20px;
+border-radius:50%;
+background:#b41111;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+font-weight:800;
+margin-top:1px;
+}
+
+.footer-box{
+margin-top:30px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.88);
+border:2px solid #b41111;
+box-shadow:
+0 0 12px rgba(180,17,17,.14),
+inset 0 0 6px rgba(255,255,255,.45);
+}
+
+.footer-box p{
+margin:0;
+font-size:15px;
+line-height:1.6;
+font-weight:650;
+color:#7e2a2a;
+}
+
+@media(max-width:768px){
+body{padding:22px 14px;}
+.wrap{padding:26px 18px 32px;border-radius:20px;}
+h1{font-size:28px;}
+.steps{grid-template-columns:1fr;}
+.intro,.why-box{font-size:14px;}
+.card{padding:16px;}
 }
 </style>
 </head>
@@ -98,85 +250,210 @@ h2 {
 
 <div class="wrap">
 
-  <p>
-The <strong>Gallery</strong> is where your wedding story comes to life.
-Here, your memories are preserved through photos, captions, and music — from the moments leading up to your wedding to the memories you'll cherish long after the celebration.
-  </p>
+<h1>Gallery</h1>
+<div class="top-divider-line"></div>
 
-  <p>
-    Turn your wedding into a living memory gallery.
-    Every update you make here appears instantly on your public website.
-  </p>
+<div class="intro">
+<div class="info-icon">i</div>
+<div>
+Gallery helps you create and manage a beautiful wedding photo album for your guests.
+Upload photos, add short notes, include background music, preview the guest page, and control whether the album is visible on your wedding website.
+</div>
+</div>
 
-  <h2>How This Page Works</h2>
+<div class="why-box">
+<div class="info-icon"><i class="fa-solid fa-circle-info"></i></div>
+<div>
+<div class="why-title">Why Gallery Matters</div>
+Your Gallery is where guests can enjoy the visual story of your celebration.
+<br><br>
+You can upload engagement photos, wedding photos, honeymoon memories, family moments, or any images you would like to share.
+<br><br>
+Your gallery can contain up to 125 photos and optional background music to create a more personal experience for your guests.
+</div>
+</div>
 
-  <div class="grid">
+<div class="tag-row">
+<div class="tag">Photo Album</div>
+<div class="tag">Wedding Gallery</div>
+<div class="tag">Photo Captions</div>
+<div class="tag">Background Music</div>
+<div class="tag">Guest View</div>
+<div class="tag">Preview</div>
+<div class="tag">Floating Tips</div>
+<div class="tag">Show / Hide</div>
+</div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-image"></i></div>
-      <div class="label">
-        <strong>Upload Photos</strong><br>
-        <span class="small">
-          Add up to 125 photos. Each one appears in your public gallery.
-        </span>
-      </div>
-    </div>
+<h2>How to Use This Page</h2>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-pen"></i></div>
-      <div class="label">
-        <strong>Add Captions</strong><br>
-        <span class="small">
-          Add a short note to each photo if you'd like.
-        </span>
-      </div>
-    </div>
+<div class="steps">
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-music"></i></div>
-      <div class="label">
-        <strong>Background Music</strong><br>
-        <span class="small">
-          Add background music for guests to enjoy while browsing your gallery.
-        </span>
-      </div>
-    </div>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-toggle-on"></i></div>
+<div class="card-title">1. Enable the Album Page</div>
+</div>
+<p>
+Use Enable Album Webpage to show or hide your Gallery page from guests.
+Keep it hidden while building the album if needed.
+</p>
+</div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-eye"></i></div>
-      <div class="label">
-        <strong>Live Preview</strong><br>
-        <span class="small">
-          See how your gallery appears to guests.
-        </span>
-      </div>
-    </div>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-lightbulb"></i></div>
+<div class="card-title">2. Control Floating Tips</div>
+</div>
+<p>
+Use Enable Floating Tips to show or hide helpful floating tips on the guest-facing gallery page.
+</p>
+</div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-envelope-open-text"></i></div>
-      <div class="label">
-        <strong>Notify Guests</strong><br>
-        <span class="small">
-          Send Email & SMS notifications when your gallery is ready or updated.
-        </span>
-      </div>
-    </div>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-images"></i></div>
+<div class="card-title">3. Choose a Photo Slot</div>
+</div>
+<p>
+Select the photo number before uploading. Each image is placed into a specific gallery slot.
+</p>
+</div>
 
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-upload"></i></div>
+<div class="card-title">4. Upload Photos</div>
+</div>
+<p>
+Choose an image file and click Upload Photo to Your Page to add it to the wedding gallery.
+</p>
+</div>
 
-  </div>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-chart-simple"></i></div>
+<div class="card-title">5. Track Upload Progress</div>
+</div>
+<p>
+The progress bar shows the upload status while your photo is being added to the gallery.
+</p>
+</div>
 
-  <h2>Why This Matters</h2>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-message"></i></div>
+<div class="card-title">6. Add a Photo Note</div>
+</div>
+<p>
+After uploading, you can add a short note or caption to explain the moment behind the photo.
+</p>
+</div>
 
-  <p>
-    Your wedding does not end with the last dance.
-    This page becomes your digital album — a place where guests return,
-    smile again, and relive the moments with you.
-  </p>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-table-cells"></i></div>
+<div class="card-title">7. Review Uploaded Photos</div>
+</div>
+<p>
+The gallery panel displays uploaded photos with their notes, making it easy to review what guests will see.
+</p>
+</div>
 
-  <p>
-    Your gallery transforms photos into a story,
-    and your website into a memory that lasts.
-  </p>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-trash"></i></div>
+<div class="card-title">8. Delete Photos</div>
+</div>
+<p>
+Remove any photo from the gallery if you want to replace it or keep the album clean and organized.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-music"></i></div>
+<div class="card-title">9. Add Background Music</div>
+</div>
+<p>
+Upload an MP3 file to add background music to the gallery page and make the guest experience more personal.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-play"></i></div>
+<div class="card-title">10. Preview Music</div>
+</div>
+<p>
+Use the audio preview to check the selected music before or after uploading it to the page.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-eye"></i></div>
+<div class="card-title">11. Preview Guest View</div>
+</div>
+<p>
+Click Preview Your Page to see how your Gallery will appear to guests on your wedding website.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-bell"></i></div>
+<div class="card-title">12. Send Guest Updates</div>
+</div>
+<p>
+Use the update option to notify guests when new photos or music have been added to the gallery.
+</p>
+</div>
+
+</div>
+
+<h2>Important Notes</h2>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+You can upload up to 125 photos to your Gallery.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Each photo must be under 5MB.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Photo notes are limited to short captions, so keep them simple and meaningful.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Background music must be an MP3 file.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Always preview the Gallery page after uploading photos or music to confirm the guest experience looks correct.
+</div>
+</div>
+
+<div class="footer-box">
+<p>
+In short: use Gallery to upload wedding photos, add captions, manage your album, include optional music,
+preview the guest page, and create a beautiful visual experience for everyone visiting your wedding website.
+</p>
+</div>
 
 </div>
 
