@@ -46,19 +46,33 @@ h1 {
   border-radius: 2px;
 }
 
-.intro {
-  background: #fff7f7;
-  border: 2px solid #ffcccc;
-  border-radius: 16px;
-  padding: 16px 18px;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-  font-size: 15px;
-  line-height: 1.55;
-  font-weight: 600;
+.intro,.why-box{
+background:#fff7f7;
+border:2px solid #ffcccc;
+border-radius:16px;
+padding:16px 18px;
+display:flex;
+gap:12px;
+align-items:flex-start;
+box-shadow:
+0 4px 12px rgba(0,0,0,.10),
+inset 0 1px 4px rgba(255,255,255,.55);
+font-size:16px !important;
+line-height:1.6;
+font-weight:600;
+color:#7e2a2a;
 }
+
+.intro > div:last-child{
+font-size:16px !important;
+}
+
+.why-box{
+margin-top:20px;
+}
+
+
+
 
 .info-icon {
   min-width: 24px;
@@ -126,14 +140,14 @@ h2 {
 }
 
 .card-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: #9c1818;
 }
 
 .card p {
   margin: 0;
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.55;
   color: #7e2a2a;
   font-weight: 550;
