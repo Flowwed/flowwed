@@ -1267,11 +1267,37 @@ window.showReservations = (giftId) => {
 
   if (!gift) return;
 
-  alert(
+  document.getElementById(
+    "reservationsTitle"
+  ).textContent =
+    `${gift.title} — Reservations`;
+
+  document.getElementById(
+    "reservationsList"
+  ).innerHTML =
     gift.gift_reservations
-      .map(r => `${r.guest_name} (${r.qty_reserved})`)
-      .join("\n")
-  );
+      .map(r => `
+        <div style="
+          padding:8px 0;
+          border-bottom:1px solid #eee;
+        ">
+          ${r.guest_name}
+          (${r.qty_reserved})
+        </div>
+      `)
+      .join("");
+
+  document
+    .getElementById("reservationsModal")
+    .classList.remove("hidden");
+
+};
+
+window.closeReservationsModal = () => {
+
+  document
+    .getElementById("reservationsModal")
+    .classList.add("hidden");
 
 };
 
@@ -1693,6 +1719,32 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 </script>
+
+
+<div id="reservationsModal" class="modal hidden">
+
+  <div class="modal-box" style="min-width:420px; max-width:600px;">
+
+    <h3 id="reservationsTitle">
+      Reservations
+    </h3>
+
+    <div id="reservationsList"
+         style="
+           text-align:left;
+           margin-top:16px;
+           max-height:300px;
+           overflow-y:auto;
+         ">
+    </div>
+
+    <button onclick="closeReservationsModal()">
+      Close
+    </button>
+
+  </div>
+
+</div>
 
 
 <div id="toast" class="toast hidden"></div>
