@@ -1215,6 +1215,7 @@ categorySelect.addEventListener("change", () => {
 
 /* RENDER */
 function renderTable(gifts) {
+ window.currentGifts = gifts;
   const tbody = document.getElementById("giftTable");
   tbody.innerHTML = "";
 
@@ -1257,6 +1258,23 @@ function renderTable(gifts) {
     `;
   });
 }
+
+window.showReservations = (giftId) => {
+
+  const gift = window.currentGifts.find(
+    g => g.id === giftId
+  );
+
+  if (!gift) return;
+
+  alert(
+    gift.gift_reservations
+      .map(r => `${r.guest_name} (${r.qty_reserved})`)
+      .join("\n")
+  );
+
+};
+
 
 /* SAVE */
 document.getElementById("saveBtn").onclick = async () => {
