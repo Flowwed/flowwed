@@ -1657,14 +1657,26 @@ function showToast(message, type = "success") {
 
     console.error(err);
 
-} finally {
+  } finally {
 
-  if (overlay) {
-    overlay.classList.add("hide");
-    overlay.remove();
+  console.log("REMOVE OVERLAY");
+
+    requestAnimationFrame(() => {
+
+      if (overlay) {
+
+        overlay.classList.add("hide");
+
+        setTimeout(() => {
+          overlay.remove();
+        }, 500);
+
+      }
+
+    });
+
   }
 
-}
 
 })();
 
