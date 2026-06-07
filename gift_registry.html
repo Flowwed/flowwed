@@ -1406,13 +1406,9 @@ window.confirmReservationDelete = async () => {
 
 await loadGifts();
 
-const updatedGift = window.currentGifts.find(
-  g => g.id === p.giftId
-);
-
-if (updatedGift) {
-  showReservations(updatedGift.id);
-}
+document
+  .getElementById("reservationsModal")
+  .classList.add("hidden");
 
 window.pendingReservationDelete = null;
 
