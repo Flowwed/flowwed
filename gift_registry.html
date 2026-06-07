@@ -1302,7 +1302,12 @@ ${r.guest_name}
 (${r.qty_reserved})
 
 <span
-  onclick="deleteReservation('${gift.id}','${r.guest_name}')"
+onclick="deleteReservation(
+  '${gift.id}',
+  '${r.id}'
+)"
+
+
   style="
     float:right;
     cursor:pointer;
@@ -1349,21 +1354,37 @@ window.closeReservationsModal = () => {
 
 window.deleteReservation = async (
   giftId,
-  guestName
+  reservationId
 ) => {
 
   const ok = confirm(
-    `Remove reservation by ${guestName}?`
+    "Remove this reservation?"
   );
 
   if (!ok) return;
 
-  alert(
-    "Delete logic will be added next step"
-  );
+  const { error } = await supabase
+    .from("gift_reservations")
+    .delete()
+    .eq("id", reservationId);
+
+  if (error) {
+
+    alert("Delete failed");
+
+    console.error(error);
+
+    return;
+
+  }
+
+  await loadGifts();
+
+  document
+    .getElementById("reservationsModal")
+    .classList.add("hidden");
 
 };
-
 
 /* SAVE */
 document.getElementById("saveBtn").onclick = async () => {
