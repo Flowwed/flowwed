@@ -1272,20 +1272,48 @@ window.showReservations = (giftId) => {
   ).textContent =
     `${gift.title} — Reservations`;
 
-  document.getElementById(
-    "reservationsList"
-  ).innerHTML =
-    gift.gift_reservations
-      .map(r => `
-        <div style="
-          padding:8px 0;
-          border-bottom:1px solid #eee;
-        ">
-          ${r.guest_name}
-          (${r.qty_reserved})
-        </div>
-      `)
-      .join("");
+const totalReserved =
+  gift.gift_reservations.reduce(
+    (sum, r) => sum + (r.qty_reserved || 0),
+    0
+  );
+
+const remaining =
+  Math.max(
+    0,
+    (gift.quantity || 0) - totalReserved
+  );
+
+document.getElementById(
+  "reservationsList"
+).innerHTML =
+
+  gift.gift_reservations
+    .map(r => `
+      <div style="
+        padding:8px 0;
+        border-bottom:1px solid #eee;
+      ">
+        ${r.guest_name}
+        (${r.qty_reserved})
+      </div>
+    `)
+    .join("")
+
+  +
+
+  `<div style="
+      margin-top:16px;
+      padding-top:12px;
+      border-top:2px solid #ddd;
+      font-weight:600;
+    ">
+      Total Reserved: ${totalReserved}<br>
+      Remaining: ${remaining}<br>
+      Quantity: ${gift.quantity}
+   </div>`;
+
+
 
   document
     .getElementById("reservationsModal")
