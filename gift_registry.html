@@ -1094,11 +1094,20 @@ let guests = [];
 
 async function loadGuests() {
 
-  const { data } = await supabase
-    .from("guests")
-    .select("*")
-    .eq("token", token)
-    .order("created_at");
+const { data } = await supabase
+  .from("gift_registry_items")
+  .select(`
+    *,
+    gift_reservations (
+      guest_name,
+      qty_reserved,
+      reserved_at
+    )
+  `)
+  .eq("edit_token", token)
+  .order("created_at");
+
+
 
   guests = (data || []).map(g => ({
     id: g.id,
