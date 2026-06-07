@@ -1434,54 +1434,7 @@ window.deleteReservation = async (
 };
 
 
-  const { error } = await supabase
-    .from("gift_reservations")
-    .delete()
-    .eq("id", reservationId);
 
-  if (error) {
-
-    alert("Delete failed");
-
-    console.error(error);
-
-    return;
-
-  }
-
-const gift = window.currentGifts.find(
-  g => g.id === giftId
-);
-
-if (gift) {
-
-console.log(
-  "UPDATE GIFT:",
-  giftId,
-  gift?.reserved_count
-);
-
-  await supabase
-    .from("gift_registry_items")
-    .update({
-      reserved_count: Math.max(
-        0,
-        (gift.reserved_count || 0) - 1
-      )
-    })
-    .eq("id", giftId);
-
-
-}
-
-
-  await loadGifts();
-
-  document
-    .getElementById("reservationsModal")
-    .classList.add("hidden");
-
-};
 
 /* SAVE */
 document.getElementById("saveBtn").onclick = async () => {
