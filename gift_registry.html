@@ -1378,6 +1378,25 @@ window.deleteReservation = async (
 
   }
 
+const gift = window.currentGifts.find(
+  g => g.id === giftId
+);
+
+if (gift) {
+
+  await supabase
+    .from("gift_registry_items")
+    .update({
+      reserved_count: Math.max(
+        0,
+        (gift.reserved_count || 0) - 1
+      )
+    })
+    .eq("id", giftId);
+
+}
+
+
   await loadGifts();
 
   document
