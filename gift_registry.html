@@ -1336,10 +1336,9 @@ onclick="deleteReservation(
    </div>`;
 
 
-
-  document
-    .getElementById("reservationsModal")
-    .classList.remove("hidden");
+document
+  .getElementById("reservationsModal")
+  .classList.remove("hidden");
 
 };
 
@@ -1352,17 +1351,88 @@ window.closeReservationsModal = () => {
 };
 
 
+window.closeReservationDeleteModal = () => {
+
+  document
+    .getElementById("reservationDeleteModal")
+    .classList.add("hidden");
+
+};
+
+
+window.confirmReservationDelete = async () => {
+
+  const p =
+    window.pendingReservationDelete;
+
+  if (!p) return;
+
+  document
+    .getElementById("reservationDeleteModal")
+    .classList.add("hidden");
+
+  const { error } = await supabase
+    .from("gift_reservations")
+    .delete()
+    .eq("id", p.reservationId);
+
+  if (error) {
+
+    alert("Delete failed");
+
+    console.error(error);
+
+    return;
+
+  }
+
+  const gift = window.currentGifts.find(
+    g => g.id === p.giftId
+  );
+
+  if (gift) {
+
+    await supabase
+      .from("gift_registry_items")
+      .update({
+        reserved_count: Math.max(
+          0,
+          (gift.reserved_count || 0) - 1
+        )
+      })
+      .eq("id", p.giftId);
+
+  }
+
+  await loadGifts();
+
+  window.pendingReservationDelete = null;
+
+};
+
+
 window.deleteReservation = async (
   giftId,
   reservationId
 ) => {
 
-  const ok = confirm(
-    "Remove this reservation?"
-  );
+  window.pendingReservationDelete = {
+    giftId,
+    reservationId
+  };
 
-  if (!ok) return;
+  document.getElementById(
+    "reservationDeleteText"
+  ).textContent =
+    "Are you sure you want to remove this reservation?";
 
+  document
+    .getElementById("reservationDeleteModal")
+    .classList.remove("hidden");
+
+  return;
+
+};
   const { error } = await supabase
     .from("gift_reservations")
     .delete()
@@ -1857,8 +1927,32 @@ document.addEventListener("DOMContentLoaded", () => {
 </div>
 
 
-<div id="toast" class="toast hidden"></div>
+<!-- DELETE RESERVATION MODAL -->
 
+<div id="reservationDeleteModal" class="modal hidden">
+
+  <div class="modal-box">
+
+    <h3>
+      Remove Reservation
+    </h3>
+
+    <p id="reservationDeleteText"></p>
+
+    <button onclick="confirmReservationDelete()">
+      Delete
+    </button>
+
+    <button onclick="closeReservationDeleteModal()">
+      Cancel
+    </button>
+
+  </div>
+
+</div>
+
+
+<div id="toast" class="toast hidden"></div>
 
 <!-- UPDATE BUTTON -->
 <script>
