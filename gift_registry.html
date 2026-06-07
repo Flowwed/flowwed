@@ -1657,23 +1657,14 @@ function showToast(message, type = "success") {
 
     console.error(err);
 
-  } finally {
+} finally {
 
-    requestAnimationFrame(() => {
-
-      if (overlay) {
-
-        overlay.classList.add("hide");
-
-        setTimeout(() => {
-          overlay.remove();
-        }, 500);
-
-      }
-
-    });
-
+  if (overlay) {
+    overlay.classList.add("hide");
+    overlay.remove();
   }
+
+}
 
 })();
 
