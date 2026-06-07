@@ -1430,9 +1430,10 @@ window.deleteReservation = async (
     .getElementById("reservationDeleteModal")
     .classList.remove("hidden");
 
-  return;
 
 };
+
+
   const { error } = await supabase
     .from("gift_reservations")
     .delete()
