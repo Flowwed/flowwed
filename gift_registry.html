@@ -1294,8 +1294,21 @@ document.getElementById(
         padding:8px 0;
         border-bottom:1px solid #eee;
       ">
-        ${r.guest_name}
-        (${r.qty_reserved})
+
+${r.guest_name}
+(${r.qty_reserved})
+
+<span
+  style="
+    float:right;
+    cursor:pointer;
+    color:#c62828;
+    font-weight:bold;
+  "
+>
+🗑
+</span>
+
       </div>
     `)
     .join("")
