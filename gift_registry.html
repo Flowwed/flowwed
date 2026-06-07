@@ -1404,9 +1404,17 @@ window.confirmReservationDelete = async () => {
 
   }
 
-  await loadGifts();
+await loadGifts();
 
-  window.pendingReservationDelete = null;
+const updatedGift = window.currentGifts.find(
+  g => g.id === p.giftId
+);
+
+if (updatedGift) {
+  showReservations(updatedGift.id);
+}
+
+window.pendingReservationDelete = null;
 
 };
 
