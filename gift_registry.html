@@ -1299,6 +1299,7 @@ ${r.guest_name}
 (${r.qty_reserved})
 
 <span
+  onclick="deleteReservation('${gift.id}','${r.guest_name}')"
   style="
     float:right;
     cursor:pointer;
@@ -1306,7 +1307,7 @@ ${r.guest_name}
     font-weight:bold;
   "
 >
-🗑
+  ✕
 </span>
 
       </div>
@@ -1339,6 +1340,24 @@ window.closeReservationsModal = () => {
   document
     .getElementById("reservationsModal")
     .classList.add("hidden");
+
+};
+
+
+window.deleteReservation = async (
+  giftId,
+  guestName
+) => {
+
+  const ok = confirm(
+    `Remove reservation by ${guestName}?`
+  );
+
+  if (!ok) return;
+
+  alert(
+    "Delete logic will be added next step"
+  );
 
 };
 
