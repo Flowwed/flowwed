@@ -1225,18 +1225,27 @@ function renderTable(gifts) {
         <td>${g.title}</td>
         <td>${g.price || ""}</td>
         <td>${g.quantity}</td>
-        <td>
-          ${
-            g.link
-              ? `<a href="${g.link}" target="_blank">${displayLink(g.link)}</a>`
-              : ""
-          }
-        </td>
-        <td>
-          <span class="action" onclick="editGift('${g.id}')">✏️</span>
-          &nbsp;
-          <span class="action" onclick="askDelete('${g.id}')">✕</span>
-        </td>
+        
+
+<td>
+  ${
+    g.link
+      ? `<a href="${g.link}" target="_blank">${displayLink(g.link)}</a>`
+      : ""
+  }
+</td>
+
+<td>
+  ${g.gift_reservations?.length || 0} guests
+</td>
+
+<td>
+  <span class="action" onclick="editGift('${g.id}')">✏️</span>
+  &nbsp;
+  <span class="action" onclick="askDelete('${g.id}')">✕</span>
+</td>
+
+
       </tr>
     `;
   });
