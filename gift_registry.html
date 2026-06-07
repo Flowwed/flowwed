@@ -1236,8 +1236,15 @@ function renderTable(gifts) {
 </td>
 
 <td>
-  ${g.gift_reservations?.length || 0} guests
+  ${
+    g.gift_reservations?.length
+      ? `<a href="#" onclick="showReservations('${g.id}');return false;">
+          ${g.gift_reservations.length} guests
+         </a>`
+      : "—"
+  }
 </td>
+
 
 <td>
   <span class="action" onclick="editGift('${g.id}')">✏️</span>
