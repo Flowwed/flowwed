@@ -1172,7 +1172,9 @@ async function loadGifts() {
     .eq("edit_token", token)
     .order("created_at");
 
-  console.log("GIFTS WITH RESERVATIONS:", data);
+console.log(
+  JSON.stringify(data, null, 2)
+);
   console.log("GIFTS ERROR:", error);
 
   renderTable(data || []);
