@@ -7,87 +7,165 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body{
-margin:0;padding:46px 18px;
-font-family:"Segoe UI",Inter,sans-serif;
-background:linear-gradient(180deg,#fff1f4,#ffffff);
-color:#6a2a2a;
+body {
+  margin: 0;
+  padding: 46px 18px;
+  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+  background: linear-gradient(180deg, #fff1f4, #ffffff);
+  color: #6a2a2a;
 }
-.wrap{
-max-width:980px;margin:auto;
-background:rgba(255,255,255,.76);
-backdrop-filter:blur(20px) saturate(180%);
-border-radius:24px;
-padding:34px 38px 42px;
-box-shadow:0 18px 40px rgba(0,0,0,.18),0 8px 20px rgba(0,0,0,.12),inset 0 2px 6px rgba(255,255,255,.35);
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.76);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 24px;
+  padding: 34px 38px 42px;
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.12),
+    inset 0 2px 6px rgba(255,255,255,0.35);
 }
-h1{
-text-align:center;
-font-size:34px;
-font-weight:650;
-background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);
--webkit-background-clip:text;
-color:transparent;
-margin:0 0 10px;
+
+h1 {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 650;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 0 0 10px;
 }
-.top-divider-line{
-height:2px;
-background:linear-gradient(to right,#b41111,#e89999,#b41111);
-margin:10px 0 26px;
+
+.top-divider-line {
+  height: 2px;
+  background: linear-gradient(to right, #b41111, #e89999, #b41111);
+  margin: 10px 0 26px;
+  border-radius: 2px;
 }
-.intro{
+
+.intro,.why-box{
 background:#fff7f7;
 border:2px solid #ffcccc;
 border-radius:16px;
 padding:16px 18px;
 display:flex;
 gap:12px;
-box-shadow:0 4px 12px rgba(0,0,0,.10);
-font-size:15px;
-line-height:1.55;
+align-items:flex-start;
+box-shadow:
+0 4px 12px rgba(0,0,0,.10),
+inset 0 1px 4px rgba(255,255,255,.55);
+font-size:16px !important;
+line-height:1.6;
 font-weight:600;
+color:#7e2a2a;
 }
-.info-icon{
-min-width:24px;height:24px;border-radius:50%;
-background:#b41111;color:white;
-display:flex;align-items:center;justify-content:center;
-font-weight:800;
+
+.intro > div:last-child{
+font-size:16px !important;
 }
-.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
-.tag{
-padding:7px 12px;border-radius:999px;
-background:#fff7f7;border:1px solid #ffd0d0;
-font-size:13px;font-weight:700;color:#9c1818;
+
+.why-box{
+margin-top:20px;
 }
-h2{margin:34px 0 16px;color:#9c1818}
-.steps{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:18px;
+
+
+
+
+.info-icon {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #b41111;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 2px 3px rgba(255,255,255,0.25);
 }
-.card{
-background:rgba(255,255,255,.86);
-border:2px solid #ffcccc;
-border-radius:18px;
-padding:18px;
-box-shadow:0 8px 18px rgba(0,0,0,.10);
-transition:.25s;
+
+h2 {
+  margin: 34px 0 16px;
+  font-size: 21px;
+  color: #9c1818;
+  font-weight: 750;
 }
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: rgba(255,255,255,0.86);
+  border: 2px solid #ffcccc;
+  border-radius: 18px;
+  padding: 18px;
+
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.10),
+    inset 0 1px 4px rgba(255,255,255,0.55);
+
+  transition: all .25s ease;
+  cursor: default;
+}
+
 .card:hover{
-transform:translateY(-3px);
-box-shadow:0 14px 26px rgba(0,0,0,.16),0 0 18px rgba(180,17,17,.10);
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 16px 30px rgba(0,0,0,0.16),
+    0 0 18px rgba(180,17,17,0.10),
+    inset 0 1px 5px rgba(255,255,255,0.60);
 }
-.card-head{
-display:flex;align-items:center;gap:12px;margin-bottom:10px;
+
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
 }
-.icon-btn{
-width:46px;height:46px;border-radius:14px;
-background:#b41111;color:white;
-display:flex;align-items:center;justify-content:center;
-box-shadow:0 4px 10px rgba(0,0,0,.25);
+
+.icon-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.18), rgba(255,255,255,0.04)),
+    #b41111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    inset 0 -4px 10px rgba(60,0,20,0.3);
+  color: white;
+  font-size: 19px;
+  flex-shrink: 0;
 }
-.card-title{font-size:16px;font-weight:800;color:#9c1818}
-.card p{margin:0;font-size:14px;line-height:1.55}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #9c1818;
+}
+
+.card p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: #7e2a2a;
+  font-weight: 550;
+}
+
 .note{
 margin-top:16px;
 background:#fff7f7;
@@ -97,26 +175,58 @@ padding:14px 16px;
 display:flex;
 gap:10px;
 font-size:14px;
+line-height:1.55;
 font-weight:600;
 }
+
 .note-icon{
-width:20px;height:20px;border-radius:50%;
-background:#b41111;color:white;
-display:flex;align-items:center;justify-content:center;
+width:20px;
+height:20px;
+min-width:20px;
+border-radius:50%;
+background:#b41111;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
 font-size:11px;
 }
-.footer-box{
-margin-top:30px;
-padding:18px;
-border-radius:18px;
-background:rgba(255,255,255,.88);
-border:2px solid #b41111;
+
+
+.footer-box {
+  margin-top: 30px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.88);
+  border: 2px solid #b41111;
+  box-shadow:
+    0 0 12px rgba(180,17,17,0.14),
+    inset 0 0 6px rgba(255,255,255,0.45);
 }
-.footer-box p{
-margin:0;
-font-size:15px;
-line-height:1.6;
-font-weight:650;
+
+.footer-box p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+@media(max-width: 768px) {
+  body {
+    padding: 22px 14px;
+  }
+
+  .wrap {
+    padding: 26px 18px 32px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
@@ -156,25 +266,20 @@ Create tables, assign guests, manage plus-ones, monitor table capacity, and expo
 
 <div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-triangle-exclamation"></i></div><div class="card-title">8. Prevent Overbooking</div></div><p>If a table exceeds its seating capacity, the system will immediately display a warning. To proceed, either increase the number of seats at that table using the seat controls or assign the guest to another table with available seating.</p></div>
 
-<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-list-check"></i></div><div class="card-title">9. Review Table Occupancy</div></div><p>See how many guests are assigned and how many seats remain available.</p></div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-chair"></i></div><div class="card-title">9. Monitor Remaining Seats</div></div><p>Each table displays its remaining capacity, making it easier to balance guests across all tables.</p></div>
 
-<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-eye"></i></div><div class="card-title">10. Expand Large Tables</div></div><p>Use Show All to display the full guest list for tables containing many guests.</p></div>
 
-<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-envelope"></i></div><div class="card-title">11. Email Seating Updates</div></div><p>Send seating-related updates directly to selected guests.</p></div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-envelope"></i></div><div class="card-title">10. Email Seating Updates</div></div><p>Email the latest seating plan directly to planners, venues, vendors, or other event stakeholders.</p></div>
 
-<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-file-arrow-down"></i></div><div class="card-title">12. Export & Print Seating Plan</div></div><p>Download the seating plan as a CSV file for planners, venues, and vendors.</p></div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-file-arrow-down"></i></div><div class="card-title">11. Export & Print Seating Plan</div></div><p>Download the seating plan as a CSV file and print it for your records or event coordination.</p></div>
 
-<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-cloud-arrow-up"></i></div><div class="card-title">13. Automatic Saving</div></div><p>Your seating layout is automatically saved while you work.</p></div>
+<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-cloud-arrow-up"></i></div><div class="card-title">12. Automatic Saving</div></div><p>There is no Save button. All seating changes are saved automatically.</p></div>
 
-<div class="card"><div class="card-head"><div class="icon-btn"><i class="fa-solid fa-chair"></i></div><div class="card-title">14. Monitor Remaining Seats</div></div><p>Each table shows remaining capacity so you can balance guest distribution efficiently.</p></div>
 
 </div>
 
 <h2>Important Notes</h2>
 
-<div class="note"><div class="note-icon">i</div><div>Seating capacity includes all confirmed guests and their registered plus-ones.</div></div>
-
-<div class="note"><div class="note-icon">i</div><div>The system prevents assigning more guests than a table can accommodate.</div></div>
 
 <div class="note"><div class="note-icon">i</div><div>Review your seating plan carefully before exporting or sharing it with vendors.</div></div>
 
