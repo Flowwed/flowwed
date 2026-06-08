@@ -861,7 +861,7 @@ th:nth-of-type(7), td:nth-of-type(7) {
 
 .migrate-row {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   margin-top: 12px;
 }
 
@@ -1635,6 +1635,31 @@ document.querySelectorAll(".btn-sms").forEach(btn => {
   });
 });
 
+
+document.querySelectorAll(".migrate-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+
+    const group = btn.dataset.group;
+
+    const block = document.querySelector(
+      `.table-block[data-group="${group}"]`
+    );
+
+    if (!block) return;
+
+    const selected = block.querySelectorAll(
+      'tbody input[type="checkbox"]:checked'
+    );
+
+    if (selected.length === 0) {
+      showRedToast("Select at least one guest!");
+      return;
+    }
+
+    alert(`${selected.length} guest(s) selected`);
+
+  });
+});
 
 // Send button INSIDE composer  
 document.querySelectorAll(".composer-send").forEach(btn => {
