@@ -1362,11 +1362,20 @@ tables.push({ id, seats });
     <div class="simple-table-block">
       <div class="table-number">T${id}</div>
 
-      <div class="left-col">
-<div class="seat-title">Seats: <span class="seat-count">${seats}</span></div>
-        <button class="seat-btn" data-delta="+1" data-id="${id}">+</button>
-        <button class="seat-btn" data-delta="-1" data-id="${id}">-</button>
-      </div>
+<div class="left-col">
+
+  <div class="seat-title">
+    Seats: <span class="seat-count">${seats}</span>
+  </div>
+
+  <div class="remaining-seats">
+    Remaining: <span class="remaining-count">${seats}</span>
+  </div>
+
+  <button class="seat-btn" data-delta="+1" data-id="${id}">+</button>
+  <button class="seat-btn" data-delta="-1" data-id="${id}">-</button>
+
+</div>
 
       <ul class="guest-list"></ul>
     </div>
@@ -1854,7 +1863,7 @@ function renderRSVPTable() {
 
       <th>Table #</th>
 
-      <th>Unassign Table</th>
+      <th>Unassign Guest</th>
     </tr>
   </thead>
 
