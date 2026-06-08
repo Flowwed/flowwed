@@ -1475,10 +1475,20 @@ function renderTable(name, arr, key) {
           </table>
         </div>
       </div>
+
       <div class="scrollbar-indicator" data-indicator="${key}"></div>
     </div>
+
+    <div class="migrate-row">
+      <button class="migrate-btn" data-group="${key}">
+        Migrate
+      </button>
+    </div>
+
   </div>`;
 }
+
+
 
 /* ====================================================== */
 /* RENDER ALL TABLES                                      */
