@@ -1350,7 +1350,7 @@ function addSimpleTable() {
   const seats = seatMap[id] ?? 6;
 tables.push({ id, seats });
 
-const freeSeats = seats;
+const freeSeats = getFreeSeats(id);
 
   guestsAtTable[id] = [];
 
