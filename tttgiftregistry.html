@@ -3,88 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gift Registry — Quick User Guide</title>
+<title>Gift Registry — Premium Guide</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-body {
-  margin: 0;
-  padding: 50px 20px;
-  font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(to bottom, #ffeef3, #ffd9e5, #f8b6ca, #e94a7633);
-  color: #7a3a4a;
+
+body{
+margin:0;
+padding:46px 18px;
+font-family:"Segoe UI",Inter,sans-serif;
+background:linear-gradient(180deg,#fff1f4,#ffffff);
+color:#6a2a2a;
 }
 
-.wrap {
-  max-width: 940px;
-  margin: 0 auto;
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(18px);
-  border-radius: 28px;
-  padding: 46px 52px;
-  box-shadow:
-    0 30px 70px rgba(0,0,0,0.25),
-    inset 0 0 0 1px rgba(255,255,255,0.45);
+.wrap{
+max-width:980px;
+margin:auto;
+background:rgba(255,255,255,.76);
+backdrop-filter:blur(20px) saturate(180%);
+-webkit-backdrop-filter:blur(20px) saturate(180%);
+border-radius:24px;
+padding:34px 38px 42px;
+box-shadow:
+0 18px 40px rgba(0,0,0,.18),
+0 8px 20px rgba(0,0,0,.12),
+inset 0 2px 6px rgba(255,255,255,.35);
 }
 
-h1 {
-  margin: 0 0 18px;
-  font-size: 28px;
-  font-weight: 700;
-  color: #a02449;
+h1{
+text-align:center;
+font-size:34px;
+font-weight:650;
+background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);
+-webkit-background-clip:text;
+color:transparent;
+margin:0 0 10px;
+letter-spacing:-.6px;
 }
 
-p {
-  font-size: 18px;
-  line-height: 1.7;
+.top-divider-line{
+height:2px;
+background:linear-gradient(to right,#b41111,#e89999,#b41111);
+margin:10px 0 26px;
+border-radius:2px;
 }
 
-h2 {
-  margin: 34px 0 12px;
-  font-size: 20px;
-  font-weight: 650;
-  color: #a02449;
+.intro{
+background:#fff7f7;
+border:2px solid #ffcccc;
+border-radius:16px;
+padding:16px 18px;
+display:flex;
+gap:12px;
+align-items:flex-start;
+box-shadow:
+0 4px 12px rgba(0,0,0,.10),
+inset 0 1px 4px rgba(255,255,255,.55);
+font-size:16px;
+line-height:1.7;
+font-weight:600;
+color:#7e2a2a;
 }
 
-.grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 26px 22px;
+.why-box{
+margin-top:20px;
+background:#fff7f7;
+border:2px solid #ffcccc;
+border-radius:16px;
+padding:16px 18px;
+display:flex;
+gap:12px;
+align-items:flex-start;
+box-shadow:
+0 4px 12px rgba(0,0,0,.10),
+inset 0 1px 4px rgba(255,255,255,.55);
+font-size:16px;
+line-height:1.7;
+font-weight:600;
+color:#7e2a2a;
 }
 
-.item {
-  text-align: center;
+.info-icon{
+min-width:24px;
+height:24px;
+border-radius:50%;
+background:#b41111;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:13px;
+font-weight:800;
 }
 
-.btn {
-  margin: 0 auto 10px;
-  width: 72px;
-  height: 72px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background:
-    linear-gradient(to bottom, rgba(255,255,255,0.35), rgba(255,255,255,0.05)),
-    #9c1818;
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.25),
-    inset 0 -10px 20px rgba(80,0,20,0.45),
-    0 14px 30px rgba(0,0,0,0.3);
+.why-title{
+font-size:17px;
+font-weight:800;
+color:#9c1818;
+margin-bottom:8px;
 }
 
-.btn i {
-  font-size: 26px;
-  color: #fff;
+.tag-row{
+margin-top:18px;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
 }
 
-.label {
-  font-size: 15px;
-  line-height: 1.4;
-  font-weight: 600;
+.tag{
+padding:7px 12px;
+border-radius:999px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+color:#9c1818;
+font-size:13px;
+font-weight:700;
+box-shadow:
+0 4px 10px rgba(0,0,0,.08),
+inset 0 1px 3px rgba(255,255,255,.7);
 }
+
+h2{
+margin:34px 0 16px;
+font-size:21px;
+color:#9c1818;
+font-weight:750;
+}
+
+.steps{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:18px;
+}
+
+.card{
+background:rgba(255,255,255,.86);
+border:2px solid #ffcccc;
+border-radius:18px;
+padding:18px;
+box-shadow:
+0 8px 18px rgba(0,0,0,.10),
+inset 0 1px 4px rgba(255,255,255,.55);
+transition:.25s ease;
+}
+
+.card:hover{
+transform:translateY(-3px);
+box-shadow:
+0 14px 26px rgba(0,0,0,.16),
+0 0 18px rgba(180,17,17,.10),
+inset 0 1px 5px rgba(255,255,255,.6);
+}
+
+.card-head{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:10px;
+}
+
+.icon-btn{
+width:46px;
+height:46px;
+border-radius:14px;
+background:
+linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,.04)),
+#b41111;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:19px;
+flex-shrink:0;
+box-shadow:
+0 4px 10px rgba(0,0,0,.25),
+inset 0 2px 4px rgba(255,255,255,.18),
+inset 0 -4px 10px rgba(60,0,20,.3);
+}
+
+.card-title{
+font-size:18px;
+font-weight:800;
+color:#9c1818;
+}
+
+.card p{
+margin:0;
+font-size:15px;
+line-height:1.6;
+color:#7e2a2a;
+font-weight:550;
+}
+
+.note{
+margin-top:16px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:14px;
+padding:14px 16px;
+display:flex;
+gap:10px;
+align-items:flex-start;
+font-size:15px;
+line-height:1.6;
+font-weight:600;
+color:#7e2a2a;
+}
+
+.note-icon{
+width:20px;
+height:20px;
+min-width:20px;
+border-radius:50%;
+background:#b41111;
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+font-weight:800;
+}
+
+.footer-box{
+margin-top:30px;
+padding:18px;
+border-radius:18px;
+background:rgba(255,255,255,.88);
+border:2px solid #b41111;
+box-shadow:
+0 0 12px rgba(180,17,17,.14),
+inset 0 0 6px rgba(255,255,255,.45);
+}
+
+.footer-box p{
+margin:0;
+font-size:15px;
+line-height:1.7;
+font-weight:650;
+color:#7e2a2a;
+}
+
+@media(max-width:768px){
+body{padding:22px 14px;}
+.wrap{padding:26px 18px 32px;}
+.steps{grid-template-columns:1fr;}
+h1{font-size:28px;}
+}
+
 </style>
 </head>
 
@@ -92,85 +258,228 @@ h2 {
 
 <div class="wrap">
 
-  <p>
-    Welcome to your <strong>Gift Registry</strong>.
-    This page lets you create and manage your wedding wish list —
-    so your guests always know what will truly make you happy.
-    Everything you add here becomes part of your public wedding website.
-  </p>
+<h1>Gift Registry</h1>
 
-  <h2>How This Page Works</h2>
+<div class="top-divider-line"></div>
 
-  <p>
-    Your Gift Registry is simple, elegant, and fully under your control.
-    Add gifts, organize them by category, edit them at any time,
-    and keep your list perfectly up to date.
-  </p>
+<div class="intro">
+<div class="info-icon">i</div>
+<div>
+Gift Registry allows you to create, organize, and manage your wedding gift list in one place. Add gifts, track reservations, manage your Honeymoon Fund, and control exactly what your guests see.
+</div>
+</div>
 
-  <div class="grid">
+<div class="why-box">
+<div class="info-icon">
+<i class="fa-solid fa-circle-info"></i>
+</div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-layer-group"></i></div>
-      <div class="label">
-        <strong>Choose a Category</strong><br>
-        Start by selecting a category. This helps guests browse your list easily.
-      </div>
-    </div>
+<div>
+<div class="why-title">
+Why Gift Registry Matters
+</div>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-gift"></i></div>
-      <div class="label">
-        <strong>Add Gifts</strong><br>
-        Enter the gift name, price, quantity, and a store link.
-        Each gift appears instantly in your list.
-      </div>
-    </div>
+A well-organized registry helps guests choose meaningful gifts while preventing duplicate purchases.
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-pen-to-square"></i></div>
-      <div class="label">
-        <strong>Edit Anytime</strong><br>
-        Click the pencil icon to update any gift.
-        Changes are saved immediately.
-      </div>
-    </div>
+<br><br>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-trash"></i></div>
-      <div class="label">
-        <strong>Remove Items</strong><br>
-        Delete gifts you no longer need. Your list always stays clean and relevant.
-      </div>
-    </div>
+Your guests can reserve gifts directly from the registry. This helps prevent duplicate purchases and keeps your gift list organized automatically.
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-link"></i></div>
-      <div class="label">
-        <strong>Store Links</strong><br>
-        Add a shop link so guests can quickly find and purchase the gift.
-      </div>
-    </div>
+<br><br>
 
-    <div class="item">
-      <div class="btn"><i class="fa-solid fa-heart"></i></div>
-      <div class="label">
-        <strong>For Your Guests</strong><br>
-        Your registry appears beautifully on your wedding website,
-        making gift-giving easy and joyful.
-      </div>
-    </div>
+Everything is managed from one central dashboard, including gifts, reservations, Honeymoon Fund contributions, and guest visibility settings.
+</div>
+</div>
 
-  </div>
+<div class="tag-row">
+<div class="tag">Gift Registry</div>
+<div class="tag">Wedding Gifts</div>
+<div class="tag">Honeymoon Fund</div>
+<div class="tag">Guest Reservations</div>
+<div class="tag">Gift Categories</div>
+<div class="tag">Store Links</div>
+<div class="tag">Preview</div>
+<div class="tag">Guest Experience</div>
+</div>
 
-  <p style="margin-top:32px;">
-    Every change is saved automatically. You can update your registry at any time,
-    even minutes before sharing your site.
-  </p>
+<h2>How to Use This Page</h2>
 
-  <p>
-    Gift Registry is designed to be graceful and stress-free —
-    so your guests feel inspired, and you receive gifts you truly love.
-  </p>
+<div class="steps">
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-eye"></i></div>
+<div class="card-title">1. Enable Registry Page</div>
+</div>
+<p>
+Use the visibility setting to control whether guests can access your Gift Registry page.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-heart"></i></div>
+<div class="card-title">2. Set Up Your Honeymoon Fund</div>
+</div>
+<p>
+Add your PayPal, Venmo, or Zelle information to allow guests to contribute toward your honeymoon.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-layer-group"></i></div>
+<div class="card-title">3. Choose a Gift Category</div>
+</div>
+<p>
+Organize gifts into categories to make browsing easier for your guests.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-gift"></i></div>
+<div class="card-title">4. Add a New Gift</div>
+</div>
+<p>
+Enter the gift name, price, quantity, and any other information you want guests to see.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-link"></i></div>
+<div class="card-title">5. Add a Store Link</div>
+</div>
+<p>
+Include a shopping link so guests can quickly purchase the gift from your preferred retailer.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-floppy-disk"></i></div>
+<div class="card-title">6. Save Your Gift</div>
+</div>
+<p>
+Save each gift to make it available in your registry and visible to guests.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-list"></i></div>
+<div class="card-title">7. Manage Your Gift List</div>
+</div>
+<p>
+Review all gifts, quantities, prices, links, and reservation activity from one location.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-users"></i></div>
+<div class="card-title">8. Review Guest Reservations</div>
+</div>
+<p>
+See which guests have reserved gifts and monitor reservation activity in real time.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-user-minus"></i></div>
+<div class="card-title">9. Remove Reservations If Needed</div>
+</div>
+<p>
+Manually remove reservations when changes are required or a reservation was created by mistake.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-pen-to-square"></i></div>
+<div class="card-title">10. Edit Existing Gifts</div>
+</div>
+<p>
+Update gift information whenever prices, quantities, links, or descriptions change.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-trash"></i></div>
+<div class="card-title">11. Delete Gifts</div>
+</div>
+<p>
+Remove gifts that are no longer needed or available.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-globe"></i></div>
+<div class="card-title">12. Preview Your Guest Registry</div>
+</div>
+<p>
+Preview the page exactly as guests will see it before sharing it with friends and family.
+</p>
+</div>
+
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-bullhorn"></i></div>
+<div class="card-title">13. Send Registry Updates</div>
+</div>
+<p>
+Notify guests when gifts are added, updated, or when new registry information becomes available.
+</p>
+</div>
+
+</div>
+
+<h2>Important Notes</h2>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Guests can reserve gifts directly from the guest-facing registry page.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Reservations help prevent duplicate gift purchases.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Honeymoon Fund information is displayed to guests exactly as entered.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Hidden Gift Registry pages are not visible to guests.
+</div>
+</div>
+
+<div class="note">
+<div class="note-icon">i</div>
+<div>
+Always preview your registry before sharing it with guests.
+</div>
+</div>
+
+<div class="footer-box">
+<p>
+In short: use Gift Registry to manage gifts, Honeymoon Fund contributions, guest reservations, and the overall gift experience for your wedding guests from one central dashboard.
+</p>
+</div>
 
 </div>
 

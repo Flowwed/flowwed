@@ -108,10 +108,24 @@ h2 {
   border: 2px solid #ffcccc;
   border-radius: 18px;
   padding: 18px;
+
   box-shadow:
     0 8px 18px rgba(0,0,0,0.10),
     inset 0 1px 4px rgba(255,255,255,0.55);
+
+  transition: all .25s ease;
+  cursor: default;
 }
+
+.card:hover{
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 16px 30px rgba(0,0,0,0.16),
+    0 0 18px rgba(180,17,17,0.10),
+    inset 0 1px 5px rgba(255,255,255,0.60);
+}
+
 
 .card-head {
   display: flex;
@@ -153,17 +167,32 @@ h2 {
   font-weight: 550;
 }
 
-.note {
-  margin-top: 26px;
-  background: #fff7f7;
-  border: 1px solid #ffd0d0;
-  border-radius: 14px;
-  padding: 14px 16px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: #7e2a2a;
-  font-weight: 600;
+.note{
+margin-top:16px;
+background:#fff7f7;
+border:1px solid #ffd0d0;
+border-radius:14px;
+padding:14px 16px;
+display:flex;
+gap:10px;
+font-size:14px;
+line-height:1.55;
+font-weight:600;
 }
+
+.note-icon{
+width:20px;
+height:20px;
+min-width:20px;
+border-radius:50%;
+background:#b41111;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+}
+
 
 .footer-box {
   margin-top: 30px;
@@ -213,8 +242,8 @@ h2 {
   <div class="intro">
     <div class="info-icon">i</div>
     <div>
-      This page helps you prepare, preview, and send your wedding RSVP form to your guests.
-      Fill in the blue fields, check how the form will look, select guests, and send the invitation by email or SMS.
+The RSVP Manager page allows you to manage and send your RSVP form to your guests. Once your RSVP cinematic invitation is ready, you can preview it, choose recipients, and send it by email or SMS.
+
     </div>
   </div>
 
@@ -242,6 +271,7 @@ h2 {
         The video preview shows the cinematic invitation your guests will receive, along with the RSVP form they will be asked to complete.
       </p>
     </div>
+
 
     <div class="card">
       <div class="card-head">
@@ -281,9 +311,8 @@ h2 {
         <div class="card-title">6. Select Guests</div>
       </div>
       <p>
-        Use the guest table to select who should receive the RSVP invitation.
-        You can select one guest, several guests, or all guests.
-      </p>
+     Use the checkboxes to select individual guests or use the master checkbox to select the full list at once.      
+    </p>
     </div>
 
     <div class="card">
@@ -297,15 +326,16 @@ h2 {
       </p>
     </div>
 
-    <div class="card">
-      <div class="card-head">
-        <div class="icon-btn"><i class="fa-solid fa-comment-sms"></i></div>
-        <div class="card-title">8. Send by SMS</div>
-      </div>
-      <p>
-        Use Send SMS when you want to share the RSVP invitation link by text message instead of email.
-      </p>
-    </div>
+<div class="card">
+<div class="card-head">
+<div class="icon-btn"><i class="fa-solid fa-mobile-screen"></i></div>
+<div class="card-title">8. Notify by SMS</div>
+</div>
+<p>
+Use Send SMS to generate a QR code and quickly share the link from your phone.
+</p>
+</div>
+
 
     <div class="card">
       <div class="card-head">
@@ -320,33 +350,45 @@ h2 {
 
   </div>
 
-  <h2>Important Notes</h2>
+<h2>Important Notes</h2>
 
-  <div class="note">
+<div class="note">
+  <div class="note-icon">i</div>
+  <div>
     The section marked “This section is for you to fill out” is only for the couple or event organizer.
     Guests will not see that editing area.
   </div>
+</div>
 
-  <div class="note">
+<div class="note">
+  <div class="note-icon">i</div>
+  <div>
+    Use the RSVP Reports shortcut or visit the RSVP Reports page to review guest responses and attendance status.
+  </div>
+</div>
+
+<div class="note">
+  <div class="note-icon">i</div>
+  <div>
     Always check the preview before sending invitations. It helps you make sure the date, time,
     venue, address, deadline, meal options, and guest limits are correct.
   </div>
+</div>
 
   <div class="footer-box">
     <p>
-    Your RSVP page is more than a form — it’s your guests’ first interaction
-    with your wedding experience.
-    </p>
-
-  <p>
-    A smooth RSVP process helps you stay organized, reduce stress,
-    and keep communication clear and effortless.
-  </p>
-
-
+We've designed this page to be as simple and user-friendly as possible. 
+If you have any questions, encounter any issues, or need assistance, please contact us at
+<a href="mailto:contact@flowweds.com" class="email-link">
+  contact@flowweds.com
+</a>
+and include your order number along with a brief description of your request. We'll be happy to help.
+</p>
   </div>
+
 
 </div>
 
 </body>
 </html>
+
