@@ -1731,7 +1731,14 @@ title.textContent =
 
 buttons.innerHTML = "";
 
+
 options.forEach(opt => {
+
+  const labelMap = {
+    rsvpYes: "RSVP — YES",
+    rsvpNo: "RSVP — NO",
+    rsvpMaybe: "RSVP — MAYBE"
+  };
 
   buttons.innerHTML += `
     <button class="migrate-option"
@@ -1747,7 +1754,7 @@ options.forEach(opt => {
         font-weight:700;
         cursor:pointer;
       ">
-      ${opt}
+      ${labelMap[opt]}
     </button>
   `;
 });
