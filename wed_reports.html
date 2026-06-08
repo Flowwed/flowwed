@@ -1639,7 +1639,7 @@ document.querySelectorAll(".btn-sms").forEach(btn => {
 
 
 document.querySelectorAll(".migrate-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", async () => {
 
     const group = btn.dataset.group;
 
@@ -1653,7 +1653,6 @@ document.querySelectorAll(".migrate-btn").forEach(btn => {
       'tbody input[type="checkbox"]:checked'
     );
 
-console.log(selected[0].dataset);
 
 if (selected.length === 0) {
   showRedToast("Select at least one guest!");
@@ -1671,8 +1670,31 @@ rsvpNoResponse`
 
 if (!target) return;
 
-alert(`Move to ${target}`);
+const statusMap = {
+  rsvpYes: "Yes",
+  rsvpMaybe: "Maybe",
+  rsvpNo: "No",
+  rsvpNoResponse: null
+};
 
+const ids = [...selected].map(ch => ch.dataset.id);
+
+const { error } = await supabase
+  .from("guests")
+  .update({
+    rsvp_status: statusMap[target]
+  })
+  .in("id", ids);
+
+if (error) {
+  console.error(error);
+  showRedToast("Migration failed");
+  return;
+}
+
+showToast("Guests migrated");
+
+await loadGuests();
 
   });
 });
