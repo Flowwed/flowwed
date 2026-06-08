@@ -8,48 +8,45 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
 <style>
-
-body{
-margin:0;
-padding:46px 18px;
-font-family:"Segoe UI",Inter,sans-serif;
-background:linear-gradient(180deg,#fff1f4,#ffffff);
-color:#6a2a2a;
+body {
+  margin: 0;
+  padding: 46px 18px;
+  font-family: "Segoe UI", Inter, system-ui, sans-serif;
+  background: linear-gradient(180deg, #fff1f4, #ffffff);
+  color: #6a2a2a;
 }
 
-.wrap{
-max-width:980px;
-margin:auto;
-background:rgba(255,255,255,.76);
-backdrop-filter:blur(20px) saturate(180%);
--webkit-backdrop-filter:blur(20px) saturate(180%);
-border-radius:24px;
-padding:34px 38px 42px;
-box-shadow:
-0 18px 40px rgba(0,0,0,.18),
-0 8px 20px rgba(0,0,0,.12),
-inset 0 2px 6px rgba(255,255,255,.35);
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  background: rgba(255,255,255,0.76);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 24px;
+  padding: 34px 38px 42px;
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.18),
+    0 8px 20px rgba(0,0,0,0.12),
+    inset 0 2px 6px rgba(255,255,255,0.35);
 }
 
-h1{
-text-align:center;
-font-size:34px;
-font-weight:650;
-background:linear-gradient(to bottom,#ff3b3b,#b41111,#5e0202);
--webkit-background-clip:text;
-color:transparent;
-margin:0 0 10px;
-letter-spacing:-.6px;
+h1 {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 650;
+  background: linear-gradient(to bottom, #ff3b3b, #b41111, #5e0202);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin: 0 0 10px;
 }
 
-.top-divider-line{
-height:2px;
-background:linear-gradient(to right,#b41111,#e89999,#b41111);
-margin:10px 0 26px;
-border-radius:2px;
+.top-divider-line {
+  height: 2px;
+  background: linear-gradient(to right, #b41111, #e89999, #b41111);
+  margin: 10px 0 26px;
+  border-radius: 2px;
 }
 
-.intro{
+.intro,.why-box{
 background:#fff7f7;
 border:2px solid #ffcccc;
 border-radius:16px;
@@ -60,140 +57,114 @@ align-items:flex-start;
 box-shadow:
 0 4px 12px rgba(0,0,0,.10),
 inset 0 1px 4px rgba(255,255,255,.55);
-font-size:16px;
-line-height:1.7;
+font-size:16px !important;
+line-height:1.6;
 font-weight:600;
 color:#7e2a2a;
+}
+
+.intro > div:last-child{
+font-size:16px !important;
 }
 
 .why-box{
 margin-top:20px;
-background:#fff7f7;
-border:2px solid #ffcccc;
-border-radius:16px;
-padding:16px 18px;
-display:flex;
-gap:12px;
-align-items:flex-start;
-box-shadow:
-0 4px 12px rgba(0,0,0,.10),
-inset 0 1px 4px rgba(255,255,255,.55);
-font-size:16px;
-line-height:1.7;
-font-weight:600;
-color:#7e2a2a;
 }
 
-.info-icon{
-min-width:24px;
-height:24px;
-border-radius:50%;
-background:#b41111;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:13px;
-font-weight:800;
+
+
+
+.info-icon {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #b41111;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.25),
+    inset 0 2px 3px rgba(255,255,255,0.25);
 }
 
-.why-title{
-font-size:17px;
-font-weight:800;
-color:#9c1818;
-margin-bottom:8px;
+h2 {
+  margin: 34px 0 16px;
+  font-size: 21px;
+  color: #9c1818;
+  font-weight: 750;
 }
 
-.tag-row{
-margin-top:18px;
-display:flex;
-flex-wrap:wrap;
-gap:10px;
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
 }
 
-.tag{
-padding:7px 12px;
-border-radius:999px;
-background:#fff7f7;
-border:1px solid #ffd0d0;
-color:#9c1818;
-font-size:13px;
-font-weight:700;
-box-shadow:
-0 4px 10px rgba(0,0,0,.08),
-inset 0 1px 3px rgba(255,255,255,.7);
-}
+.card {
+  background: rgba(255,255,255,0.86);
+  border: 2px solid #ffcccc;
+  border-radius: 18px;
+  padding: 18px;
 
-h2{
-margin:34px 0 16px;
-font-size:21px;
-color:#9c1818;
-font-weight:750;
-}
+  box-shadow:
+    0 8px 18px rgba(0,0,0,0.10),
+    inset 0 1px 4px rgba(255,255,255,0.55);
 
-.steps{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:18px;
-}
-
-.card{
-background:rgba(255,255,255,.86);
-border:2px solid #ffcccc;
-border-radius:18px;
-padding:18px;
-box-shadow:
-0 8px 18px rgba(0,0,0,.10),
-inset 0 1px 4px rgba(255,255,255,.55);
-transition:.25s ease;
+  transition: all .25s ease;
+  cursor: default;
 }
 
 .card:hover{
-transform:translateY(-3px);
-box-shadow:
-0 14px 26px rgba(0,0,0,.16),
-0 0 18px rgba(180,17,17,.10),
-inset 0 1px 5px rgba(255,255,255,.6);
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 16px 30px rgba(0,0,0,0.16),
+    0 0 18px rgba(180,17,17,0.10),
+    inset 0 1px 5px rgba(255,255,255,0.60);
 }
 
-.card-head{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:10px;
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
-.icon-btn{
-width:46px;
-height:46px;
-border-radius:14px;
-background:
-linear-gradient(to bottom,rgba(255,255,255,.18),rgba(255,255,255,.04)),
-#b41111;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-size:19px;
-flex-shrink:0;
-box-shadow:
-0 4px 10px rgba(0,0,0,.25),
-inset 0 2px 4px rgba(255,255,255,.18),
-inset 0 -4px 10px rgba(60,0,20,.3);
+.icon-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.18), rgba(255,255,255,0.04)),
+    #b41111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.25),
+    inset 0 2px 4px rgba(255,255,255,0.18),
+    inset 0 -4px 10px rgba(60,0,20,0.3);
+  color: white;
+  font-size: 19px;
+  flex-shrink: 0;
 }
 
-.card-title{
-font-size:18px;
-font-weight:800;
-color:#9c1818;
+.card-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #9c1818;
 }
 
-.card p{
-margin:0;
-font-size:15px;
-line-height:1.6;
-color:#7e2a2a;
-font-weight:550;
+.card p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: #7e2a2a;
+  font-weight: 550;
 }
 
 .note{
@@ -204,11 +175,9 @@ border-radius:14px;
 padding:14px 16px;
 display:flex;
 gap:10px;
-align-items:flex-start;
-font-size:15px;
-line-height:1.6;
+font-size:14px;
+line-height:1.55;
 font-weight:600;
-color:#7e2a2a;
 }
 
 .note-icon{
@@ -217,41 +186,51 @@ height:20px;
 min-width:20px;
 border-radius:50%;
 background:#b41111;
-color:white;
+color:#fff;
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:11px;
-font-weight:800;
 }
 
-.footer-box{
-margin-top:30px;
-padding:18px;
-border-radius:18px;
-background:rgba(255,255,255,.88);
-border:2px solid #b41111;
-box-shadow:
-0 0 12px rgba(180,17,17,.14),
-inset 0 0 6px rgba(255,255,255,.45);
+
+.footer-box {
+  margin-top: 30px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.88);
+  border: 2px solid #b41111;
+  box-shadow:
+    0 0 12px rgba(180,17,17,0.14),
+    inset 0 0 6px rgba(255,255,255,0.45);
 }
 
-.footer-box p{
-margin:0;
-font-size:15px;
-line-height:1.7;
-font-weight:650;
-color:#7e2a2a;
+.footer-box p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  font-weight: 600;
 }
 
-@media(max-width:768px){
-body{padding:22px 14px;}
-.wrap{padding:26px 18px 32px;}
-.steps{grid-template-columns:1fr;}
-h1{font-size:28px;}
-}
+@media(max-width: 768px) {
+  body {
+    padding: 22px 14px;
+  }
 
+  .wrap {
+    padding: 26px 18px 32px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
+
 </head>
 
 <body>
@@ -269,38 +248,6 @@ Gift Registry allows you to create, organize, and manage your wedding gift list 
 </div>
 </div>
 
-<div class="why-box">
-<div class="info-icon">
-<i class="fa-solid fa-circle-info"></i>
-</div>
-
-<div>
-<div class="why-title">
-Why Gift Registry Matters
-</div>
-
-A well-organized registry helps guests choose meaningful gifts while preventing duplicate purchases.
-
-<br><br>
-
-Your guests can reserve gifts directly from the registry. This helps prevent duplicate purchases and keeps your gift list organized automatically.
-
-<br><br>
-
-Everything is managed from one central dashboard, including gifts, reservations, Honeymoon Fund contributions, and guest visibility settings.
-</div>
-</div>
-
-<div class="tag-row">
-<div class="tag">Gift Registry</div>
-<div class="tag">Wedding Gifts</div>
-<div class="tag">Honeymoon Fund</div>
-<div class="tag">Guest Reservations</div>
-<div class="tag">Gift Categories</div>
-<div class="tag">Store Links</div>
-<div class="tag">Preview</div>
-<div class="tag">Guest Experience</div>
-</div>
 
 <h2>How to Use This Page</h2>
 
@@ -475,11 +422,16 @@ Always preview your registry before sharing it with guests.
 </div>
 </div>
 
-<div class="footer-box">
-<p>
-In short: use Gift Registry to manage gifts, Honeymoon Fund contributions, guest reservations, and the overall gift experience for your wedding guests from one central dashboard.
+  <div class="footer-box">
+    <p>
+We've designed this page to be as simple and user-friendly as possible. 
+If you have any questions, encounter any issues, or need assistance, please contact us at
+<a href="mailto:contact@flowweds.com" class="email-link">
+  contact@flowweds.com
+</a>
+and include your order number along with a brief description of your request. We'll be happy to help.
 </p>
-</div>
+  </div>
 
 </div>
 
