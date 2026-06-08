@@ -1742,6 +1742,7 @@ options.forEach(opt => {
 
   buttons.innerHTML += `
     <button class="migrate-option"
+        data-target="${opt}"
       style="
         display:block;
         width:100%;
@@ -1766,7 +1767,7 @@ document.querySelectorAll(".migrate-option")
 
   btn.onclick = async () => {
 
-    const target = btn.textContent.trim();
+    const target = btn.dataset.target;
 
     const statusMap = {
       rsvpYes: "Yes",
