@@ -2282,6 +2282,19 @@ document.getElementById("migrateCancel")
 });
 
 
+document.getElementById("migrateModal")
+?.addEventListener("click", (e) => {
+
+  if (e.target.id === "migrateModal") {
+
+    document.getElementById("migrateModal")
+      .style.display = "none";
+
+  }
+
+});
+
+
 /* INIT */
 loadGuests();
 
