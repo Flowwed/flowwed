@@ -1350,7 +1350,7 @@ function addSimpleTable() {
   const seats = seatMap[id] ?? 6;
 tables.push({ id, seats });
 
-const freeSeats = getFreeSeats(id);
+const freeSeats = seats;
 
   guestsAtTable[id] = [];
 
@@ -1547,6 +1547,12 @@ function updateAllGuestLists() {
     const ul = card.querySelector(".guest-list");
     ul.innerHTML = "";
 
+const remainingEl = card.querySelector(".remaining-count");
+
+if (remainingEl) {
+  remainingEl.textContent = getFreeSeats(t.id);
+}
+
     // 🔥 footer (создаём 1 раз)
     let footer = card.querySelector(".guest-footer");
     if (!footer) {
@@ -1611,6 +1617,8 @@ document.addEventListener("click", async e => {
 
   const card = document.querySelector(`.table-pair[data-id="${id}"]`);
   if (card) card.querySelector(".seat-count").textContent = table.seats;
+
+updateAllGuestLists();
 
   // 🔥 сохраняем в Supabase
   seatMap[id] = table.seats;
