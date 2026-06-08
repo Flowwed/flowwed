@@ -1651,6 +1651,8 @@ document.querySelectorAll(".migrate-btn").forEach(btn => {
       'tbody input[type="checkbox"]:checked'
     );
 
+console.log(selected);
+
 if (selected.length === 0) {
   showRedToast("Select at least one guest!");
   return;
