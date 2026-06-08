@@ -1659,13 +1659,28 @@ if (selected.length === 0) {
   return;
 }
 
+let options = [];
+
+if (group === "rsvpMaybe") {
+  options = ["rsvpYes", "rsvpNo"];
+}
+
+else if (group === "rsvpYes") {
+  options = ["rsvpMaybe", "rsvpNo"];
+}
+
+else if (group === "rsvpNo") {
+  options = ["rsvpYes", "rsvpMaybe"];
+}
+
+else if (group === "rsvpNoResponse") {
+  options = ["rsvpYes", "rsvpMaybe", "rsvpNo"];
+}
+
 const target = prompt(
 `Move ${selected.length} guest(s) to:
 
-rsvpYes
-rsvpMaybe
-rsvpNo
-rsvpNoResponse`
+${options.join("\n")}`
 );
 
 if (!target) return;
