@@ -3,344 +3,1070 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>FloWWed — Entry</title>
+<title>FloWWed Orchestra — Ruby Wedding Dashboard</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script type="module" src="https://esm.sh/@supabase/supabase-js"></script>
 
 <style>
 
-body{
-margin:0;
-min-height:100vh;
-padding:24px 20px 40px;
-font-family:"Inter",sans-serif;
-text-align:center;
-background:linear-gradient(to bottom,#ffeef3,#ffd9e5,#f8b6ca,#e94a7633);
-color:#7a3a4a;
-display:flex;
-flex-direction:column;
-align-items:center;
+/* ================================================= */
+/*        SUPER SOFT RUBY → WHITE GRADIENT           */
+/* ================================================= */
 
-opacity:0;
-}
+body {
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  overflow-x: hidden;
 
-#coupleHeader{
-font-size:38px;
-font-weight:800;
-margin-top:8px;
-margin-bottom:6px;
-color:#a02449;
-}
+  background: linear-gradient(
+    to bottom,
+    #ffeef3 0%,      /* слегка темнее, чем #fff7fa */
+    #ffd9e5 40%,     /* rose pastel */
+    #f8b6ca 70%,     /* warm ruby haze */
+    #e94a7633 100%   /* мягкий рубиновый дым */
+);
 
-.welcome{
-font-size:18px;
-font-weight:700;
-color:#b03b5c;
-margin-bottom:40px;
-}
 
-.button-row{
-width:100%;
-max-width:900px;
-display:flex;
-flex-direction:column;
-gap:26px;
-}
+  background-attachment: fixed;
+  color: #7a3a4a;
 
-.big-btn{
-width:100%;
-height:110px;
-border-radius:26px;
-
-background:
-linear-gradient(to bottom,rgba(255,255,255,.22),rgba(255,255,255,.05)),
-#9c1818;
-
-border:1px solid rgba(255,255,255,.40);
-backdrop-filter:blur(22px) saturate(180%);
-
-color:white;
-font-size:22px;
-font-weight:800;
-
-display:flex;
-align-items:center;
-gap:18px;
-padding-left:28px;
-
-cursor:pointer;
-
-box-shadow:
-0 18px 40px rgba(0,0,0,.45),
-0 6px 14px rgba(0,0,0,.35),
-inset 0 4px 8px rgba(255,255,255,.25),
-inset 0 -10px 20px rgba(80,0,20,.45);
-}
-
-.big-btn i{
-font-size:38px;
-color:#ffe6ec;
-}
-
-.big-btn:hover{
-transform:translateY(-4px) scale(1.015);
-}
-
-.big-btn{
-  position:relative;
-}
-
-/* BUBBLE */
-.big-btn .bubble{
-  position:absolute;
-  bottom:120px;
-  left:50%;
-  transform:translateX(-50%) scale(.98);
-
-  background:#e5e5ea;
-  color:#1a1a1a;
-
-  padding:14px 16px;
-  border-radius:18px;
-
-  font-size:14px;
-  line-height:1.4;
-
-  width:260px;
-  max-width:90vw;
+  border: 14px solid rgba(255,200,215,0.35);
 
   box-shadow:
-    0 6px 14px rgba(0,0,0,.15),
-    0 2px 4px rgba(0,0,0,.08);
+    inset 0 0 60px rgba(255,180,200,0.25),
+    inset 0 0 120px rgba(255,180,200,0.15);
 
-  opacity:0;
-  pointer-events:none;
+  backdrop-filter: blur(15px);
+  position: relative;
+}
 
+/* ================================================= */
+/*      STATIC RUBY BACKGROUND — NO SPOTLIGHT        */
+/* ================================================= */
+
+body {
+  margin: 0;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  overflow-x: hidden;
+
+  background: linear-gradient(
+    to bottom,
+    #ffeef3 0%,
+    #ffd9e5 40%,
+    #f8b6ca 70%,
+    #e94a7633 100%
+  );
+
+  background-attachment: fixed;
+  color: #7a3a4a;
+
+  border: 14px solid rgba(255,200,215,0.35);
+
+  box-shadow:
+    inset 0 0 60px rgba(255,180,200,0.25),
+    inset 0 0 120px rgba(255,180,200,0.15);
+
+  backdrop-filter: blur(15px);
+  position: relative;
+}
+
+/* spotlight removed
+body::after { ... } 
+@keyframes sweep { ... }
+*/
+
+/* ================================================= */
+/*                   COUPLE NAMES                    */
+/* ================================================= */
+
+#coupleHeader {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  color: #a02449;
+  opacity: 0.85;
+}
+.ring-anim {
+  display: inline-block;
+  animation: ringSwing 3.2s ease-in-out infinite;
+}
+
+/* ----------------------------------------------- */
+/*   OLD ANIMATIONS (DISABLED / COMMENTED OUT)     */
+/* ----------------------------------------------- */
+
+/*
+@keyframes ringSwing {
+  0%   { transform: rotate(0deg); }
+  30%  { transform: rotate(-6deg); }
+  60%  { transform: rotate(6deg); }
+  100% { transform: rotate(0deg); }
+}
+*/
+
+/*
+.heart-anim {
+  display: inline-block;
+  font-size: 36px;
+  transform-origin: center;
+  animation: heartPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+  0%   { transform: scale(1);      filter: drop-shadow(0 0 0 rgba(255,50,80,0)); }
+  50%  { transform: scale(1.14);   filter: drop-shadow(0 0 12px rgba(255,50,80,0.45)); }
+  100% { transform: scale(1);      filter: drop-shadow(0 0 0 rgba(255,50,80,0)); }
+}
+*/
+
+
+/* ================================================= */
+/*                     SUB HEADER                    */
+/* ================================================= */
+
+.welcome {
+  font-size: 18px;
+  font-weight: 700;
+  color: #b03b5c;
+  margin-bottom: 40px;
+
+  text-shadow:
+    0 0 10px rgba(255,220,230,0.7),
+    0 0 18px rgba(255,190,210,0.35);
+}
+
+/* ================================================= */
+/*                   BUTTON GRID                     */
+/* ================================================= */
+
+.button-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  max-width: 900px;
+  margin: 60px auto 0;
+}
+
+.last-row {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+/* =============================================== */
+/*          RUBY GLASS BUTTONS — smooth version     */
+/* =============================================== */
+
+.big-btn {
+  width: 160px;
+  height: 160px;
+
+  border-radius: 32px;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05)
+    ),
+    #9c1818;
+
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  backdrop-filter: blur(22px) saturate(180%);
+
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+
+  /* SUPER SMOOTH */
   transition:
-    opacity .25s ease,
-    transform .25s ease;
+    transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1),
+    box-shadow 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
 
-  z-index:20;
+  /* depth */
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    0 6px 14px rgba(0,0,0,0.35),
+    inset 0 4px 8px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45);
 }
 
-/* хвостик */
-.big-btn .bubble::after{
-  content:"";
-  position:absolute;
-  bottom:-8px;
-  left:50%;
-  transform:translateX(-50%);
-  border-left:8px solid transparent;
-  border-right:8px solid transparent;
-  border-top:8px solid #e5e5ea;
+/* glossy top reflection */
+.big-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 40%;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.55),
+    rgba(255,255,255,0)
+  );
+  pointer-events: none;
 }
 
-/* ПОЯВЛЕНИЕ */
-.big-btn:hover .bubble{
-  opacity:1;
-  transform:translateX(-50%) translateY(-6px) scale(1);
+/* icon */
+.big-btn i {
+  font-size: 30px;
+  color: #ffe6ec;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
+/* =============================================== */
+/*      SOFT BREATHING ANIMATION FOR BUTTONS       */
+/* =============================================== */
+
+@keyframes softBreath {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.015); } /* VERY subtle */
+  100% { transform: scale(1); }
+}
+
+
+
+/* smooth hover — NO jump */
+.big-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 22px 42px rgba(0,0,0,0.55),
+    0 8px 18px rgba(0,0,0,0.40),
+    inset 0 6px 16px rgba(255,255,255,0.28),
+    inset 0 -12px 22px rgba(60,0,20,0.45);
+}
+
+/* ===================================================== */
+/*        LUXURY DEEP BREATHING + RUBY GLOW EFFECT       */
+/* ===================================================== */
+
+@keyframes luxuryBreathDeep {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.18),
+      inset 0 -10px 20px rgba(80,0,20,0.40),
+      0 0 0 rgba(255,60,100,0); /* no outer glow yet */
+  }
+
+  50% {
+    transform: scale(1.014); /* deeper, premium breathing */
+    box-shadow:
+      0 26px 48px rgba(0,0,0,0.55),
+      inset 0 8px 16px rgba(255,255,255,0.28),
+      inset 0 -14px 28px rgba(90,0,30,0.55),
+
+      /* ✨ soft ruby aura glow */
+      0 0 22px rgba(255,70,120,0.28),
+      0 0 42px rgba(255,70,120,0.20);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.18),
+      inset 0 -10px 20px rgba(80,0,20,0.40),
+      0 0 0 rgba(255,60,100,0);
+  }
+}
+
+
+/* hover breathing */
+.big-btn:hover {
+  animation: softBreath 2.6s ease-in-out infinite;
+}
+
+/* press-in */
+.big-btn:active {
+  animation: none;
+  transform: translateY(0) scale(0.96);
+  box-shadow:
+    inset 0 10px 22px rgba(0,0,0,0.45),
+    inset 0 -4px 8px rgba(255,255,255,0.25);
+}
+
+@keyframes bounceBack {
+  0% {
+    transform: scale(0.97);
+  }
+  60% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* press-in */
+.manager-btn:active {
+  transform: scale(0.97);
+}
+
+/* bounce back when released */
+.manager-btn:not(:active) {
+  animation: bounceBack 0.35s cubic-bezier(.25,.8,.25,1);
+}
+
+
+/* ================================================= */
+/*           Smooth Bubble Tooltip                   */
+/* ================================================= */
+
+.big-btn {
+  position: relative;
+}
+
+.big-btn .bubble {
+  position: absolute;
+  bottom: 220px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.98);
+
+  display: block;
+  box-sizing: border-box;
+
+  background: #e5e5ea;
+  color: #1a1a1a;
+
+  padding: 14px 18px;
+  border-radius: 20px;
+
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: center;
+
+  width: 420px;
+  max-width: 420px;
+  white-space: normal;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.15),
+    0 2px 4px rgba(0,0,0,0.08);
+
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  z-index: 20;
+}
+
+
+.big-btn .bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #e5e5ea;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+}
+
+.big-btn:hover .bubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px) scale(1);
+}
+
+.access-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 35px auto 0;
+  gap: 0;
+  width: 100%;
+  max-width: 820px; /* длина плашки — можешь подогнать */
+}
+
+
+/* КРУГ С ФОТО + СТЕКЛЯННОЕ КОЛЬЦО */
+.access-knob {
+ display: none;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05)
+  ),
+  #9c1818;
+
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(22px) saturate(180%);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    inset 0 4px 8px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45);
+
+  position: relative;
+  z-index: 2;
+  overflow: hidden; /* на всякий случай */
+
+animation: emilyBreath 4.5s ease-in-out infinite;
+  transform-origin: center center;
+
+cursor: pointer;
+
+
+}
+
+/* стеклянное внутреннее кольцо */
+.access-knob::before {
+  content: "";
+  position: absolute;
+  inset: 8px;               /* размер кольца */
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.75);
+  box-shadow:
+    0 0 8px rgba(255,255,255,0.4),
+    0 0 18px rgba(255,180,200,0.35);
+  pointer-events: none;
+}
+
+.access-knob img {
+  position: absolute;
+  inset: 14px;              
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 3;
+}
+
+@keyframes emilyBreath {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.25),
+      inset 0 -10px 20px rgba(80,0,20,0.45),
+      0 0 0 rgba(255,70,120,0); /* без света */
+  }
+
+  50% {
+    transform: scale(1.06);
+    box-shadow:
+      0 28px 50px rgba(0,0,0,0.55),
+      inset 0 8px 16px rgba(255,255,255,0.35),
+      inset 0 -16px 28px rgba(90,0,30,0.55),
+
+      /* 🌸 ruby glow */
+      0 0 16px rgba(255,70,120,0.30),
+      0 0 34px rgba(255,70,120,0.22),
+      0 0 64px rgba(255,70,120,0.12);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.45),
+      inset 0 4px 8px rgba(255,255,255,0.25),
+      inset 0 -10px 20px rgba(80,0,20,0.45),
+      0 0 0 rgba(255,70,120,0);
+  }
+}
+
+
+
+/* ПЛАШКА */
+.access-banner {
+  flex: 1;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+  margin-left: 16px; /* чтобы плашка «заходила» под круг */
+
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+
+  background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05)
+  ),
+  #9c1818;
+
+  border: 1px solid rgba(255, 255, 255, 0.40);
+  backdrop-filter: blur(22px) saturate(180%);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.45),
+    inset 0 4px 8px rgba(255,255,255,0.25),
+    inset 0 -10px 20px rgba(80,0,20,0.45);
+
+  position: relative;
+  z-index: 1;
+  
+  cursor: pointer; 
+
+}
+
+.access-banner {
+  max-width: 700px;
+  margin-left: -32px;
+}
+
+
+.header-row {
+  max-width: 900px;
+  margin: 0 auto 6px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.back-btn,
+.visit-btn {
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,0.22), rgba(255,255,255,0.05)),
+    #9c1818;
+
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 18px;
+  padding: 10px 22px;
+
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.25),
+    inset 0 -6px 12px rgba(80,0,20,0.45),
+    0 8px 18px rgba(0,0,0,0.25);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-btn:hover,
+.visit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.35),
+    inset 0 -8px 16px rgba(80,0,20,0.55),
+    0 12px 26px rgba(0,0,0,0.35);
+}
+
+.back-btn:active,
+.visit-btn:active {
+  transform: scale(0.96);
+  box-shadow:
+    inset 0 6px 14px rgba(0,0,0,0.45);
+}
+
+.page-title {
+  font-size: 21px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #a02449;
+  font-style: italic;
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.08),
+    0 0 6px rgba(160,36,73,0.15);
+}
+
+
+
+.ios-banner {
+  margin: 34px auto 26px auto;
+  padding: 14px 20px;
+  max-width: 780px;
+  background: rgba(250,250,250,0.65);
+  border-radius: 18px;
+}
+
+
+.ios-banner.with-emily {
+  position: relative;
+  padding-left: 84px; /* место под кружок */
+}
+
+.access-wrap.in-banner {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  width: auto;
+}
+
+.access-knob {
+  margin-left: -15px;
+}
+
+.button-row {
+  margin-top: 60px;
+}
+
+.guide-link {
+  color: #2a6bff;
+  text-decoration: underline;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.main-text {
+  font-size: 17px;
+  font-weight: 550;
+  letter-spacing: 0.2px;
+}
+
+.ios-banner.with-emily {
+  padding-left: 0;
+}
+
+body.fade-out {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: all 0.35s ease;
+}
 
 </style>
 </head>
 
 <body>
 
-<div id="coupleHeader">Loading...</div>
-<div class="welcome">FloWWed Studio</div>
+<div class="page-title" style="display:none;">Dashboard</div>
+
+<div class="header-row" style="justify-content:center;">
+
+  <!-- 
+<button class="back-btn" onclick="goBack()">← Back</button>
+-->
+
+
+<div id="coupleHeader">Welcome</div>
+
+
+<!--
+<button class="visit-btn" onclick="visitSite()">
+  <i class="fa-solid fa-globe"></i> Your Web →
+</button>
+-->
+
+</div>
+
+
+  <!-- меняем класс -->
+  <div class="page-title">FloWWed Studio</div>
+
+
+
+<div class="ios-banner with-emily">
+  <div class="access-wrap in-banner">
+    <div class="access-knob">
+      <img src="images/emily.jpeg" alt="Emily — your AI companion">
+    </div>
+  </div>
+
+  <span class="main-text">
+  Your wedding planning — all in one place.
+</span> 
+<!-- Explore the Quick User Guide for this page
+<span id="openGuide" class="guide-link">here</span>. -->
+
+</div>
+<div id="warning" class="warning"></div>
 
 <div class="button-row">
 
-<button class="big-btn" id="site">
-  <i class="fa-solid fa-heart"></i>
-  Wedding Website
+  <!-- ROW 1 -->
 
+
+<button class="big-btn" id="upload" onclick="visitSite()">
+  <i class="fa-solid fa-globe"></i> Your Web 
   <div class="bubble">
-    View your <b>wedding website</b><br>
-    See how guests see it ✨
+    Your wedding website — in <b>full bloom</b>
   </div>
 </button>
 
 
-<button class="big-btn" id="web">
-  <i class="fa-solid fa-globe"></i>
-  Website Manager
+    <button class="big-btn" id="yourweb" onclick="openPage('yourweb')">
+      <i class="fa-solid fa-video"></i> Web Video
+      <div class="bubble">
+        Add a <b>video</b> to your landing page
+      </div>
+    </button>
 
+
+  <button class="big-btn" id="album" onclick="openPage('album')">
+    <i class="fa-solid fa-images"></i>Gallery
+    <div class="bubble">
+      Relive your <b>moments</b>
+    </div>
+  </button>
+
+
+  <button class="big-btn" id="updates" onclick="openPage('updates')">
+    <i class="fa-solid fa-bullhorn"></i>Updates
+    <div class="bubble">
+      Share <b>important news</b>
+    </div>
+  </button>
+
+
+
+
+  <button class="big-btn" id="guestbook" onclick="openPage('guestbook')">
+    <i class="fa-solid fa-users"></i>Guest Hub
+    <div class="bubble">
+      Manage your guests — <b>add them, track them</b>
+    </div>
+  </button>
+
+
+  <button class="big-btn" id="story" onclick="openPage('story')">
+    <i class="fa-solid fa-heart"></i>Our Story
+    <div class="bubble">
+      Tell your <b>love story</b>
+    </div>
+  </button>
+
+
+  <button class="big-btn" id="std" onclick="openPage('std')">
+    <i class="fa-solid fa-file-lines"></i>Save The Date
+    <div class="bubble">
+      Send your <b>Save-the-Date</b>
+    </div>
+  </button>
+
+  <button class="big-btn" id="rsvp" onclick="openPage('rsvp')">
+    <i class="fa-solid fa-envelope-open"></i>RSVP
+    <div class="bubble">
+      Send your <b>RSVP</b>
+    </div>
+  </button>
+
+
+<button class="big-btn" id="wedreports" onclick="openPage('wedreports')">
+  <i class="fa-solid fa-chart-line"></i>RSVP Reports
   <div class="bubble">
-    Edit your site content<br>
-    Photos, story, pages ⚙️
+    View your <b>RSVP analytics</b>
   </div>
 </button>
 
-<button class="big-btn" id="guest">
-  <i class="fa-solid fa-users"></i>
-  Wed Manager
 
+
+
+  <button class="big-btn" id="reports" onclick="openPage('reports')">
+    <i class="fa-solid fa-map-location-dot"></i>Travel & Event
+    <div class="bubble">
+      Travel and event details <b>at your fingertips</b>
+    </div>
+  </button>
+
+
+
+  <!-- ROW 2 -->
+  <button class="big-btn" id="seating" onclick="openPage('seating')">
+    <i class="fa-solid fa-chair"></i>Seating
+    <div class="bubble">
+      Create the perfect <b>table vibe</b>
+    </div>
+  </button>
+
+  <button class="big-btn" id="registry" onclick="openPage('registry')">
+    <i class="fa-solid fa-gift"></i>Gifts
+    <div class="bubble">
+      Share your <b>wishes</b> — gifting made easy 
+    </div>
+  </button>
+
+  <button class="big-btn" id="budget" onclick="openPage('budget')">
+    <i class="fa-solid fa-sack-dollar"></i>Budget
+    <div class="bubble">
+      Stay on top of your <b>budget</b>
+    </div>
+  </button>
+
+
+  <!-- ROW 3 -->
+  <button class="big-btn" id="memories" onclick="openPage('memories')">
+    <i class="fa-solid fa-comment-dots"></i>Memories
+    <div class="bubble">
+      Collect <b>memories & messages</b>   
+    </div>
+  </button>
+
+<button class="big-btn" id="feedback" onclick="openPage('feedback')">
+  <i class="fa-solid fa-heart"></i>Keepsake Box
   <div class="bubble">
-    Manage guests, RSVP<br>
-    Seating & planning 🪑
+    <b>Guest memories</b> — all in one place
   </div>
 </button>
 
+  <!-- ROW 4 (CENTERED 2 BUTTONS) -->
+
+    <button class="big-btn" id="party" onclick="openPage('party')">
+      <i class="fa-solid fa-question"></i> FAQ
+      <div class="bubble">
+        Frequently Asked <b>Questions</b>
+      </div>
+    </button>
+
+
 </div>
 
 
-<div id="trialExpiredOverlay" style="
-position:fixed;
-inset:0;
-background:rgba(255,235,245,.85);
-backdrop-filter:blur(12px);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:10000;
-">
+<script type="module">
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-<div style="
-background:white;
-padding:40px 32px;
-width:380px;
-border-radius:26px;
-text-align:center;
-box-shadow:0 22px 65px rgba(0,0,0,.15);
-">
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI";
 
-<h2 style="color:#c30c1e">Trial Expired</h2>
+const supabase = createClient(
+  "https://octwwpatppbenqwkcqaw.supabase.co",
+  SUPABASE_ANON_KEY
+);
 
-<p>Your trial period has ended.</p>
-
-<a href="https://flowweds.netlify.app"
-style="
-display:block;
-background:#c30c1e;
-color:white;
-padding:14px;
-border-radius:14px;
-font-size:18px;
-font-weight:800;
-text-decoration:none;
-">
-Buy FloWWed
-</a>
-
-</div>
-</div>
-
-
-<script>
-
+// 🔥 TOKEN
 const params = new URLSearchParams(window.location.search);
 
-const token =
-params.get("t") ||
-params.get("token");
+let token =
+  params.get("t") ||
+  params.get("token") ||
+  params.get("TOKEN") ||
+  params.get("T") ||
+  localStorage.getItem("verified_token") ||
+  "";
 
-if(!token){
-
-window.location.replace("https://flowweds.netlify.app");
-throw new Error("No token");
-
+// сохранить если пришёл новый
+if (params.get("t")) {
+  localStorage.setItem("verified_token", params.get("t"));
 }
 
-// basic token format check (защита от перебора)
-if(token.length < 8){
-window.location.replace("https://flowweds.netlify.app");
-throw new Error("Invalid token");
+
+
+// 🔥 TRIAL CHECK (ФИНАЛЬНЫЙ)
+
+if (!token) {
+  document.body.innerHTML = "No access";
+  throw new Error("No token");
 }
+
+const resTrial = await fetch(
+  `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?edit_token=eq.${token}&select=trial_expires_at,is_trial`,
+  {
+    headers: {
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + SUPABASE_ANON_KEY
+    }
+  }
+);
+
+const trialData = await resTrial.json();
+
+if (!trialData.length) {
+  document.body.innerHTML = "Invalid access";
+  throw new Error("Invalid token");
+}
+
+const trial = trialData[0];
+
+if (trial.is_trial) {
+  const now = new Date();
+  const expires = new Date(trial.trial_expires_at);
+
+  if (expires < now) {
+
+    document.body.innerHTML = `
+      <div style="
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        height:100vh;
+        font-family:Inter, sans-serif;
+        text-align:center;
+        background:#fff7fa;
+        color:#7a3a4a;
+        padding:20px;
+      ">
+        <h1 style="font-size:28px;margin-bottom:10px;">
+          Your trial has ended
+        </h1>
+
+        <p style="font-size:16px;margin-bottom:30px;max-width:400px;">
+          Continue planning your wedding with full access.
+        </p>
+
+        <a href="https://flowweds.netlify.app" style="
+          background:#9c1818;
+          color:white;
+          padding:14px 28px;
+          border-radius:12px;
+          text-decoration:none;
+          font-weight:600;
+          box-shadow:0 8px 20px rgba(0,0,0,0.25);
+        ">
+          Buy your FloWWed
+        </a>
+      </div>
+    `;
+
+    throw new Error("Expired");
+  }
+}
+
+
+
+// ----------------------------
+// LOAD COUPLE NAME
+// ----------------------------
 
 const hName = document.getElementById("coupleHeader");
 
-async function checkAccess(){
+async function loadCouple() {
 
-try{
+  const res = await fetch(
+    "https://octwwpatppbenqwkcqaw.supabase.co/functions/v1/check-access",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({ token })
+    }
+  );
 
-const res = await fetch(
-"https://octwwpatppbenqwkcqaw.supabase.co/functions/v1/check-access",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9jdHd3cGF0cHBiZW5xd2tjcWF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg5NjYxMjYsImV4cCI6MjA3NDU0MjEyNn0.kYX1yCkx3Zl2J_qLHZYcknLnx_aXl26zB--__MzkknI"
-},
-body:JSON.stringify({token})
-});
+  const access = await res.json();
 
-return await res.json();
-
-}catch(e){
-
-console.error(e);
-return {allowed:false};
-
+  if (access.couple_name) {
+    hName.innerHTML = access.couple_name;
+  } else {
+    hName.innerHTML = "Your Names Here";
+  }
 }
 
-}
+loadCouple();
 
-async function init(){
-
-const access = await checkAccess();
-
-console.log(access);
-
-if(access.reason==="trial-expired"){
-
-document.getElementById("trialExpiredOverlay").style.display="flex";
-
-// блокируем всю страницу
-document.body.style.pointerEvents="none";
-document.getElementById("trialExpiredOverlay").style.pointerEvents="auto";
-
-throw new Error("Trial expired");
-
-}
-
-if(access.bride || access.groom){
-
-const bride = access.bride || "";
-const groom = access.groom || "";
-
-hName.textContent = bride && groom
-? bride+" ∞ "+groom
-: bride+groom;
-
-}else{
-
-hName.textContent="Your Names Here";
-
-}
-
-/* показать страницу только после проверки */
-document.body.style.opacity="1";
-
-}
-
-init();
-
-function go(page){
-
-if(document.getElementById("trialExpiredOverlay").style.display==="flex"){
-return;
-}
-
-window.open(page+"?t="+token,"_blank");
-
-}
-
-
-document.getElementById("web").onclick=()=>go("yourweb.html");
-document.getElementById("guest").onclick=()=>go("dashboard.html");
-
-document.getElementById("site").onclick=()=>{
-
-window.open(
-"https://flowwed.netlify.app/index.html?t="+token,
-"_blank"
-);
-
-};
+// 👉 TOKEN глобально
+window.APP_TOKEN = token;
 
 </script>
+
+<script>
+
+function openPage(page) {
+
+  const token = window.APP_TOKEN || "";
+
+  let file = "";
+
+  switch (page) {
+    case "guestbook": file = "Guests.html"; break;
+    case "upload": file = "upload.html"; break;
+    case "std": file = "savethedate.html"; break;
+    case "rsvp": file = "postwed.html"; break;
+    case "seating": file = "SeatingChart.html"; break;
+    case "registry": file = "gift_registry.html"; break;
+    case "budget": file = "Budget.html"; break;
+    case "reports": file = "traveldetails.html"; break;
+    case "memories": file = "postwed2.html"; break;
+    case "album": file = "just_married.html"; break;
+    case "story": file = "story.html"; break;
+    case "updates": file = "dash-updates.html"; break;
+    case "party": file = "faq.html"; break;
+    case "yourweb": file = "videouploader.html"; break;
+    case "wedreports": file = "wed_reports.html"; break;
+    case "feedback": file = "guest_memory.html"; break;
+    default:
+      alert("Not connected: " + page);
+      return;
+  }
+
+  document.body.classList.add("fade-out");
+
+  setTimeout(() => {
+    window.location.href = `${file}?t=${token}`;
+  }, 300);
+}
+
+</script>
+
+<script>
+
+function goBack() {
+  document.referrer ? location.href = document.referrer : history.back();
+}
+
+function visitSite() {
+
+  const token = window.APP_TOKEN || "";
+
+  window.open(`https://flowwed.netlify.app/index.html?t=${token}`, "_blank");
+}
+
+</script>
+
+<div id="guideModal" style="
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-right: 4vw;
+  padding-top: 8vh;
+  z-index: 999999;
+">
+  <div style="
+    width: 560px;
+    height: 64vh;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  ">
+    <div id="closeGuide" style="
+      position:absolute;
+      top:10px;
+      right:14px;
+      font-size:28px;
+      font-weight:bold;
+      cursor:pointer;
+      z-index:10;
+    ">×</div>
+
+    <iframe src="tttdashboard.html?embed=1" style="
+      width:100%;
+      height:100%;
+      border:none;
+    "></iframe>
+  </div>
+</div>
+
+<script src="orientation-lock.js"></script>
+
+<script src="/token-guard.js"></script>
+
 
 </body>
 </html>
