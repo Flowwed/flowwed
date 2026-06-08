@@ -1685,6 +1685,11 @@ ${options.join("\n")}`
 
 if (!target) return;
 
+if (!options.includes(target)) {
+  showRedToast("Invalid destination");
+  return;
+}
+
 const statusMap = {
   rsvpYes: "Yes",
   rsvpMaybe: "Maybe",
