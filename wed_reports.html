@@ -1651,12 +1651,24 @@ document.querySelectorAll(".migrate-btn").forEach(btn => {
       'tbody input[type="checkbox"]:checked'
     );
 
-    if (selected.length === 0) {
-      showRedToast("Select at least one guest!");
-      return;
-    }
+if (selected.length === 0) {
+  showRedToast("Select at least one guest!");
+  return;
+}
 
-    alert(`${selected.length} guest(s) selected`);
+const target = prompt(
+`Move ${selected.length} guest(s) to:
+
+rsvpYes
+rsvpMaybe
+rsvpNo
+rsvpNoResponse`
+);
+
+if (!target) return;
+
+alert(`Move to ${target}`);
+
 
   });
 });
