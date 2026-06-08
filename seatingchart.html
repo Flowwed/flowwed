@@ -1350,6 +1350,8 @@ function addSimpleTable() {
   const seats = seatMap[id] ?? 6;
 tables.push({ id, seats });
 
+const freeSeats = seats;
+
   guestsAtTable[id] = [];
 
   const list = document.getElementById("simpleTableList");
@@ -1369,7 +1371,7 @@ tables.push({ id, seats });
   </div>
 
   <div class="remaining-seats">
-    Free: <span class="remaining-count">${seats}</span>
+    Free: <span class="remaining-count">${freeSeats}</span>
   </div>
 
   <button class="seat-btn" data-delta="+1" data-id="${id}">+</button>
@@ -1524,6 +1526,15 @@ function getUsedSeats(tableId) {
 
   return total;
 }
+
+function getFreeSeats(tableId) {
+
+  const table = tables.find(t => t.id === tableId);
+  if (!table) return 0;
+
+  return Math.max(0, table.seats - getUsedSeats(tableId));
+}
+
 
 /***************************************************
  *  UPDATE LEFT SIDEBAR GUEST LISTS
