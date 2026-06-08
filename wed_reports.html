@@ -1754,7 +1754,49 @@ options.forEach(opt => {
 
 modal.style.display = "flex";
 
+document.querySelectorAll(".migrate-option")
+.forEach(btn => {
+
+  btn.onclick = async () => {
+
+    const target = btn.textContent.trim();
+
+    const statusMap = {
+      rsvpYes: "Yes",
+      rsvpMaybe: "Maybe",
+      rsvpNo: "No",
+      rsvpNoResponse: null
+    };
+
+    const ids = [...selected].map(ch => ch.dataset.id);
+
+    const { error } = await supabase
+      .from("guests")
+      .update({
+        rsvp_status: statusMap[target]
+      })
+      .in("id", ids);
+
+    if (error) {
+      console.error(error);
+      showRedToast("Migration failed");
+      return;
+    }
+
+    document.getElementById("migrateModal")
+      .style.display = "none";
+
+    showToast("Guests migrated");
+
+    await loadGuests();
+  };
+
+});
+
 return;
+
+
+
 
 
 if (!options.includes(target)) {
