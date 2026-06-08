@@ -1722,13 +1722,40 @@ else if (group === "rsvpNoResponse") {
   options = ["rsvpYes", "rsvpMaybe", "rsvpNo"];
 }
 
-const target = prompt(
-`Move ${selected.length} guest(s) to:
+const modal = document.getElementById("migrateModal");
+const title = document.getElementById("migrateTitle");
+const buttons = document.getElementById("migrateButtons");
 
-${options.join("\n")}`
-);
+title.textContent =
+  `Move ${selected.length} guest(s)`;
 
-if (!target) return;
+buttons.innerHTML = "";
+
+options.forEach(opt => {
+
+  buttons.innerHTML += `
+    <button class="migrate-option"
+      style="
+        display:block;
+        width:100%;
+        margin:8px 0;
+        padding:10px;
+        border:none;
+        border-radius:10px;
+        background:#375b57;
+        color:white;
+        font-weight:700;
+        cursor:pointer;
+      ">
+      ${opt}
+    </button>
+  `;
+});
+
+modal.style.display = "flex";
+
+return;
+
 
 if (!options.includes(target)) {
   showRedToast("Invalid destination");
