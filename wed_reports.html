@@ -1470,10 +1470,12 @@ function renderTable(name, arr, key) {
   <tr>
     <td>
 
-      <input type="checkbox"
-             data-email="${(g.email || "").replace(/"/g, "&quot;")}"
-             data-phone="${(g.phone || "").replace(/"/g, "&quot;")}"
-             data-group="${key}">
+<input type="checkbox"
+       data-id="${g.id}"
+       data-email="${(g.email || "").replace(/"/g, "&quot;")}"
+       data-phone="${(g.phone || "").replace(/"/g, "&quot;")}"
+       data-group="${key}">
+
     <td>${index + 1}</td>
 
     <td>${g.first_name || ""} ${g.last_name || ""}</td>
@@ -1651,7 +1653,7 @@ document.querySelectorAll(".migrate-btn").forEach(btn => {
       'tbody input[type="checkbox"]:checked'
     );
 
-console.log(selected);
+console.log(selected[0].dataset);
 
 if (selected.length === 0) {
   showRedToast("Select at least one guest!");
