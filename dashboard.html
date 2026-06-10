@@ -717,6 +717,15 @@ body.locked .big-btn {
   >
 </div>
 
+<div class="couple-edit-wrap">
+  <input
+    id="weddingDateInput"
+    class="couple-input"
+    type="date"
+  >
+</div>
+
+
   <!-- меняем класс -->
   <div class="page-title">FloWWed Studio</div>
 
@@ -1035,6 +1044,15 @@ console.log("INPUT VALUE =", coupleInput.value);
     if (name.length < 3)
       return;
 
+const weddingDate =
+  document.getElementById(
+    "weddingDateInput"
+  ).value;
+
+if (!weddingDate)
+  return;
+
+
     const res = await fetch(
       `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?edit_token=eq.${encodeURIComponent(token)}&select=edit_token,couple_name`,
       {
@@ -1048,9 +1066,11 @@ console.log("INPUT VALUE =", coupleInput.value);
           "Prefer":
             "return=representation"
         },
-        body: JSON.stringify({
-          couple_name: name
-        })
+
+body: JSON.stringify({
+  couple_name: name,
+  wedding_date: weddingDate
+})
       }
     );
 
