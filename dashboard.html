@@ -1031,6 +1031,7 @@ async function loadCouple() {
 loadCouple();
 
 // 👉 TOKEN глобально
+
 window.APP_TOKEN = token;
 
 const coupleInput =
@@ -1042,6 +1043,57 @@ const weddingDateInput =
 const setupBtn =
   document.getElementById("setupBtn");
 
+
+async function saveSetup() {
+
+  const name =
+    coupleInput.value.trim();
+
+  if (name.length < 3)
+    return;
+
+  const weddingDate =
+    weddingDateInput.value;
+
+  if (!weddingDate)
+    return;
+
+  const res = await fetch(
+    `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?edit_token=eq.${encodeURIComponent(token)}&select=edit_token,couple_name,wedding_date`,
+    {
+      method: "PATCH",
+      headers: {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization":
+          "Bearer " + SUPABASE_ANON_KEY,
+        "Content-Type":
+          "application/json",
+        "Prefer":
+          "return=representation"
+      },
+      body: JSON.stringify({
+        couple_name: name,
+        wedding_date: weddingDate
+      })
+    }
+  );
+
+  const txt = await res.text();
+
+  console.log("SAVE =", txt);
+
+  if (!res.ok)
+    return;
+
+  hName.innerHTML = name;
+
+  document.body.classList.remove("locked");
+
+  coupleInput.style.display = "none";
+  weddingDateInput.style.display = "none";
+  setupBtn.style.display = "none";
+}
+
 coupleInput?.addEventListener(
   "keydown",
   async (e) => {
@@ -1049,62 +1101,17 @@ coupleInput?.addEventListener(
     if (e.key !== "Enter")
       return;
 
-    const name =
-      coupleInput.value.trim();
+    await saveSetup();
 
-console.log("NAME =", name);
-console.log("INPUT VALUE =", coupleInput.value);
+  }
+);
 
+setupBtn?.addEventListener(
+  "click",
+  async () => {
 
-    if (name.length < 3)
-      return;
+    await saveSetup();
 
-const weddingDate =
-  document.getElementById(
-    "weddingDateInput"
-  ).value;
-
-if (!weddingDate)
-  return;
-
-
-    const res = await fetch(
-      `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?edit_token=eq.${encodeURIComponent(token)}&select=edit_token,couple_name`,
-      {
-        method: "PATCH",
-        headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization":
-            "Bearer " + SUPABASE_ANON_KEY,
-          "Content-Type":
-            "application/json",
-          "Prefer":
-            "return=representation"
-        },
-
-body: JSON.stringify({
-  couple_name: name,
-  wedding_date: weddingDate
-})
-      }
-    );
-
-
-    console.log("PATCH STATUS =", res.status);
-
-    const txt = await res.text();
-
-    console.log("PATCH RESPONSE =", txt);
-
-    if (!res.ok)
-      return;
-
-    hName.innerHTML = name;
-
-    document.body.classList.remove("locked");
-
-    coupleInput.style.display =
-      "none";
   }
 );
 
