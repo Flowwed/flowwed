@@ -1022,8 +1022,6 @@ async function loadCouple() {
 
   const access = await res.json();
 
-console.log("ACCESS =", access);
-
 if (
   access.couple_name &&
   access.couple_name !== "Your Names Here"
@@ -1033,14 +1031,6 @@ if (
 } else {
   hName.innerHTML = "";
 }
-
-if (access.wedding_date) {
-
-  weddingDateInput.value =
-    access.wedding_date;
-
-}
-
 }
 
 
