@@ -726,6 +726,15 @@ body.locked .big-btn {
 </div>
 
 
+<div style="margin-top:12px;">
+  <button
+    id="setupBtn"
+    class="back-btn"
+  >
+    Continue
+  </button>
+</div>
+
   <!-- меняем класс -->
   <div class="page-title">FloWWed Studio</div>
 
@@ -1030,6 +1039,9 @@ const coupleInput =
 const weddingDateInput =
   document.getElementById("weddingDateInput");
 
+const setupBtn =
+  document.getElementById("setupBtn");
+
 coupleInput?.addEventListener(
   "keydown",
   async (e) => {
@@ -1077,21 +1089,6 @@ body: JSON.stringify({
       }
     );
 
-weddingDateInput?.addEventListener(
-  "keydown",
-  async (e) => {
-
-    if (e.key !== "Enter")
-      return;
-
-    coupleInput.dispatchEvent(
-      new KeyboardEvent("keydown", {
-        key: "Enter"
-      })
-    );
-
-  }
-);
 
     console.log("PATCH STATUS =", res.status);
 
