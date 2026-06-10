@@ -980,6 +980,14 @@ if (trial.is_trial) {
 
 const hName = document.getElementById("coupleHeader");
 
+const dashboardButtons =
+  document.querySelectorAll(".big-btn");
+
+dashboardButtons.forEach(btn => {
+  btn.style.pointerEvents = "none";
+  btn.style.opacity = "0.45";
+});
+
 async function loadCouple() {
 
   const res = await fetch(
