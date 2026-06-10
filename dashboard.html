@@ -1018,7 +1018,6 @@ window.APP_TOKEN = token;
 const coupleInput =
   document.getElementById("coupleInput");
 
-
 coupleInput?.addEventListener(
   "keydown",
   async (e) => {
@@ -1033,16 +1032,17 @@ coupleInput?.addEventListener(
       return;
 
     const res = await fetch(
-      `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?edit_token=eq.${token}`,
+      `https://octwwpatppbenqwkcqaw.supabase.co/rest/v1/sites?edit_token=eq.${encodeURIComponent(token)}&select=edit_token,couple_name`,
       {
         method: "PATCH",
         headers: {
           "apikey": SUPABASE_ANON_KEY,
           "Authorization":
-            "Bearer " +
-            SUPABASE_ANON_KEY,
+            "Bearer " + SUPABASE_ANON_KEY,
           "Content-Type":
-            "application/json"
+            "application/json",
+          "Prefer":
+            "return=representation"
         },
         body: JSON.stringify({
           couple_name: name
@@ -1050,25 +1050,23 @@ coupleInput?.addEventListener(
       }
     );
 
-console.log("PATCH STATUS =", res.status);
+    console.log("PATCH STATUS =", res.status);
 
-const txt = await res.text();
+    const txt = await res.text();
 
-console.log("PATCH RESPONSE =", txt);
+    console.log("PATCH RESPONSE =", txt);
 
-if (!res.ok)
-  return;
-
+    if (!res.ok)
+      return;
 
     hName.innerHTML = name;
 
-document.body.classList.remove("locked");
+    document.body.classList.remove("locked");
 
     coupleInput.style.display =
       "none";
   }
 );
-
 
 </script>
 
