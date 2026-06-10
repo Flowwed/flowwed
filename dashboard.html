@@ -688,10 +688,15 @@ body.fade-out {
     0 12px 28px rgba(160,36,73,0.22);
 }
 
+body.locked .big-btn {
+  pointer-events: none;
+  opacity: 0.45;
+}
+
 </style>
 </head>
 
-<body>
+<body class="locked">
 
 <div class="page-title" style="display:none;">Dashboard</div>
 
@@ -980,13 +985,7 @@ if (trial.is_trial) {
 
 const hName = document.getElementById("coupleHeader");
 
-const dashboardButtons =
-  document.querySelectorAll(".big-btn");
 
-dashboardButtons.forEach(btn => {
-  btn.style.pointerEvents = "none";
-  btn.style.opacity = "0.45";
-});
 
 async function loadCouple() {
 
@@ -1019,13 +1018,6 @@ window.APP_TOKEN = token;
 const coupleInput =
   document.getElementById("coupleInput");
 
-const dashboardButtons =
-  document.querySelectorAll(".big-btn");
-
-dashboardButtons.forEach(btn => {
-  btn.style.pointerEvents = "none";
-  btn.style.opacity = "0.45";
-});
 
 coupleInput?.addEventListener(
   "keydown",
@@ -1063,10 +1055,7 @@ coupleInput?.addEventListener(
 
     hName.innerHTML = name;
 
-    dashboardButtons.forEach(btn => {
-      btn.style.pointerEvents = "";
-      btn.style.opacity = "";
-    });
+document.body.classList.remove("locked");
 
     coupleInput.style.display =
       "none";
