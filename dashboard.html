@@ -1027,6 +1027,9 @@ window.APP_TOKEN = token;
 const coupleInput =
   document.getElementById("coupleInput");
 
+const weddingDateInput =
+  document.getElementById("weddingDateInput");
+
 coupleInput?.addEventListener(
   "keydown",
   async (e) => {
@@ -1073,6 +1076,22 @@ body: JSON.stringify({
 })
       }
     );
+
+weddingDateInput?.addEventListener(
+  "keydown",
+  async (e) => {
+
+    if (e.key !== "Enter")
+      return;
+
+    coupleInput.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "Enter"
+      })
+    );
+
+  }
+);
 
     console.log("PATCH STATUS =", res.status);
 
