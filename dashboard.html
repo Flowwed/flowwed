@@ -1004,12 +1004,17 @@ async function loadCouple() {
 
   const access = await res.json();
 
-  if (access.couple_name) {
-    hName.innerHTML = access.couple_name;
-  } else {
-    hName.innerHTML = "Your Names Here";
-  }
+if (
+  access.couple_name &&
+  access.couple_name !== "Your Names Here"
+) {
+  hName.innerHTML =
+    access.couple_name;
+} else {
+  hName.innerHTML = "";
 }
+}
+
 
 loadCouple();
 
