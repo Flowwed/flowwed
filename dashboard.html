@@ -1042,8 +1042,6 @@ if (access.wedding_date) {
 }
 
 
-loadCouple();
-
 // 👉 TOKEN глобально
 
 window.APP_TOKEN = token;
@@ -1056,6 +1054,8 @@ const weddingDateInput =
 
 const setupBtn =
   document.getElementById("setupBtn");
+
+loadCouple();
 
 
 async function saveSetup() {
