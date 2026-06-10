@@ -1022,6 +1022,8 @@ async function loadCouple() {
 
   const access = await res.json();
 
+console.log("ACCESS =", access);
+
 if (
   access.couple_name &&
   access.couple_name !== "Your Names Here"
@@ -1042,6 +1044,8 @@ if (access.wedding_date) {
 }
 
 
+loadCouple();
+
 // 👉 TOKEN глобально
 
 window.APP_TOKEN = token;
@@ -1054,8 +1058,6 @@ const weddingDateInput =
 
 const setupBtn =
   document.getElementById("setupBtn");
-
-loadCouple();
 
 
 async function saveSetup() {
