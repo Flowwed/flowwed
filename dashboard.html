@@ -1050,8 +1050,15 @@ coupleInput?.addEventListener(
       }
     );
 
-    if (!res.ok)
-      return;
+console.log("PATCH STATUS =", res.status);
+
+const txt = await res.text();
+
+console.log("PATCH RESPONSE =", txt);
+
+if (!res.ok)
+  return;
+
 
     hName.innerHTML = name;
 
