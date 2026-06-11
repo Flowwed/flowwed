@@ -1024,16 +1024,6 @@ async function loadCouple() {
 
 console.log("ACCESS =", access);
 
-if (
-  access.couple_name &&
-  access.couple_name !== "Your Names Here"
-) {
-  hName.innerHTML =
-    access.couple_name;
-} else {
-  hName.innerHTML = "";
-}
-
 
 if (access.wedding_date) {
 
