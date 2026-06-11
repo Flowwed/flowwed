@@ -1022,6 +1022,8 @@ async function loadCouple() {
 
   const access = await res.json();
 
+console.log("ACCESS =", access);
+
 if (
   access.couple_name &&
   access.couple_name !== "Your Names Here"
