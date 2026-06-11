@@ -1060,6 +1060,22 @@ const setupBtn =
   document.getElementById("setupBtn");
 
 
+if (
+  sessionStorage.getItem(
+    "dashboard_unlocked"
+  ) === "1"
+) {
+
+  document.body.classList.remove("locked");
+
+  setupBtn.style.display = "none";
+
+coupleInput.disabled = true;
+  weddingDateInput.disabled = true;
+
+}
+
+
 async function saveSetup() {
 
   const name =
@@ -1104,6 +1120,11 @@ async function saveSetup() {
   // hName.innerHTML = name;
 
   document.body.classList.remove("locked");
+
+sessionStorage.setItem(
+  "dashboard_unlocked",
+  "1"
+);
 
   // coupleInput.style.display = "none";
   // weddingDateInput.style.display = "none";
