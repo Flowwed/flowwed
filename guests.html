@@ -1363,6 +1363,12 @@ const { data, error } = await supabase
   .insert([{ first_name:first, last_name:last, email:emailValue, phone:phoneValue, token }])
   .select();
 
+console.log("ADD GUEST TOKEN:", token);
+console.log("ADD GUEST DATA:", data);
+console.log("ADD GUEST ERROR:", error);
+
+
+
 if (error) {
   console.error(error);
   showToastBox(error.message, "error");
