@@ -2068,12 +2068,13 @@ document.addEventListener("change", (e) => {
     refreshComposerFields();
 
 document.getElementById("composerBody").value =
-`Hello!<br>
+`Hello!<br><br>
 
-Thank you for being part of our special day.<br>
+Thank you for being part of our special day.<br><br>
 
-If you'd like, please share a message or some of your favorite photos from the wedding using the Memories Form below.<br>
-With love,
+If you'd like, please share a message or some of your favorite photos from the wedding using the Memories Form below.<br><br>
+
+With love,<br><br>
 
 ${coupleFullName}`;
 
@@ -2416,9 +2417,6 @@ const res = await fetch("/.netlify/functions/send-invites", {
 <br><br>
 <hr style="margin:18px 0;border:none;border-top:1px solid #eee;">
 
-<div style="font-weight:700;color:#9c1818;margin-bottom:8px;">
-XXXXXXXX TEST XXXXXXXX
-</div>
 
 <a href="${rsvpLink}" style="
 display:inline-block;
