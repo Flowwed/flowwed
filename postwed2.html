@@ -2070,14 +2070,13 @@ document.addEventListener("change", (e) => {
 document.getElementById("composerBody").value =
 `Hello!
 
-${coupleFullName} are happy to invite you to celebrate their wedding.
+Thank you for being part of our special day.
 
-Please find their official invitation and RSVP form using the link below.
+If you'd like, please share a message or some of your favorite photos from the wedding using the Memories Form below.
 
-We would be grateful if you could confirm your attendance.
+With love,
 
-Thank you!`;
-
+${coupleFullName}`;
 
   }
 
@@ -2402,7 +2401,7 @@ for (let i = 0; i < batchGuests.length; i++) {
   let ok = true;
 
   const rsvpLink =
-  `${window.location.origin}/rsvp-reminder.html?t=${token}&g=${g.guest_id}`;
+  `${window.location.origin}/postwed-form.html?t=${token}&g=${g.guest_id}&type=memories`;
 
   try {
 
@@ -2431,7 +2430,7 @@ text-decoration:none;
 border-radius:6px;
 font-weight:700;
 ">
-Open RSVP Form
+Open Memories Form
 </a>
 `,
 
