@@ -1851,15 +1851,17 @@ document.addEventListener("change", (e) => {
     refreshComposerFields();
 
 document.getElementById("composerBody").value =
-`Hello!
+`Hello!<br>
 
-${coupleFullName} are happy to invite you to celebrate their wedding.
+We are happy to invite you to celebrate our wedding.<br>
 
-Please find their official invitation and RSVP form using the link below.
+Please click the button below to view our Save the Date announcement.<br>
 
-We would be grateful if you could confirm your attendance.
+We hope you will be able to join us for this special occasion.<br>
 
-Thank you!`;
+Thank you!<br><br>
+
+${coupleFullName}`;
 
 
   }
@@ -2280,7 +2282,8 @@ for (let i = 0; i < batchGuests.length; i++) {
   let ok = true;
 
 const rsvpLink =
-`${window.location.origin}/std_preview.html?t=${token}&g=${g.guest_id}&type=std&mode=admin`;
+`${window.location.origin}/std_preview.html?t=${token}&g=${g.guest_id}&type=std`;
+
   try {
 
 const res = await fetch("/.netlify/functions/send-invites", {
@@ -2295,9 +2298,6 @@ const res = await fetch("/.netlify/functions/send-invites", {
 <br><br>
 <hr style="margin:18px 0;border:none;border-top:1px solid #eee;">
 
-<div style="font-weight:700;color:#9c1818;margin-bottom:8px;">
-RSVP Form
-</div>
 
 <a href="${rsvpLink}" style="
 display:inline-block;
@@ -2308,7 +2308,7 @@ text-decoration:none;
 border-radius:6px;
 font-weight:700;
 ">
-Open RSVP Form
+Open Save the Date
 </a>
 `,
 
