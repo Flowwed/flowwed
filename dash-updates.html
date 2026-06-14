@@ -1608,19 +1608,44 @@ quill.on("text-change", () => {
 iframe.onload = sendTextToIframe;
       });
 
-      sendEmailBtn?.addEventListener("click", () => {
-        if (!ensureToken()) return;
-        openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
-      });
+sendEmailBtn?.addEventListener("click", () => {
+
+  if (hasUnsavedChanges) {
+
+    showAlertBox(
+      "Unsaved Changes",
+      "Please save your latest changes before notifying your guests."
+    );
+
+    return;
+  }
+
+  if (!ensureToken()) return;
+
+  openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
+});
+
 
 sendSmsBtn?.addEventListener("click", () => {
 
-  console.log("SMS CLICKED");  // 👈 ДОБАВИЛИ
+  if (hasUnsavedChanges) {
+
+    showAlertBox(
+      "Unsaved Changes",
+      "Please save your latest changes before notifying your guests."
+    );
+
+    return;
+  }
+
+  console.log("SMS CLICKED");
 
   if (!ensureToken()) return;
 
   openSMSQRModal(token);
+
 });
+
 
 
 document.getElementById("cancelDeleteBtn")?.addEventListener("click", () => {
