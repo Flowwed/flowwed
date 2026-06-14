@@ -1820,7 +1820,8 @@ const updatesBtn =
   document.getElementById("sendUpdatesBtn");
 
 if (updatesBtn) {
-  updatesBtn.disabled = false;
+  updatesBtn.dataset.locked = "false";
+  updatesBtn.style.opacity = "1";
 }
 
 showToast(res.ok ? "Text saved" : "Save failed");
@@ -1871,11 +1872,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const token =
     window.APP_TOKEN;
 
-btn.disabled = true;
+btn.dataset.locked = "true";
+btn.style.opacity = "0.45";
 
   btn.addEventListener("click", () => {
 
-if (btn.disabled) {
+if (btn.dataset.locked === "true") {
 
   showAlertBox(
     "Save Required",
@@ -1884,7 +1886,6 @@ if (btn.disabled) {
 
   return;
 }
-
     if (!token) {
       alert("Missing token");
       return;
@@ -2834,9 +2835,9 @@ const btn =
   document.getElementById("sendUpdatesBtn");
 
 if (btn) {
-  btn.disabled = true;
+  btn.dataset.locked = "true";
+  btn.style.opacity = "0.45";
 }
-
 
 const sendEmailBtn =
   document.querySelector(".info-action-btn");
