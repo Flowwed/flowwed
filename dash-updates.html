@@ -1658,17 +1658,33 @@ quill.on("text-change", () => {
 
       saveBtn?.addEventListener("click", saveUpdate);
 
-      previewBtn?.addEventListener("click", () => {
-        if (!ensureEditor()) return;
-        if (!ensureToken()) {
-          alert("Missing token in URL");
-          return;
-        }
+previewBtn?.addEventListener("click", () => {
 
-        openModal(`https://flowwed.netlify.app/web-updates?token=${token}`, "large");
-        const iframe = document.getElementById("storyIframe");
-iframe.onload = sendTextToIframe;
-      });
+  if (!ensureEditor()) return;
+
+  if (!ensureToken()) {
+    alert("Missing token in URL");
+    return;
+  }
+
+  const iframe =
+    document.getElementById("storyIframe");
+
+  iframe.onload = () => {
+
+    setTimeout(() => {
+      sendTextToIframe();
+    }, 500);
+
+  };
+
+  openModal(
+    `https://flowwed.netlify.app/web-updates?token=${token}`,
+    "large"
+  );
+
+});
+
 
 sendEmailBtn?.addEventListener("click", () => {
 
