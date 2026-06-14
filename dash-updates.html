@@ -1272,6 +1272,18 @@ const registryToggle =
       }, 2000);
     }
 
+
+function showAlertBox(title, message) {
+
+  const modal =
+    document.getElementById("unsavedModal");
+
+  if (!modal) return;
+
+  modal.style.display = "flex";
+
+}
+
     function formatReadableDate(dateValue) {
       return new Date(dateValue).toLocaleDateString("en-US", {
         year: "numeric",
