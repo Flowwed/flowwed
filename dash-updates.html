@@ -1599,8 +1599,9 @@ modal.classList.add("is-open");
 
       iframe.contentWindow.postMessage(
         {
-          type: "setWixText",
+          type: "previewUpdate",
           text: quill.root.innerHTML
+
         },
         "*"
       );
