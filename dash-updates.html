@@ -1469,6 +1469,16 @@ if (!res.ok) {
 
       hasUnsavedChanges = false;
 
+const sendEmailBtn =
+  document.querySelectorAll(".info-action-btn")[0];
+
+if (sendEmailBtn) {
+  sendEmailBtn.disabled = false;
+  sendEmailBtn.style.opacity = "1";
+  sendEmailBtn.style.cursor = "pointer";
+}
+
+
       showToast("Update saved!");
 
 renderUpdates(documentUpdates);
@@ -1574,10 +1584,22 @@ function initQuill() {
 quill.on("text-change", () => {
 
   if (!isInitialLoading) {
+
     hasUnsavedChanges = true;
+
+    const sendEmailBtn =
+      document.querySelectorAll(".info-action-btn")[0];
+
+    if (sendEmailBtn) {
+      sendEmailBtn.disabled = true;
+      sendEmailBtn.style.opacity = "0.45";
+      sendEmailBtn.style.cursor = "not-allowed";
+    }
+
   }
 
 });
+
 
 }
 
@@ -1589,6 +1611,11 @@ quill.on("text-change", () => {
       const buttons = document.querySelectorAll(".info-action-btn");
 
       const sendEmailBtn = buttons[0];
+
+sendEmailBtn.disabled = true;
+sendEmailBtn.style.opacity = "0.45";
+sendEmailBtn.style.cursor = "not-allowed";
+
       const sendSmsBtn = buttons[1];
      
 
@@ -1608,10 +1635,20 @@ quill.on("text-change", () => {
 iframe.onload = sendTextToIframe;
       });
 
-      sendEmailBtn?.addEventListener("click", () => {
-        if (!ensureToken()) return;
-        openModal(`https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`, "large");
-      });
+sendEmailBtn?.addEventListener("click", () => {
+
+  if (sendEmailBtn.disabled)
+    return;
+
+  if (!ensureToken())
+    return;
+
+  openModal(
+    `https://coruscating-pika-435f9a.netlify.app/sendemail?t=${token}`,
+    "large"
+  );
+
+});
 
 sendSmsBtn?.addEventListener("click", () => {
 
