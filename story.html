@@ -1854,7 +1854,6 @@ function sendTextToIframe() {
 
 <script>
 
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const btn =
@@ -1865,21 +1864,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const token =
     window.APP_TOKEN;
 
-btn.dataset.locked = "true";
-btn.style.opacity = "0.45";
+  btn.addEventListener("click", () => {
 
- 
-btn.addEventListener("click", () => {
+    if (hasUnsavedChanges) {
 
-  if (hasUnsavedChanges) {
+      showAlertBox(
+        "Unsaved Changes",
+        "Please save your latest changes before sending updates to your guests."
+      );
 
-    showAlertBox(
-      "Unsaved Changes",
-      "Please save your latest changes before sending updates to your guests."
-    );
-
-    return;
-  }
+      return;
+    }
 
     if (!token) {
       alert("Missing token");
@@ -1892,7 +1887,6 @@ btn.addEventListener("click", () => {
   });
 
 });
-
 
 document.addEventListener("DOMContentLoaded", () => {
 
