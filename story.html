@@ -1875,6 +1875,16 @@ btn.disabled = true;
 
   btn.addEventListener("click", () => {
 
+if (btn.disabled) {
+
+  showAlertBox(
+    "Save Required",
+    "Please save your changes first."
+  );
+
+  return;
+}
+
     if (!token) {
       alert("Missing token");
       return;
