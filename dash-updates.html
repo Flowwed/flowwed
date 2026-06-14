@@ -1272,17 +1272,66 @@ const registryToggle =
       }, 2000);
     }
 
-
 function showAlertBox(title, message) {
 
-  const modal =
-    document.getElementById("unsavedModal");
+  const bg = document.createElement("div");
 
-  if (!modal) return;
+  bg.style.position = "fixed";
+  bg.style.inset = "0";
+  bg.style.background = "rgba(0,0,0,0.45)";
+  bg.style.display = "flex";
+  bg.style.alignItems = "center";
+  bg.style.justifyContent = "center";
+  bg.style.zIndex = "999999999";
 
-  modal.style.display = "flex";
+  bg.innerHTML = `
+    <div style="
+      width:360px;
+      background:white;
+      border-radius:20px;
+      padding:24px;
+      text-align:center;
+      box-shadow:0 25px 60px rgba(0,0,0,0.35);
+    ">
+      <div style="
+        font-size:20px;
+        font-weight:700;
+        color:#9c1818;
+        margin-bottom:12px;
+      ">
+        ${title}
+      </div>
 
+      <div style="
+        font-size:15px;
+        line-height:1.5;
+        color:#555;
+        margin-bottom:22px;
+      ">
+        ${message}
+      </div>
+
+      <button id="alertOkBtn" style="
+        padding:12px 28px;
+        border:none;
+        border-radius:14px;
+        background:#9c1818;
+        color:white;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        OK
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(bg);
+
+  document.getElementById("alertOkBtn").onclick = () => {
+    bg.remove();
+  };
 }
+
 
     function formatReadableDate(dateValue) {
       return new Date(dateValue).toLocaleDateString("en-US", {
