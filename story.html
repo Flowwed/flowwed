@@ -1801,6 +1801,7 @@ if (!res.ok) {
   console.error("SUPABASE ERROR:", errorText);
 }
 
+
 if (res.ok) {
 
   hasUnsavedChanges = false;
@@ -1815,6 +1816,12 @@ if (res.ok) {
 }
 
 
+const updatesBtn =
+  document.getElementById("sendUpdatesBtn");
+
+if (updatesBtn) {
+  updatesBtn.disabled = false;
+}
 
 showToast(res.ok ? "Text saved" : "Save failed");
 
@@ -1863,6 +1870,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const token =
     window.APP_TOKEN;
+
+btn.disabled = true;
 
   btn.addEventListener("click", () => {
 
@@ -2810,6 +2819,14 @@ window.quill.on("text-change", () => {
 console.log("UNSAVED = TRUE");
 
   hasUnsavedChanges = true;
+
+const btn =
+  document.getElementById("sendUpdatesBtn");
+
+if (btn) {
+  btn.disabled = true;
+}
+
 
 const sendEmailBtn =
   document.querySelector(".info-action-btn");
