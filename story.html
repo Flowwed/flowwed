@@ -1802,8 +1802,19 @@ if (!res.ok) {
 }
 
 if (res.ok) {
+
   hasUnsavedChanges = false;
+
+  const sendEmailBtn =
+    document.querySelector(".info-action-btn");
+
+  if (sendEmailBtn) {
+    sendEmailBtn.disabled = false;
+  }
+
 }
+
+
 
 showToast(res.ok ? "Text saved" : "Save failed");
 
@@ -1871,6 +1882,9 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", () => {
 
   const sendEmailBtn = document.querySelector(".info-action-btn");
+
+sendEmailBtn.disabled = true;
+
   const modal = document.getElementById("storyModal");
   const iframe = document.getElementById("storyIframe");
 
@@ -1879,6 +1893,10 @@ document.addEventListener("DOMContentLoaded", () => {
 const token = window.APP_TOKEN;
 
   sendEmailBtn.addEventListener("click", () => {
+
+if (sendEmailBtn.disabled)
+  return;
+
     if (!token) {
       alert("Missing token");
       return;
@@ -2792,6 +2810,13 @@ window.quill.on("text-change", () => {
 console.log("UNSAVED = TRUE");
 
   hasUnsavedChanges = true;
+
+const sendEmailBtn =
+  document.querySelector(".info-action-btn");
+
+if (sendEmailBtn) {
+  sendEmailBtn.disabled = true;
+}
 
   if (window.currentKey) {
     const current = window.storyData[window.currentKey] || {};
