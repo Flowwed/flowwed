@@ -1610,6 +1610,18 @@ console.log("SENDING TO IFRAME");
       );
     }
 
+window.addEventListener("message", (e) => {
+
+  if (e.data?.type !== "updatesReady")
+    return;
+
+  console.log("IFRAME READY");
+
+  sendTextToIframe();
+
+});
+
+
 function initQuill() {
 
   if (!window.Quill) {
@@ -1673,13 +1685,6 @@ previewBtn?.addEventListener("click", () => {
   const iframe =
     document.getElementById("storyIframe");
 
-  iframe.onload = () => {
-
-    setTimeout(() => {
-      sendTextToIframe();
-    }, 500);
-
-  };
 
   openModal(
     `https://flowwed.netlify.app/web-updates?token=${token}`,
