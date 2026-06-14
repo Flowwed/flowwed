@@ -1603,10 +1603,22 @@ document.getElementById("status").innerText = "";
     <!-- 🔥 КНОПКИ (ПОД EDITOR) -->
 
 <div class="editor-top-actions">
-  <button class="editor-btn save-btn ruby-btn">Save Text Changes</button>
-  <button class="editor-btn update-btn ruby-btn">👁 Preview Your Page Updates</button>
-</div>
 
+  <div style="margin-right:auto;">
+    <button class="editor-btn ruby-btn" id="sendUpdatesBtn">
+      ✉ Send Updates
+    </button>
+  </div>
+
+  <button class="editor-btn save-btn ruby-btn">
+    Save Text Changes
+  </button>
+
+  <button class="editor-btn update-btn ruby-btn">
+    👁 Preview Your Page
+  </button>
+
+</div>
 
 <!-- 🔥 GALLERY -->
 
@@ -1829,6 +1841,33 @@ function sendTextToIframe() {
 
 
 <script>
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const btn =
+    document.getElementById("sendUpdatesBtn");
+
+  if (!btn) return;
+
+  const token =
+    window.APP_TOKEN;
+
+  btn.addEventListener("click", () => {
+
+    if (!token) {
+      alert("Missing token");
+      return;
+    }
+
+    window.location.href =
+      `dash-updates.html?token=${token}`;
+
+  });
+
+});
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const sendEmailBtn = document.querySelector(".info-action-btn");
