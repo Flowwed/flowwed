@@ -17,20 +17,40 @@ export async function handler(event) {
       };
     }
 
-    // 🔥 1. УДАЛЕНИЕ ИЗ STORAGE (фикс headers)
-    const storageRes = await fetch(
-      `${SUPABASE_URL}/storage/v1/object/galleries/${path}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${SERVICE_KEY}`,
-          apikey: SERVICE_KEY
-        }
-      }
-    );
+const isDefault =
+  path.startsWith("defaults/");
 
-    const storageText = await storageRes.text();
-    console.log("STORAGE DELETE:", storageRes.status, storageText);
+
+if (!isDefault) {
+
+  const storageRes = await fetch(
+    `${SUPABASE_URL}/storage/v1/object/galleries/${path}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${SERVICE_KEY}`,
+        apikey: SERVICE_KEY
+      }
+    }
+  );
+
+  const storageText = await storageRes.text();
+
+  console.log(
+    "STORAGE DELETE:",
+    storageRes.status,
+    storageText
+  );
+
+} else {
+
+  console.log(
+    "DEFAULT FILE - STORAGE DELETE SKIPPED:",
+    path
+  );
+
+}
+
 
     // 🔥 2. УДАЛЕНИЕ ИЗ captions (добавили page_key)
     const capRes = await fetch(
