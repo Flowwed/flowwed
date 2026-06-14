@@ -1816,13 +1816,6 @@ if (res.ok) {
 }
 
 
-const updatesBtn =
-  document.getElementById("sendUpdatesBtn");
-
-if (updatesBtn) {
-  updatesBtn.dataset.locked = "false";
-  updatesBtn.style.opacity = "1";
-}
 
 showToast(res.ok ? "Text saved" : "Save failed");
 
@@ -1875,17 +1868,19 @@ document.addEventListener("DOMContentLoaded", () => {
 btn.dataset.locked = "true";
 btn.style.opacity = "0.45";
 
-  btn.addEventListener("click", () => {
+ 
+btn.addEventListener("click", () => {
 
-if (btn.dataset.locked === "true") {
+  if (hasUnsavedChanges) {
 
-  showAlertBox(
-    "Save Required",
-    "Please save your changes first."
-  );
+    showAlertBox(
+      "Unsaved Changes",
+      "Please save your latest changes before sending updates to your guests."
+    );
 
-  return;
-}
+    return;
+  }
+
     if (!token) {
       alert("Missing token");
       return;
@@ -2831,13 +2826,6 @@ console.log("UNSAVED = TRUE");
 
   hasUnsavedChanges = true;
 
-const btn =
-  document.getElementById("sendUpdatesBtn");
-
-if (btn) {
-  btn.dataset.locked = "true";
-  btn.style.opacity = "0.45";
-}
 
 const sendEmailBtn =
   document.querySelector(".info-action-btn");
