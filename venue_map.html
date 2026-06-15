@@ -405,9 +405,19 @@ setTimeout(() => {
 }
 
 
-
-
 loadData();
+
+window.addEventListener("message", (e) => {
+
+  if (e.data?.type !== "LIVE_UPDATE")
+    return;
+
+  console.log("LIVE UPDATE RECEIVED");
+
+  console.log(e.data);
+
+});
+
 
 // accordion
 
