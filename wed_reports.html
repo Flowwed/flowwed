@@ -280,7 +280,7 @@ body{
 /* ====================================================== */
 .custom-scroll-container {
   position: relative;
-  height: 180px;          /* компактная высота */
+  height: 300px;          /* компактная высота */
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 6px;
@@ -865,13 +865,57 @@ th:nth-of-type(7), td:nth-of-type(7) {
   margin-top: 12px;
 }
 
+.migrate-info{
+  margin-left:12px;
+
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  padding:10px 14px;
+
+  background:rgba(255,255,255,0.85);
+  border:1px solid rgba(180,17,17,0.15);
+
+  border-radius:14px;
+
+  color:#555;
+  font-size:15px;
+  font-weight:500;
+
+  backdrop-filter:blur(12px);
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.08);
+}
+
+.migrate-info::before{
+  content:"i";
+
+  width:20px;
+  height:20px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:linear-gradient(180deg,#ff4d4d,#b41111);
+
+  color:white;
+  font-size:12px;
+  font-weight:700;
+
+  flex-shrink:0;
+}
 .migrate-btn {
   background: #375b57;
   color: white;
   border: none;
   border-radius: 999px;
-  padding: 8px 18px;
-  font-size: 13px;
+  padding: 9px 22px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   box-shadow:
@@ -1549,11 +1593,18 @@ function renderTable(name, arr, key) {
       <div class="scrollbar-indicator" data-indicator="${key}"></div>
     </div>
 
-    <div class="migrate-row">
-      <button class="migrate-btn" data-group="${key}">
-        Migrate
-      </button>
-    </div>
+
+<div class="migrate-row">
+
+  <button class="migrate-btn" data-group="${key}">
+    Move Guests to Another Group
+  </button>
+
+  <div class="migrate-info">
+    You can move selected guests between RSVP groups at any time.
+  </div>
+
+</div>
 
   </div>`;
 }
