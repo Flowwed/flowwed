@@ -2507,6 +2507,17 @@ Expedia — https://www.expedia.com`;
   if (sendSmsBtn) {
     sendSmsBtn.onclick = () => {
 
+if (hasUnsavedChanges) {
+
+  showAlertBox(
+    "Unsaved Changes",
+    "Please save your latest changes before notifying your guests."
+  );
+
+  return;
+}
+
+
       const token = window.APP_TOKEN;
 
 const url = `${window.location.origin}/rsvp-reminder.html?t=${token}&type=travel`;
@@ -2679,6 +2690,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔥 OPEN COMPOSER
   if (openBtn) {
     openBtn.onclick = () => {
+
+if (hasUnsavedChanges) {
+
+  showAlertBox(
+    "Unsaved Changes",
+    "Please save your latest changes before notifying your guests."
+  );
+
+  return;
+}
 
       const selected = [...document.querySelectorAll(".rowCheck:checked")];
 
@@ -2892,7 +2913,65 @@ function showToast(message, type = "success") {
   }, 3000);
 }
 
+function showAlertBox(title, message) {
 
+  const bg = document.createElement("div");
+
+  bg.style.position = "fixed";
+  bg.style.inset = "0";
+  bg.style.background = "rgba(0,0,0,0.45)";
+  bg.style.display = "flex";
+  bg.style.alignItems = "center";
+  bg.style.justifyContent = "center";
+  bg.style.zIndex = "999999999";
+
+  bg.innerHTML = `
+    <div style="
+      width:360px;
+      background:white;
+      border-radius:20px;
+      padding:24px;
+      text-align:center;
+      box-shadow:0 25px 60px rgba(0,0,0,0.35);
+    ">
+      <div style="
+        font-size:20px;
+        font-weight:700;
+        color:#9c1818;
+        margin-bottom:12px;
+      ">
+        ${title}
+      </div>
+
+      <div style="
+        font-size:15px;
+        line-height:1.5;
+        color:#555;
+        margin-bottom:22px;
+      ">
+        ${message}
+      </div>
+
+      <button id="alertOkBtn" style="
+        padding:12px 28px;
+        border:none;
+        border-radius:14px;
+        background:#9c1818;
+        color:white;
+        font-weight:700;
+        cursor:pointer;
+      ">
+        OK
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(bg);
+
+  document.getElementById("alertOkBtn").onclick = () => {
+    bg.remove();
+  };
+}
 
 </script>
 
