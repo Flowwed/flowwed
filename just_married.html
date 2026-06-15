@@ -437,6 +437,10 @@ input[type=file]::file-selector-button {
 }
 
 
+.preview-window {
+  width: 75vw;
+  height: 75vh;
+}
 
 /* iframe must NEVER sit above X */
 .modal-iframe {
@@ -2831,7 +2835,7 @@ window.addEventListener("slug-ready", async () => {
 
 <div class="modal-backdrop centered" id="webPreviewModal">
 
-  <div class="modal-window">
+  <div class="modal-window preview-window">
 
     <div id="closeWebPreview" style="
       position:absolute;
