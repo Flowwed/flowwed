@@ -2887,17 +2887,23 @@ function openBlock(block) {
 
   const data = window.storyData[newKey] || { header: "", body: "" };
 
-const sampleText =
-  "This is sample content. You can customize the header, text, and photos anytime.";
 
-const temp = document.createElement("div");
+const sampleMarkers = [
+  "This is sample content. You can customize the header, text, and photos anytime.",
+  "Replace this sample text",
+  "share some of your favorite moments",
+  "describe your plans, dreams, and excitement",
+  "the story of your engagement and the special moment"
+];
 
-temp.innerHTML = data.body || "";
+const bodyText =
+  temp.innerText.trim();
 
-if (temp.innerText.trim() === sampleText) {
+if (
+  sampleMarkers.some(x => bodyText.includes(x))
+) {
   data.body = "";
 }
-
 
   const headerEl = document.getElementById("fakeHeader");
 
