@@ -2893,14 +2893,25 @@ function openBlock(block) {
 
   const data = window.storyData[newKey] || { header: "", body: "" };
 
-const sampleText =
-  "This is sample content. You can customize the header, text, and photos anytime.";
 
 const temp = document.createElement("div");
-
 temp.innerHTML = data.body || "";
 
-if (temp.innerText.trim() === sampleText) {
+const bodyText =
+  temp.innerText.trim();
+
+
+const sampleMarkers = [
+  "This is sample content. You can customize the header, text, and photos anytime.",
+  "Replace this sample text",
+  "share some of your favorite moments",
+  "describe your plans, dreams, and excitement",
+  "the story of your engagement and the special moment"
+];
+
+if (
+  sampleMarkers.some(marker => bodyText.includes(marker))
+) {
   data.body = "";
 }
 
