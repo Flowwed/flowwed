@@ -1629,14 +1629,18 @@ function initQuill() {
     return;
   }
 
+quill = new Quill("#editor", {
+  theme: "snow",
 
-  quill = new Quill("#editor", {
-    theme: "snow",
-    modules: {
-      toolbar: "#toolbar-container"
-    }
-  });
+  placeholder:
+`What's new?
 
+Share wedding news, exciting updates, reminders, travel tips, or any important information for your guests.`,
+
+  modules: {
+    toolbar: "#toolbar-container"
+  }
+});
 
   const toolbarEl = $("#toolbar-container");
 
