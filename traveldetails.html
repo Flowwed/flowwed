@@ -2491,7 +2491,9 @@ Expedia — https://www.expedia.com`;
   // =========================
   // PREVIEW
   // =========================
-  previewBtn.addEventListener("click", () => {
+  previewBtn.addEventListener("click", async () => {
+
+await document.getElementById("saveDraftBtn").click();
     saveDraft();
 
     const token = window.APP_TOKEN;
