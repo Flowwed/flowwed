@@ -1827,9 +1827,6 @@ const iframe = document.getElementById("modalFrame");
 
 if (iframe && iframe.contentWindow) {
 
-console.log("SENDING LIVE UPDATE");
-console.log(getFormData());
-
   iframe.contentWindow.postMessage({
     type: "LIVE_UPDATE",
     field: id,
