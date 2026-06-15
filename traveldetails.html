@@ -1780,6 +1780,8 @@ el.addEventListener("input", () => {
 
   if (!isInitialLoading) {
     hasUnsavedChanges = true;
+
+console.log("UNSAVED = TRUE");
   }
 
     // ✅ обновление карты от адреса
@@ -1894,6 +1896,9 @@ await saveSitesMirror(data);
 
 
 hasUnsavedChanges = false;
+
+console.log("UNSAVED = FALSE");
+
 
 showToast("Saved");
 
