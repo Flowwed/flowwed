@@ -1806,7 +1806,7 @@ if (!res.ok) {
 
 if (res.ok) {
 
-  hasUnsavedChanges = false;
+  markSaved("saveStory success");
 
   const sendEmailBtn =
     document.querySelector(".info-action-btn");
@@ -1939,6 +1939,23 @@ if (sendEmailBtn.disabled)
 const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
+
+
+function markDirty(reason) {
+
+  console.log("DIRTY:", reason);
+
+  hasUnsavedChanges = true;
+
+}
+
+function markSaved(reason) {
+
+  console.log("SAVED:", reason);
+
+  hasUnsavedChanges = false;
+
+}
 
 
   const tokenDisplay = document.getElementById("tokenDisplay");
@@ -2806,7 +2823,7 @@ window.quill.on("text-change", () => {
 
 console.log("UNSAVED = TRUE");
 
-  hasUnsavedChanges = true;
+  markDirty("text-change");
 
 
 const sendEmailBtn =
@@ -3255,7 +3272,7 @@ header.addEventListener("focus", () => {
 // BLUR
 header.addEventListener("blur", () => {
 
-hasUnsavedChanges = true;
+markDirty("fakeHeader blur");
 
   if (!header.innerText.trim()) {
     header.innerText = HEADER_PLACEHOLDER;
