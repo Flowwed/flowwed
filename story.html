@@ -2899,8 +2899,12 @@ function openBlock(block) {
 
   window.quill.setText("");
 
-  const data = window.storyData[newKey] || { header: "", body: "" };
-
+const data = {
+  ...(window.storyData[newKey] || {
+    header: "",
+    body: ""
+  })
+};
 
 const temp = document.createElement("div");
 temp.innerHTML = data.body || "";
