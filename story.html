@@ -1940,12 +1940,13 @@ const token = window.APP_TOKEN;
 
 let hasUnsavedChanges = false;
 
-
 function markDirty(reason) {
 
   console.log("DIRTY:", reason);
 
   hasUnsavedChanges = true;
+
+  window.__dirtyState = true;
 
 }
 
@@ -1954,6 +1955,8 @@ function markSaved(reason) {
   console.log("SAVED:", reason);
 
   hasUnsavedChanges = false;
+
+  window.__dirtyState = false;
 
 }
 
