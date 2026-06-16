@@ -2845,9 +2845,16 @@ window.syncCurrentBlock = function () {
   // =========================
 
 function openBlock(block) {
+
   const newKey = block.dataset.key;
 
-  window.isSwitching = true; // 🔥 включили режим
+  console.log(
+    "OPEN BLOCK:",
+    newKey,
+    JSON.stringify(window.storyData[newKey])
+  );
+
+  window.isSwitching = true;
 
   // ✅ сохранить старую вкладку
   if (window.currentKey) {
@@ -2861,7 +2868,6 @@ function openBlock(block) {
       body: window.quill.root.innerHTML
     };
   }
-
   // 👉 дальше твой код (НЕ ТРОГАЙ)
   blocks.forEach(b => b.classList.remove("active"));
 
