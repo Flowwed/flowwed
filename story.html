@@ -1520,6 +1520,8 @@ document
 
     if (!file) return;
 
+console.log("FILE CHOSEN:", file.name);
+
 document.getElementById("status").innerText = "";
 
     showPreview(file, false);
@@ -1963,55 +1965,28 @@ let hasUnsavedChanges = false;
     status.innerText = "";
   });
 
-
-
 function showPreview(file, isFinal = false) {
 
   const url = URL.createObjectURL(file);
 
-  
+  if (isFinal) {
 
-  if (!isFinal) {
+    preview.src = url;
 
-    miniPreview.src = url;
-
-    miniPreview.style.objectFit = "contain";
-
-    miniPreview.style.display = "block";
-
-    preview.style.display = "none";
-
-    return;
-  }
-
-  previewBox.classList.remove("placeholder");
-
-  preview.src = url;
-
-  preview.style.display = "block";
-
-  preview.style.opacity = "0";
-
-  requestAnimationFrame(() => {
-
-    preview.style.transition =
-      "opacity .35s ease";
-
-    preview.style.opacity = "1";
-
-    miniPreview.style.opacity = "0";
-
-  });
-
-  setTimeout(() => {
+    preview.style.display = "block";
 
     miniPreview.style.display = "none";
 
-    miniPreview.style.opacity = "1";
+    previewBox.classList.remove("placeholder");
 
-  }, 350);
+  } else {
+
+    miniPreview.src = url;
+
+    miniPreview.style.display = "block";
+
+  }
 }
-
 
   async function loadSlugFromGallery(token) {
     try {
@@ -2974,6 +2949,7 @@ window.storyData[window.currentKey] = {
 
 
 });
+
 
 async function loadMiniGallery() {
 
