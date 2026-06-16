@@ -1676,7 +1676,7 @@ quill.on("text-change", () => {
 
       saveBtn?.addEventListener("click", saveUpdate);
 
-previewBtn?.addEventListener("click", () => {
+previewBtn?.addEventListener("click", async () => {
 
   if (!ensureEditor()) return;
 
@@ -1685,8 +1685,12 @@ previewBtn?.addEventListener("click", () => {
     return;
   }
 
-  const iframe =
-    document.getElementById("storyIframe");
+try {
+  await saveUpdate();
+} catch (err) {
+  console.error(err);
+  return;
+}
 
 
   openModal(
