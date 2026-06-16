@@ -1964,6 +1964,7 @@ let hasUnsavedChanges = false;
   });
 
 
+
 function showPreview(file, isFinal = false) {
 
   const url = URL.createObjectURL(file);
@@ -2975,6 +2976,9 @@ window.storyData[window.currentKey] = {
 });
 
 async function loadMiniGallery() {
+
+console.log("LOAD MINI GALLERY START");
+
   if (!token) return;
 
   const res = await fetch(
@@ -2992,7 +2996,11 @@ async function loadMiniGallery() {
   if (!Array.isArray(data)) {
     console.error("NOT ARRAY:", data);
     return;
+
+
   }
+
+  console.log("LOAD MINI GALLERY END");
 
   const container = document.getElementById("miniGallery");
   container.innerHTML = "";
