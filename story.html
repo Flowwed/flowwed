@@ -2736,6 +2736,12 @@ window.storyData = {
 
 const data = await res.json();
 
+console.log(
+  "SUPABASE RETURNED:",
+  JSON.stringify(data, null, 2)
+);
+
+
 if (!data || !data.length) {
   document.getElementById("storyToggle").checked = true;
   return;
