@@ -1759,12 +1759,32 @@ window.storyData[window.currentKey] = {
   body: window.quill.root.innerHTML
 };
 
-// 🔥 собираем HTML для каждого блока
 function buildHTML(block) {
+
   if (!block) return "";
 
-  return (block.header ? `<h2>${block.header}</h2>` : "") + (block.body || "");
-}
+  const header =
+    (block.header || "").trim();
+
+  const temp =
+    document.createElement("div");
+
+  temp.innerHTML =
+    block.body || "";
+
+  const bodyText =
+    temp.textContent.trim();
+
+  if (!header && !bodyText) {
+    return "";
+  }
+
+  return (
+    (header ? `<h2>${header}</h2>` : "") +
+    (block.body || "")
+  );
+}}
+
 
 // 🔥 payload
 const payload = {
@@ -2410,8 +2430,29 @@ if (window.currentKey) {
 }
 
 function buildHTML(block) {
+
   if (!block) return "";
-  return (block.header ? `<h2>${block.header}</h2>` : "") + (block.body || "");
+
+  const header =
+    (block.header || "").trim();
+
+  const temp =
+    document.createElement("div");
+
+  temp.innerHTML =
+    block.body || "";
+
+  const bodyText =
+    temp.textContent.trim();
+
+  if (!header && !bodyText) {
+    return "";
+  }
+
+  return (
+    (header ? `<h2>${header}</h2>` : "") +
+    (block.body || "")
+  );
 }
 
 const payload = {
@@ -2773,8 +2814,9 @@ document.getElementById("storyToggle").checked =
   data[0].story_enabled ?? true;
 
 function parseHTML(html) {
-  if (!html) return { header: "", body: "" };
 
+if (!html || !html.trim())
+  return { header: "", body: "" };
   const temp = document.createElement("div");
   temp.innerHTML = html;
 
@@ -2803,11 +2845,6 @@ window.storyData = {
   custom: parseHTML(data[0].custom)
 };
 
-// ✅ открыть первую вкладку после загрузки
-const firstBlock = document.querySelector('[data-key="how_we_met"]');
-if (firstBlock) {
-  openBlock(firstBlock);
-}
 
   }
 
@@ -2913,19 +2950,6 @@ const bodyText =
   temp.innerText.trim();
 
 
-const sampleMarkers = [
-  "This is sample content. You can customize the header, text, and photos anytime.",
-  "Replace this sample text",
-  "share some of your favorite moments",
-  "describe your plans, dreams, and excitement",
-  "the story of your engagement and the special moment"
-];
-
-if (
-  sampleMarkers.some(marker => bodyText.includes(marker))
-) {
-  data.body = "";
-}
 
   const headerEl = document.getElementById("fakeHeader");
 
@@ -3247,7 +3271,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
 
-const HEADER_PLACEHOLDER = "Add a section header (e.g. “How We Met”, “Growing Together”, “The Proposal”)";
+const HEADER_PLACEHOLDER = "Add a section header";
 
 const header = document.getElementById("fakeHeader");
 
