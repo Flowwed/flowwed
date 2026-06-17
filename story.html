@@ -3538,6 +3538,8 @@ document.getElementById("captionCancelBtn")
     document.getElementById("captionModal")
       .style.display = "none";
 
+    status.innerText = "";
+
     await loadMiniGallery();
 
     preview.style.display = "none";
@@ -3617,6 +3619,8 @@ btn.innerHTML =
 
   document.getElementById("captionModal")
     .style.display = "none";
+
+status.innerText = "";
 
 showToast("Caption saved");
 
