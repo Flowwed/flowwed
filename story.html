@@ -2188,24 +2188,6 @@ const originalUploadText = uploadBtn.innerHTML;
 
 
 // 🔥 TRIAL LIMIT
-const isTrial =
-  token &&
-  token.toLowerCase().startsWith("trial");
-
-if (isTrial) {
-
-  const currentPhotos =
-    document.querySelectorAll("#miniGallery img").length;
-
-  if (currentPhotos >= 10) {
-
-await showAlertBox(
-  "Trial Limit",
-  "Trial mode allows up to 10 photos."
-);
-    return;
-  }
-}
 
   const fileInput = document.getElementById("fileInput");
 
@@ -2253,7 +2235,7 @@ if (existingData.length && existingData[0].path) {
 
 await showAlertBox(
   "Photo Already Exists",
-  `Delete current Photo ${Number(slot.replace("img","")) - 1} from the gallery first, then try again.`
+  `Delete Photo ${Number(slot.replace("img","")) - 1} from the gallery first, then try again.`
 );
 
 uploadBtn.disabled = false;
@@ -2261,6 +2243,30 @@ uploadBtn.innerHTML = originalUploadText;
 
 return;
 
+}
+
+
+const isTrial =
+  token &&
+  token.toLowerCase().startsWith("trial");
+
+if (isTrial) {
+
+  const photoNumber =
+    Number(slot.replace("img", "")) - 1;
+
+  if (photoNumber > 10) {
+
+    await showAlertBox(
+      "Trial Limit",
+      "Trial mode allows up to 10 photos."
+    );
+
+    uploadBtn.disabled = false;
+    uploadBtn.innerHTML = originalUploadText;
+
+    return;
+  }
 }
 
 

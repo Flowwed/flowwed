@@ -1782,24 +1782,6 @@ uploadBtn.onclick = async () => {
   const originalUploadText = uploadBtn.innerHTML;
 
 // 🔥 TRIAL LIMIT
-const isTrial =
-  token &&
-  token.toLowerCase().startsWith("trial");
-
-if (isTrial) {
-
-  const currentPhotos =
-    document.querySelectorAll(".caption-item").length;
-
-  if (currentPhotos >= 10) {
-
-    await showAlertBox(
-      "Trial mode allows up to 10 photos."
-    );
-
-    return;
-  }
-}
 
   const fileInput = document.getElementById("fileInput");
 
@@ -1853,6 +1835,26 @@ if (file.size > 5 * 1024 * 1024) {
 
     return;
   }
+
+const isTrial =
+  token &&
+  token.toLowerCase().startsWith("trial");
+
+if (isTrial) {
+
+const photoNumber =
+  Number(slot.replace("img", "")) - 1;
+
+  if (photoNumber > 10) {
+
+    await showAlertBox(
+      "Trial mode allows up to 10 photos."
+    );
+
+    return;
+  }
+}
+
 
   // ✅ ТОЛЬКО ТУТ начинаем загрузку
   uploadBtn.disabled = true;
