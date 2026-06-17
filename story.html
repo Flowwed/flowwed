@@ -2251,10 +2251,10 @@ const existingData = await existing.json();
 
 if (existingData.length && existingData[0].path) {
 
-const ok = await showConfirm(
-  `Photo ${Number(slot.replace("img","")) - 1} already exists.\n\nDelete it first?`
+await showAlertBox(
+  "Photo Already Exists",
+  `Delete current Photo ${Number(slot.replace("img","")) - 1} from the gallery first, then try again.`
 );
-
 
 uploadBtn.disabled = false;
 uploadBtn.innerHTML = originalUploadText;
