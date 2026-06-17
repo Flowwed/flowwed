@@ -3707,15 +3707,17 @@ function showConfirm(text) {
 
 <div id="confirmModal" style="
 display:none;
-position:fixed;
 
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
+position:fixed;
+inset:0;
+
+background:rgba(0,0,0,0.45);
+
+align-items:center;
+justify-content:center;
 
 z-index:1000;
 ">
-
 
   <div style="
   width:240px;
