@@ -2001,6 +2001,7 @@ function markSaved(reason) {
     const fileInput = document.getElementById("fileInput");
     fileInput.value = "";
     preview.style.display = "none";
+    miniPreview.style.display = "none";
     previewBox.classList.add("placeholder");
     status.innerText = "";
   });
@@ -2259,7 +2260,7 @@ if (isTrial) {
 
     await showAlertBox(
       "Trial Limit",
-      "Trial mode allows up to 10 photos."
+      "Trial mode allows up to 10 photos. You can replace any of the 10 preloaded photos with your own images at any time."
     );
 
     uploadBtn.disabled = false;
