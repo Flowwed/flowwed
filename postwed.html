@@ -2105,6 +2105,11 @@ border-top:3px solid #b41111;
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
       <button id="shareBtn" class="footer-btn">Send SMS</button>
 
+<button id="rsvpReportsBtn" class="footer-btn">
+  Check RSVP Reports
+</button>
+
+
       <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
 
 
@@ -2844,6 +2849,23 @@ document.getElementById("selectAll").onclick = e => {
   const all = document.querySelectorAll(".rowCheck");
   all.forEach(ch => (ch.checked = e.target.checked));
 };
+
+
+document
+  .getElementById("rsvpReportsBtn")
+  ?.addEventListener("click", () => {
+
+    const token = window.APP_TOKEN;
+
+    if (!token) return;
+
+    window.open(
+      `wed_reports.html?t=${encodeURIComponent(token)}`,
+      "_blank"
+    );
+
+});
+
 
 // ================================
 // DELETE SELECTED — WITH CONFIRM
