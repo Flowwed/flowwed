@@ -1503,6 +1503,20 @@ renderUpdates(updates);
       if (!ensureToken() || !ensureEditor()) return;
 
       const content = quill.root.innerHTML;
+
+const plainText =
+    quill.getText().trim();
+
+  if (!plainText) {
+
+    showToast(
+      "Nothing to save"
+    );
+
+    return;
+  }
+
+
       const newUpdate = {
         content,
         created_at: new Date().toISOString()
