@@ -1487,6 +1487,11 @@ const updates = await fetchUpdates();
 
 documentUpdates = updates;
 
+console.log(
+  "documentUpdates =",
+  documentUpdates
+);
+
 renderUpdates(updates);
 
       } catch (error) {
