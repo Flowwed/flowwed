@@ -1828,7 +1828,9 @@ if (file.size > 5 * 1024 * 1024) {
   if (Array.isArray(exists) && exists.length > 0) {
     const num = Number(slot.replace("img", "")) - 50;
 
-    await showAlertBox(`Delete Photo ${num} from the gallery first, then try again.`);
+await showAlertBox(
+  `Photo Already Exists\n\nDelete Photo ${num} from the gallery first, then try again.`
+);
 
     // 🔥 ВАЖНО — вернуть кнопку
     uploadBtn.disabled = false;
