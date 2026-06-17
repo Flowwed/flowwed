@@ -1476,10 +1476,12 @@ position: relative;   /* 🔥 ВОТ ЭТО КЛЮЧ */
 }
 
 
+#rsvpReportsBtn{
+  background:#375b57 !important;
+}
+
 </style>
 </head>
-
-
 
 
 <body data-page="postwed">
@@ -2105,10 +2107,13 @@ border-top:3px solid #b41111;
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
       <button id="shareBtn" class="footer-btn">Send SMS</button>
 
-<button id="rsvpReportsBtn" class="footer-btn">
+<button
+  id="rsvpReportsBtn"
+  class="footer-btn"
+  style="margin-left:auto;"
+>
   Check RSVP Reports
 </button>
-
 
       <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
 
@@ -2874,6 +2879,24 @@ document
 document
   .getElementById("closeRsvpReportsModal")
   ?.addEventListener("click", () => {
+
+    document.getElementById(
+      "rsvpReportsModal"
+    ).style.display = "none";
+
+    document.getElementById(
+      "rsvpReportsFrame"
+    ).src = "";
+
+});
+
+
+document
+  .getElementById("rsvpReportsModal")
+  ?.addEventListener("click", (e) => {
+
+    if (e.target.id !== "rsvpReportsModal")
+      return;
 
     document.getElementById(
       "rsvpReportsModal"
