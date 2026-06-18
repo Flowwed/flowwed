@@ -603,6 +603,71 @@ h1 {
   vertical-align: middle;
 }
 
+.info-bubble--bottom {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-top: 40px;
+
+  align-self: center;
+
+  padding: 20px 40px;
+
+  background: #fff;
+  border-radius: 999px;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 16px rgba(0,0,0,0.10);
+}
+
+.info-content {
+  display: inline-flex;
+  align-items: center;
+}
+
+.info-text {
+  color: #555;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.info-action-btn {
+  all: unset;
+  box-sizing: border-box;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 14px;
+  border-radius: 999px;
+
+  background: transparent;
+  color: #b40012;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+
+  transition: .2s ease;
+}
+
+.info-action-btn:hover {
+  background: rgba(180,0,18,.12);
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.22),
+    0 4px 10px rgba(0,0,0,0.18);
+}
 
 </style>
 </head>
@@ -717,6 +782,22 @@ h1 {
 </button>
 
   </div>
+
+<div class="info-bubble info-bubble--bottom" style="margin-top:24px">
+
+  <div class="info-icon">i</div>
+
+  <div class="info-content">
+    <span class="info-text">
+      You can send updates to your guests here
+    </span>
+  </div>
+
+  <button class="info-action-btn">
+    Update
+  </button>
+
+</div>
 
 </div>
 
