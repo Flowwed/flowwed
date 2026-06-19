@@ -4,10 +4,12 @@ const TIMEOUT_MINUTES = 2;
 console.log("WATCHDOG LOADED");
 
 function updateActivity() {
+
   localStorage.setItem(
     SESSION_KEY,
     Date.now().toString()
   );
+
 }
 
 function isSessionExpired() {
@@ -20,20 +22,55 @@ function isSessionExpired() {
 
   if (!last) return false;
 
-  const diff =
-    Date.now() - last;
+  return (
+    Date.now() - last >
+    TIMEOUT_MINUTES * 60 * 1000
+  );
 
-  return diff >
-    TIMEOUT_MINUTES *
-    60 *
-    1000;
 }
 
-/* Проверяем сразу при открытии страницы */
+function handleActivity() {
 
-console.log(
-  "EXPIRED =",
-  isSessionExpired()
+  if (isSessionExpired()) {
+
+    alert(
+      "You have been away for a while. Please refresh this page to continue."
+    );
+
+    return;
+  }
+
+  updateActivity();
+
+}
+
+/* первый запуск */
+
+if (
+  !localStorage.getItem(
+    SESSION_KEY
+  )
+) {
+
+  updateActivity();
+
+}
+
+/* события пользователя */
+
+document.addEventListener(
+  "click",
+  handleActivity
+);
+
+document.addEventListener(
+  "keydown",
+  handleActivity
+);
+
+document.addEventListener(
+  "input",
+  handleActivity
 );
 
 console.log(
@@ -41,38 +78,4 @@ console.log(
   localStorage.getItem(
     SESSION_KEY
   )
-);
-
-if (isSessionExpired()) {
-
-  alert(
-    "You have been away for a while. Please refresh this page to continue."
-  );
-
-}
-
-
-
-/* После проверки начинаем отслеживать активность */
-
-updateActivity();
-
-document.addEventListener(
-  "click",
-  updateActivity
-);
-
-document.addEventListener(
-  "keydown",
-  updateActivity
-);
-
-// document.addEventListener(
- //  "scroll",
- // updateActivity
-// );
-
-document.addEventListener(
-  "input",
-  updateActivity
 );
