@@ -31,6 +31,14 @@ function isSessionExpired() {
 
 function handleActivity() {
 
+  if (
+    document.getElementById(
+      "sessionExpiredModal"
+    )
+  ) {
+    return;
+  }
+
   if (isSessionExpired()) {
 
     showSessionExpiredModal();
@@ -41,7 +49,6 @@ function handleActivity() {
   updateActivity();
 
 }
-
 
 /* первый запуск */
 
