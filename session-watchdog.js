@@ -1,5 +1,5 @@
 const SESSION_KEY = "admin_last_activity";
-const TIMEOUT_MINUTES = 2;
+const TIMEOUT_MINUTES = 10;
 
 let sessionExpired = false;
 
