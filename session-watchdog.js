@@ -1,6 +1,8 @@
 const SESSION_KEY = "admin_last_activity";
 const TIMEOUT_MINUTES = 2;
 
+console.log("WATCHDOG LOADED");
+
 function updateActivity() {
   localStorage.setItem(
     SESSION_KEY,
@@ -29,6 +31,18 @@ function isSessionExpired() {
 
 /* Проверяем сразу при открытии страницы */
 
+console.log(
+  "EXPIRED =",
+  isSessionExpired()
+);
+
+console.log(
+  "LAST =",
+  localStorage.getItem(
+    SESSION_KEY
+  )
+);
+
 if (isSessionExpired()) {
 
   alert(
@@ -36,6 +50,8 @@ if (isSessionExpired()) {
   );
 
 }
+
+
 
 /* После проверки начинаем отслеживать активность */
 
