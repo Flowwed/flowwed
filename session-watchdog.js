@@ -1,9 +1,15 @@
 const SESSION_KEY = "admin_last_activity";
 const TIMEOUT_MINUTES = 2;
 
-console.log("WATCHDOG LOADED");
+let sessionExpired = false;
+
+/* =========================
+   ACTIVITY
+   ========================= */
 
 function updateActivity() {
+
+  if (sessionExpired) return;
 
   localStorage.setItem(
     SESSION_KEY,
@@ -12,24 +18,11 @@ function updateActivity() {
 
 }
 
-function isSessionExpired() {
+/* =========================
+   MODAL
+   ========================= */
 
-  const last = Number(
-    localStorage.getItem(
-      SESSION_KEY
-    ) || 0
-  );
-
-  if (!last) return false;
-
-  return (
-    Date.now() - last >
-    TIMEOUT_MINUTES * 60 * 1000
-  );
-
-}
-
-function handleActivity() {
+function showSessionExpiredModal() {
 
   if (
     document.getElementById(
@@ -39,67 +32,13 @@ function handleActivity() {
     return;
   }
 
-  if (isSessionExpired()) {
-
-    showSessionExpiredModal();
-
-    return;
-  }
-
-  updateActivity();
-
-}
-
-/* первый запуск */
-
-if (
-  !localStorage.getItem(
-    SESSION_KEY
-  )
-) {
-
-  updateActivity();
-
-}
-
-/* события пользователя */
-
-document.addEventListener(
-  "click",
-  handleActivity
-);
-
-document.addEventListener(
-  "keydown",
-  handleActivity
-);
-
-document.addEventListener(
-  "input",
-  handleActivity
-);
-
-console.log(
-  "LAST =",
-  localStorage.getItem(
-    SESSION_KEY
-  )
-);
-
-function showSessionExpiredModal() {
-
-if (
-  document.getElementById(
-    "sessionExpiredModal"
-  )
-) {
-  return;
-}
+  sessionExpired = true;
 
   document.body.insertAdjacentHTML(
     "beforeend",
     `
-    <div id="sessionExpiredModal"
+    <div
+      id="sessionExpiredModal"
       style="
         position:fixed;
         inset:0;
@@ -107,8 +46,9 @@ if (
         display:flex;
         align-items:center;
         justify-content:center;
-        z-index:9999999;
-      ">
+        z-index:99999999;
+      "
+    >
 
       <div
         style="
@@ -118,7 +58,8 @@ if (
           padding:24px;
           text-align:center;
           box-shadow:0 20px 50px rgba(0,0,0,.25);
-        ">
+        "
+      >
 
         <div
           style="
@@ -126,7 +67,8 @@ if (
             font-weight:700;
             color:#b41111;
             margin-bottom:14px;
-          ">
+          "
+        >
           Session Expired
         </div>
 
@@ -136,8 +78,10 @@ if (
             line-height:1.5;
             color:#555;
             margin-bottom:20px;
-          ">
-          You have been away for a while.<br><br>
+          "
+        >
+          You have been away for a while.
+          <br><br>
           Would you like to continue your session?
         </div>
 
@@ -151,30 +95,106 @@ if (
             padding:12px 22px;
             font-weight:700;
             cursor:pointer;
-          ">
+          "
+        >
           Continue
         </button>
 
       </div>
+
     </div>
     `
   );
 
-document
-  .getElementById(
-    "reloadSessionBtn"
-  )
-  .addEventListener(
-    "click",
-    (e) => {
+  document
+    .getElementById(
+      "reloadSessionBtn"
+    )
+    .addEventListener(
+      "click",
+      () => {
 
-      e.preventDefault();
-      e.stopPropagation();
+        localStorage.setItem(
+          SESSION_KEY,
+          Date.now().toString()
+        );
 
-      updateActivity();
+        location.reload();
 
-      location.reload();
+      }
+    );
 
-    }
-  );
 }
+
+/* =========================
+   CHECK TIMER
+   ========================= */
+
+function checkSession() {
+
+  if (sessionExpired) return;
+
+  const last = Number(
+    localStorage.getItem(
+      SESSION_KEY
+    ) || 0
+  );
+
+  if (!last) return;
+
+  const expired =
+    Date.now() - last >
+    TIMEOUT_MINUTES *
+    60 *
+    1000;
+
+  if (expired) {
+    showSessionExpiredModal();
+  }
+
+}
+
+/* =========================
+   FIRST RUN
+   ========================= */
+
+if (
+  !localStorage.getItem(
+    SESSION_KEY
+  )
+) {
+
+  localStorage.setItem(
+    SESSION_KEY,
+    Date.now().toString()
+  );
+
+}
+
+/* =========================
+   USER ACTIVITY
+   ========================= */
+
+document.addEventListener(
+  "click",
+  updateActivity
+);
+
+document.addEventListener(
+  "keydown",
+  updateActivity
+);
+
+document.addEventListener(
+  "input",
+  updateActivity
+);
+
+/* =========================
+   WATCHDOG
+   ========================= */
+
+setInterval(
+  checkSession,
+  5000
+);
