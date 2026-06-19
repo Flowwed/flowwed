@@ -81,6 +81,14 @@ console.log(
 
 function showSessionExpiredModal() {
 
+if (
+  document.getElementById(
+    "sessionExpiredModal"
+  )
+) {
+  return;
+}
+
   document.body.insertAdjacentHTML(
     "beforeend",
     `
@@ -145,12 +153,21 @@ function showSessionExpiredModal() {
     `
   );
 
-  document
-    .getElementById(
-      "reloadSessionBtn"
-    )
-    .addEventListener(
-      "click",
-      () => location.reload()
-    );
+document
+  .getElementById(
+    "reloadSessionBtn"
+  )
+  .addEventListener(
+    "click",
+    (e) => {
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      updateActivity();
+
+      location.reload();
+
+    }
+  );
 }
