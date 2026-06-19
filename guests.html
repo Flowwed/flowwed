@@ -1414,12 +1414,18 @@ console.log("ADD GUEST DATA:", data);
 console.log("ADD GUEST ERROR:", error);
 
 
-
 if (error) {
+
   console.error(error);
-  showToastBox(error.message, "error");
+
+  showToastBox(
+    "This guest already exists!",
+    "error"
+  );
+
   return;
 }
+
 
 if (!data || !data.length) {
   showToastBox("Guest was not saved.", "error");
