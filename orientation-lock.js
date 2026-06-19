@@ -87,46 +87,6 @@
 
   overlay.innerHTML = `
 
-    <!-- ROUND iOS BACK -->
-    <button id="rotateBackBtn" style="
-      position:absolute;
-      top:18px;
-      left:18px;
-
-      width:44px;
-      height:44px;
-
-      border:none;
-      outline:none;
-
-      border-radius:999px;
-
-      background:rgba(255,255,255,.14);
-
-      color:white;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-
-      font-size:24px;
-      font-weight:500;
-
-      backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);
-
-      box-shadow:
-        0 6px 22px rgba(0,0,0,.18),
-        inset 0 1px 0 rgba(255,255,255,.08);
-
-      cursor:pointer;
-
-      transition:.15s ease;
-
-      z-index:10;
-    ">
-      ‹
-    </button>
 
     <!-- PERFECT CENTER -->
     <div style="
@@ -212,23 +172,6 @@
     overlay
   );
 
-  // =========================
-  // BUTTON
-  // =========================
-
-  const backBtn =
-    document.getElementById(
-      "rotateBackBtn"
-    );
-
-  backBtn.onclick = function (e) {
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    goBackSafe();
-
-  };
 
   // =========================
   // OVERLAY CLICK

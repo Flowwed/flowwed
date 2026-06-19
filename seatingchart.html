@@ -1295,7 +1295,7 @@ async function loadTableCount() {
     .from("seating_config")
     .select("table_count, seat_map")
     .eq("token", token)
-    .single();
+    .maybeSingle();
 
   if (error && error.code !== "PGRST116") {
     console.error("❌ loadTableCount error:", error);
