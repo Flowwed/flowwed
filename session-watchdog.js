@@ -33,9 +33,7 @@ function handleActivity() {
 
   if (isSessionExpired()) {
 
-    alert(
-      "You have been away for a while. Please refresh this page to continue."
-    );
+    showSessionExpiredModal();
 
     return;
   }
@@ -43,6 +41,7 @@ function handleActivity() {
   updateActivity();
 
 }
+
 
 /* первый запуск */
 
