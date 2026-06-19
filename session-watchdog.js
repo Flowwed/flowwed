@@ -67,10 +67,10 @@ document.addEventListener(
   updateActivity
 );
 
-document.addEventListener(
-  "scroll",
-  updateActivity
-);
+// document.addEventListener(
+ //  "scroll",
+ // updateActivity
+// );
 
 document.addEventListener(
   "input",
