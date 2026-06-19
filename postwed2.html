@@ -1999,7 +1999,13 @@ async function loadGuests() {
       console.error("LOAD GUESTS ERROR:", error);
       guests = [];
     } else {
-      guests = (data || []).map(g => ({
+
+      guests = (data || [])
+  .filter(g =>
+    (g.rsvp_status || "").toLowerCase() === "yes"
+  )
+  .map(g => ({
+
         id: g.id,
         first: g.first_name || "",
         last: g.last_name || "",
@@ -2733,7 +2739,7 @@ document.addEventListener("DOMContentLoaded", () => {
       z-index:10;
     ">×</div>
 
-    <iframe src="tttrsvp.html?embed=1" style="
+    <iframe src="tttpostwed.html?embed=1" style="
       width:100%;
       height:100%;
       border:none;
