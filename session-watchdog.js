@@ -81,8 +81,6 @@ function showSessionExpiredModal() {
           "
         >
           You have been away for a while.
-          <br><br>
-          Would you like to continue your session?
         </div>
 
         <button
