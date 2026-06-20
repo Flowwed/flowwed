@@ -1784,14 +1784,8 @@ text-align:right;
     <input type="text" id="composerSubject" class="composer-input" value="Wedding Update">
 
     <label class="composer-label">Message:</label>
-<textarea id="composerBody" class="composer-textarea">Hello!
 
-Thank you for celebrating with us. We'd love to see your photos and favorite memories from our wedding day. Please share them here so we can add them to our wedding album.
-
-With love,
-${coupleFullName} ❤️
-</textarea>
-
+<textarea id="composerBody" class="composer-textarea"></textarea>
 
 <div id="rsvpPreviewBlock" style="
 margin-top:10px;
@@ -2081,13 +2075,11 @@ document.addEventListener("change", (e) => {
 document.getElementById("composerBody").value =
 `Hello!
 
-Thank you for being part of our special day.
-
-If you'd like, please share a message or some of your favorite photos from the wedding using the Memories Form below.
+Thank you for celebrating with us. We'd love to see your photos and favorite memories from our wedding day. Please fill in and submit the form below to share them with us so we can add them to our wedding album.
 
 With love,
 
-${coupleFullName}`;
+${coupleFullName} ❤️`;
 
   }
 
