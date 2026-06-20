@@ -2072,15 +2072,6 @@ document.addEventListener("change", (e) => {
   if (e.target.classList.contains("rowCheck")) {
     refreshComposerFields();
 
-document.getElementById("composerBody").value =
-`Hello!
-
-Thank you for celebrating with us. We'd love to see your photos and favorite memories from our wedding day. Please fill in and submit the form below to share them with us so we can add them to our wedding album.
-
-With love,
-
-${coupleFullName} ❤️`;
-
   }
 
   // 🔽 Реагируем на master checkbox (#selectAll)
@@ -2313,6 +2304,15 @@ function openComposer() {
   if (selected.length === 0) return showToastBox("Select at least one guest!", "error");
 
   refreshComposerFields();
+
+document.getElementById("composerBody").value =
+`Hello!
+
+Thank you for celebrating with us. We'd love to see your photos and favorite memories from our wedding day. Please fill in and submit the form below to share them with us so we can add them to our wedding album.
+
+With love,
+
+${coupleFullName} ❤️`;
 
   const token = window.APP_TOKEN;
   const firstGuest = selected[0];
