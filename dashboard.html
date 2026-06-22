@@ -1100,6 +1100,8 @@ name = name
   .replace(/\s+/g, " ")
   .trim();
 
+coupleInput.value = name;
+
   if (name.length < 3)
     return;
 
@@ -1152,15 +1154,31 @@ sessionStorage.setItem(
 
 coupleInput?.addEventListener(
   "keydown",
-  async (e) => {
+  (e) => {
 
     if (e.key !== "Enter")
       return;
 
-    await saveSetup();
+    e.preventDefault();
+
+    let name =
+      coupleInput.value.trim();
+
+    name = name
+      .replace(/\s+(and|AND)\s+/g, " & ")
+      .replace(/\s*[-–—]\s*/g, " & ")
+      .replace(/\s*,\s*/g, " & ")
+      .replace(/\s*&\s*/g, " & ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    coupleInput.value = name;
+
+    weddingDateInput.focus();
 
   }
 );
+
 
 setupBtn?.addEventListener(
   "click",
