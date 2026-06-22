@@ -1486,6 +1486,18 @@ document.getElementById("saveBtn").onclick = async () => {
     categorySelect.value = "";
     formInputs.forEach(i => i.disabled = true);
 
+document.querySelector(".form h2").textContent =
+  "Add / Edit Gift";
+
+document.getElementById("saveBtn").textContent =
+  "Save gift";
+
+title.classList.remove("editing");
+price.classList.remove("editing");
+qty.classList.remove("editing");
+link.classList.remove("editing");
+categorySelect.classList.remove("editing");
+
     showToast("Gift saved!");
     loadGifts();
 
@@ -1519,6 +1531,13 @@ window.editGift = async (id) => {
 
     categorySelect.classList.remove("editing");
 
+document.querySelector(".form h2").textContent =
+  "Add / Edit Gift";
+
+document.getElementById("saveBtn").textContent =
+  "Save gift";
+
+
     return;
   }
 
@@ -1535,6 +1554,8 @@ window.editGift = async (id) => {
 
   editingId = id;
 
+document.querySelector(".form h2").textContent =
+  `Editing: ${data.title}`;
   // ✅ CATEGORY RESTORE
   categorySelect.value = data.category || "";
 
@@ -1548,6 +1569,14 @@ window.editGift = async (id) => {
   qty.classList.add("editing");
   link.classList.add("editing");
   categorySelect.classList.add("editing");
+
+document.getElementById("saveBtn").textContent =
+  "Update Gift";
+
+document.querySelector(".form").scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
 
 };
 
