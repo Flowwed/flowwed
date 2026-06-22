@@ -1202,6 +1202,30 @@ const formInputs = [
   title, price, qty, link
 ];
 
+formInputs.forEach((field, index) => {
+
+  field.addEventListener("keydown", (e) => {
+
+    if (e.key !== "Enter") return;
+
+    e.preventDefault();
+
+    const nextField =
+      formInputs[index + 1];
+
+    if (nextField) {
+
+      nextField.focus();
+
+      return;
+    }
+
+document.getElementById("saveBtn").click();
+
+  });
+
+});
+
 // fill dropdown
 categories.forEach(c => {
   const opt = document.createElement("option");
@@ -1486,6 +1510,8 @@ document.getElementById("saveBtn").onclick = async () => {
     categorySelect.value = "";
     formInputs.forEach(i => i.disabled = true);
 
+categorySelect.focus();
+
 document.querySelector(".form h2").textContent =
   "Add / Edit Gift";
 
@@ -1571,7 +1597,7 @@ document.querySelector(".form h2").textContent =
   categorySelect.classList.add("editing");
 
 document.getElementById("saveBtn").textContent =
-  "Update Gift";
+  "Edit Gift";
 
 document.querySelector(".form").scrollIntoView({
   behavior: "smooth",
