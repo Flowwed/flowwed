@@ -1274,7 +1274,6 @@ if (field === "name") {
     .eq("id", id);
 
 if (error) {
-  e.target.style.background = "#ffcccc";
 
   showToastBox(
     "This email already exists!",
@@ -1282,14 +1281,12 @@ if (error) {
   );
 
   e.target.innerText = guest[field];
-}
- else {
-    // Только после успеха меняем локальный массив
+} else {
+
     guest[field] = newValue;
 
-    e.target.style.background = "#d9ffe2";
-    setTimeout(() => (e.target.style.background = ""), 400);
-  }
+}
+
 
 }, true);
 
