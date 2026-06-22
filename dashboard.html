@@ -738,9 +738,9 @@ body.locked .big-btn {
 <div style="
   margin-top:-8px;
   margin-bottom:18px;
-  font-size:13px;
+  font-size:14px;
   color:#a02449;
-  opacity:.75;
+  opacity:.85;
   font-style:italic;
 ">
   * Select your wedding date
@@ -1089,8 +1089,16 @@ coupleInput.disabled = true;
 
 async function saveSetup() {
 
-  const name =
-    coupleInput.value.trim();
+let name =
+  coupleInput.value.trim();
+
+name = name
+  .replace(/\s+(and|AND)\s+/g, " & ")
+  .replace(/\s*[-–—]\s*/g, " & ")
+  .replace(/\s*,\s*/g, " & ")
+  .replace(/\s*&\s*/g, " & ")
+  .replace(/\s+/g, " ")
+  .trim();
 
   if (name.length < 3)
     return;
