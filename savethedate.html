@@ -1712,15 +1712,15 @@ async function loadPostWeddingVideo() {
 
   const { data, error } = await supabase
     .from("sites")
-    .select("stdvideo_url")
+    .select("stdvideo_admin")
     .eq("edit_token", token)
     .single();
 
-  if (error || !data || !data.stdvideo_url) return;
+  if (error || !data || !data.stdvideo_admin) return;
 
   const iframe = document.getElementById("postWeddingIframe");
 
-  iframe.src = data.stdvideo_url;
+  iframe.src = data.stdvideo_admin;
 
   const player = new Vimeo.Player(iframe);
 
