@@ -735,6 +735,27 @@ white-space: nowrap;
   display: inline-flex;
   width: max-content;   /* 🔥 КЛЮЧ */
 }
+
+
+.video-info-balloon {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: #fff7f7;
+  border: 1px solid #ffd0d0;
+  border-radius: 12px;
+  color: #7e2a2a;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+}
+
+
 </style>
 
 </head>
@@ -786,6 +807,18 @@ white-space: nowrap;
         </div>
       </div>
     </div>
+
+
+<div class="video-info-balloon">
+  <span class="info-icon">i</span>
+  <span>
+          Start by building your guest list in the Guest Hub section.
+          Guests added there will automatically appear in the list above and can receive your updates directly from this page.
+          If no guests have been added yet, this list will remain empty.
+
+
+  </span>
+</div>
 
     <div class="footer-buttons">
       <button id="sendEmailBtn" class="footer-btn">Send Email</button>
