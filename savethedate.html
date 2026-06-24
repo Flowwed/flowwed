@@ -1744,6 +1744,14 @@ async function loadPostWeddingVideo() {
   const token = window.APP_TOKEN;
   if (!token) return;
 
+const iframe = document.getElementById("postWeddingIframe");
+
+if (token.startsWith("TRIAL")) {
+  iframe.src = "dimado.html";
+  return;
+}
+
+
   const { data, error } = await supabase
     .from("sites")
     .select("stdvideo_admin")
@@ -1752,7 +1760,6 @@ async function loadPostWeddingVideo() {
 
   if (error || !data || !data.stdvideo_admin) return;
 
-  const iframe = document.getElementById("postWeddingIframe");
 
   iframe.src = data.stdvideo_admin;
 

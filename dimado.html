@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dimado</title>
+
+<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at top, #fff7f8, #e7c3cb);
+  font-family: Inter, system-ui;
+}
+
+.phone-screen {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+.photo {
+  position: absolute;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(90, 20, 35, .32);
+  will-change: transform;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#playMusicBtn{
+  position:fixed;
+
+  right:20px;
+  bottom:20px;
+
+  width:44px;
+  height:44px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:18px;
+
+  background:rgba(255,255,255,.18);
+
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
+
+  cursor:pointer;
+
+  z-index:9999;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phone-screen" id="screen"></div>
+
+<audio id="bgMusic" loop>
+  <source src="music/testimonials.mp3" type="audio/mpeg">
+</audio>
+
+
+<div id="playMusicBtn">♪</div>
+
+<script>
+const screen = document.getElementById("screen");
+const photos = [];
+
+const images = [
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0001.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0002.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0003.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0004.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0005.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0006.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0007.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0008.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0009.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0010.jpg",
+  "https://octwwpatppbenqwkcqaw.supabase.co/storage/v1/object/public/dimado/0011.jpg",
+
+];
+
+
+function createPhotos() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  screen.innerHTML = "";
+  photos.length = 0;
+
+  images.forEach((src, i) => {
+    const wrap = document.createElement("div");
+    wrap.className = "photo";
+
+    const size = 82 + Math.random() * 58;
+
+    wrap.style.width = size + "px";
+    wrap.style.height = size * (Math.random() > .55 ? 1.35 : 1) + "px";
+
+    wrap.baseX = Math.random() * (w - size);
+    wrap.baseY = Math.random() * (h - size - 40);
+
+    wrap.phase = Math.random() * Math.PI * 2;
+    wrap.speed = .008 + Math.random() * .006;
+    wrap.depth = Math.random();
+
+    wrap.style.left = wrap.baseX + "px";
+    wrap.style.top = wrap.baseY + "px";
+
+    const img = document.createElement("img");
+    img.src = src;
+
+    wrap.appendChild(img);
+    screen.appendChild(wrap);
+
+    photos.push(wrap);
+  });
+}
+
+function animate() {
+  photos.forEach((p, i) => {
+    p.phase += p.speed;
+
+    const x = Math.sin(p.phase + i) * 28;
+    const y = Math.cos(p.phase * .8 + i) * 22;
+    const z = Math.sin(p.phase) * 55 * p.depth;
+    const scale = 1 + Math.sin(p.phase * 1.4) * .08;
+
+    p.style.transform =
+      `translate3d(${x}px, ${y}px, ${z}px) scale(${scale}) rotate(${Math.sin(p.phase) * 4}deg)`;
+  });
+
+  requestAnimationFrame(animate);
+}
+
+
+const bgMusic =
+  document.getElementById("bgMusic");
+
+let musicStarted = false;
+
+/*
+document.addEventListener("pointerdown", () => {
+
+  if (musicStarted) return;
+
+  musicStarted = true;
+
+  bgMusic.volume = 0.6;
+
+  bgMusic.play().catch(() => {});
+
+}, { once:true });
+
+*/
+
+
+const playBtn =
+  document.getElementById("playMusicBtn");
+
+playBtn.addEventListener("click", () => {
+
+  if (bgMusic.paused) {
+
+    bgMusic.volume = 0.6;
+
+    bgMusic.play().catch(() => {});
+
+    playBtn.textContent = "🔊";
+
+  } else {
+
+    bgMusic.pause();
+
+    playBtn.textContent = "♪";
+
+  }
+
+});
+
+
+createPhotos();
+animate();
+
+window.addEventListener("resize", createPhotos);
+</script>
+
+</body>
+</html>
