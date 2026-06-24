@@ -1429,7 +1429,6 @@ Check the Quick User Guide
 
 <div style="margin: 0 18px 16px 18px; width:100%;">
 
-
 <!-- POST-WEDDING VIDEO + TABLE -->
 
 <div style="
@@ -1460,66 +1459,62 @@ margin:40px 0;
 
   </div>
 
-<div style="display:flex;flex-direction:column;gap:14px;">
+  <!-- RIGHT COLUMN -->
+  <div style="display:flex;flex-direction:column;gap:14px;">
 
-<div class="video-info-balloon">
-  <span class="info-icon">i</span>
-  <span>
-    This is the Save the Date video announcement your guests will receive.
-    Your video will appear here automatically once it is ready.
+    <!-- 🔥 TOP BALLOON (OUTSIDE WHITE BOX) -->
+    <div class="video-info-balloon">
+      <span class="info-icon">i</span>
+      <span>
+        This is the Save the Date video announcement your guests will receive.
+        Your video will appear here automatically once it is ready.
+      </span>
+    </div>
 
-  </span>
-</div>
+    <!-- WHITE CONTAINER -->
+    <div class="table-section">
 
+      <div class="ruby-frame-outer">
+        <div class="ruby-frame-inner">
+          <div class="scroll-container">
 
-  <!-- TABLE -->
-  <div class="table-section">
+            <table id="guestTable">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="selectAll"></th>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
 
-
-    <div class="ruby-frame-outer">
-      <div class="ruby-frame-inner">
-        <div class="scroll-container">
-
-          <table id="guestTable">
-            <thead>
-              <tr>
-                <th><input type="checkbox" id="selectAll"></th>
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-
+          </div>
         </div>
       </div>
+
+      <!-- 🔥 BOTTOM BALLOON (INSIDE WHITE BOX) -->
+      <div class="video-info-balloon" style="margin-top:14px;">
+        <span class="info-icon">i</span>
+        <span>
+          Start by building your guest list in the Guest Hub section.
+          Guests added there will automatically appear in the list above and can receive your Save the Date announcement directly from this page.
+          If no guests have been added yet, this list will remain empty.
+        </span>
+      </div>
+
+      <!-- BUTTONS -->
+      <div class="footer-buttons">
+        <button id="deleteSelected" class="footer-btn">Delete Selected</button>
+        <button id="sendEmailBtn" class="footer-btn">Send Email</button>
+        <button id="shareBtn" class="footer-btn">Send SMS</button>
+        <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
+      </div>
+
     </div>
-    </div>
-
-
-<div class="video-info-balloon">
-  <span class="info-icon">i</span>
-Start by building your guest list in the Guest Hub section.            
-Guests added there will automatically appear in the list above and can receive your Save the Date announcement directly from this page. 
-If no guests have been added in the Guest Hub yet, this list will remain empty.
-</div>
-
-
-<div class="footer-buttons">
-      <button id="deleteSelected" class="footer-btn">Delete Selected</button>
-      <button id="sendEmailBtn" class="footer-btn">Send Email</button>
-      <button id="shareBtn" class="footer-btn">Send SMS</button>
-
-      <button id="previewFormBtn" class="footer-btn">See the Form Your Guests Will Fill</button>
-
-
-
   </div>
-
 </div>
-
-
 
 <!-- Новая кнопка -->
   <button id="previewJustMarried" class="footer-btn">
