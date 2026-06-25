@@ -959,14 +959,14 @@ button:hover {
 
 .top-header {
   position: relative;
-
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
 
   margin-top: 10px;
   margin-bottom: 18px;
 }
+
 
 
 h1 {
@@ -1203,19 +1203,22 @@ max-width: 620px;
   text-align: left;
 }
 
-.gallery-header-note {
+.gallery-inline-note {
 
   display: inline-flex;
   align-items: center;
   gap: 10px;
 
-  margin-top: -10px;
+  position: absolute;
+
+  left: calc(50% + 120px);
+  top: 40px;
 
   padding: 8px 16px;
 
   border-radius: 999px;
 
-  background: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.85);
 
   backdrop-filter: blur(14px);
 
@@ -1262,10 +1265,10 @@ max-width: 620px;
 
 <h1>Gallery</h1>
 
-<div class="gallery-header-note">
+<span class="gallery-inline-note">
   <span class="info-icon">i</span>
-  <span>You can replace any of these photos with your own at any time.</span>
-</div>
+  These are sample photos. Feel free to replace them with your own at any time.
+</span>
 
 <div class="top-nav">
 
