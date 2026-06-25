@@ -1282,6 +1282,45 @@ top: 2px;
   letter-spacing: 0.02em;
 }
 
+.sections-help {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-left: 20px;
+  padding: 9px 18px;
+
+  border-radius: 999px;
+  border: 1px solid rgba(180,17,17,0.28);
+
+  background: rgba(255,245,248,0.9);
+  color: #8d1f1f;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  box-shadow:
+    0 4px 10px rgba(180,17,17,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+
+  white-space: nowrap;
+}
+
+.sections-help-icon {
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+  background: #b41111;
+  color: white;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 12px;
+  font-weight: 700;
+}
 
 </style>
 
@@ -1604,6 +1643,11 @@ document.getElementById("status").innerText = "";
         </div>
         <div class="story-body"></div>
       </div>
+
+<div class="sections-help">
+  <span class="sections-help-icon">i</span>
+  <span>Choose a section and start telling your story</span>
+</div>
 
     </div> <!-- story-tabs -->
 
