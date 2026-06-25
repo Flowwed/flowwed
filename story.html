@@ -672,20 +672,32 @@ input[type=file]::file-selector-button {
 }
 
 .story-header {
-  padding: 6px 12px;          /* ↓ меньше */
+
+  padding: 7px 14px;
+
   border-radius: 999px;
 
-  background: #f1f1f1;
-  font-size: 13px;            /* 🔥 меньше текст */
+  background: #fafafa;
+
+  border: 1px solid rgba(180,17,17,0.35);
+
+  box-shadow:
+    0 4px 10px rgba(180,17,17,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+
+  font-size: 13px;
   font-weight: 500;
+
+  color: #6b5656;
 
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
   cursor: pointer;
-}
 
+  transition: all .18s ease;
+}
 
 .story-header:hover {
   background: #ddd;
