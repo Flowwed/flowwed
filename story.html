@@ -3003,26 +3003,6 @@ function openBlock(block) {
 
 document.getElementById("fakeHeader").style.display = "block";
 
-const headerEl =
-  document.getElementById("fakeHeader");
-
-setTimeout(() => {
-
-  headerEl.focus();
-
-  const range =
-    document.createRange();
-
-  range.selectNodeContents(headerEl);
-  range.collapse(false);
-
-  const sel =
-    window.getSelection();
-
-  sel.removeAllRanges();
-  sel.addRange(range);
-
-}, 0);
 
   window.quill.setText("");
 
@@ -3044,6 +3024,22 @@ const bodyText =
   const headerEl = document.getElementById("fakeHeader");
 
 headerEl.innerText = data.header || HEADER_PLACEHOLDER;
+
+setTimeout(() => {
+
+  headerEl.focus();
+
+  const selection = window.getSelection();
+  const range = document.createRange();
+
+  range.selectNodeContents(headerEl);
+  range.collapse(false);
+
+  selection.removeAllRanges();
+  selection.addRange(range);
+
+}, 10);
+
 headerEl.style.color = data.header ? "#000" : "#aaa";
 
 
