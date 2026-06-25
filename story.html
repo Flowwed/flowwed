@@ -1332,7 +1332,7 @@ top: 2px;
 
 <div class="ios-banner">
 <span class="info-icon">i</span>
-  Tap on any section to share your story. Check the Quick User Guide
+  Share your story. Check the Quick User Guide
   <span id="openGuide" class="guide-link">here</span>
 </div>
 
@@ -2865,6 +2865,8 @@ window.storyData = {
 window.quill = new Quill(editorEl, { theme: "snow" });
 editorEl.style.display = "none";
 
+document.getElementById("fakeHeader").style.display = "none";
+
 // 🔥 флаг переключения (если ещё нет — оставь)
 window.isSwitching = false;
 
@@ -2943,6 +2945,8 @@ function openBlock(block) {
 
   editorEl.style.display = "block";
 
+document.getElementById("fakeHeader").style.display = "block";
+
 
   window.quill.setText("");
 
@@ -3014,6 +3018,7 @@ window.storyData[window.currentKey] = {
 
       block.classList.remove("active");
       editorEl.style.display = "none";
+document.getElementById("fakeHeader").style.display = "none";
     });
   });
 
